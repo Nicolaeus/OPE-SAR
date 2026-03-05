@@ -1,40 +1,64 @@
-<!-- Updated index.html with security improvements, bug fixes, error handling, validation, accessibility enhancements, and performance optimizations -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OPE-SAR</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Nautical SAR System</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        header { background: #007BFF; color: white; padding: 10px; text-align: center; }
+        main { margin: 20px; }
+        footer { text-align: center; margin-top: 20px; }
+        .error { color: red; } /* Error message styling */
+    </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to OPE-SAR</h1>
+        <h1>Nautical SAR System</h1>
     </header>
     <main>
-        <section id="content">
-            <h2>Content Section</h2>
-            <p>This section contains crucial information.</p>
-            <form id="dataForm" action="#" method="post">
-                <label for="userInput">Your Input:</label>
-                <input type="text" id="userInput" name="userInput" required aria-required="true" placeholder="Enter your input" oninput="validateInput()">
-                <button type="submit">Submit</button>
+        <section id="form-section">
+            <h2>Request SAR</h2>
+            <form id="sar-form">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required aria-required="true" aria-describedby="location-help">
+                <small id="location-help">Provide the latitude and longitude coordinates.</small>
+                <br>
+                <label for="emergency-type">Type of Emergency:</label>
+                <select id="emergency-type" name="emergency-type" required>
+                    <option value="">Select Emergency Type</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Vessel">Vessel</option>
+                    <option value="Individual">Individual</option>
+                </select>
+                <br>
+                <button type="submit">Submit Request</button>
+                <div id="error-message" class="error" aria-live="assertive"></div>
             </form>
         </section>
     </main>
     <footer>
-        <p>&copy; 2026 OPE-SAR. All rights reserved.</p>
+        <p>&copy; 2026 Nautical SAR System</p>
     </footer>
     <script>
-        // Function to validate input
-        function validateInput() {
-            const userInput = document.getElementById('userInput');
-            if(userInput.value === '') {
-                userInput.setCustomValidity('Input cannot be empty.');
-            } else {
-                userInput.setCustomValidity('');
+        document.getElementById('sar-form').onsubmit = function(event) {
+            event.preventDefault(); // Prevent form submission
+            const location = document.getElementById('location').value;
+            const emergencyType = document.getElementById('emergency-type').value;
+            const errorMessage = document.getElementById('error-message');
+
+            // Validate input fields
+            errorMessage.textContent = ''; // Clear previous error messages
+            if (!location || !emergencyType) {
+                errorMessage.textContent = 'Please fill in all fields.';
+                return;
             }
-        }
+
+            // Simulate sending request to server
+            console.log(`SAR Request - Location: ${location}, Type: ${emergencyType}`);
+            alert('SAR request submitted successfully!');
+            document.getElementById('sar-form').reset(); // Reset form fields after submission
+        };
     </script>
 </body>
 </html>
