@@ -179,15 +179,18 @@
 
 	<div class="floating-card ais-card">
 	    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-	        <h4 style="margin:0; color:white; font-size:0.9rem;">Trafic Maritime</h4>
-	        <div id="ais-status-light" style="width:10px; height:10px; background:#666; border-radius:50%;"></div>
+	        <h4 style="margin:0; color:white; font-size:0.9rem; border:none;">Trafic Maritime</h4>
+	        <div id="ais-status-light" style="width:10px; height:10px; background:#666; border-radius:50%; transition: 0.3s;"></div>
 	    </div>
-	    <label style="display:flex; align-items:center; color:#ccc; font-size:0.8rem; cursor:pointer;">
+	    
+	    <label style="display:flex; align-items:center; color:#ccc; font-size:0.8rem; cursor:pointer; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px;">
 	        <input type="checkbox" id="toggle-ais" onchange="toggleAISLayer()" style="margin-right:10px;">
 	        Activer la couche AIS
 	    </label>
+	    
 	    <p style="font-size:0.65rem; color:#888; margin-top:10px; line-height:1.2;">
-	        Affichage des navires et du balisage via OpenSeaMap (Flux libre).
+	        Affichage temps réel des navires et du balisage (OpenSeaMap).<br>
+	        <i>Sans clé API - Illimité.</i>
 	    </p>
 	</div>
 
@@ -839,6 +842,7 @@ function toggleAISLayer() {
 </script>
 </body>
 </html>
+
 
 
 
