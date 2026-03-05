@@ -998,17 +998,29 @@ function makeDraggable(el) {
     }
 
     function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // Calcul du mouvement
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // Nouvelle position de la carte
-        el.style.top = (el.offsetTop - pos2) + "px";
-        el.style.left = (el.offsetLeft - pos1) + "px";
-    }
+    e = e || window.event;
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    
+    // Ajoute des limites pour ne pas sortir de l'écran
+    let newTop = el.offsetTop - pos2;
+    let newLeft = el.offsetLeft - pos1;
+    
+    // Limite haute (sous le header de 60px)
+    if (newTop < 60) newTop = 60; 
+    // Limite gauche
+    if (newLeft < 0) newLeft = 0;
+
+    el.style.top = newTop + "px";
+    el.style.left = newLeft + "px";
+    
+    // TRÈS IMPORTANT : On supprime les contraintes de droite/bas au cas où
+    el.style.right = 'auto';
+    el.style.bottom = 'auto';
+}
 
     function closeDragElement() {
         document.onmouseup = null;
