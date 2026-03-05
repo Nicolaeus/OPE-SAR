@@ -14,79 +14,58 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 <style>
-    /* 1. STRUCTURE DE BASE (On ne touche pas au Header) */
+    /* TA STRUCTURE ORIGINALE (CONSERVÉE À 100%) */
     body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; height: 100vh; background: #001529; overflow: hidden; }
     #header { padding: 12px 25px; background: #1a237e; color: white; display: flex; justify-content: space-between; align-items: center; z-index: 3000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-    
     .controls-container { display: flex; gap: 15px; align-items: flex-end; }
     .label { font-size: 0.65rem; text-transform: uppercase; color: #81d4fa; font-weight: bold; }
     select, .tow-label { height: 34px; padding: 0 10px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; background: #f8f9fa; display: flex; align-items: center; box-sizing: border-box; font-size: 0.85rem; }
-    
+    .btn-group { display: flex; }
+    .sea-btn { height: 34px; padding: 0 12px; border: 1px solid #546e7a; background: #37474f; color: white; font-weight: 600; cursor: pointer; }
+    .sea-btn.active { background: #0288d1; border-color: #81d4fa; }
     #map-container { flex-grow: 1; position: relative; overflow: hidden; }
     #map { width: 100%; height: 100%; background: #0d47a1; z-index: 1; }
-
-    /* 2. LE LOOK "GRIS SOMBRE TACTIQUE" POUR LES CARDS */
-    .floating-card { 
-        position: absolute; 
-        display: none; /* Caché par défaut pour la sidebar */
-        background: rgba(20, 26, 35, 0.94) !important; /* Gris anthracite profond */
-        color: #e0e6ed !important;
-        padding: 15px; 
-        border-radius: 8px; 
-        z-index: 2500; 
-        border: 1px solid rgba(255,255,255,0.1);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.6); 
-        backdrop-filter: blur(10px); 
-    }
     
-    .floating-card h4 { 
-        margin: 0 0 10px 0; 
-        color: #94a3b8; /* Gris clair pour les titres */
-        text-transform: uppercase; 
-        font-size: 0.8rem; 
-        border-bottom: 1px solid rgba(255,255,255,0.1); 
-        padding-bottom: 5px; 
-        cursor: move; 
-    }
+    .floating-card { position: absolute; background: rgba(255, 255, 255, 0.94); padding: 15px; border-radius: 8px; z-index: 2500; border-left: 6px solid #1a237e; box-shadow: 0 4px 15px rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: none; /* Cacher par défaut */}
+    
+    /* Tes styles spécifiques AIS / DASHBOARD / SAR / WEATHER / TIDE */
+    .ais-card { position: absolute; top: 420px; left: 20px; width: 270px; background: rgba(15, 23, 42, 0.9); border-left: 4px solid #4caf50; padding: 15px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 1000; color: white; }
+    .dashboard { bottom: 30px; left: 20px; width: 300px; background: rgba(10, 25, 41, 0.9) !important; border-left: 4px solid #00d2ff !important; padding: 10px !important; color: white; }
+    .dash-header { display: flex; align-items: center; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .dash-header h4 { font-size: 0.8rem !important; color: #00d2ff !important; text-transform: uppercase; letter-spacing: 1px; }
+    .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .dash-item { display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 5px 8px; border-radius: 4px; }
+    .dash-item .label { font-size: 0.6rem !important; color: #888 !important; }
+    .dash-item b { font-size: 0.85rem; color: #eee; }
+    .sar-card { top: 20px; left: 20px; width: 300px; border-left: 6px solid #d32f2f; }
+    .weather-card { top: 20px; right: 20px; width: 320px; border-left: 6px solid #0288d1; }
+    .tide-card { top: 460px; right: 20px; width: 320px; border-left: 6px solid #fbc02d; }
+    .floating-card h4 { cursor: move; user-select: none; margin: 0 0 10px 0; color: #1a237e; text-transform: uppercase; font-size: 0.85rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
 
-    /* 3. COULEURS D'ACCENTUATION (Bordure gauche) */
-    .sar-card { border-left: 5px solid #d32f2f; top: 20px; left: 20px; width: 300px; }
-    .ais-card { border-left: 5px solid #4caf50; top: 420px; left: 20px; width: 270px; }
-    .dashboard { border-left: 5px solid #00d2ff; top: calc(100% - 180px); left: 20px; width: 300px; }
-    .weather-card { border-left: 5px solid #0288d1; top: 20px; left: calc(100% - 350px); width: 320px; }
-    .tide-card { border-left: 5px solid #fbc02d; top: 460px; left: calc(100% - 350px); width: 320px; }
-
-    /* 4. LA SIDEBAR (Barre d'outils) */
+    /* AJOUT DE LA SIDEBAR (SANS TOUCHER AU RESTE) */
     .sidebar-tools {
         position: absolute;
         right: 15px;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(15, 23, 42, 0.9);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        z-index: 4000;
+        background: rgba(15, 23, 42, 0.8);
         padding: 10px;
         border-radius: 10px;
         border: 1px solid rgba(255,255,255,0.1);
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        z-index: 4000;
         align-items: center;
     }
-
-    .tool-wrapper { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .tool-label { font-size: 0.55rem; color: #64748b; font-weight: bold; }
-    
+    .tool-wrapper { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .tool-label { font-size: 0.55rem; color: #81d4fa; font-weight: bold; text-transform: uppercase; }
     .tool-btn {
-        width: 40px; height: 40px; border-radius: 6px; border: none;
-        background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 1.1rem;
+        width: 42px; height: 42px; border-radius: 6px; border: none;
+        background: rgba(255,255,255,0.1); color: white; font-size: 1.1rem;
         cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;
     }
-    .tool-btn:hover { background: rgba(255,255,255,0.1); color: white; }
-    .tool-btn.active { background: #1a237e; color: #00d2ff; box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
-
-    /* Ajustements internes */
-    .stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; align-items: center; }
-    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tool-btn.active { background: #0288d1; box-shadow: 0 0 10px rgba(2, 136, 209, 0.5); }
 </style>
 </head>
 <body>
