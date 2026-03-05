@@ -103,6 +103,12 @@
         .tide-graph-container { margin-top: 10px; height: 100px; background: #fdfdfd; border-radius: 4px; border: 1px solid #e0e0e0; position: relative; }
         canvas { width: 100%; height: 100%; }
         .coeff-badge { background: #1a237e; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; }
+/* Curseur de déplacement sur les titres des cartes */
+.floating-card h4 {
+    cursor: move;
+    user-select: none; /* Empêche de sélectionner le texte en glissant */
+}
+		
     </style>
 </head>
 <body>
@@ -950,7 +956,57 @@ Object.entries(ports).forEach(([name, coords]) => {
      .addTo(map)
      .bindPopup(`<b>Station SNSM de ${name}</b><br>Prête pour intervention`);
 });
-	
+
+// --- LOGIQUE DE DÉPLACEMENT DES CARDS ---
+
+function makeDraggable(el) {
+    // On utilise le H4 (titre) comme poignée pour déplacer la carte
+    const header = el.querySelector('h4');
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+    if (header) {
+        header.onmousedown = dragMouseDown;
+    } else {
+        el.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // Position de départ de la souris
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // Calcul du mouvement
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // Nouvelle position de la carte
+        el.style.top = (el.offsetTop - pos2) + "px";
+        el.style.left = (el.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}
+
+// Initialisation au chargement de la page
+window.addEventListener('DOMContentLoaded', () => {
+    // On rend toutes les cartes déplaçables
+    document.querySelectorAll('.floating-card').forEach(card => {
+        makeDraggable(card);
+    });
+});
+
 </script>
 </body>
 </html>
