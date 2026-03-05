@@ -257,15 +257,32 @@
 </div>
 
 
-    <div class="floating-card dashboard">
-        <h4 id="dashShip">--</h4>
-        <div class="stat-row"><span>Transit :</span> <b id="dashSpeed">--</b></div>
-        <div class="stat-row"><span>Rayon :</span> <b id="dashRange">--</b></div>
-        <div class="stat-row"><span>Réservoir :</span> <b id="dashTank">--</b></div>
-        <div class="stat-row" style="margin-top:8px; font-size:0.75rem; color:#666;">
-            <span>Consommation :</span> <b id="dashCons">-</b>
+<div class="floating-card dashboard">
+    <div class="dash-header">
+        <i class="fas fa-microchip"></i>
+        <h4 id="dashShip" style="margin:0; border:none; padding:0; flex-grow:1; margin-left:8px;">--</h4>
+        <span class="dash-tag">LIVE</span>
+    </div>
+    
+    <div class="dash-grid">
+        <div class="dash-item">
+            <span class="label">Vitesse</span>
+            <b id="dashSpeed">--</b>
+        </div>
+        <div class="dash-item">
+            <span class="label">Rayon</span>
+            <b id="dashRange">--</b>
+        </div>
+        <div class="dash-item">
+            <span class="label">Réservoir</span>
+            <b id="dashTank">--</b>
+        </div>
+        <div class="dash-item highlight">
+            <span class="label">Conso</span>
+            <b id="dashCons">--</b>
         </div>
     </div>
+</div>
 
     <div class="floating-card weather-card">
         <h4>Navigation</h4>
