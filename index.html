@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="no-referrer">
-    <title>SNSM - Ops V9.1.1</title>
+    <title>SNSM - Ops V10.0.0</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
@@ -1084,6 +1084,22 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+function toggleCard(className, btn) {
+    const card = document.querySelector('.' + className);
+    
+    if (card.style.display === 'block') {
+        card.style.display = 'none';
+        btn.classList.remove('active');
+    } else {
+        card.style.display = 'block';
+        btn.classList.add('active');
+        
+        // Optionnel : s'assurer que la carte est bien dans l'écran si elle était perdue
+        if (card.offsetTop < 0) card.style.top = '100px';
+        if (card.offsetLeft < 0) card.style.left = '100px';
+    }
+}
+	
 </script>
 </body>
 </html>
