@@ -794,33 +794,51 @@ map.on('mouseout', function() {
 });
 
 // bloc AIS
+// --- CONFIGURATION AIS OPENSEAMAP ---
 
-// 1. On définit la couche OpenSeaMap une seule fois en haut du script
+// 1. Définition de la couche (Layer) en variable globale
+// Cette couche récupère les tuiles transparentes contenant les navires et balises
 const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a>'
 });
 
-// 2. La fonction appelée par ta case à cocher
+/**
+ * Fonction de bascule pour afficher/masquer l'AIS
+ * Appelée par l'événement onchange du bouton/checkbox
+ */
 function toggleAISLayer() {
-    const isChecked = document.getElementById('toggle-ais').checked;
+    // On récupère l'élément checkbox
+    const checkbox = document.getElementById('toggle-ais');
     const statusLight = document.getElementById('ais-status-light');
 
-    if (isChecked) {
+    if (!checkbox) {
+        console.error("L'élément avec l'ID 'toggle-ais' est introuvable dans le HTML.");
+        return;
+    }
+
+    if (checkbox.checked) {
+        // Ajout de la couche sur la carte Leaflet
         aisLayer.addTo(map);
-        statusLight.style.background = "#4caf50"; // Vert
-        console.log("Couche AIS OpenSeaMap activée");
+        
+        // Mise à jour visuelle (voyant vert)
+        if (statusLight) statusLight.style.background = "#4caf50";
+        console.log("Flux AIS OpenSeaMap activé");
     } else {
+        // Retrait de la couche
         if (map.hasLayer(aisLayer)) {
             map.removeLayer(aisLayer);
         }
-        statusLight.style.background = "#666"; // Gris
-        console.log("Couche AIS désactivée");
+        
+        // Mise à jour visuelle (voyant gris)
+        if (statusLight) statusLight.style.background = "#666";
+        console.log("Flux AIS OpenSeaMap désactivé");
     }
 }
 
 </script>
 </body>
 </html>
+
 
 
