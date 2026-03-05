@@ -811,37 +811,30 @@ const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.p
  * Appelée par l'événement onchange du bouton/checkbox
  */
 function toggleAISLayer() {
-    // On récupère l'élément checkbox
     const checkbox = document.getElementById('toggle-ais');
     const statusLight = document.getElementById('ais-status-light');
 
-    if (!checkbox) {
-        console.error("L'élément avec l'ID 'toggle-ais' est introuvable dans le HTML.");
-        return;
-    }
+    if (!checkbox) return;
 
     if (checkbox.checked) {
-        // Ajout de la couche sur la carte Leaflet
         aisLayer.addTo(map);
+        // FORCE LA COUCHE AU PREMIER PLAN
+        aisLayer.bringToFront(); 
         
-        // Mise à jour visuelle (voyant vert)
         if (statusLight) statusLight.style.background = "#4caf50";
-        console.log("Flux AIS OpenSeaMap activé");
+        console.log("Flux AIS activé et mis au premier plan");
     } else {
-        // Retrait de la couche
         if (map.hasLayer(aisLayer)) {
             map.removeLayer(aisLayer);
         }
-        
-        // Mise à jour visuelle (voyant gris)
         if (statusLight) statusLight.style.background = "#666";
-        console.log("Flux AIS OpenSeaMap désactivé");
     }
 }
 
 </script>
 </body>
 </html>
+
 
 
 
