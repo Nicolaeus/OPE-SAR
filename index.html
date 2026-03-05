@@ -14,141 +14,120 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 <style>
-    /* BASE STRUCTURE */
+    /* --- CONFIGURATION DES THÈMES (VARIABLES) --- */
+    :root {
+        /* Mode Sombre par défaut (Gris Radar) */
+        --card-bg: rgba(15, 23, 42, 0.95); 
+        --card-text: #ffffff;
+        --card-header-text: #81d4fa;
+        --card-border-default: #1a237e;
+        --card-shadow: rgba(0, 0, 0, 0.6);
+        --input-bg: rgba(255, 255, 255, 0.1);
+        --input-text: #ffffff;
+    }
+
+    body.light-mode {
+        /* Mode Clair */
+        --card-bg: rgba(255, 255, 255, 0.96);
+        --card-text: #1a237e;
+        --card-header-text: #1a237e;
+        --card-border-default: #1a237e;
+        --card-shadow: rgba(0, 0, 0, 0.2);
+        --input-bg: #f8f9fa;
+        --input-text: #1a237e;
+    }
+
+    /* --- STRUCTURE DE BASE --- */
     body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; height: 100vh; background: #001529; overflow: hidden; }
     #header { padding: 12px 25px; background: #1a237e; color: white; display: flex; justify-content: space-between; align-items: center; z-index: 3000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     
-    /* CONTROLS AREA */
-    .controls-container { display: flex; gap: 15px; align-items: flex-end; }
-    .label { font-size: 0.65rem; text-transform: uppercase; color: #81d4fa; font-weight: bold; }
-    select, .tow-label { height: 34px; padding: 0 10px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; background: #f8f9fa; display: flex; align-items: center; box-sizing: border-box; font-size: 0.85rem; }
-    .btn-group { display: flex; }
-    .sea-btn { height: 34px; padding: 0 12px; border: 1px solid #546e7a; background: #37474f; color: white; font-weight: 600; cursor: pointer; }
-    .sea-btn.active { background: #0288d1; border-color: #81d4fa; }
+    /* --- BARRE D'OUTILS LATÉRALE --- */
+    .sidebar-tools {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        z-index: 4000;
+        background: rgba(15, 23, 42, 0.85);
+        padding: 12px 10px;
+        border-radius: 12px;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,0.1);
+        align-items: center;
+    }
+
+    .tool-wrapper { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .tool-label { font-size: 0.6rem; color: #81d4fa; font-weight: bold; text-transform: uppercase; }
     
-    /* MAP AREA */
-    #map-container { flex-grow: 1; position: relative; overflow: hidden; }
-    #map { width: 100%; height: 100%; background: #0d47a1; z-index: 1; }
-    
-    /* COMMON CARD STYLE */
+    .tool-btn {
+        width: 45px; height: 45px; border-radius: 8px; border: none;
+        background: rgba(255,255,255,0.1); color: white; font-size: 1.2rem;
+        cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+    }
+    .tool-btn:hover { background: rgba(255,255,255,0.2); }
+    .tool-btn.active { background: #0288d1; box-shadow: 0 0 10px rgba(2, 136, 209, 0.5); }
+
+    /* --- COMMON CARD STYLE (SOMBER BY DEFAULT) --- */
     .floating-card { 
         position: absolute; 
-        background: rgba(255, 255, 255, 0.94); 
+        display: none; /* Caché par défaut pour être activé par la sidebar */
+        background: var(--card-bg); 
+        color: var(--card-text);
         padding: 15px; 
         border-radius: 8px; 
         z-index: 2500; 
-        border-left: 6px solid #1a237e; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
-        backdrop-filter: blur(8px); 
+        border-left: 6px solid var(--card-border-default); 
+        box-shadow: 0 4px 15px var(--card-shadow); 
+        backdrop-filter: blur(10px); 
     }
     
     .floating-card h4 { 
         margin: 0 0 10px 0; 
-        color: #1a237e; 
+        color: var(--card-header-text); 
         text-transform: uppercase; 
         font-size: 0.85rem; 
-        border-bottom: 1px solid #eee; 
+        border-bottom: 1px solid rgba(128,128,128,0.2); 
         padding-bottom: 5px; 
         cursor: move; 
         user-select: none; 
     }
 
-    /* AIS CARD (Green Theme) */
+    /* --- POSITIONS & THEMES SPÉCIFIQUES --- */
+    .sar-card { top: 20px; left: 20px; width: 300px; border-left-color: #d32f2f; }
+    
     .ais-card {
-        top: 420px;
-        left: 20px;
-        width: 270px;
-        background: rgba(15, 23, 42, 0.9);
-        border-left: 4px solid #4caf50;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        z-index: 1000;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: white;
+        top: 420px; left: 20px; width: 270px;
+        border-left-color: #4caf50;
     }
-    .ais-card h4 { color: #4caf50; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .ais-card label:hover { background: rgba(255,255,255,0.1) !important; color: #fff !important; }
+    .ais-card h4 { color: #4caf50; }
 
-    /* DASHBOARD CARD (Blue Tech Theme) */
-	.dashboard { top: calc(100% - 180px); left: 20px; width: 300px; }
-    .dash-header { display: flex; align-items: center; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .dash-header h4 { font-size: 0.8rem !important; color: #00d2ff !important; text-transform: uppercase; letter-spacing: 1px; border: none !important; margin: 0 !important; }
-    .dash-tag { font-size: 0.6rem; background: #d32f2f; padding: 1px 4px; border-radius: 3px; font-weight: bold; margin-left: 10px; }
+    .dashboard { 
+        top: calc(100% - 180px); left: 20px; width: 300px; 
+        border-left-color: #00d2ff; 
+    }
+    .dash-header h4 { color: #00d2ff !important; border: none !important; }
+
+    .weather-card { top: 20px; left: calc(100% - 380px); width: 320px; border-left-color: #0288d1; }
+    .tide-card { top: 460px; left: calc(100% - 380px); width: 320px; border-left-color: #fbc02d; }
+
+    /* --- MAP SELECTOR --- */
+    .map-selector-card {
+        top: 20px; left: calc(50% - 150px); width: 300px;
+        background: var(--card-bg); border-top: 4px solid var(--card-border-default);
+    }
+
+    /* --- ÉLÉMENTS INTERNES --- */
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; align-items: center; }
     .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .dash-item { display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 5px 8px; border-radius: 4px; }
-    .dash-item .label { font-size: 0.6rem !important; color: #888 !important; margin-bottom: 2px; }
-    .dash-item b { font-size: 0.85rem; color: #eee; }
-    .dash-item.highlight b { color: #fbc02d; }
-
-    /* SAR CARD */
-    .sar-card { top: 20px; left: 20px; width: 300px; border-left: 6px solid #d32f2f; }
-    .sar-card .stat-row select { flex: 1; margin-left: 10px; min-width: 0; }
-
-    /* WEATHER & TIDE (Right Side - Converted to Left-Calc for Drag) */
-    .weather-card { top: 20px; left: calc(100% - 340px); width: 320px; border-left: 6px solid #0288d1; }
-    .tide-card { top: 460px; left: calc(100% - 340px); width: 320px; border-left: 6px solid #fbc02d; }
-	
-    /* DATA ROWS & WIDGETS */
-    .stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; align-items: center; }
-    .weather-val { color: #0277bd; font-weight: bold; }
-    .wind-box { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
-    .wind-arrow { display: inline-block !important; font-size: 1.6rem; color: #d32f2f; font-weight: bold; transform-origin: center; transition: transform 0.8s ease-out; }
-    .tide-status { flex-grow: 1; font-weight: 800; text-align: center; padding: 6px; border-radius: 4px; font-size: 0.8rem; }
-    .status-up { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
-    .status-down { background: #fffde7; color: #f57f17; border: 1px solid #fff59d; }
-    .tide-graph-container { margin-top: 10px; height: 100px; background: #fdfdfd; border-radius: 4px; border: 1px solid #e0e0e0; position: relative; }
-    canvas { width: 100%; height: 100%; }
-    .coeff-badge { background: #1a237e; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; }
-
-	
-	.map-selector-card {
-    top: 20px;
-    left: calc(50% - 150px); /* Centré en haut */
-    width: 300px;
-    background: rgba(255, 255, 255, 0.9);
-    border-top: 4px solid #1a237e;
-}
-	/* Barre d'outils latérale */
-.sidebar-tools {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 4000;
-    background: rgba(15, 23, 42, 0.8);
-    padding: 10px;
-    border-radius: 12px;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.tool-btn {
-    width: 45px;
-    height: 45px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.tool-btn:hover { background: rgba(255,255,255,0.2); }
-.tool-btn.active { 
-    background: #0288d1; 
-    box-shadow: 0 0 10px rgba(2, 136, 209, 0.5); 
-}
-
-/* On cache les cartes par défaut */
-.floating-card { display: none; }
+    
+    select { 
+        background: var(--input-bg); color: var(--input-text); 
+        border: 1px solid rgba(128,128,128,0.3); padding: 4px; border-radius: 4px; 
+    }
 </style>
 </head>
 <body>
@@ -213,13 +192,33 @@
 <div id="map-container">
     <div id="map"></div>
     <div class="sidebar-tools">
-    <button class="tool-btn" onclick="toggleCard('sar-card', this)" title="SAR / Dérive"><i class="fas fa-life-ring"></i></button>
-    <button class="tool-btn" onclick="toggleCard('ais-card', this)" title="Trafic AIS"><i class="fas fa-ship"></i></button>
-    <button class="tool-btn" onclick="toggleCard('weather-card', this)" title="Météo"><i class="fas fa-cloud-sun"></i></button>
-    <button class="tool-btn" onclick="toggleCard('tide-card', this)" title="Marées"><i class="fas fa-water"></i></button>
-    <button class="tool-btn" onclick="toggleCard('dashboard', this)" title="Données Canot"><i class="fas fa-gauge-high"></i></button>
-    <hr style="width:100%; border:0; border-top:1px solid rgba(255,255,255,0.1);">
-    <button class="tool-btn" onclick="toggleCard('map-selector-card', this)" title="Fonds de carte"><i class="fas fa-layer-group"></i></button>
+    <div class="tool-wrapper">
+        <button class="tool-btn" onclick="toggleCard('sar-card', this)" title="SAR"><i class="fas fa-life-ring"></i></button>
+        <span class="tool-label">SAR</span>
+    </div>
+    <div class="tool-wrapper">
+        <button class="tool-btn" onclick="toggleCard('ais-card', this)" title="AIS"><i class="fas fa-ship"></i></button>
+        <span class="tool-label">AIS</span>
+    </div>
+    <div class="tool-wrapper">
+        <button class="tool-btn" onclick="toggleCard('weather-card', this)" title="Météo"><i class="fas fa-cloud-sun"></i></button>
+        <span class="tool-label">METEO</span>
+    </div>
+    <div class="tool-wrapper">
+        <button class="tool-btn" onclick="toggleCard('tide-card', this)" title="Marée"><i class="fas fa-water"></i></button>
+        <span class="tool-label">MAREE</span>
+    </div>
+    <div class="tool-wrapper">
+        <button class="tool-btn" onclick="toggleCard('dashboard', this)" title="Dashboard"><i class="fas fa-gauge-high"></i></button>
+        <span class="tool-label">DASH</span>
+    </div>
+    <hr style="width:80%; border:0; border-top:1px solid rgba(255,255,255,0.1); margin: 5px 0;">
+    <div class="tool-wrapper">
+        <button class="tool-btn" id="theme-toggle" onclick="toggleTheme()" title="Changer de mode">
+            <i class="fas fa-moon"></i>
+        </button>
+        <span class="tool-label">THEME</span>
+    </div>
 </div>
 	<div id="eta-cursor-badge" style="
     position: fixed; 
