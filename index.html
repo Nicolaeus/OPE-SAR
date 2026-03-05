@@ -803,6 +803,7 @@ map.on('mouseout', function() {
 // Cette couche récupère les tuiles transparentes contenant les navires et balises
 const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
     maxZoom: 18,
+	zIndex:1000,
     attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a>'
 });
 
@@ -834,6 +835,7 @@ function toggleAISLayer() {
 </script>
 </body>
 </html>
+
 
 
 
