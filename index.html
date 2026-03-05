@@ -27,7 +27,7 @@
         
         .floating-card { position: absolute; background: rgba(255, 255, 255, 0.94); padding: 15px; border-radius: 8px; z-index: 2500; border-left: 6px solid #1a237e; box-shadow: 0 4px 15px rgba(0,0,0,0.4); backdrop-filter: blur(8px); }
         /* Positionnement sous la carte SAR */
-.ais-card {
+	.ais-card {
     position: absolute;
     top: 420px;
     left: 20px;
@@ -814,8 +814,9 @@ map.on('mouseout', function() {
 // Déclaration de la couche OpenSeaMap
 const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
     maxZoom: 18,
-    zIndex: 500,
-	Opacity : 1
+	zIndex: 1000, // On monte à 1000 pour être sûr de surplanter le fond OSM
+    opacity: 1,
+    pane: 'overlayPane' // Force l'affichage dans le panneau des superpositions
 });
 
 function toggleAISLayer() {
@@ -825,9 +826,13 @@ function toggleAISLayer() {
     if (checkbox.checked) {
         // Activation
         aisLayer.addTo(map);
-        if (aisLayer.bringToFront) aisLayer.bringToFront();
         
-        // On allume le voyant en VERT
+        // Sécurité supplémentaire : forcer l'ordre Z
+        aisLayer.setZIndex(1000); 
+        if (aisLayer.bringToFront) {
+            aisLayer.bringToFront();
+        }
+        
         statusLight.style.background = "#4caf50";
         statusLight.style.boxShadow = "0 0 10px #4caf50, 0 0 20px rgba(76, 175, 80, 0.4)";
         console.log("Flux AIS : Connecté");
@@ -837,7 +842,6 @@ function toggleAISLayer() {
             map.removeLayer(aisLayer);
         }
         
-        // On éteint le voyant
         statusLight.style.background = "#444";
         statusLight.style.boxShadow = "none";
         console.log("Flux AIS : Déconnecté");
