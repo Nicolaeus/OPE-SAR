@@ -1,6 +1,512 @@
 <?php
 /**
  * Projet : Système de Mission Nautique 
+ * Version : V11.0.0 (DARK OPS EDITION)
+ * Note : Structure originale préservée, unification Dark Mode appliquée.
+ */
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <title>SNSM - Ops V11.0.0</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+    <style>
+        /* --- DESIGN GLOBAL & LAYOUT --- */
+        body { 
+            margin: 0; padding: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; flex-direction: column; 
+            height: 100vh; background: #020617; overflow: hidden; 
+        }
+
+        #header { 
+            padding: 12px 25px; 
+            background: #0f172a; color: white; 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 3000; box-shadow: 0 4px 20px rgba(0,0,0,0.8); 
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .controls-container { display: flex; gap: 15px; align-items: flex-end; }
+        
+        .label { 
+            font-size: 0.65rem; text-transform: uppercase; 
+            color: #38bdf8; font-weight: bold; margin-bottom: 4px;
+        }
+
+        /* --- UNIFICATION DARK MODE DES INPUTS --- */
+        select, input { 
+            height: 34px; padding: 0 10px; border-radius: 4px; 
+            background: #1e293b !important; color: #f1f5f9 !important;
+            border: 1px solid #334155 !important;
+            font-weight: 600; cursor: pointer; font-size: 0.85rem; 
+        }
+
+        .btn-group { display: flex; border-radius: 4px; overflow: hidden; border: 1px solid #334155; }
+        .sea-btn { 
+            height: 34px; padding: 0 12px; border: none; 
+            background: #1e293b; color: #94a3b8; font-weight: 600; cursor: pointer; 
+        }
+        .sea-btn.active { background: #0288d1; color: white; }
+
+        .tow-label {
+            height: 34px; padding: 0 12px; border-radius: 4px;
+            background: #c2410c; color: white; display: flex; 
+            align-items: center; font-size: 0.8rem; font-weight: bold;
+        }
+
+        /* --- MAP & OVERLAYS --- */
+        #map-container { flex-grow: 1; position: relative; overflow: hidden; }
+        #map { width: 100%; height: 100%; background: #020617; z-index: 1; }
+        
+        /* --- CARDS FLOTTANTES UNIFIÉES (DARK MODE) --- */
+        .floating-card { 
+            position: absolute; 
+            background: rgba(15, 23, 42, 0.95) !important; 
+            color: #f1f5f9 !important; 
+            padding: 18px; border-radius: 10px; z-index: 2500; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255,255,255,0.1);
+            display: none; 
+        }
+        
+        .floating-card h4 { 
+            cursor: move; user-select: none; margin: -18px -18px 15px -18px; 
+            background: rgba(255,255,255,0.03); padding: 12px 18px;
+            color: #f1f5f9; text-transform: uppercase; font-size: 0.8rem; 
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-top-left-radius: 10px; border-top-right-radius: 10px;
+            display: flex; align-items: center; gap: 10px; letter-spacing: 1px;
+        }
+
+        /* Bordures de fonctions */
+        .sar-card { border-left: 6px solid #ef4444; width: 320px; }
+        .weather-card { border-left: 6px solid #0ea5e9; }
+        .ais-card { border-left: 6px solid #22c55e; }
+        .dashboard { border-left: 6px solid #00d2ff; width: 300px; }
+        .tide-card { border-left: 6px solid #eab308; }
+
+        /* --- ÉLÉMENTS UI --- */
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.85rem; align-items: center; }
+        .label-min { color: #94a3b8; font-size: 0.65rem; text-transform: uppercase; font-weight: bold; }
+
+        .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .dash-item { display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px; }
+        .dash-item .val { color: #00d2ff; font-weight: bold; font-size: 0.95rem; }
+
+        .sidebar-tools { 
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); 
+            display: flex; flex-direction: column; gap: 12px; z-index: 4000; 
+            background: rgba(15, 23, 42, 0.8); padding: 10px; border-radius: 10px; 
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tool-btn { 
+            width: 42px; height: 42px; border-radius: 6px; border: none; 
+            background: rgba(255,255,255,0.1); color: white; font-size: 1.1rem; 
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+        }
+        .tool-btn.active { background: #0288d1; box-shadow: 0 0 10px #0288d1; }
+        .tool-label { font-size: 0.55rem; color: #38bdf8; font-weight: bold; text-transform: uppercase; text-align: center; margin-top: 2px; }
+
+        #eta-cursor-badge { 
+            position: fixed; display: none; background: rgba(15, 23, 42, 0.9); 
+            color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; 
+            font-weight: bold; pointer-events: none; z-index: 10000; border: 1px solid #eab308; 
+        }
+
+        .wind-arrow { display: inline-block; transition: transform 0.3s ease; color: #38bdf8; }
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <div style="font-weight: 900; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-anchor"></i> SNSM | OPS V11.0.0
+    </div>
+    <div class="controls-container">
+        <div class="control-group">
+            <div class="label">Navire</div>
+            <select id="shipSelector" onchange="calculate()">
+                <option value="nsh1">NSH1 (17.5m)</option>
+                <option value="nsh2">NSH2 (14.5m)</option>
+                <option value="nsc1">NSC1 (12m)</option>
+                <option value="nsc2">NSC2 (8.5m)</option>
+                <option value="nsc3" selected>NSC3 (6.4m)</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <div class="label">Consigne</div>
+            <select id="vSelector" onchange="calculate()">
+                <option value="v10">10 kts</option>
+                <option value="v15" selected>15 kts</option>
+                <option value="v20">20 kts</option>
+                <option value="v25">25 kts</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <div class="label">Départ</div>
+            <select id="portSelector" onchange="calculate()">
+                <option value="PortManec'h" selected>Port Manec'h</option>
+                <option value="Concarneau">Concarneau</option>
+                <option value="BegMeil">Beg Meil</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <div class="label">Etat Mer</div>
+            <div class="btn-group">
+                <button class="sea-btn active" onclick="setSea(0, this)">Calme</button>
+                <button class="sea-btn" onclick="setSea(1, this)">Agitée</button>
+                <button class="sea-btn" onclick="setSea(2, this)">Forte</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="tow-label">
+                <input type="checkbox" id="towCheck" onchange="calculate()" style="margin-right:8px; width:15px; height:15px;"> REMORQUAGE
+            </label>
+        </div>
+    </div>
+</div>
+
+<div id="map-container">
+    <div id="map"></div>
+    <div id="eta-cursor-badge"></div>
+
+    <div class="sidebar-tools">
+        <div class="tool-wrapper"><button class="tool-btn" onclick="toggleCard('sar-card', this)"><i class="fas fa-life-ring"></i></button><div class="tool-label">SAR</div></div>
+        <div class="tool-wrapper"><button class="tool-btn" onclick="toggleCard('ais-card', this)"><i class="fas fa-ship"></i></button><div class="tool-label">AIS</div></div>
+        <div class="tool-wrapper"><button class="tool-btn" onclick="toggleCard('weather-card', this)"><i class="fas fa-cloud-sun"></i></button><div class="tool-label">Météo</div></div>
+        <div class="tool-wrapper"><button class="tool-btn" onclick="toggleCard('dashboard', this)"><i class="fas fa-gauge-high"></i></button><div class="tool-label">Infos</div></div>
+    </div>
+
+    <div class="floating-card sar-card">
+        <h4><i class="fas fa-crosshairs"></i> Calcul de Dérive (SAR)</h4>
+        
+        <div class="stat-row">
+            <span class="label-min">Type de cible</span>
+            <select id="targetType" onchange="updateDrift()" style="width:160px;">
+                <option value="0.05">Plaisance (moteur)</option>
+                <option value="0.07">Voilier (mât debout)</option>
+                <option value="0.02">Canot de survie</option>
+                <option value="0.01">Homme à la mer</option>
+            </select>
+        </div>
+
+        <div class="stat-row">
+            <span class="label-min">Courant Local</span>
+            <div style="display:flex; gap:8px;">
+                <input type="number" id="curDir" placeholder="Dir°" style="width:65px;" onchange="updateDrift()">
+                <input type="number" id="curSpeed" placeholder="nds" style="width:65px;" onchange="updateDrift()">
+            </div>
+        </div>
+
+        <div style="background: rgba(239, 68, 68, 0.15); padding: 12px; border-radius: 6px; margin: 15px 0; border: 1px solid rgba(239, 68, 68, 0.3);">
+            <div class="stat-row" style="margin-bottom:0;">
+                <span style="font-weight: bold; color: #fca5a5;">Vitesse de Dérive :</span>
+                <b id="driftTotal" style="color:#fff; font-size: 1rem;">-- nds</b>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <span class="label-min">Heure LKP</span>
+            <input type="time" id="timeLKP" onchange="updateDrift()" style="width:110px;">
+        </div>
+
+        <div class="stat-row">
+            <span class="label-min">Heure Appareillage</span>
+            <input type="time" id="timeDepart" onchange="updateDrift()" style="width:110px;">
+        </div>
+
+        <div id="sar-eta" style="font-size:0.85rem; background: rgba(14, 165, 233, 0.15); padding: 12px; border-radius: 6px; margin-top:15px; border: 1px solid rgba(14, 165, 233, 0.3); color: #7dd3fc;">
+            <i class="fas fa-clock"></i> Interception : <b id="val-eta" style="color:#fff;">--</b>
+        </div>
+
+        <button onclick="startSarMission()" style="width:100%; margin-top:15px; background:#ef4444; color:white; border:none; padding:12px; border-radius:6px; cursor:pointer; font-weight:900; text-transform:uppercase; transition: 0.3s; box-shadow: 0 4px 0 #b91c1c;">
+            <i class="fas fa-map-marker-alt"></i> Placer LKP sur Carte
+        </button>
+        
+        <button onclick="resetSarMission()" style="width:100%; margin-top:12px; background:transparent; color:#94a3b8; border:1px solid #334155; padding:6px; border-radius:4px; cursor:pointer; font-size:0.7rem;">
+            Réinitialiser Mission
+        </button>
+    </div>
+
+    <div class="floating-card dashboard">
+        <h4><i class="fas fa-tachometer-alt"></i> État du Navire</h4>
+        <div class="dash-grid">
+            <div class="dash-item"><span class="label-min">Unité</span><span class="val" id="dashShip">--</span></div>
+            <div class="dash-item"><span class="label-min">Vitesse Réelle</span><span class="val" id="dashSpeed">--</span></div>
+            <div class="dash-item"><span class="label-min">Autonomie</span><span class="val" id="dashRange">--</span></div>
+            <div class="dash-item"><span class="label-min">Consommation</span><span class="val" id="dashCons">--</span></div>
+        </div>
+    </div>
+
+    <div class="floating-card weather-card">
+        <h4><i class="fas fa-sun"></i> Conditions Direct</h4>
+        <div class="stat-row"><span>Ciel :</span> <span id="val-cloud">--</span></div>
+        <div class="stat-row"><span>Vent :</span> <div><span id="val-wind">--</span> <span id="wind-dir-icon" class="wind-arrow">↑</span></div></div>
+        <div class="stat-row"><span>Air :</span> <span id="val-temp-air">--</span></div>
+        <iframe id="webcam-frame" src="" width="100%" height="150px" frameborder="0" style="margin-top:10px; border-radius:4px; background:#000; border: 1px solid #334155;"></iframe>
+    </div>
+
+    <div class="floating-card ais-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h4 style="margin:0; background:none; padding:0; border:none;"><i class="fas fa-satellite-dish"></i> Flux AIS</h4>
+            <div id="ais-status-light" style="width:10px; height:10px; background:#444; border-radius:50%;"></div>
+        </div>
+        <label style="display:flex; align-items:center; cursor:pointer; background:rgba(255,255,255,0.05); padding:10px; border-radius:6px; border: 1px solid #334155;">
+            <input type="checkbox" id="toggle-ais" onchange="toggleAISLayer()" style="margin-right:10px; width:18px; height:18px;"> Activer AIS (OpenSeaMap)
+        </label>
+    </div>
+</div>
+
+<script>
+/**
+ * --- LOGIQUE TECHNIQUE ---
+ */
+const fleet = {
+    nsh1: { name: "NSH1", tank: 3400, vMax: 25, rangeNominal: 50, towPenalty: 1.4, cons: "180 L/h" },
+    nsh2: { name: "NSH2", tank: 2600, vMax: 25, rangeNominal: 40, towPenalty: 1.4, cons: "140 L/h" },
+    nsc1: { name: "NSC1", tank: 1500, vMax: 30, rangeNominal: 30, towPenalty: 1.5, cons: "110 L/h" },
+    nsc2: { name: "NSC2", tank: 400,  vMax: 30, rangeNominal: 20, towPenalty: 1.6, cons: "60 L/h" },
+    nsc3: { name: "NSC3", tank: 150,  vMax: 30, rangeNominal: 6,  towPenalty: 1.7, cons: "25 L/h" }
+};
+
+const ports = {
+    'PortManec\'h': [47.8006, -3.7376],
+    'Concarneau': [47.8732, -3.9142],
+    'BegMeil': [47.8554, -3.9785]
+};
+
+const seaStates = [
+    { label: "Calme", vLimit: 60, fuelMulti: 1.0 },
+    { label: "Agitée", vLimit: 18, fuelMulti: 1.3 },
+    { label: "Forte", vLimit: 10, fuelMulti: 1.8 }
+];
+
+let currentSea = 0;
+let rangeCircle = null;
+let landMass = null;
+let vsdMarker = null;
+let driftLine = null;
+let driftEndMarker = null;
+let navLine = null;
+let isoLayers = [];
+
+const map = L.map('map', { zoomControl: false }).setView([47.8012, -3.7429], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    className: 'map-dark' // Optionnel : filtre CSS pour assombrir la carte si besoin
+}).addTo(map);
+
+const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', { zIndex: 1000 });
+
+async function loadLandData() {
+    try {
+        const res = await fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements.geojson');
+        const data = await res.json();
+        landMass = turf.combine(data).features[0];
+        calculate();
+    } catch (e) { calculate(); }
+}
+
+function calculate() {
+    const portKey = document.getElementById('portSelector').value;
+    const shipKey = document.getElementById('shipSelector').value;
+    const ship = fleet[shipKey];
+    const coords = ports[portKey];
+    
+    getLiveWeather(coords[0], coords[1]);
+    const cams = { 'PortManec\'h': 'port-manech', 'Concarneau': 'concarneau/ville-close', 'BegMeil': 'fouesnant/beg-meil' };
+    document.getElementById('webcam-frame').src = `https://www.skaping.com/snsm/${cams[portKey]}`;
+
+    const vInput = parseInt(document.getElementById('vSelector').value.replace('v', ''));
+    let finalVitesse = Math.min(vInput, ship.vMax, seaStates[currentSea].vLimit);
+
+    let r = ship.rangeNominal / seaStates[currentSea].fuelMulti;
+    if(document.getElementById('towCheck').checked) r /= ship.towPenalty;
+
+    document.getElementById('dashShip').innerText = ship.name;
+    document.getElementById('dashRange').innerText = r.toFixed(1) + " MN";
+    document.getElementById('dashSpeed').innerText = finalVitesse + " kts";
+    document.getElementById('dashCons').innerText = ship.cons;
+
+    updateMapGraphics(coords, r, finalVitesse);
+    updateDrift();
+}
+
+function updateMapGraphics(coords, r, finalVitesse) {
+    if (rangeCircle) map.removeLayer(rangeCircle);
+    isoLayers.forEach(l => map.removeLayer(l));
+    isoLayers = [];
+
+    try {
+        const center = [coords[1], coords[0]];
+        const circleTurf = turf.circle(center, r, { units: 'nauticalmiles' });
+        let finalGeo = landMass ? (turf.difference(circleTurf, landMass) || circleTurf) : circleTurf;
+
+        rangeCircle = L.geoJSON(finalGeo, {
+            style: { color: '#0ea5e9', weight: 2, fillOpacity: 0.1 }
+        }).addTo(map);
+
+        [15, 30, 45, 60].forEach(min => {
+            const d = finalVitesse * (min / 60);
+            if (d <= r) {
+                const iT = turf.circle(center, d, { units: 'nauticalmiles' });
+                const iG = landMass ? (turf.difference(iT, landMass) || iT) : iT;
+                const l = L.geoJSON(iG, { style: { color: '#22c55e', weight: 1, dashArray: '5, 10', fill: false } }).addTo(map);
+                isoLayers.push(l);
+            }
+        });
+    } catch (e) {}
+}
+
+/**
+ * --- LOGIQUE SAR ---
+ */
+function updateDrift() {
+    const windSpeed = parseFloat(document.getElementById('val-wind').innerText) || 0;
+    const factor = parseFloat(document.getElementById('targetType').value);
+    const windDir = parseFloat(document.getElementById('wind-dir-icon').style.transform.replace(/[^\d.]/g, '')) || 0;
+    const curDir = parseFloat(document.getElementById('curDir').value) || 0;
+    const curSpeed = parseFloat(document.getElementById('curSpeed').value) || 0;
+
+    const rad = (d) => d * Math.PI / 180;
+    const vdx = (windSpeed * factor) * Math.sin(rad(windDir + 180)) + curSpeed * Math.sin(rad(curDir));
+    const vdy = (windSpeed * factor) * Math.cos(rad(windDir + 180)) + curSpeed * Math.cos(rad(curDir));
+
+    const totalDriftSpeed = Math.sqrt(vdx**2 + vdy**2);
+    const totalDriftDir = (Math.atan2(vdx, vdy) * 180 / Math.PI + 360) % 360;
+
+    document.getElementById('driftTotal').innerText = `${totalDriftSpeed.toFixed(1)} nds @ ${Math.round(totalDriftDir)}°`;
+
+    if (vsdMarker) {
+        const lkpPos = vsdMarker.getLatLng();
+        const shipPos = L.latLng(ports[document.getElementById('portSelector').value]);
+        const distTransit = shipPos.distanceTo(lkpPos) / 1852;
+        const speed = parseFloat(document.getElementById('dashSpeed').innerText) || 1;
+        const timeMin = (distTransit / speed) * 60;
+
+        const tLKP = document.getElementById('timeLKP').value.split(':');
+        const tDep = document.getElementById('timeDepart').value.split(':');
+        const dL = new Date(); dL.setHours(tLKP[0], tLKP[1]);
+        const dD = new Date(); dD.setHours(tDep[0], tDep[1]);
+        
+        const totalTime = ((dD - dL) / 60000) + timeMin;
+        const driftDist = totalDriftSpeed * 1852 * (totalTime / 60);
+        const datumPos = calculateDestination(lkpPos, totalDriftDir, driftDist);
+
+        if (driftLine) map.removeLayer(driftLine);
+        driftLine = L.polyline([lkpPos, datumPos], { color: '#ef4444', weight: 2, dashArray: '5, 10' }).addTo(map);
+        if (driftEndMarker) map.removeLayer(driftEndMarker);
+        driftEndMarker = L.circleMarker(datumPos, { radius: 8, color: '#fbbf24', fillColor: '#ef4444', fillOpacity: 0.8 }).addTo(map);
+        if (navLine) map.removeLayer(navLine);
+        navLine = L.polyline([shipPos, datumPos], { color: '#0ea5e9', weight: 3 }).addTo(map);
+
+        document.getElementById('val-eta').innerText = `${Math.round(timeMin)} min (${distTransit.toFixed(1)} MN)`;
+    }
+}
+
+/**
+ * --- UI HELPER ---
+ */
+function makeDraggable(el) {
+    const h = el.querySelector('h4');
+    let p1=0, p2=0, p3=0, p4=0;
+    h.onmousedown = (e) => {
+        p3 = e.clientX; p4 = e.clientY;
+        document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+        document.onmousemove = (e) => {
+            p1 = p3 - e.clientX; p2 = p4 - e.clientY;
+            p3 = e.clientX; p4 = e.clientY;
+            el.style.top = (el.offsetTop - p2) + "px"; el.style.left = (el.offsetLeft - p1) + "px";
+        };
+    };
+}
+
+function toggleCard(cls, btn) {
+    const c = document.querySelector('.' + cls);
+    const vis = c.style.display === 'block';
+    c.style.display = vis ? 'none' : 'block';
+    btn.classList.toggle('active', !vis);
+}
+
+function calculateDestination(latlng, brng, dist) {
+    const R = 6371e3; const d = dist / R; const th = brng * Math.PI / 180;
+    const f1 = latlng.lat * Math.PI / 180; const l1 = latlng.lng * Math.PI / 180;
+    const f2 = Math.asin(Math.sin(f1)*Math.cos(d) + Math.cos(f1)*Math.sin(d)*Math.cos(th));
+    const l2 = l1 + Math.atan2(Math.sin(th)*Math.sin(d)*Math.cos(f1), Math.cos(d)-Math.sin(f1)*Math.sin(f2));
+    return L.latLng(f2*180/Math.PI, l2*180/Math.PI);
+}
+
+async function getLiveWeather(lat, lng) {
+    try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,cloud_cover,wind_speed_10m,wind_direction_10m&timezone=auto`);
+        const d = await res.json();
+        document.getElementById('val-cloud').innerText = d.current.cloud_cover + "%";
+        document.getElementById('val-temp-air').innerText = d.current.temperature_2m + "°C";
+        document.getElementById('val-wind').innerText = Math.round(d.current.wind_speed_10m / 1.852) + " kts";
+        document.getElementById('wind-dir-icon').style.transform = `rotate(${d.current.wind_direction_10m + 180}deg)`;
+    } catch(e) {}
+}
+
+function setSea(l, b) {
+    currentSea = l;
+    document.querySelectorAll('.sea-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); calculate();
+}
+
+function startSarMission() {
+    map.getContainer().style.cursor = 'crosshair';
+    map.once('click', (e) => {
+        if(vsdMarker) map.removeLayer(vsdMarker);
+        vsdMarker = L.marker(e.latlng, {draggable: true}).addTo(map);
+        vsdMarker.on('drag', updateDrift);
+        updateDrift();
+        map.getContainer().style.cursor = '';
+    });
+}
+
+function resetSarMission() {
+    [vsdMarker, driftEndMarker, driftLine, navLine].forEach(l => { if(l) map.removeLayer(l); });
+    vsdMarker = null; document.getElementById('driftTotal').innerText = "-- nds"; document.getElementById('val-eta').innerText = "--";
+}
+
+function toggleAISLayer() {
+    const cb = document.getElementById('toggle-ais');
+    const light = document.getElementById('ais-status-light');
+    if (cb.checked) { aisLayer.addTo(map); light.style.background = "#22c55e"; }
+    else { map.removeLayer(aisLayer); light.style.background = "#444"; }
+}
+
+map.on('mousemove', (e) => {
+    const p = ports[document.getElementById('portSelector').value];
+    const d = L.latLng(p).distanceTo(e.latlng) / 1852;
+    const s = parseFloat(document.getElementById('dashSpeed').innerText) || 1;
+    const badge = document.getElementById('eta-cursor-badge');
+    badge.style.display = 'block'; badge.style.left = (e.originalEvent.pageX + 15) + 'px'; badge.style.top = (e.originalEvent.pageY + 15) + 'px';
+    badge.innerHTML = `⏱️ ${Math.round((d/s)*60)} min (${d.toFixed(1)} MN)`;
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.floating-card').forEach(makeDraggable);
+    const now = new Date();
+    const t = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('timeLKP').value = t; document.getElementById('timeDepart').value = t;
+    loadLandData();
+});
+</script>
+</body>
+</html><?php
+/**
+ * Projet : Système de Mission Nautique 
  * Version : V10.0.0 (SAR POSITION FIXED)
  */
 ?>
