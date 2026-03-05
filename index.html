@@ -814,7 +814,8 @@ map.on('mouseout', function() {
 // Déclaration de la couche OpenSeaMap
 const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
     maxZoom: 18,
-    zIndex: 1000
+    zIndex: 500,
+	Opacity : 1
 });
 
 function toggleAISLayer() {
