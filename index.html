@@ -232,43 +232,55 @@
     </div>
 
     <div class="floating-card sar-card">
-        <h4><i class="fas fa-crosshairs"></i> Calcul de Dérive (Datum)</h4>
-        <div class="stat-row">
-            <span>Type de cible :</span>
-            <select id="targetType" onchange="updateDrift()" style="width:140px;">
-                <option value="0.05">Plaisance (moteur)</option>
-                <option value="0.07">Voilier (mât debout)</option>
-                <option value="0.02">Canot de survie</option>
-                <option value="0.01">Homme à la mer</option>
-            </select>
-        </div>
-        <div class="stat-row">
-            <span>Courant Local :</span>
-            <div style="display:flex; gap:5px;">
-                <input type="number" id="curDir" placeholder="Dir°" style="width:50px; padding:2px;" onchange="updateDrift()">
-                <input type="number" id="curSpeed" placeholder="nds" style="width:50px; padding:2px;" onchange="updateDrift()">
-            </div>
-        </div>
-        <div class="stat-row" style="background:#fff3e0; padding:5px; border-radius:4px;">
-            <span>Vitesse Dérive :</span>
-            <b id="driftTotal" style="color:#d32f2f;">-- nds</b>
-        </div>
-        <div class="stat-row" style="margin-top:10px;">
-            <span>Heure LKP :</span>
-            <input type="time" id="timeLKP" onchange="updateDrift()" style="width:100px;">
-        </div>
-        <div class="stat-row">
-            <span>Heure Appareillage :</span>
-            <input type="time" id="timeDepart" onchange="updateDrift()" style="width:100px;">
-        </div>
-        <div id="sar-eta" style="font-size:0.8rem; background:#e3f2fd; padding:10px; border-radius:4px; margin:10px 0; border:1px solid #90caf9;">
-            <i class="fas fa-clock"></i> Interception : <b id="val-eta">--</b>
-        </div>
-        <button onclick="startSarMission()" style="width:100%; background:#d32f2f; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer; font-weight:bold; text-transform:uppercase;">
-            <i class="fas fa-map-marker-alt"></i> Placer LKP
-        </button>
-        <button onclick="resetSarMission()" style="width:100%; margin-top:5px; background:#666; color:white; border:none; padding:5px; border-radius:4px; cursor:pointer; font-size:0.7rem;">Réinitialiser Mission</button>
+    <h4><i class="fas fa-life-ring"></i> CALCUL DE DÉRIVE (SAR)</h4>
+    
+    <div class="stat-row">
+        <span>Cible :</span>
+        <select id="targetType" onchange="updateDrift()">
+            <option value="0.05">Plaisance (moteur)</option>
+            <option value="0.07">Voilier (mât debout)</option>
+            <option value="0.02">Canot de survie</option>
+            <option value="0.01">Homme à la mer</option>
+        </select>
     </div>
+
+    <div class="stat-row">
+        <span>Courant (Dir / Vit) :</span>
+        <div style="display:flex; gap:5px;">
+            <input type="number" id="curDir" placeholder="Dir°" style="width:55px;" onchange="updateDrift()">
+            <input type="number" id="curSpeed" placeholder="nds" style="width:55px;" onchange="updateDrift()">
+        </div>
+    </div>
+
+    <div style="background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 4px; margin: 10px 0; border: 1px solid rgba(239, 68, 68, 0.2);">
+        <div class="stat-row" style="margin-bottom:0;">
+            <span>Dérive Totale :</span>
+            <b id="driftTotal" style="color:#ff4d4d;">-- nds</b>
+        </div>
+    </div>
+
+    <div class="stat-row">
+        <span>Heure LKP :</span>
+        <input type="time" id="timeLKP" onchange="updateDrift()">
+    </div>
+
+    <div class="stat-row">
+        <span>Heure Départ :</span>
+        <input type="time" id="timeDepart" onchange="updateDrift()">
+    </div>
+
+    <div id="sar-eta" style="font-size:0.8rem; background: rgba(14, 165, 233, 0.1); padding: 10px; border-radius: 4px; margin-top:10px; border: 1px solid rgba(14, 165, 233, 0.2);">
+        <i class="fas fa-clock"></i> Interception : <b id="val-eta">--</b>
+    </div>
+
+    <button onclick="startSarMission()" style="width:100%; margin-top:15px; background:#ef4444; color:white; border:none; padding:12px; border-radius:4px; cursor:pointer; font-weight:bold; text-transform:uppercase; letter-spacing:1px;">
+        <i class="fas fa-crosshairs"></i> Placer le LKP sur carte
+    </button>
+    
+    <button onclick="resetSarMission()" style="width:100%; margin-top:8px; background:transparent; color:#94a3b8; border:1px solid #334155; padding:5px; border-radius:4px; cursor:pointer; font-size:0.7rem;">
+        Réinitialiser la mission
+    </button>
+</div>
 
     <div class="floating-card dashboard">
         <h4><i class="fas fa-tachometer-alt"></i> État du Navire</h4>
