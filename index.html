@@ -795,81 +795,32 @@ map.on('mouseout', function() {
 
 // bloc AIS
 
-let aisEnabled = false;
-let aisSocket = null;
-let aisMarkers = {};
+// 1. On définit la couche OpenSeaMap une seule fois en haut du script
+const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a>'
+});
 
-function toggleAIS() {
-    const btn = document.getElementById('btn-ais-toggle');
-    const status = document.getElementById('ais-status');
-    aisEnabled = !aisEnabled;
+// 2. La fonction appelée par ta case à cocher
+function toggleAISLayer() {
+    const isChecked = document.getElementById('toggle-ais').checked;
+    const statusLight = document.getElementById('ais-status-light');
 
-    if (aisEnabled) {
-        btn.style.background = "#2e7d32";
-        btn.innerText = "AIS ON";
-        status.innerText = "Connexion au flux...";
-        startAIS();
+    if (isChecked) {
+        aisLayer.addTo(map);
+        statusLight.style.background = "#4caf50"; // Vert
+        console.log("Couche AIS OpenSeaMap activée");
     } else {
-        btn.style.background = "#455a64";
-        btn.innerText = "AIS OFF";
-        status.innerText = "Scanner inactif";
-        stopAIS();
-    }
-}
-
-function startAIS() {
-    aisSocket = new WebSocket("wss://stream.aisstream.io/v0/stream");
-
-    aisSocket.onopen = function() {
-        document.getElementById('ais-status').innerText = "📡 Réception en cours (Bretagne Sud)";
-        const subMsg = {
-            "APIKey": "TON_API_KEY", // Remplace par ta clé
-            "BoundingBoxes": [[[47.5, -4.2], [48.0, -3.5]]] 
-        };
-        aisSocket.send(JSON.stringify(subMsg));
-    };
-
-    aisSocket.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        if (data.MessageType === "PositionReport") {
-            const mmsi = data.MetaData.MMSI;
-            const lat = data.MetaData.latitude;
-            const lng = data.MetaData.longitude;
-            const name = data.MetaData.ShipName.trim() || `MMSI: ${mmsi}`;
-            const sog = data.Message.PositionReport.Sog; // Vitesse fond
-
-            updateShip(mmsi, lat, lng, name, sog);
+        if (map.hasLayer(aisLayer)) {
+            map.removeLayer(aisLayer);
         }
-    };
-}
-
-function updateShip(mmsi, lat, lng, name, sog) {
-    // 1. Mise à jour du marqueur sur la carte
-    if (aisMarkers[mmsi]) {
-        aisMarkers[mmsi].setLatLng([lat, lng]);
-    } else {
-        const icon = L.divIcon({
-            className: 'ais-ship-icon',
-            html: '🚢',
-            iconSize: [20, 20]
-        });
-        aisMarkers[mmsi] = L.marker([lat, lng], {icon: icon})
-            .addTo(map)
-            .bindTooltip(`${name} (${sog} kts)`, {direction: 'top'});
+        statusLight.style.background = "#666"; // Gris
+        console.log("Couche AIS désactivée");
     }
-
-    // 2. Mise à jour de la liste dans la card (optionnel)
-    // On peut limiter l'affichage aux 5 plus proches pour ne pas saturer
-}
-
-function stopAIS() {
-    if (aisSocket) aisSocket.close();
-    for (let id in aisMarkers) map.removeLayer(aisMarkers[id]);
-    aisMarkers = {};
-    document.getElementById('ais-list').innerHTML = "";
 }
 
 </script>
 </body>
 </html>
+
 
