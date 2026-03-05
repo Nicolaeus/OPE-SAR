@@ -27,30 +27,7 @@
         
         .floating-card { position: absolute; background: rgba(255, 255, 255, 0.94); padding: 15px; border-radius: 8px; z-index: 2500; border-left: 6px solid #1a237e; box-shadow: 0 4px 15px rgba(0,0,0,0.4); backdrop-filter: blur(8px); }
         /* Positionnement sous la carte SAR */
-		.ais-card { 
-			top: 420px; /* Ajusté pour être sous la SAR card */
-			left: 20px; 
-			width: 300px; 
-			border-left: 6px solid #455a64; 
-		}
-
-		.ais-ship-icon {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: rgba(255, 255, 255, 0.8);
-			border: 2px solid #1a237e;
-			border-radius: 50%;
-			font-size: 12px;
-			box-shadow: 0 0 5px rgba(0,0,0,0.3);
-		}
-
-		.ship-entry {
-			display: flex;
-			justify-content: space-between;
-			padding: 4px 0;
-			border-bottom: 1px solid #f0f0f0;
-		}
+		.ais-card {top: 420px; /* Positionnée sous la card SAR */left: 20px; width: 280px; background: rgba(0, 21, 41, 0.9); border-left: 6px solid #1a237e; padding: 15px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 1000;}
 		
         /* Positionnement des cartes */
         .sar-card { top: 20px; left: 20px; width: 300px; border-left: 6px solid #d32f2f; }
@@ -190,15 +167,22 @@
         <button onclick="startSarMission()" style="width:100%; margin-top:10px; background:#d32f2f; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer; font-weight:bold;">PLACER LKP (CIBLE)</button>
     </div>
 
-	<div class="floating-card ais-card">
-		<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
-			<h4 style="margin:0; border:none;">Trafic Maritime (AIS)</h4>
-			<button id="btn-ais-toggle" onclick="toggleAIS()" style="background:#455a64; color:white; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-size:0.7rem; font-weight:bold;">AIS OFF</button>
-		</div>
-		<div id="ais-status" style="font-size:0.75rem; color:#666; margin-bottom:8px;">Scanner inactif</div>
-		<div id="ais-list" style="max-height:150px; overflow-y:auto; font-size:0.8rem;">
-			</div>
-	</div>
+<div class="floating-card ais-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">
+        <h4 style="margin:0; color:white; font-size:0.9rem; border:none;">Trafic Maritime</h4>
+        <div id="ais-status-light" style="width:10px; height:10px; background:#666; border-radius:50%; box-shadow: 0 0 5px rgba(0,0,0,0.5); transition: background 0.3s ease;"></div>
+    </div>
+    
+    <label style="display:flex; align-items:center; color:#ccc; font-size:0.8rem; cursor:pointer; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px;">
+        <input type="checkbox" id="toggle-ais" onchange="toggleAISLayer()" style="margin-right:10px;">
+        Afficher les navires
+    </label>
+    
+    <p style="font-size:0.65rem; color:#888; margin-top:10px; line-height:1.2;">
+        Données OpenSeaMap (Balisage & AIS).<br>
+        Mise à jour automatique par tuiles.
+    </p>
+</div>
 
 
     <div class="floating-card dashboard">
@@ -806,41 +790,42 @@ map.on('mouseout', function() {
 
 // 1. Définition de la couche (Layer) en variable globale
 // Cette couche récupère les tuiles transparentes contenant les navires et balises
+// --- INITIALISATION AIS ---
+
+// 1. Déclaration de la couche avec forçage de priorité (zIndex)
 const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
     maxZoom: 18,
-    attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a>'
+    zIndex: 500, // Pour passer au-dessus du fond de carte OSM
+    opacity: 1.0
 });
 
 /**
- * Fonction de bascule pour afficher/masquer l'AIS
- * Appelée par l'événement onchange du bouton/checkbox
+ * Gère l'affichage des données maritimes
  */
 function toggleAISLayer() {
-    // On récupère l'élément checkbox
     const checkbox = document.getElementById('toggle-ais');
     const statusLight = document.getElementById('ais-status-light');
 
-    if (!checkbox) {
-        console.error("L'élément avec l'ID 'toggle-ais' est introuvable dans le HTML.");
-        return;
-    }
+    if (!checkbox) return;
 
     if (checkbox.checked) {
-        // Ajout de la couche sur la carte Leaflet
+        // Ajout de la couche à la carte (la variable 'map' doit déjà exister)
         aisLayer.addTo(map);
         
-        // Mise à jour visuelle (voyant vert)
-        if (statusLight) statusLight.style.background = "#4caf50";
-        console.log("Flux AIS OpenSeaMap activé");
+        // Force la couche à passer devant les autres tuiles
+        if (aisLayer.bringToFront) {
+            aisLayer.bringToFront();
+        }
+        
+        if (statusLight) statusLight.style.background = "#4caf50"; // Allume en vert
+        console.log("Couche maritime activée");
     } else {
         // Retrait de la couche
         if (map.hasLayer(aisLayer)) {
             map.removeLayer(aisLayer);
         }
-        
-        // Mise à jour visuelle (voyant gris)
-        if (statusLight) statusLight.style.background = "#666";
-        console.log("Flux AIS OpenSeaMap désactivé");
+        if (statusLight) statusLight.style.background = "#666"; // Éteint en gris
+        console.log("Couche maritime désactivée");
     }
 }
 
