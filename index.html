@@ -19,6 +19,47 @@
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
     <style>
+       /* --- DESIGN GLOBAL --- */
+    body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; height: 100vh; background: #001529; overflow: hidden; }
+    #header { padding: 12px 25px; background: #0a1929; color: white; display: flex; justify-content: space-between; align-items: center; z-index: 3000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border-bottom: 1px solid #1e293b; }
+
+    /* --- UNIFICATION DARK MODE DES CARDS --- */
+    .floating-card { 
+        position: absolute; 
+        background: rgba(15, 23, 42, 0.9) !important; /* Fond sombre ardoise */
+        color: #f1f5f9 !important; /* Texte clair */
+        padding: 15px; border-radius: 8px; z-index: 2500; 
+        box-shadow: 0 8px 32px rgba(0,0,0,0.5); 
+        backdrop-filter: blur(10px); 
+        border: 1px solid rgba(255,255,255,0.1);
+        display: none; 
+    }
+
+    /* Bordures colorées par fonction */
+    .sar-card { border-left: 5px solid #ef4444; width: 320px; }
+    .weather-card { border-left: 5px solid #0ea5e9; }
+    .ais-card { border-left: 5px solid #22c55e; }
+    .dashboard { border-left: 5px solid #00d2ff; }
+    .tide-card { border-left: 5px solid #eab308; }
+
+    .floating-card h4 { 
+        cursor: move; user-select: none; margin: 0 0 12px 0; 
+        color: #f1f5f9; text-transform: uppercase; font-size: 0.85rem; 
+        border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; 
+        letter-spacing: 0.5px;
+    }
+
+    /* Formulaires en Dark Mode */
+    select, input { 
+        background: #1e293b !important; 
+        color: white !important; 
+        border: 1px solid #334155 !important; 
+        padding: 4px; border-radius: 4px; 
+    }
+
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.85rem; align-items: center; }
+    .label { color: #94a3b8; font-size: 0.7rem; }
+        
         /* --- DESIGN GLOBAL & LAYOUT --- */
         body { 
             margin: 0; padding: 0; 
