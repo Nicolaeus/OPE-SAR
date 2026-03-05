@@ -46,6 +46,45 @@
     background: rgba(255,255,255,0.1) !important;
     color: #fff !important;
 }
+		/* Selection du fond de carte*/
+		.map-selector-card {
+    top: 20px;
+    left: 340px; /* À côté de la carte SAR */
+    width: 220px;
+    background: rgba(15, 23, 42, 0.95);
+    border-left: 4px solid #00d2ff;
+    padding: 12px;
+}
+
+.map-selector-card .card-header {
+    color: #81d4fa;
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.map-options { display: flex; flex-direction: column; gap: 8px; }
+
+.map-option {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    transition: 0.2s;
+    color: #ccc;
+    font-size: 0.85rem;
+}
+
+.map-option:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+.map-option input { margin-right: 12px; accent-color: #00d2ff; }
+
+.map-label i { width: 20px; text-align: center; margin-right: 5px; color: #81d4fa; }
         /* Positionnement des cartes */
         .sar-card { top: 20px; left: 20px; width: 300px; border-left: 6px solid #d32f2f; }
 		.sar-card .stat-row select {flex: 1; /* Le select prendra tout l'espace disponible à droite du texte */margin-left: 10px; min-width: 0; /* Empêche le débordement dans les flexbox */}
@@ -257,6 +296,28 @@
         <canvas id="tideChart" style="width:100%; height:100%;"></canvas>
     </div>
 </div>
+
+	<div class="floating-card map-selector-card">
+    <div class="card-header">
+        <i class="fas fa-layer-group"></i>
+        <span>TYPE DE CARTE</span>
+    </div>
+    <div class="map-options">
+        <label class="map-option">
+            <input type="radio" name="maptype" value="osm" checked onchange="changeMapBase('osm')">
+            <span class="map-label"><i class="fas fa-map"></i> Standard</span>
+        </label>
+        <label class="map-option">
+            <input type="radio" name="maptype" value="satellite" onchange="changeMapBase('satellite')">
+            <span class="map-label"><i class="fas fa-globe-europe"></i> Satellite</span>
+        </label>
+        <label class="map-option">
+            <input type="radio" name="maptype" value="seamap" onchange="changeMapBase('seamap')">
+            <span class="map-label"><i class="fas fa-anchor"></i> Nautique (OSM)</span>
+        </label>
+    </div>
+</div>
+	
 </div>
 
 <script>
@@ -848,6 +909,48 @@ function toggleAISLayer() {
     }
 }
 
+	// --- CONFIGURATION DES FONDS DE CARTE ---
+const baseLayers = {
+    osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'),
+    seamap: L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png')
+};
+
+// On garde l'OSM par défaut au démarrage
+baseLayers.osm.addTo(map);
+
+function changeMapBase(type) {
+    // Retirer toutes les couches de base
+    Object.values(baseLayers).forEach(layer => {
+        if (map.hasLayer(layer)) map.removeLayer(layer);
+    });
+    
+    // Ajouter la nouvelle
+    baseLayers[type].addTo(map);
+    
+    // Si c'est Satellite, on s'assure que les bouées AIS (si activées) restent par dessus
+    if (document.getElementById('toggle-ais').checked) {
+        aisLayer.bringToFront();
+    }
+}
+
+// --- ICONES SNSM ---
+const snsmIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png', // Ou une icône SNSM si tu en as une
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+// Ajout des marqueurs fixes pour tes stations
+Object.entries(ports).forEach(([name, coords]) => {
+    L.marker(coords, {icon: snsmIcon})
+     .addTo(map)
+     .bindPopup(`<b>Station SNSM de ${name}</b><br>Prête pour intervention`);
+});
+	
 </script>
 </body>
 </html>
