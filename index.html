@@ -1,9 +1,15 @@
+<?php
+/**
+ * Projet : Système de Mission Nautique 
+ * Version : V1.0.0 (SAR POSITION FIXED)
+ */
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="no-referrer">
-    <title>SNSM - OPESAR V11.0.0</title>
+    <title>SNSM - OPESAR V1.0.0</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
@@ -195,11 +201,34 @@
 }
 	
 
-    /* --- 11. POSITIONS INITIALES (ANCLES SUR LE TOP) --- */
+    /* --- 11. CARD PATTERN DE RECHERCHE --- */
+    .search-card { width: 300px; background: rgba(15, 23, 42, 0.95) !important; border: 1px solid rgba(255,255,255,0.1) !important; border-left: 4px solid #f59e0b !important; border-radius: 8px; }
+    .search-card h4 { display: flex; align-items: center; justify-content: space-between; background: rgba(245, 158, 11, 0.15); margin: -12px -12px 12px -12px !important; padding: 10px 12px !important; border-bottom: 1px solid rgba(245, 158, 11, 0.25); color: #fbbf24; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; cursor: move; border-radius: 8px 8px 0 0; }
+    .search-card .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: #cbd5e1; font-size: 0.8rem; }
+    .search-card select, .search-card input { background: rgba(30,41,59,0.7) !important; border: 1px solid rgba(255,255,255,0.15) !important; color: white !important; border-radius: 4px; padding: 4px 8px; outline: none; }
+    .search-card hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0; }
+    .pattern-btn { flex: 1; padding: 6px 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(30,41,59,0.6); color: #94a3b8; font-size: 0.65rem; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; text-align: center; }
+    .pattern-btn.active { background: rgba(245,158,11,0.25); color: #fbbf24; border-color: #f59e0b; }
+    .pattern-btn:hover { background: rgba(245,158,11,0.15); color: #fde68a; }
+    .search-stat-box { display: flex; gap: 6px; margin-top: 10px; }
+    .search-stat-item { flex: 1; background: rgba(255,255,255,0.05); border-radius: 4px; padding: 6px 8px; display: flex; flex-direction: column; align-items: center; }
+    .search-stat-item .lbl { font-size: 0.6rem; text-transform: uppercase; color: #94a3b8; }
+    .search-stat-item .val { font-size: 0.9rem; font-weight: bold; color: #fbbf24; }
+    .btn-search-launch { width: 100%; background: #b45309 !important; color: white !important; border: none !important; padding: 9px; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; transition: 0.2s; margin-top: 10px; box-shadow: 0 3px 0 #78350f; }
+    .btn-search-launch:hover { background: #d97706 !important; }
+    .btn-search-launch:active { transform: translateY(2px); box-shadow: 0 1px 0 #78350f; }
+    .btn-search-clear { width: 100%; background: transparent !important; color: #64748b !important; border: 1px solid #334155 !important; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 0.72rem; transition: 0.2s; margin-top: 6px; }
+    .btn-search-clear:hover { color: #ef4444 !important; border-color: #ef4444 !important; }
+    .search-input-group { display: flex; align-items: center; background: rgba(30,41,59,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 0 8px; height: 30px; width: 95px; box-sizing: border-box; }
+    .search-input-group input { background: transparent !important; border: none !important; color: #fff !important; font-family: 'Courier New', monospace; font-weight: bold; width: 100%; text-align: center; outline: none !important; font-size: 0.85rem; }
+    .search-input-group .unit { color: #64748b; font-size: 0.65rem; min-width: 22px; text-align: right; }
+
+    /* --- 12. POSITIONS INITIALES (ANCLES SUR LE TOP) --- */
     .sar-card { top: 20px; left: 20px; border-left: 6px solid #d32f2f; }
     .ais-card { top: 500px; left: 20px; border-left: 4px solid #4caf50; }
     .weather-card { top: 20px; right: 20px; border-left: 6px solid #0288d1; }
     .tide-card { top: 460px; right: 20px; border-left: 6px solid #fbc02d; }
+    .search-card { top: 20px; left: 360px; display: none !important; }
 	
     /* Éléments du bas : on utilise top avec calc ou vh pour éviter bottom */
     .dashboard { top: 20px; left: calc(100vw - 640px); border-left: 4px solid #00d2ff;}
@@ -211,7 +240,7 @@
 <body>
 
 <div id="header">
-    <div style="font-weight: 900; letter-spacing: 1px;">SNSM | OPESAR V11.0.0</div>
+    <div style="font-weight: 900; letter-spacing: 1px;">SNSM | OPESAR V1.0.0</div>
     <div class="controls-container">
         <div class="control-group">
             <div class="label">Canot de sauvetage</div>
@@ -437,41 +466,99 @@
 <div id="mapSelectorCard" class="floating-card map-selector-card collapsed">
     <h4 onclick="this.closest('.floating-card').classList.toggle('collapsed')" title="Cliquer pour déplier les options">
         <span><i class="fas fa-layer-group" style="margin-right:8px;"></i>TYPE DE CARTE</span>
-        <span class="map-badge">Fonds: 6</span> <i class="fas fa-chevron-down toggle-icon" style="font-size:0.7rem; width:14px; height:14px; display:flex; align-items:center; justify-content:center;"></i>
+        <span class="map-badge">Fonds: 3</span> <i class="fas fa-chevron-down toggle-icon" style="font-size:0.7rem; width:14px; height:14px; display:flex; align-items:center; justify-content:center;"></i>
     </h4>
     
     <div class="map-content-wrapper">
         <div class="map-options">
             <label class="map-option">
                 <input type="radio" name="map-type" value="osm" checked onchange="changeMapBase(this.value)">
-                <span>OpenStreetMap (Standard)</span>
+                <span>OpenStreetMap + OpenSeaMap</span>
             </label>
             <label class="map-option">
                 <input type="radio" name="map-type" value="satellite" onchange="changeMapBase(this.value)">
                 <span>Satellite Hybride (ArcGIS)</span>
             </label>
-            <label class="map-option">
-                <input type="radio" name="map-type" value="seamap" onchange="changeMapBase(this.value)">
-                <span>Carte Nautique (ENC)</span>
-            </label>
-            <label class="map-option">
-                <input type="radio" name="map-type" value="bathy" onchange="changeMapBase(this.value)">
-                <span>Fonds Marins (EMODnet)</span>
-            </label>
 			<label class="map-option">
-                <input type="radio" name="map-type" value="ocean" onchange="changeMapBase(this.value)">
-                <span>Rendu Océan (ESRI)</span>
-            </label>
-			<label class="map-option">
-				<input type="radio" name="map-type" value="nature" onchange="changeMapBase(this.value)">
-				<span>Sédimentologie (Roche/Sable)</span>
-			</label>
-            <label class="map-option">
                 <input type="radio" name="map-type" value="dark" onchange="changeMapBase(this.value)">
-                <span>Mode Nuit (Dark)</span>
+                <span>Mode nuit</span>
             </label>
         </div>
     </div>
+</div>
+
+<!-- CARD PATTERN DE RECHERCHE SAR (masquée jusqu'au placement du LKP) -->
+<div class="floating-card search-card" id="searchCard" style="display:none !important">
+    <h4>
+        <span><i class="fas fa-search" style="margin-right:8px;"></i>Pattern de Recherche</span>
+        <span id="search-status-dot" style="width:8px;height:8px;border-radius:50%;background:#334155;display:inline-block;"></span>
+    </h4>
+
+    <div class="stat-row" style="margin-bottom:8px;">
+        <span style="font-size:0.75rem;color:#94a3b8;">Basé sur le DATUM calculé</span>
+    </div>
+
+    <div style="display:flex;gap:4px;margin-bottom:10px;">
+        <button class="pattern-btn active" id="btn-expanding" onclick="selectPattern('expanding')">Carré</button>
+        <button class="pattern-btn" id="btn-creeping"  onclick="selectPattern('creeping')">Raquette</button>
+        <button class="pattern-btn" id="btn-sector"   onclick="selectPattern('sector')">Secteur</button>
+        <button class="pattern-btn" id="btn-parallel" onclick="selectPattern('parallel')">Parallèle</button>
+    </div>
+
+    <hr>
+
+    <div class="stat-row">
+        <span>Espacement (S) :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchSpacing" value="0.3" step="0.1" min="0.1" onchange="renderSearchPattern()">
+            <span class="unit">MN</span>
+        </div>
+    </div>
+
+    <div class="stat-row" id="row-sector-angle" style="display:none;">
+        <span>Angle secteur :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchSectorAngle" value="120" min="30" max="300" onchange="renderSearchPattern()">
+            <span class="unit">°</span>
+        </div>
+    </div>
+
+    <div class="stat-row" id="row-orientation" style="display:none;">
+        <span>Orientation :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchOrientation" value="0" min="0" max="360" onchange="renderSearchPattern()">
+            <span class="unit">°</span>
+        </div>
+    </div>
+
+    <div class="stat-row">
+        <span id="label-passes">Nombre de passes :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchPasses" value="4" min="1" max="12" onchange="renderSearchPattern()">
+            <span class="unit" id="unit-passes">n</span>
+        </div>
+    </div>
+
+    <div class="stat-row">
+        <span>Rayon incertitude :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchUncertainty" value="0.5" step="0.1" min="0" onchange="renderSearchPattern()">
+            <span class="unit">MN</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="search-stat-box">
+        <div class="search-stat-item"><span class="lbl">Surface</span><span class="val" id="stat-surface">--</span></div>
+        <div class="search-stat-item"><span class="lbl">Distance</span><span class="val" id="stat-distance">--</span></div>
+        <div class="search-stat-item"><span class="lbl">Durée</span><span class="val" id="stat-duration">--</span></div>
+    </div>
+
+    <button class="btn-search-launch" onclick="renderSearchPattern()">
+        <i class="fas fa-route" style="margin-right:6px;"></i> GÉNÉRER LE PATTERN
+    </button>
+    <button class="btn-search-clear" onclick="clearSearchPattern()">Effacer le pattern</button>
 </div>
 
 <div class="floating-card compass-card" id="sar-compass" style="width: 200px; height: 200px;">
@@ -510,45 +597,25 @@
 
 	// --- CONFIGURATION DES COUCHES SPÉCIFIQUES ---
 
-		// 1. Bathymétrie classique (Relief seul)
-		const emodnetLayer = L.tileLayer.wms('https://ows.emodnet-bathymetry.eu/wms', {
-			layers: 'emodnet:mean_multi_resolution',
-			format: 'image/png',
-			transparent: true,
-			version: '1.3.0',
-			attribution: '&copy; EMODnet'
-		});
-
-		// 2. Ombrage seul (Pour donner du relief aux sédiments)
-		const hillshadeLayer = L.tileLayer.wms('https://ows.emodnet-bathymetry.eu/wms', {
-			layers: 'hillside',
-			format: 'image/png',
-			transparent: true,
-			version: '1.1.1'
-		});
-
-		// 3. La Nature des fonds (Sédiments) - Version simplifiée
-		const sedimentLayer = L.tileLayer.wms('https://services.emodnet-geology.eu/geology', {
-			layers: 'seabed_substrate_all_scales', 
-			format: 'image/png',
-			transparent: true,
-			version: '1.1.1',
-			opacity: 0.6
-		});
-
-		// Groupe combiné pour l'option "Nature des fonds"
-		const sedimentGroup = L.layerGroup([hillshadeLayer, sedimentLayer]);
-
-		// --- MISE À JOUR DE L'OBJET BASELAYERS ---
-		const baseLayers = {
-			osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
-			satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'),
-			seamap: L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png'),
-			bathy: emodnetLayer,
-			ocean: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}'),
-			nature: sedimentLayer, // Maintenant cette variable est bien définie
-			dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png')
-		};
+const baseLayers = {
+    // OSM + Les balises (correspond au value="osm")
+    osm: L.layerGroup([
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+        L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png')
+    ]),
+    
+    // Satellite + Les balises (correspond au value="satellite")
+    satellite: L.layerGroup([
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'),
+        L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png')
+    ]),
+	
+    // Dark + Les balises (correspond au value="dark")
+    dark: L.layerGroup([
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'),
+        L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png')
+    ])
+};
 
 
 
@@ -665,6 +732,7 @@ async function getLiveWeather(lat, lng) {
             }
 
             document.getElementById('wind-dir-icon').style.transform = `rotate(${windDeg + 180}deg)`;
+            document.getElementById('wind-dir-icon').dataset.windProvenance = windDeg;
         }
 
         if(dM.current) {
@@ -917,34 +985,50 @@ function updateDrift() {
     const windSpeedKts = parseFloat(windText) || 0;
     const targetLeewayFactor = parseFloat(document.getElementById('targetType').value);
     
-    // Direction du vent (Angle de l'icône)
-    const windTransform = document.getElementById('wind-dir-icon').style.transform;
-    const windDir = parseFloat(windTransform.replace('rotate(', '').replace('deg)', '')) || 0;
+    // Direction du vent : provenance réelle (0° = vient du Nord)
+    // On lit le data-attribute stocké par getLiveWeather, PAS la rotation visuelle de l'icône
+    const windDir = parseFloat(document.getElementById('wind-dir-icon').dataset.windProvenance) || 0;
     
     // Paramètres du courant
     const curDir = parseFloat(document.getElementById('curDir').value) || 0;
     const curSpeed = parseFloat(document.getElementById('curSpeed').value) || 0;
 
-    // --- 2. CALCUL VECTORIEL ---
-    
-    const rad = (d) => d * Math.PI / 180;
-    const driftWindSpeed = windSpeedKts * targetLeewayFactor;
-    
-    // On utilise l'angle du vent tel quel pour l'inverser dans les composantes
-    const anglePoussee = windDir; 
+  // --- 2. CALCUL VECTORIEL (DÉCOMPOSITION ET SOMME PHYSIQUE) ---
 
-    // vdx : Composante Est (+) / Ouest (-)
-    // VENT INVERSÉ (* -1) + COURANT STANDARD
-    const vdx = (driftWindSpeed * Math.sin(rad(anglePoussee)) * -1) + (curSpeed * Math.sin(rad(curDir)));
-    
-    // vdy : Composante Sud (+) / Nord (-)
-    // VENT INVERSÉ (* -1) + COURANT STANDARD
-    const vdy = (driftWindSpeed * Math.cos(rad(anglePoussee)) * -1) + (curSpeed * Math.cos(rad(curDir)));
+const rad = (d) => d * Math.PI / 180;
+const driftWindSpeed = windSpeedKts * targetLeewayFactor;
 
-    // Calcul de la résultante (Vitesse et Angle)
-    const totalDriftSpeed = Math.sqrt(vdx * vdx + vdy * vdy);
-    let totalDriftDir = Math.atan2(vdx, -vdy) * (180 / Math.PI);
-    totalDriftDir = (totalDriftDir + 360) % 360;
+// anglePoussee : Destination du vent (où il POUSSE l'objet)
+// Si windDir (provenance) est 0° (Nord), anglePoussee est 180° (Sud)
+const anglePoussee = (windDir + 180) % 360; 
+
+// A. VECTEUR VENT ISOLÉ (Destination)
+// sin = Est(+)/Ouest(-) | cos = Nord(+)/Sud(+)
+const vdx_vent = driftWindSpeed * Math.sin(rad(anglePoussee));
+const vdy_vent = driftWindSpeed * Math.cos(rad(anglePoussee));
+
+// B. VECTEUR COURANT ISOLÉ (Destination)
+// curDir est déjà une direction de portée (Set)
+const vdx_courant = curSpeed * Math.sin(rad(curDir));
+const vdy_courant = curSpeed * Math.cos(rad(curDir));
+
+// --- C. LA RÉSULTANTE (SOMME DES DEUX FORCES) ---
+// On additionne les poussées Est/Ouest ensemble et Nord/Sud ensemble
+const vdx = vdx_vent + vdx_courant;
+const vdy = vdy_vent + vdy_courant;
+
+// --- D. SORTIES FINALES POUR TES AUTRES FONCTIONS ---
+
+// Vitesse totale combinée (Hypoténuse)
+const totalDriftSpeed = Math.sqrt(vdx * vdx + vdy * vdy);
+
+// Direction réelle du déplacement (Angle Boussole 0-360°)
+// Utilisation de atan2(X, Y) pour que 0° soit le Nord et rotation horaire
+let totalDriftDir = Math.atan2(vdx, vdy) * (180 / Math.PI);
+totalDriftDir = (totalDriftDir + 360) % 360;
+
+
+// --- FIN DU BLOC DE CALCUL ---
 
     // Affichage texte de la force de dérive
     document.getElementById('driftTotal').innerText = `${totalDriftSpeed.toFixed(1)} nds @ ${Math.round(totalDriftDir)}°`;
@@ -1045,9 +1129,10 @@ function startSarMission() {
         if(vsdMarker) map.removeLayer(vsdMarker);
         vsdMarker = L.marker(e.latlng, {draggable: true}).addTo(map).bindPopup("<b>LKP (Dernière Position)</b>").openPopup();
         
-        // Ajout de l'écouteur d'événement pour le mouvement
+        // Afficher la card pattern de recherche
+        document.getElementById('searchCard').style.setProperty('display', 'block', 'important');
+
         vsdMarker.on('drag', updateDrift);
-        
         updateDrift();
         map.getContainer().style.cursor = '';
     });
@@ -1056,6 +1141,7 @@ function startSarMission() {
     loadLandData();
     setInterval(updateTide, 600000);
 	
+
 	function calculateDestination(latlng, brng, dist) {
     const R = 6371e3; // Rayon de la Terre en mètres
     const d = dist / R;
@@ -1075,27 +1161,25 @@ document.getElementById('timeLKP').value = timeStr;
 document.getElementById('timeDepart').value = timeStr;
 
 function resetSarMission() {
-    // 1. Supprimer les marqueurs de la carte
     if (vsdMarker) { map.removeLayer(vsdMarker); vsdMarker = null; }
     if (driftEndMarker) { map.removeLayer(driftEndMarker); driftEndMarker = null; }
-    
-    // 2. Supprimer les tracés (Lignes)
     if (driftLine) { map.removeLayer(driftLine); driftLine = null; }
     if (navLine) { map.removeLayer(navLine); navLine = null; }
     
-    // 3. Réinitialiser les champs de texte
     document.getElementById('driftTotal').innerText = "-- nds";
     document.getElementById('val-eta').innerText = "-- min";
     
-    // 4. Remettre les heures à l'heure actuelle
     const now = new Date();
     const timeStr = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
     document.getElementById('timeLKP').value = timeStr;
     document.getElementById('timeDepart').value = timeStr;
 
-    // 5. Remettre le curseur par défaut
     map.getContainer().style.cursor = '';
-    
+
+    // Masquer et réinitialiser la card pattern
+    clearSearchPattern();
+    document.getElementById('searchCard').style.setProperty('display', 'none', 'important');
+
     console.log("Mission SAR réinitialisée.");
 }
 
@@ -1190,41 +1274,194 @@ baseLayers.osm.addTo(map);
  * @param {string} type - Clé correspondant à l'objet baseLayers (osm, satellite, bathy, etc.)
  */
 function changeMapBase(type) {
-    console.log("Tentative de changement de couche vers :", type);
-
-    // 1. Nettoyage sécurisé
+    // 1. Nettoyage : Retirer toutes les couches de base actives
+    // On boucle sur l'objet baseLayers pour tout nettoyer proprement
     Object.values(baseLayers).forEach(layer => {
-        // ON AJOUTE UNE VÉRIFICATION : layer doit exister ET être une couche Leaflet valide
-        if (layer && typeof layer.addTo === 'function' && map.hasLayer(layer)) {
-            map.removeLayer(layer);
-        }
+        if (map.hasLayer(layer)) map.removeLayer(layer);
     });
     
-    // 2. Activation
+    // 2. Activation : Ajouter la nouvelle couche sélectionnée
+    // Cela ajoute le "pack" (Fond + Balisage) défini dans ton objet baseLayers
     if (baseLayers[type]) {
         baseLayers[type].addTo(map);
-    } else {
-        console.warn("La couche demandée n'existe pas ou est mal définie :", type);
-        // Optionnel : remettre l'OSM par défaut pour ne pas rester sur un écran noir
-        baseLayers.osm.addTo(map);
     }
     
-    // 3. Superposition (Gestion des couches métier)
-    // On ajoute des vérifications pour éviter les erreurs si les éléments ne sont pas créés
+    // 3. Superposition : Ramener les éléments de calcul au-dessus
+    // Note : bringToFront() fonctionne sur les lignes et cercles, pas sur les marqueurs
     
-    const aisToggle = document.getElementById('toggle-ais');
-    if (aisToggle && aisToggle.checked && typeof aisLayer !== 'undefined' && aisLayer) {
-        if (map.hasLayer(aisLayer)) aisLayer.bringToFront();
+    // La ligne de dérive (Drift Line)
+    if (typeof driftLine !== 'undefined' && driftLine && map.hasLayer(driftLine)) {
+        driftLine.bringToFront();
+    }
+    
+    // Le cercle de rayon d'action (Range Circle)
+    if (typeof rangeCircle !== 'undefined' && rangeCircle && map.hasLayer(rangeCircle)) {
+        rangeCircle.bringToFront();
+    }
+    
+    // Les cercles de probabilité ou zones de recherche
+    if (typeof searchArea !== 'undefined' && searchArea && map.hasLayer(searchArea)) {
+        searchArea.bringToFront();
     }
 
-    // Gestion SAR
-    if (typeof driftLine !== 'undefined' && driftLine && map.hasLayer(driftLine)) {
-        if (typeof driftLine.bringToFront === 'function') driftLine.bringToFront();
+    // Gestion de l'AIS si la case est cochée
+    if (document.getElementById('toggle-ais') && document.getElementById('toggle-ais').checked) {
+        if (typeof aisLayer !== 'undefined' && aisLayer) {
+            aisLayer.addTo(map); // On s'assure qu'elle est ajoutée après le fond
+        }
     }
-    
-    if (typeof searchArea !== 'undefined' && searchArea && map.hasLayer(searchArea)) {
-        if (typeof searchArea.bringToFront === 'function') searchArea.bringToFront();
+}
+
+// ============================================================
+// MOTEUR DE PATTERNS DE RECHERCHE SAR
+// ============================================================
+
+let searchPatternLayers = [];
+let searchCircleLayer   = null;
+let currentSearchPattern = 'expanding';
+
+function selectPattern(type) {
+    currentSearchPattern = type;
+    document.querySelectorAll('.pattern-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-' + type).classList.add('active');
+    document.getElementById('row-sector-angle').style.display  = (type === 'sector')                        ? 'flex' : 'none';
+    document.getElementById('row-orientation').style.display   = (type === 'parallel' || type === 'creeping') ? 'flex' : 'none';
+    const labelPasses = document.getElementById('label-passes');
+    const unitPasses  = document.getElementById('unit-passes');
+    if (type === 'sector')        { labelPasses.textContent = 'Nombre de rayons :';       unitPasses.textContent = 'n'; }
+    else if (type === 'expanding'){ labelPasses.textContent = 'Taille du carré (tours) :'; unitPasses.textContent = 'n'; }
+    else                          { labelPasses.textContent = 'Nombre de passes :';        unitPasses.textContent = 'n'; }
+}
+
+function movePoint(latlng, brngDeg, distMN) {
+    return calculateDestination(latlng, brngDeg, distMN * 1852);
+}
+
+function clearSearchPattern() {
+    searchPatternLayers.forEach(l => map.removeLayer(l));
+    searchPatternLayers = [];
+    if (searchCircleLayer) { map.removeLayer(searchCircleLayer); searchCircleLayer = null; }
+    document.getElementById('stat-surface').textContent  = '--';
+    document.getElementById('stat-distance').textContent = '--';
+    document.getElementById('stat-duration').textContent = '--';
+    document.getElementById('search-status-dot').style.background  = '#334155';
+    document.getElementById('search-status-dot').style.boxShadow   = 'none';
+}
+
+function renderSearchPattern() {
+    clearSearchPattern();
+
+    if (!driftEndMarker) {
+        alert("Calculez d'abord le DATUM avant de générer un pattern de recherche.");
+        return;
     }
+
+    const datum       = driftEndMarker.getLatLng();
+    const spacing     = parseFloat(document.getElementById('searchSpacing').value)     || 0.3;
+    const passes      = parseInt(document.getElementById('searchPasses').value)        || 4;
+    const uncertainty = parseFloat(document.getElementById('searchUncertainty').value) || 0.5;
+    const orientation = parseFloat(document.getElementById('searchOrientation').value) || 0;
+    const sectorAngle = parseFloat(document.getElementById('searchSectorAngle').value) || 120;
+    const shipSpeed   = parseFloat(document.getElementById('dashSpeed').innerText)     || 5;
+
+    const styleTrack = { color: '#f59e0b', weight: 2, opacity: 0.85, dashArray: '8, 5' };
+    let waypoints = [];
+
+    // 1. EXPANDING SQUARE
+    if (currentSearchPattern === 'expanding') {
+        let pos = datum, dist = spacing, dir = 0;
+        waypoints.push(pos);
+        for (let i = 0; i < passes * 4; i++) {
+            pos = movePoint(pos, dir, dist);
+            waypoints.push(pos);
+            dir = (dir + 90) % 360;
+            if (i % 2 === 1) dist += spacing;
+        }
+    }
+
+    // 2. CREEPING LINE (raquette)
+    else if (currentSearchPattern === 'creeping') {
+        const legLen = spacing * (passes + 1);
+        const back   = (orientation + 180) % 360;
+        const perp   = (orientation + 90)  % 360;
+        let pos = movePoint(datum, back, (passes * spacing) / 2);
+        waypoints.push(pos);
+        for (let i = 0; i < passes; i++) {
+            pos = movePoint(pos, orientation, legLen); waypoints.push(pos);
+            if (i < passes - 1) {
+                pos = movePoint(pos, perp, spacing);   waypoints.push(pos);
+                pos = movePoint(pos, back, legLen);    waypoints.push(pos);
+                pos = movePoint(pos, perp, spacing);   waypoints.push(pos);
+            }
+        }
+    }
+
+    // 3. SECTOR SEARCH
+    else if (currentSearchPattern === 'sector') {
+        const angleStep  = sectorAngle / (passes - 1 || 1);
+        const startAngle = (orientation - sectorAngle / 2 + 360) % 360;
+        for (let i = 0; i < passes; i++) {
+            const ang = (startAngle + i * angleStep) % 360;
+            waypoints.push(datum);
+            waypoints.push(movePoint(datum, ang, spacing * passes));
+            waypoints.push(datum);
+        }
+    }
+
+    // 4. PARALLEL TRACK
+    else if (currentSearchPattern === 'parallel') {
+        const legLen   = spacing * (passes + 1);
+        const back     = (orientation + 180) % 360;
+        const perp     = (orientation + 90)  % 360;
+        let pos = movePoint(datum, (perp + 180) % 360, (passes * spacing) / 2);
+        pos = movePoint(pos, back, legLen / 2);
+        waypoints.push(pos);
+        for (let i = 0; i < passes; i++) {
+            pos = movePoint(pos, orientation, legLen); waypoints.push(pos);
+            if (i < passes - 1) {
+                pos = movePoint(pos, perp, spacing);   waypoints.push(pos);
+            }
+        }
+    }
+
+    // --- Dessin du tracé ---
+    if (waypoints.length > 1) {
+        searchPatternLayers.push(L.polyline(waypoints, styleTrack).addTo(map));
+
+        // Flèches de direction sur chaque segment
+        for (let i = 0; i < waypoints.length - 1; i++) {
+            const mid  = L.latLng((waypoints[i].lat + waypoints[i+1].lat) / 2, (waypoints[i].lng + waypoints[i+1].lng) / 2);
+            const brng = turf.bearing(turf.point([waypoints[i].lng, waypoints[i].lat]), turf.point([waypoints[i+1].lng, waypoints[i+1].lat]));
+            const arrowIcon = L.divIcon({ html: `<div style="transform:rotate(${brng}deg);color:#fbbf24;font-size:14px;line-height:1;">▲</div>`, className: '', iconSize: [14,14], iconAnchor: [7,7] });
+            searchPatternLayers.push(L.marker(mid, { icon: arrowIcon, interactive: false }).addTo(map));
+        }
+
+        // Point de départ vert
+        const startIcon = L.divIcon({ html: `<div style="width:12px;height:12px;background:#22c55e;border:2px solid #fff;border-radius:50%;"></div>`, className: '', iconSize:[12,12], iconAnchor:[6,6] });
+        searchPatternLayers.push(L.marker(waypoints[0], { icon: startIcon }).addTo(map).bindTooltip('Départ recherche', { direction: 'top' }));
+    }
+
+    // --- Cercle d'incertitude ---
+    if (uncertainty > 0) {
+        searchCircleLayer = L.circle(datum, {
+            radius: uncertainty * 1852, color: '#a78bfa', weight: 2, dashArray: '6,6',
+            fill: true, fillColor: '#7c3aed', fillOpacity: 0.08
+        }).addTo(map).bindTooltip(`Incertitude ±${uncertainty} MN`, { sticky: true });
+    }
+
+    // --- Statistiques ---
+    let totalDistMN = 0;
+    for (let i = 0; i < waypoints.length - 1; i++) totalDistMN += waypoints[i].distanceTo(waypoints[i+1]) / 1852;
+    const lats = waypoints.map(w => w.lat), lngs = waypoints.map(w => w.lng);
+    const dLat = (Math.max(...lats) - Math.min(...lats)) * 60;
+    const dLng = (Math.max(...lngs) - Math.min(...lngs)) * 60 * Math.cos(datum.lat * Math.PI / 180);
+    const durationMin = Math.round((totalDistMN / shipSpeed) * 60);
+
+    document.getElementById('stat-surface').textContent  = (dLat * dLng).toFixed(2) + ' MN²';
+    document.getElementById('stat-distance').textContent = totalDistMN.toFixed(1) + ' MN';
+    document.getElementById('stat-duration').textContent = durationMin + ' min';
+    document.getElementById('search-status-dot').style.background = '#f59e0b';
+    document.getElementById('search-status-dot').style.boxShadow  = '0 0 6px #f59e0b';
 }
 
 // --- ICONES SNSM ---
