@@ -1190,32 +1190,40 @@ baseLayers.osm.addTo(map);
  * @param {string} type - Clé correspondant à l'objet baseLayers (osm, satellite, bathy, etc.)
  */
 function changeMapBase(type) {
-    // 1. Nettoyage : Retirer toutes les couches de base actives
+    console.log("Tentative de changement de couche vers :", type);
+
+    // 1. Nettoyage sécurisé
     Object.values(baseLayers).forEach(layer => {
-        if (map.hasLayer(layer)) map.removeLayer(layer);
+        // ON AJOUTE UNE VÉRIFICATION : layer doit exister ET être une couche Leaflet valide
+        if (layer && typeof layer.addTo === 'function' && map.hasLayer(layer)) {
+            map.removeLayer(layer);
+        }
     });
     
-    // 2. Activation : Ajouter la nouvelle couche sélectionnée
+    // 2. Activation
     if (baseLayers[type]) {
         baseLayers[type].addTo(map);
+    } else {
+        console.warn("La couche demandée n'existe pas ou est mal définie :", type);
+        // Optionnel : remettre l'OSM par défaut pour ne pas rester sur un écran noir
+        baseLayers.osm.addTo(map);
     }
     
-    // 3. Superposition : Ramener les calques métier au-dessus
+    // 3. Superposition (Gestion des couches métier)
+    // On ajoute des vérifications pour éviter les erreurs si les éléments ne sont pas créés
     
-    // Couche AIS
-    if (document.getElementById('toggle-ais').checked && typeof aisLayer !== 'undefined') {
-        aisLayer.bringToFront();
+    const aisToggle = document.getElementById('toggle-ais');
+    if (aisToggle && aisToggle.checked && typeof aisLayer !== 'undefined' && aisLayer) {
+        if (map.hasLayer(aisLayer)) aisLayer.bringToFront();
     }
 
-    // Couche SAR (Dérive, Datum, Cercles de probabilité)
-    // Note : On utilise bringToFront sur les éléments existants
-    if (typeof driftLine !== 'undefined' && map.hasLayer(driftLine)) {
-        driftLine.bringToFront();
+    // Gestion SAR
+    if (typeof driftLine !== 'undefined' && driftLine && map.hasLayer(driftLine)) {
+        if (typeof driftLine.bringToFront === 'function') driftLine.bringToFront();
     }
     
-    // Si tu as un cercle de recherche (Search Area), pense à le ramener aussi
-    if (typeof searchArea !== 'undefined' && map.hasLayer(searchArea)) {
-        searchArea.bringToFront();
+    if (typeof searchArea !== 'undefined' && searchArea && map.hasLayer(searchArea)) {
+        if (typeof searchArea.bringToFront === 'function') searchArea.bringToFront();
     }
 }
 
