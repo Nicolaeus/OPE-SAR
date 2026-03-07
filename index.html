@@ -1,7 +1,7 @@
 <?php
 /**
  * Projet : Système de Mission Nautique 
- * Version : V9.1.1 (SAR POSITION FIXED)
+ * Version : V11.0.0 (SAR POSITION FIXED)
  */
 ?>
 <!DOCTYPE html>
@@ -9,136 +9,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="no-referrer">
-    <title>SNSM - Ops V9.1.1</title>
+    <title>SNSM - OPESAR V11.0.0</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
-    <style>
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; height: 100vh; background: #001529; overflow: hidden; }
-        #header { padding: 12px 25px; background: #1a237e; color: white; display: flex; justify-content: space-between; align-items: center; z-index: 3000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .controls-container { display: flex; gap: 15px; align-items: flex-end; }
-        .label { font-size: 0.65rem; text-transform: uppercase; color: #81d4fa; font-weight: bold; }
-        select, .tow-label { height: 34px; padding: 0 10px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; background: #f8f9fa; display: flex; align-items: center; box-sizing: border-box; font-size: 0.85rem; }
-        .btn-group { display: flex; }
-        .sea-btn { height: 34px; padding: 0 12px; border: 1px solid #546e7a; background: #37474f; color: white; font-weight: 600; cursor: pointer; }
-        .sea-btn.active { background: #0288d1; border-color: #81d4fa; }
-        #map-container { flex-grow: 1; position: relative; overflow: hidden; }
-        #map { width: 100%; height: 100%; background: #0d47a1; z-index: 1; }
-        
-        .floating-card { position: absolute; background: rgba(255, 255, 255, 0.94); padding: 15px; border-radius: 8px; z-index: 2500; border-left: 6px solid #1a237e; box-shadow: 0 4px 15px rgba(0,0,0,0.4); backdrop-filter: blur(8px); }
-        /* Positionnement sous la carte SAR */
-	.ais-card {
+<style>
+    /* --- 1. BASE & LAYOUT --- */
+    body { 
+        margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; 
+        display: flex; flex-direction: column; height: 100vh; 
+        background: #020617; overflow: hidden; 
+    }
+
+    #header { 
+        padding: 12px 25px; background: #0f172a; color: white; 
+        display: flex; justify-content: space-between; align-items: center; 
+        z-index: 3000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    #map-container { flex-grow: 1; position: relative; overflow: hidden; }
+    #map { width: 100%; height: 100%; background: #020617; z-index: 1; }
+
+    /* --- 2. ELEMENTS DE CONTROLE (HEADER) --- */
+    .controls-container { display: flex; gap: 15px; align-items: flex-end; }
+    .label { font-size: 0.65rem; text-transform: uppercase; color: #38bdf8; font-weight: bold; margin-bottom: 4px; }
+    select, .tow-label, input { 
+        height: 34px; padding: 0 10px; border-radius: 4px; border: 1px solid #334155; 
+        background: #1e293b; color: white; font-weight: 600; cursor: pointer; font-size: 0.85rem; 
+    }
+    .btn-group { display: flex; border-radius: 4px; overflow: hidden; border: 1px solid #334155; }
+    .sea-btn { height: 34px; padding: 0 12px; border: none; background: #1e293b; color: #94a3b8; font-weight: 600; cursor: pointer; }
+    .sea-btn.active { background: #0288d1; color: white; }
+
+	/* --- UI CHECKBOX REMORQUAGE --- */
+    .tow-control-group {display: flex;flex-direction: column;}
+
+    .tow-button-ui {display: flex;align-items: center;justify-content: center;height: 34px;padding: 0 12px;background: #1e293b; /* Même fond que les selects */border: 1px solid #334155;
+        border-radius: 4px;color: #94a3b8;font-size: 0.8rem;font-weight: 700;cursor: pointer;transition: all 0.2s;user-select: none;}
+
+    /* Changement de couleur quand coché */
+    .tow-button-ui:has(input:checked) {background: #f57c00; /* Orange alerte pour le remorquage */ color: white; border-color: #ff9800;}
+
+    .tow-button-ui input {margin-right: 8px;cursor: pointer;width: 15px;height: 15px;}
+
+
+    /* --- 3. STRUCTURE DES CARDS (ANTI-ÉTIREMENT & COMPACTE) --- */
+    .floating-card { 
+        position: absolute; 
+        width: 300px !important; /* Largeur identique pour Dashboard et Map Selector */
+        height: auto !important; 
+        min-height: 0 !important;
+        display: block !important;
+        background: rgba(15, 23, 42, 0.9);
+		color: #f1f5f9;
+        padding: 12px !important; 
+        border-radius: 8px; 
+        z-index: 2500; 
+        bottom: auto !important;
+        box-sizing: border-box;
+    }
+	
+    .floating-card h4 { 
+        cursor: move; 
+        user-select: none; 
+        margin: -10px -10px 6px -10px !important; 
+        background: rgba(255,255,255,0.05); 
+        padding: 8px 12px !important;
+        color: #38bdf8;
+        text-transform: uppercase; 
+        font-size: 0.8rem; 
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-top-left-radius: 8px; border-top-right-radius: 8px;
+        display: flex; align-items: center; gap: 8px;
+    }
+
+    /* --- 4. CARD METEO & MARÉES --- */
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; align-items: center; }
+    .weather-val { color: #81d4fa; font-weight: bold; }
+    .wind-arrow { display: inline-block !important; font-size: 1.6rem; color: #ef4444; transform-origin: center; transition: transform 0.8s ease-out; }
+    .status-up { background: rgba(2, 136, 209, 0.2); color: #81d4fa; border: 1px solid #0288d1; }
+    .status-down { background: rgba(251, 192, 45, 0.2); color: #fbc02d; border: 1px solid #fbc02d; }
+
+    /* --- 5. CARD DASHBOARD BATEAU  --- */
+    #dashShip { 
+        display: block !important; 
+        color: #00d2ff; font-weight: 800; text-transform: uppercase; 
+        font-size: 0.9rem; margin: 0 0 8px 0 !important; line-height: 1.2 !important; 
+    }
+    .dash-grid { display: grid !important; grid-template-columns: repeat(2, 1fr); gap: 6px !important; }
+    .dash-item { display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 6px 8px !important; border-radius: 4px; }
+    .dash-item b { color: #ffffff; }
+	
+	/* --- 6. CARD MARÉE  --- */
+	.tide-container-inline { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+	.tide-grid-inline { display: flex; gap: 6px; flex: 1; }
+	.tide-data-item { display: flex; flex: 1; flex-direction: column; align-items: center; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+	.tide-label-small { font-size: 0.6rem; text-transform: uppercase; color: #94a3b8; margin: 0; }
+	.tide-value { font-size: 0.95rem; font-weight: 800; color: #fbc02d; }
+	.tide-extremes { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.75rem; padding: 6px 4px 0 4px; border-top: 1px solid rgba(255,255,255,0.1); }
+	.tide-chart-container { position: relative; height: 65px; margin-top: 10px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+	.tide-status-overlay { position: absolute; top: 5px; left: 5px; padding: 2px 8px; border-radius: 3px; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; z-index: 10; pointer-events: none; backdrop-filter: blur(2px); }
+
+	/* --- 7. CARD TRAFIC MARITIME --- */
+	.ais-card h4 { display: flex; align-items: center; justify-content: space-between; width: calc(100% + 24px) !important; background: rgba(255,255,255,0.05); margin: -12px -12px 8px -12px !important; padding: 6px 12px !important; border-bottom: 1px solid rgba(255,255,255,0.1); border-radius: 8px 8px 0 0; box-sizing: border-box; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px; cursor: move; }
+	.ais-status-light { width: 10px; height: 10px; background: #444; border-radius: 50%; transition: all 0.3s ease; box-shadow: inset 0 0 4px rgba(0,0,0,0.5); margin-left: auto; }
+	.ais-toggle-label { display: flex; align-items: center; color: #adb5bd; font-size: 0.85rem; cursor: pointer; background: rgba(255,255,255,0.05); padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; }
+	.ais-toggle-label:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+	.ais-footer { margin-top: 6px; font-size: 0.65rem; color: #6c757d; line-height: 1.2; padding-left: 2px; }
+
+    /* --- 8. CARD SELECTEUR DE MAP  --- */
+	.map-selector-card { transition: max-height 0.4s ease; max-height: 500px; overflow: hidden; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(139, 92, 246, 0.3); }
+	.map-selector-card.collapsed { max-height: 42px !important; }
+	.map-selector-card h4 { display: flex; align-items: center; justify-content: space-between; width: calc(100% + 24px) !important; background: rgba(139, 92, 246, 0.2); margin: -12px -12px 0 -12px !important; padding: 10px 12px !important; border-bottom: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px 8px 0 0; box-sizing: border-box; color: #a78bfa; font-size: 0.8rem; cursor: pointer; user-select: none; transition: 0.2s; }
+	.map-selector-card.collapsed h4 { border-bottom-color: transparent; }
+	.map-selector-card h4:hover { background: rgba(139, 92, 246, 0.3) !important; color: #fff; }
+	.map-selector-card h4:hover span i { transform: scale(1.1); color: #fff; }
+	.map-badge { background: rgba(167, 139, 250, 0.2); color: #a78bfa; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; margin: 0 10px 0 auto; border: 1px solid rgba(167, 139, 250, 0.3); font-weight: bold; text-transform: uppercase; }
+	.map-content-wrapper { padding: 12px 0 0 0; transition: opacity 0.3s; }
+	.map-option { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; cursor: pointer; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 6px; transition: 0.2s; }
+	.map-option:hover { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); }
+	.map-option input { margin: 0 !important; width: 16px !important; height: 16px !important; cursor: pointer; accent-color: #8b5cf6; flex-shrink: 0; }
+	.map-selector-card.collapsed .toggle-icon { animation: pulse-purple 2s infinite; border-radius: 50%; background: rgba(139, 92, 246, 0.2); padding: 2px; }
+	@keyframes pulse-purple { 0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(139, 92, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); } }
+
+		/* --- 9. CARD SAR  --- */
+	.sar-card { width: 320px; background: rgba(15, 23, 42, 0.95) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; border-left: 4px solid #ef4444 !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important; border-radius: 8px; overflow: hidden; }
+	.sar-card h4 { display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.15); margin: -12px -12px 15px -12px !important; padding: 12px !important; border-bottom: 1px solid rgba(239, 68, 68, 0.2); color: #f87171; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; }
+	.sar-card .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; color: #cbd5e1; font-size: 0.8rem; }
+	.sar-card input, .sar-card select { background: rgba(30, 41, 59, 0.7) !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: white !important; border-radius: 4px; padding: 4px 8px; outline: none; }
+	.sar-card input:focus { border-color: #ef4444 !important; background: rgba(30, 41, 59, 1) !important; }
+	.sar-card hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 12px 0; }
+	.sar-card #sar-eta { background: rgba(255, 243, 224, 0.1); border: 1px solid rgba(255, 243, 224, 0.2); padding: 10px; border-radius: 6px; }
+	.btn-sar-main { width: 100%; background: #d32f2f !important; color: white !important; border: none !important; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; box-shadow: 0 4px 0 #9a1a1a; }
+	.btn-sar-main:hover { background: #ef4444 !important; }
+	.btn-sar-main:active { transform: translateY(2px); box-shadow: 0 2px 0 #9a1a1a; }
+	input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+	input[type=number] { -moz-appearance: textfield; }
+	.sar-input-stack { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+	.sar-input-group { display: flex; align-items: center; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px; padding: 0 8px; height: 32px; transition: all 0.2s ease; width: 110px; }
+	.sar-input-group:focus-within { border-color: #ef4444; background: rgba(15, 23, 42, 0.9); box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+	.sar-input-group input { background: transparent !important; border: none !important; color: #fff !important; font-family: 'Courier New', monospace; font-weight: bold; width: 100%; text-align: center; outline: none !important; font-size: 0.9rem; margin: 0 !important; }
+	.sar-input-group .unit { color: #64748b; font-size: 0.7rem; min-width: 25px; text-align: right; font-weight: bold; }
+	.sar-btn-small { border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.65rem; font-weight: bold; transition: 0.2s; height: 32px; }
+
+	/* --- 9. CARD SAR : Alignement Heures & Boutons --- */
+	.sar-time-row { display: flex; align-items: center; justify-content: flex-end; gap: 6px; width: 100%; }
+	.sar-btn-small { border: none; padding: 0 8px; border-radius: 4px; cursor: pointer; font-size: 0.65rem; font-weight: bold; transition: 0.2s; height: 32px; display: flex; align-items: center; justify-content: center; min-width: 45px; }
+	.sar-input-group { display: flex; align-items: center; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px; padding: 0 8px; height: 32px; transition: all 0.2s ease; width: 110px; box-sizing: border-box; }
+	.sar-input-group input[type="time"] { background: transparent !important; border: none !important; color: #fff !important; font-family: 'Courier New', monospace; font-weight: bold; width: 100%; text-align: center; outline: none !important; font-size: 0.9rem; padding: 0 !important; margin: 0 !important; cursor: pointer; }
+
+	/* --- 10. COMPASS VECTOR VISUALIZER (Nettoyé) --- */
+	.compass-card { 
+		position: fixed !important; bottom: 30px !important; right: 30px !important; 
+		width: 140px !important; height: 140px !important; 
+		background: rgba(15, 23, 42, 0.6) !important; border: 2px solid rgba(255, 255, 255, 0.2) !important; 
+		border-radius: 50% !important; display: flex !important; align-items: center; justify-content: center; 
+		z-index: 10000 !important; backdrop-filter: blur(5px); overflow: visible !important; 
+		cursor: move; pointer-events: auto !important; 
+	}
+	.compass-ring { position: absolute; width: 90%; height: 90%; border: 1px dashed rgba(255, 255, 255, 0.3); border-radius: 50%; top: 5%; left: 5%; }
+	.compass-axis { position: absolute; color: #fff; font-size: 0.7rem; font-weight: bold; opacity: 0.8; z-index: 5; }
+	.vector-line { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; border-radius: 10px; transition: all 0.5s ease; }
+	.v-wind { background: #0288d1; width: 2px; }
+	.v-current { background: #4caf50; width: 2px; }
+	.v-result { background: #ef4444; width: 3px; box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+	
+	/* Bouton Reset Nord au centre du compas */
+.compass-reset-north {
     position: absolute;
-    top: 420px;
-    left: 20px;
-    width: 270px;
-    background: rgba(15, 23, 42, 0.9); /* Bleu nuit très profond */
-    border-left: 4px solid #4caf50; /* Rappel du vert sur le côté */
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    z-index: 1000;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.dashboard {
-    bottom: 30px; /* Sera géré par top: calc dans le style principal pour le drag */
-    left: 20px;
-    width: 300px;
-    background: rgba(10, 25, 41, 0.9) !important;
-    border-left: 4px solid #00d2ff !important;
-    padding: 10px !important;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
     color: white;
-}
-
-.dash-header {
+    font-weight: bold;
+    font-size: 12px;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.2s;
 }
 
-.dash-header h4 {
-    font-size: 0.8rem !important;
-    color: #00d2ff !important;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.compass-reset-north:hover {
+    background: #ef4444; /* Rouge SNSM au survol */
+    transform: scale(1.1);
+    border-color: white;
 }
+	
 
-.dash-tag {
-    font-size: 0.6rem;
-    background: #d32f2f;
-    padding: 1px 4px;
-    border-radius: 3px;
-    font-weight: bold;
-}
-
-.dash-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour réduire la hauteur */
-    gap: 8px;
-}
-
-.dash-item {
-    display: flex;
-    flex-direction: column;
-    background: rgba(255,255,255,0.05);
-    padding: 5px 8px;
-    border-radius: 4px;
-}
-
-.dash-item .label {
-    font-size: 0.6rem !important;
-    color: #888 !important;
-    margin-bottom: 2px;
-}
-
-.dash-item b {
-    font-size: 0.85rem;
-    color: #eee;
-}
-
-.dash-item.highlight b {
-    color: #fbc02d; /* Jaune pour la consommation */
-}
-
-/* Petit effet au survol du bouton */
-.ais-card label:hover {
-    background: rgba(255,255,255,0.1) !important;
-    color: #fff !important;
-}
-        /* Positionnement des cartes */
-        .sar-card { top: 20px; left: 20px; width: 300px; border-left: 6px solid #d32f2f; }
-		.sar-card .stat-row select {flex: 1; /* Le select prendra tout l'espace disponible à droite du texte */margin-left: 10px; min-width: 0; /* Empêche le débordement dans les flexbox */}
-        .dashboard { bottom: 30px; left: 20px; width: 280px; }
-        .weather-card { top: 20px; right: 20px; width: 320px; border-left: 6px solid #0288d1; }
-        .tide-card { top: 460px; right: 20px; width: 320px; border-left: 6px solid #fbc02d; }
-        
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; align-items: center; }
-        h4 { margin: 0 0 10px 0; color: #1a237e; text-transform: uppercase; font-size: 0.85rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .weather-val { color: #0277bd; font-weight: bold; }
-        .wind-box { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
-        .wind-arrow { display: inline-block !important; font-size: 1.6rem; color: #d32f2f; font-weight: bold; transform-origin: center; transition: transform 0.8s ease-out; }
-        .tide-status { flex-grow: 1; font-weight: 800; text-align: center; padding: 6px; border-radius: 4px; font-size: 0.8rem; }
-        .status-up { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
-        .status-down { background: #fffde7; color: #f57f17; border: 1px solid #fff59d; }
-        .tide-graph-container { margin-top: 10px; height: 100px; background: #fdfdfd; border-radius: 4px; border: 1px solid #e0e0e0; position: relative; }
-        canvas { width: 100%; height: 100%; }
-        .coeff-badge { background: #1a237e; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; }
-		
-		/* Curseur de déplacement sur les titres des cartes */
-.floating-card h4 {
-    cursor: move;
-    user-select: none; /* Empêche de sélectionner le texte en glissant */
-}
-		
-    </style>
+    /* --- 11. POSITIONS INITIALES (ANCLES SUR LE TOP) --- */
+    .sar-card { top: 20px; left: 20px; border-left: 6px solid #d32f2f; }
+    .ais-card { top: 500px; left: 20px; border-left: 4px solid #4caf50; }
+    .weather-card { top: 20px; right: 20px; border-left: 6px solid #0288d1; }
+    .tide-card { top: 460px; right: 20px; border-left: 6px solid #fbc02d; }
+	
+    /* Éléments du bas : on utilise top avec calc ou vh pour éviter bottom */
+    .dashboard { top: 20px; left: calc(100vw - 640px); border-left: 4px solid #00d2ff;}
+    .map-selector-card { top: 650px; left: 20px; border-left: 4px solid #8b5cf6; }
+	
+	
+</style>
 </head>
 <body>
 
 <div id="header">
-    <div style="font-weight: 900; letter-spacing: 1px;">SNSM | OPS V9.1.1</div>
+    <div style="font-weight: 900; letter-spacing: 1px;">SNSM | OPESAR V11.0.0</div>
     <div class="controls-container">
         <div class="control-group">
             <div class="label">Canot de sauvetage</div>
@@ -186,11 +265,13 @@
 				<button id="btn-fog" class="sea-btn" onclick="setVis('fog', this)">Brouillard</button>
 			</div>
 		</div>
-        <div class="control-group">
-            <label class="tow-label" style="background:#f57c00; color:white;">
-                <input type="checkbox" id="towCheck" onchange="calculate()" style="margin-right:8px;"> REMORQUAGE
-            </label>
-        </div>
+        <div class="tow-control-group">
+			<div class="label">Statut</div>
+			<label class="tow-button-ui">
+				<input type="checkbox" id="towCheck" onchange="calculate()"> 
+				<i class="fas fa-anchor" style="margin-right:5px"></i> REMORQUAGE
+			</label>
+		</div>
     </div>
 </div>
 
@@ -213,58 +294,91 @@
 "></div>
 	
     <div class="floating-card sar-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
-			<h4 style="margin:0; border:none;">Calcul de Dérive (SAR)</h4>
-			<button onclick="resetSarMission()" style="background:#d32f2f; color:white; border:none; padding:2px 8px; border-radius:4px; cursor:pointer; font-size:0.65rem; font-weight:bold; text-transform:uppercase;">RaZ</button>
-		</div><div class="stat-row">
+    <h4>
+        <span><i class="fas fa-life-ring" style="margin-right:8px;"></i>Calcul de Dérive (SAR)</span>
+        <button onclick="resetSarMission()" style="background:#ef4444; color:white; border:none; padding:2px 10px; border-radius:4px; font-size:0.65rem; font-weight:bold; cursor:pointer; border: 1px solid rgba(255,255,255,0.2);">RAZ</button>
+    </h4>
+
+    <div class="sar-content">
+        <div class="stat-row">
             <span>Type de cible :</span>
-            <select id="targetType" onchange="updateDrift()" style="width: 180px;">
+            <select id="targetType" onchange="updateDrift()" style="width: 170px;">
                 <option value="0.05">Plaisance (moteur)</option>
                 <option value="0.07">Voilier (mât debout)</option>
                 <option value="0.02">Canot de survie</option>
                 <option value="0.01">Homme à la mer</option>
             </select>
         </div>
-        <div class="stat-row">
-            <span>Courant (Direction en °/ Vitesse en nds) :</span>
-            <div class="wind-box">
-                <input type="number" id="curDir" placeholder="Dir°" style="width:50px; height:25px;" onchange="updateDrift()">
-                <input type="number" id="curSpeed" placeholder="nds" style="width:50px; height:25px;" onchange="updateDrift()">
-            </div>
-        </div>
+
+		<div class="stat-row" style="margin-bottom: 15px;">
+			<div style="display: grid; grid-template-columns: auto auto 100px; gap: 8px 10px; align-items: center;">
+				
+				<span style="font-size:0.9rem; color:#fff; font-weight: bold;">Courant,</span>
+				<span style="font-size:0.8rem; color:#cbd5e1; text-align: right;">portant au :</span>
+				<div class="sar-input-group" title="Direction du courant">
+					<input type="number" id="curDir" placeholder="000" onchange="updateDrift()">
+					<span class="unit">°</span>
+				</div>
+
+				<span></span> 
+				<span style="font-size:0.8rem; color:#cbd5e1; text-align: right;">pour :</span>
+				<div class="sar-input-group" title="Vitesse du courant">
+					<input type="number" id="curSpeed" placeholder="0.0" onchange="updateDrift()">
+					<span class="unit">nds</span>
+				</div>
+			</div>
+		</div>
+
         <hr>
-        <div class="stat-row" style="color:#d32f2f; font-weight:bold;">
+
+        <div class="stat-row" style="color:#ef4444; font-weight:bold; font-size:0.9rem;">
             <span>Dérive estimée :</span>
             <span id="driftTotal">-- nds</span>
         </div>
-        <div id="sar-eta" class="stat-row" style="font-size:0.8rem; background:#fff3e0; padding:5px; border-radius:4px;">
-            Interception : <b id="val-eta">-- min</b>
-        </div>
-		<div class="stat-row" style="margin-top:10px; border-top: 1px solid #eee; padding-top:10px;">
-			<span>Heure LKP :</span>
-			<input type="time" id="timeLKP" onchange="updateDrift()" style="width:80px; height:25px;">
-		</div>
-		<div class="stat-row">
-			<span>Heure Départ :</span>
-			<button onclick="addTimeDepart(15)" style="background:#0288d1; color:white; border:none; padding:2px 6px; border-radius:4px; cursor:pointer; font-size:0.7rem; font-weight:bold;">+15min</button>
-			<button onclick="setDepartNow()" title="Heure actuelle" style="background:#2e7d32; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; font-size:0.65rem; font-weight:bold;">NOW</button>
-			<input type="time" id="timeDepart" onchange="updateDrift()" style="width:80px; height:25px;">
-		</div>
-        <button onclick="startSarMission()" style="width:100%; margin-top:10px; background:#d32f2f; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer; font-weight:bold;">PLACER LKP (CIBLE)</button>
-    </div>
 
-<div class="floating-card ais-card">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h4 style="margin:0; color:#fff; font-size:0.85rem; letter-spacing:0.5px; border:none;">TRAFIC MARITIME</h4>
-        <div id="ais-status-light" style="width:10px; height:10px; background:#444; border-radius:50%; transition: all 0.3s ease; box-shadow: inset 0 0 4px rgba(0,0,0,0.5);"></div>
+        <div id="sar-eta" class="stat-row">
+            <span style="color:#ffe0b2;">Interception :</span>
+            <b id="val-eta" style="color:#ffb74d; font-size:1rem;">-- min</b>
+        </div>
+
+        <div class="stat-row" style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
+			<span style="font-size:0.8rem; color:#cbd5e1;">Heure LKP :</span>
+			<div class="sar-time-row">
+				<div class="sar-input-group">
+					<input type="time" id="timeLKP" onchange="updateDrift()">
+				</div>
+			</div>
+		</div>
+
+		<div class="stat-row" style="margin-top:10px;">
+			<span style="font-size:0.8rem; color:#cbd5e1;">Départ :</span>
+			<div class="sar-time-row">
+				<button onclick="addTimeDepart(15)" class="sar-btn-small" style="background:#0288d1; color:white;">+15</button>
+				<button onclick="setDepartNow()" class="sar-btn-small" style="background:#2e7d32; color:white;">NOW</button>
+				<div class="sar-input-group">
+					<input type="time" id="timeDepart" onchange="updateDrift()">
+				</div>
+			</div>
+		</div>
+
+        <button class="btn-sar-main" onclick="startSarMission()">
+            <i class="fas fa-crosshairs" style="margin-right:8px;"></i> PLACER LKP (CIBLE)
+        </button>
     </div>
+</div>
+
+<div id="aisCard" class="floating-card ais-card">
+    <h4>
+        <span><i class="fas fa-ship" style="margin-right:8px;"></i>TRAFIC MARITIME</span>
+        <div id="ais-status-light" class="ais-status-light"></div>
+    </h4>
     
-    <label style="display:flex; align-items:center; color:#adb5bd; font-size:0.85rem; cursor:pointer; background:rgba(255,255,255,0.05); padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); transition: 0.2s;">
+    <label class="ais-toggle-label">
         <input type="checkbox" id="toggle-ais" onchange="toggleAISLayer()" style="margin-right:12px; cursor:pointer;">
         <span>Activer le flux AIS</span>
     </label>
     
-    <div style="margin-top:10px; font-size:0.65rem; color:#6c757d; line-height:1.4; padding-left:2px;">
+    <div class="ais-footer">
         <i class="fas fa-info-circle" style="margin-right:4px;"></i> 
         Couche OpenSeaMap : Balisage et navires en temps réel.
     </div>
@@ -272,29 +386,13 @@
 
 
 <div class="floating-card dashboard">
-    <div class="dash-header">
-        <i class="fas fa-microchip"></i>
-        <h4 id="dashShip" style="margin:0; border:none; padding:0; flex-grow:1; margin-left:8px;">--</h4>
-        <span class="dash-tag">LIVE</span>
-    </div>
-    
+    <h4 style="margin:0; border:none;"><i class="fas fa-ship"></i> ÉTAT NAVIRE</h4>
+    <div id="dashShip">--</div>
     <div class="dash-grid">
-        <div class="dash-item">
-            <span class="label">Vitesse</span>
-            <b id="dashSpeed">--</b>
-        </div>
-        <div class="dash-item">
-            <span class="label">Rayon</span>
-            <b id="dashRange">--</b>
-        </div>
-        <div class="dash-item">
-            <span class="label">Réservoir</span>
-            <b id="dashTank">--</b>
-        </div>
-        <div class="dash-item highlight">
-            <span class="label">Conso</span>
-            <b id="dashCons">--</b>
-        </div>
+        <div class="dash-item"><span class="label">Vitesse</span><b id="dashSpeed">--</b></div>
+        <div class="dash-item"><span class="label">Rayon</span><b id="dashRange">--</b></div>
+        <div class="dash-item"><span class="label">Réservoir</span><b id="dashTank">--</b></div>
+        <div class="dash-item highlight"><span class="label">Conso</span><b id="dashCons">--</b></div>
     </div>
 </div>
 
@@ -311,57 +409,91 @@
         <iframe id="webcam-frame" src="" width="100%" height="150px" frameborder="0" style="margin-top:10px; border-radius:4px;"></iframe>
     </div>
 
-    <div class="floating-card tide-card">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h4 style="margin:0; border:none;">Marées (Temps Réel)</h4>
-        <span style="background:#1a237e; color:white; padding:2px 6px; border-radius:4px; font-size:0.7rem; font-weight:bold;">
-            Coeff: <span id="val-coeff">--</span>
-        </span>
-    </div>
-    
-    <div id="tideTrend" class="tide-status" style="text-align:center; font-weight:bold; font-size:0.8rem; padding:4px; border-radius:4px; margin-bottom:10px;">
-        Chargement...
-    </div>
+    <div id="tideCard" class="floating-card tide-card">
+    <h4><i class="fas fa-water"></i> Marées (Temps Réel)</h4>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-        <div style="text-align: center; border-right: 1px solid #eee;">
-            <div style="font-size:0.65rem; color:#666; text-transform:uppercase;">Hauteur</div>
-            <div id="val-cur-height" style="font-size: 1.2rem; font-weight: 800; color: #1a237e;">-- m</div>
-        </div>
-        <div style="text-align: center;">
-            <div style="font-size:0.65rem; color:#666; text-transform:uppercase;">Marnage</div>
-            <div id="val-marnage" style="font-size: 1.2rem; font-weight: 800; color: #f57f17;">-- m</div>
+    <div class="tide-container-inline">
+        <div class="tide-grid-inline">
+            <div class="tide-data-item">
+                <span class="tide-label-small">Coeff</span>
+                <span id="val-coeff" class="tide-value">--</span>
+            </div>
+            <div class="tide-data-item">
+                <span class="tide-label-small">Marnage</span>
+                <span id="val-marnage" class="tide-value">-- m</span>
+            </div>
+            <div class="tide-data-item">
+                <span class="tide-label-small">Hauteur</span>
+                <span id="val-cur-height" class="tide-value">-- m</span>
+            </div>
         </div>
     </div>
 
-    <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:0.8rem;">
-        <span><b style="color:#d32f2f;">PM :</b> <span id="val-pm-time">--</span></span>
-        <span><b style="color:#0288d1;">BM :</b> <span id="val-bm-time">--</span></span>
+    <div class="tide-extremes">
+        <span><b style="color:#ef4444;">PM :</b> <span id="val-pm-time">--:--</span></span>
+        <span><b style="color:#38bdf8;">BM :</b> <span id="val-bm-time">--:--</span></span>
     </div>
 
-    <div style="height: 80px; margin-top:10px; background: #f9f9f9; border-radius: 4px; overflow: hidden;">
-        <canvas id="tideChart" style="width:100%; height:100%;"></canvas>
+    <div class="tide-chart-container">
+        <div id="tideTrend" class="tide-status-overlay status-up">Chargement...</div>
+        <canvas id="tideChart"></canvas>
     </div>
 </div>
 
-<div class="floating-card map-selector-card">
-    <div class="card-header">
-        <i class="fas fa-layer-group"></i>
-        <span>TYPE DE CARTE</span>
+<div id="mapSelectorCard" class="floating-card map-selector-card collapsed">
+    <h4 onclick="this.closest('.floating-card').classList.toggle('collapsed')" title="Cliquer pour déplier les options">
+        <span><i class="fas fa-layer-group" style="margin-right:8px;"></i>TYPE DE CARTE</span>
+        <span class="map-badge">Fonds: 6</span> <i class="fas fa-chevron-down toggle-icon" style="font-size:0.7rem; width:14px; height:14px; display:flex; align-items:center; justify-content:center;"></i>
+    </h4>
+    
+    <div class="map-content-wrapper">
+        <div class="map-options">
+            <label class="map-option">
+                <input type="radio" name="map-type" value="osm" checked onchange="changeMapBase(this.value)">
+                <span>OpenStreetMap (Standard)</span>
+            </label>
+            <label class="map-option">
+                <input type="radio" name="map-type" value="satellite" onchange="changeMapBase(this.value)">
+                <span>Satellite Hybride (ArcGIS)</span>
+            </label>
+            <label class="map-option">
+                <input type="radio" name="map-type" value="seamap" onchange="changeMapBase(this.value)">
+                <span>Carte Nautique (ENC)</span>
+            </label>
+            <label class="map-option">
+                <input type="radio" name="map-type" value="bathy" onchange="changeMapBase(this.value)">
+                <span>Fonds Marins (EMODnet)</span>
+            </label>
+			<label class="map-option">
+                <input type="radio" name="map-type" value="ocean" onchange="changeMapBase(this.value)">
+                <span>Rendu Océan (ESRI)</span>
+            </label>
+			<label class="map-option">
+				<input type="radio" name="map-type" value="nature" onchange="changeMapBase(this.value)">
+				<span>Sédimentologie (Roche/Sable)</span>
+			</label>
+            <label class="map-option">
+                <input type="radio" name="map-type" value="dark" onchange="changeMapBase(this.value)">
+                <span>Mode Nuit (Dark)</span>
+            </label>
+        </div>
     </div>
-    <div class="map-options">
-        <label class="map-option">
-            <input type="radio" name="maptype" value="osm" checked onchange="changeMapBase('osm')">
-            <span class="map-label"><i class="fas fa-map"></i> Standard</span>
-        </label>
-        <label class="map-option">
-            <input type="radio" name="maptype" value="satellite" onchange="changeMapBase('satellite')">
-            <span class="map-label"><i class="fas fa-globe-europe"></i> Satellite</span>
-        </label>
-        <label class="map-option">
-            <input type="radio" name="maptype" value="seamap" onchange="changeMapBase('seamap')">
-            <span class="map-label"><i class="fas fa-anchor"></i> Nautique (OSM)</span>
-        </label>
+</div>
+
+<div class="floating-card compass-card" id="sar-compass" style="width: 200px; height: 200px;">
+    <div class="compass-ring"></div>
+    <span class="compass-axis" style="top: 5px;">N</span>
+    <span class="compass-axis" style="right: 8px;">E</span>
+    <span class="compass-axis" style="bottom: 5px;">S</span>
+    <span class="compass-axis" style="left: 8px;">W</span>
+    
+    <div id="vector-wind" class="vector-line" style="background:#0288d1; width:3px; position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; z-index: 5;"></div>
+    <div id="vector-current" class="vector-line" style="background:#4caf50; width:3px; position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; z-index: 5;"></div>
+    <div id="vector-result" class="vector-line" style="background:#ef4444; width:4px; position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; z-index: 10;"></div>
+    
+    <div onclick="resetMapNorth()" 
+         style="width: 24px; height: 24px; background: #fff; border-radius: 50%; z-index: 20; display: flex; align-items: center; justify-content: center; color: #0f172a; font-size: 12px; font-weight: bold; cursor: pointer; border: 2px solid #ef4444; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        N
     </div>
 </div>
 
@@ -381,6 +513,50 @@
     const ports = { 'PortManec\'h': [47.80065597908025, -3.737681838252376], 'Concarneau': [47.8732, -3.9142], 'BegMeil': [47.8554, -3.9785] };
 
     const seaStates = [{ vLimit: 60, fuelMulti: 1.0 }, { vLimit: 18, fuelMulti: 1.3 }, { vLimit: 10, fuelMulti: 1.8 }];
+
+	// --- CONFIGURATION DES COUCHES SPÉCIFIQUES ---
+
+		// 1. Bathymétrie classique (Relief seul)
+		const emodnetLayer = L.tileLayer.wms('https://ows.emodnet-bathymetry.eu/wms', {
+			layers: 'emodnet:mean_multi_resolution',
+			format: 'image/png',
+			transparent: true,
+			version: '1.3.0',
+			attribution: '&copy; EMODnet'
+		});
+
+		// 2. Ombrage seul (Pour donner du relief aux sédiments)
+		const hillshadeLayer = L.tileLayer.wms('https://ows.emodnet-bathymetry.eu/wms', {
+			layers: 'hillside',
+			format: 'image/png',
+			transparent: true,
+			version: '1.1.1'
+		});
+
+		// 3. La Nature des fonds (Sédiments) - Version simplifiée
+		const sedimentLayer = L.tileLayer.wms('https://services.emodnet-geology.eu/geology', {
+			layers: 'seabed_substrate_all_scales', 
+			format: 'image/png',
+			transparent: true,
+			version: '1.1.1',
+			opacity: 0.6
+		});
+
+		// Groupe combiné pour l'option "Nature des fonds"
+		const sedimentGroup = L.layerGroup([hillshadeLayer, sedimentLayer]);
+
+		// --- MISE À JOUR DE L'OBJET BASELAYERS ---
+		const baseLayers = {
+			osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+			satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'),
+			seamap: L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png'),
+			bathy: emodnetLayer,
+			ocean: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}'),
+			nature: sedimentGroup, // Maintenant cette variable est bien définie
+			dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png')
+		};
+
+
 
     let currentSea = 0, rangeCircle = null, landMass = null;
     let tideData = { current: 0, pm: {h:0, t:0}, bm: {h:0, t:0}, points: [] };
@@ -730,87 +906,143 @@ function renderTideChart(points, currentH) {
 }
 
     function setSea(l, b) { currentSea = l; document.querySelectorAll('.sea-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); calculate(); }
-
+/**
+ * Calcule la dérive totale (Vent + Courant), met à jour la rose des vents 
+ * et positionne le point de rendez-vous (DATUM) sur la carte.
+ */
+/**
+ * Calcule la dérive totale (Vent + Courant), met à jour la rose des vents 
+ * et positionne le point de rendez-vous (DATUM) sur la carte.
+ * Logique : Courant standard / Vent inversé.
+ */
 function updateDrift() {
+    // --- 1. RÉCUPÉRATION DES DONNÉES ---
+    
+    // Vitesse du vent et facteur de dérive (Leeway)
     const windText = document.getElementById('val-wind').innerText;
     const windSpeedKts = parseFloat(windText) || 0;
     const targetLeewayFactor = parseFloat(document.getElementById('targetType').value);
     
-    // Récupération de l'angle du vent
+    // Direction du vent (Angle de l'icône)
     const windTransform = document.getElementById('wind-dir-icon').style.transform;
     const windDir = parseFloat(windTransform.replace('rotate(', '').replace('deg)', '')) || 0;
     
+    // Paramètres du courant
     const curDir = parseFloat(document.getElementById('curDir').value) || 0;
     const curSpeed = parseFloat(document.getElementById('curSpeed').value) || 0;
 
-    // --- CALCUL VECTORIEL (Trigonométrie) ---
-    const rad = (d) => d * Math.PI / 180;
+    // --- 2. CALCUL VECTORIEL ---
     
-    // Le vent pousse la cible à l'OPPOSÉ de sa provenance (Angle + 180°)
-    const vdx = (windSpeedKts * targetLeewayFactor) * Math.sin(rad(windDir + 180)) + curSpeed * Math.sin(rad(curDir));
-    const vdy = (windSpeedKts * targetLeewayFactor) * Math.cos(rad(windDir + 180)) + curSpeed * Math.cos(rad(curDir));
+    const rad = (d) => d * Math.PI / 180;
+    const driftWindSpeed = windSpeedKts * targetLeewayFactor;
+    
+    // On utilise l'angle du vent tel quel pour l'inverser dans les composantes
+    const anglePoussee = windDir; 
 
-    const totalDriftSpeed = Math.sqrt(vdx**2 + vdy**2);
-    const totalDriftDir = (Math.atan2(vdx, vdy) * 180 / Math.PI + 360) % 360;
+    // vdx : Composante Est (+) / Ouest (-)
+    // VENT INVERSÉ (* -1) + COURANT STANDARD
+    const vdx = (driftWindSpeed * Math.sin(rad(anglePoussee)) * -1) + (curSpeed * Math.sin(rad(curDir)));
+    
+    // vdy : Composante Sud (+) / Nord (-)
+    // VENT INVERSÉ (* -1) + COURANT STANDARD
+    const vdy = (driftWindSpeed * Math.cos(rad(anglePoussee)) * -1) + (curSpeed * Math.cos(rad(curDir)));
+
+    // Calcul de la résultante (Vitesse et Angle)
+    const totalDriftSpeed = Math.sqrt(vdx * vdx + vdy * vdy);
+    let totalDriftDir = Math.atan2(vdx, -vdy) * (180 / Math.PI);
+    totalDriftDir = (totalDriftDir + 360) % 360;
 
     // Affichage texte de la force de dérive
     document.getElementById('driftTotal').innerText = `${totalDriftSpeed.toFixed(1)} nds @ ${Math.round(totalDriftDir)}°`;
 
-    // --- LOGIQUE DE NAVIGATION ET DATUM ---
+    // --- 3. MISE À JOUR VISUELLE DU COMPAS (Échelle x20) ---
+    
+    const scale = 20; 
+    
+    // Vecteur Vent (On l'affiche selon anglePoussee)
+    document.getElementById('vector-wind').style.height = (driftWindSpeed * scale) + 'px';
+    document.getElementById('vector-wind').style.transform = `rotate(${anglePoussee}deg)`;
+    
+    // Vecteur Courant
+    document.getElementById('vector-current').style.height = (curSpeed * scale) + 'px';
+    document.getElementById('vector-current').style.transform = `rotate(${curDir}deg)`;
+    
+    // Vecteur Résultante (Rouge)
+    document.getElementById('vector-result').style.height = (totalDriftSpeed * scale) + 'px';
+    document.getElementById('vector-result').style.transform = `rotate(${totalDriftDir}deg)`;
+
+    // --- 4. LOGIQUE DE NAVIGATION ET CALCUL DU DATUM SUR CARTE ---
+    
     if (vsdMarker) {
+        // Points de départ (Port) et de référence (LKP)
         const portKey = document.getElementById('portSelector').value;
         const shipPos = L.latLng(ports[portKey][0], ports[portKey][1]);
         const lkpPos = vsdMarker.getLatLng();
 
-        // 1. Calcul du Transit initial (Distance Port -> LKP pour estimer le temps)
+        // A. Calcul du Transit (Distance Port -> LKP pour estimer le temps de trajet)
         const distTransitMN = shipPos.distanceTo(lkpPos) / 1852;
         const shipSpeed = parseFloat(document.getElementById('dashSpeed').innerText) || 1;
         const transitTimeMin = (distTransitMN / shipSpeed) * 60;
 
-        // 2. Calcul du temps total de dérive
+        // B. Calcul du temps total de dérive (Attente + Navigation)
         const tLKP = document.getElementById('timeLKP').value.split(':');
         const tDep = document.getElementById('timeDepart').value.split(':');
         
         const dateLKP = new Date(); dateLKP.setHours(tLKP[0], tLKP[1], 0);
         const dateDep = new Date(); dateDep.setHours(tDep[0], tDep[1], 0);
         
-        // Temps d'attente au port + Temps de navigation
+        // Temps d'attente au port avant le départ
         const waitTime = (dateDep - dateLKP) / 60000;
+        
+        // Temps de dérive cumulé jusqu'à l'interception
         const totalDriftTimeMin = waitTime + transitTimeMin;
 
-        // 3. Calcul du Point de Rendez-vous (Datum)
+        // C. Calcul du Point de Rendez-vous (Datum)
         const driftDistMetres = totalDriftSpeed * 1852 * (totalDriftTimeMin / 60);
         const datumPos = calculateDestination(lkpPos, totalDriftDir, driftDistMetres);
 
-        // 4. Calcul du Cap final (Port -> Datum)
+        // D. Calcul du Cap final pour le navire (Port -> Datum)
         const pointPort = turf.point([shipPos.lng, shipPos.lat]);
         const pointDatum = turf.point([datumPos.lng, datumPos.lat]);
         const bearing = turf.bearing(pointPort, pointDatum);
         const heading = (bearing + 360) % 360;
 
-        // --- AFFICHAGE CARTE ---
+        // --- 5. AFFICHAGE DES TRACÉS SUR LA CARTE ---
         
-        // A. Ligne de dérive de la cible (Rouge)
+        // Ligne de dérive de la cible (Rouge pointillé)
         if (driftLine) map.removeLayer(driftLine);
-        driftLine = L.polyline([lkpPos, datumPos], {
-            color: '#d32f2f', weight: 3, dashArray: '5, 10'
+        driftLine = L.polyline([lkpPos, datumPos], { 
+            color: '#d32f2f', weight: 3, dashArray: '5, 10' 
         }).addTo(map);
 
-        // B. Marqueur du DATUM
+        // Marqueur du DATUM
         if (driftEndMarker) map.removeLayer(driftEndMarker);
-        driftEndMarker = L.circleMarker(datumPos, {
-            radius: 8, color: '#ffeb3b', fillColor: '#d32f2f', fillOpacity: 0.8, weight: 2
-        }).addTo(map).bindTooltip(`DATUM (Arrivée prévue dans ${Math.round(totalDriftTimeMin - waitTime)} min)`, {permanent: true});
+        driftEndMarker = L.circleMarker(datumPos, { 
+            radius: 8, color: '#ffeb3b', fillColor: '#d32f2f', fillOpacity: 0.8, weight: 2 
+        }).addTo(map).bindTooltip(`DATUM (ETA: ${Math.round(transitTimeMin)} min)`, {permanent: true});
 
-        // C. Route du Canot (Bleue)
+        // Route du Canot (Bleue)
         if (navLine) map.removeLayer(navLine);
-        navLine = L.polyline([shipPos, datumPos], {
-            color: '#1565c0', weight: 4, opacity: 0.7
+        navLine = L.polyline([shipPos, datumPos], { 
+            color: '#1565c0', weight: 4, opacity: 0.7 
         }).addTo(map);
 
         // Mise à jour de l'affichage texte SAR
         document.getElementById('val-eta').innerText = `${Math.round(transitTimeMin)} min (${distTransitMN.toFixed(1)} MN) au ${Math.round(heading)}°`;
     }
+}
+/**
+ * Réinitialise la vue de la carte au Nord (0°)
+ */
+function resetMapNorth() {
+    // Si un plugin de rotation est présent, on remet le bearing à 0
+    if (map.setBearing) {
+        map.setBearing(0);
+    } else {
+        // Sinon simple recentrage fluide
+        map.setView(map.getCenter(), map.getZoom(), { animate: true });
+    }
+    console.log("Carte réalignée sur le Nord magnétique.");
 }
 
 function startSarMission() {
@@ -954,27 +1186,42 @@ function toggleAISLayer() {
 }
 
 // --- CONFIGURATION DES FONDS DE CARTE ---
-const baseLayers = {
-    osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
-    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'),
-    seamap: L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png')
-};
+// voir au début du code script
 
 // On garde l'OSM par défaut au démarrage
 baseLayers.osm.addTo(map);
 
+/**
+ * Change la couche de fond de la carte
+ * @param {string} type - Clé correspondant à l'objet baseLayers (osm, satellite, bathy, etc.)
+ */
 function changeMapBase(type) {
-    // Retirer toutes les couches de base
+    // 1. Nettoyage : Retirer toutes les couches de base actives
     Object.values(baseLayers).forEach(layer => {
         if (map.hasLayer(layer)) map.removeLayer(layer);
     });
     
-    // Ajouter la nouvelle
-    baseLayers[type].addTo(map);
+    // 2. Activation : Ajouter la nouvelle couche sélectionnée
+    if (baseLayers[type]) {
+        baseLayers[type].addTo(map);
+    }
     
-    // Si c'est Satellite, on s'assure que les bouées AIS (si activées) restent par dessus
-    if (document.getElementById('toggle-ais').checked) {
+    // 3. Superposition : Ramener les calques métier au-dessus
+    
+    // Couche AIS
+    if (document.getElementById('toggle-ais').checked && typeof aisLayer !== 'undefined') {
         aisLayer.bringToFront();
+    }
+
+    // Couche SAR (Dérive, Datum, Cercles de probabilité)
+    // Note : On utilise bringToFront sur les éléments existants
+    if (typeof driftLine !== 'undefined' && map.hasLayer(driftLine)) {
+        driftLine.bringToFront();
+    }
+    
+    // Si tu as un cercle de recherche (Search Area), pense à le ramener aussi
+    if (typeof searchArea !== 'undefined' && map.hasLayer(searchArea)) {
+        searchArea.bringToFront();
     }
 }
 
@@ -1011,7 +1258,10 @@ function makeDraggable(el) {
     function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
-        // Position de départ de la souris
+
+        // Désactive l'ancre du bas dès qu'on clique sur la carte pour la bouger
+        el.style.bottom = "auto"; 
+        
         pos3 = e.clientX;
         pos4 = e.clientY;
         document.onmouseup = closeDragElement;
