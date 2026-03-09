@@ -1,7 +1,7 @@
 <?php
 /**
  * Projet : Système de Mission Nautique 
- * Version : V1.0.0 (SAR POSITION FIXED)
+ * Version : V11.0.0 (SAR POSITION FIXED)
  */
 ?>
 <!DOCTYPE html>
@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="no-referrer">
-    <title>SNSM - OPESAR V1.0.0</title>
+    <title>SNSM - OPESAR V16.0.0</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
@@ -112,25 +112,59 @@
 	.tide-status-overlay { position: absolute; top: 5px; left: 5px; padding: 2px 8px; border-radius: 3px; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; z-index: 10; pointer-events: none; backdrop-filter: blur(2px); }
 
 	/* --- 7. CARD TRAFIC MARITIME --- */
-	.ais-card h4 { display: flex; align-items: center; justify-content: space-between; width: calc(100% + 24px) !important; background: rgba(255,255,255,0.05); margin: -12px -12px 8px -12px !important; padding: 6px 12px !important; border-bottom: 1px solid rgba(255,255,255,0.1); border-radius: 8px 8px 0 0; box-sizing: border-box; color: #fff; font-size: 0.8rem; letter-spacing: 0.5px; cursor: move; }
-	.ais-status-light { width: 10px; height: 10px; background: #444; border-radius: 50%; transition: all 0.3s ease; box-shadow: inset 0 0 4px rgba(0,0,0,0.5); margin-left: auto; }
-	.ais-toggle-label { display: flex; align-items: center; color: #adb5bd; font-size: 0.85rem; cursor: pointer; background: rgba(255,255,255,0.05); padding: 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; }
-	.ais-toggle-label:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-	.ais-footer { margin-top: 6px; font-size: 0.65rem; color: #6c757d; line-height: 1.2; padding-left: 2px; }
+	.ais-card { width: 300px; background: rgba(15, 23, 42, 0.95) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; border-left: 4px solid #10b981 !important; border-radius: 10px; padding: 12px !important; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+	.ais-card h4 { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(90deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.05) 100%); margin: -12px -12px 15px -12px !important; padding: 10px 15px !important; border-bottom: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; cursor: move; border-radius: 10px 10px 0 0; letter-spacing: 1px; }
+	.ais-status-light { width: 8px; height: 8px; background: #064e3b; border-radius: 50%; transition: all 0.4s ease; border: 1px solid rgba(0,0,0,0.5); }
+	.ais-card:has(#toggle-ais:checked) .ais-status-light { background: #10b981; box-shadow: 0 0 12px #10b981, 0 0 4px rgba(255,255,255,0.5); }
+	.ais-toggle-label { display: flex; align-items: center; justify-content: space-between; color: #94a3b8; font-size: 0.8rem; cursor: pointer; background: rgba(255, 255, 255, 0.02); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.2s ease; margin-bottom: 12px; }
+	.ais-card:has(#toggle-ais:checked) .ais-toggle-label { color: #34d399; border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05); }
+	.ios-switch { position: relative; width: 36px; height: 20px; flex-shrink: 0; order: -1; }
+	.ios-switch input { opacity: 0; width: 0; height: 0; }
+	.ios-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #1e293b; transition: .3s; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+	.ios-slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: #64748b; transition: .3s; border-radius: 50%; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2); }
+	input:checked + .ios-slider { background-color: rgba(16, 185, 129, 0.2); border-color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+	input:checked + .ios-slider:before { transform: translateX(16px); background-color: #34d399; box-shadow: 0 0 8px #10b981; }
+	.ais-footer { font-size: 0.65rem; color: #64748b; line-height: 1.4; padding: 8px 10px; background: rgba(0, 0, 0, 0.2); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: flex-start; gap: 8px; }
+	
+	.ais-connect-row { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+	.ais-api-input { flex:1; background:rgba(30,41,59,0.9); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:7px 10px; color:#e2e8f0; font-size:0.7rem; font-family:'Courier New',monospace; outline:none; min-width:0; }
+	.ais-api-input::placeholder { color:#334155; }
+	.ais-connect-btn { background:#10b981; color:#fff; border:none; border-radius:6px; padding:7px 11px; font-size:0.7rem; font-weight:bold; cursor:pointer; white-space:nowrap; }
+	.ais-connect-btn.off { background:#ef4444; }
+	.ais-stats { display:flex; gap:5px; margin-bottom:9px; }
+	.ais-stat { flex:1; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:5px 6px; text-align:center; }
+	.ais-stat .sv { font-size:0.95rem; font-weight:bold; color:#34d399; }
+	.ais-stat .sl { font-size:0.56rem; color:#64748b; text-transform:uppercase; }
+	.ais-filter-row { display:flex; gap:4px; margin-bottom:8px; flex-wrap:wrap; }
+	.ais-fbtn { padding:3px 8px; border:1px solid rgba(255,255,255,0.1); border-radius:10px; background:rgba(30,41,59,0.6); color:#64748b; font-size:0.6rem; cursor:pointer; }
+	.ais-fbtn.active { background:rgba(16,185,129,0.2); color:#34d399; border-color:rgba(16,185,129,0.4); }
+	.ais-alert { display:none; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:6px; padding:7px 9px; font-size:0.7rem; color:#fca5a5; margin-bottom:8px; gap:6px; align-items:center; }
+	.ais-alert.on { display:flex; }
+	.ais-ship-list { max-height:190px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; margin-bottom:8px; }
+	.ais-ship-list::-webkit-scrollbar { width:3px; }
+	.ais-ship-list::-webkit-scrollbar-thumb { background:#334155; border-radius:2px; }
+	.ais-ship-item { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px 8px; cursor:pointer; display:flex; align-items:center; gap:7px; }
+	.ais-ship-item:hover { background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.3); }
+	.ais-ship-item.close { border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.04); }
+	.ais-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+	.ais-sname { font-size:0.73rem; font-weight:bold; color:#e2e8f0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+	.ais-smeta { font-size:0.6rem; color:#64748b; text-align:right; line-height:1.4; }
+	.ais-smeta b { color:#94a3b8; }
 
     /* --- 8. CARD SELECTEUR DE MAP  --- */
-	.map-selector-card { transition: max-height 0.4s ease; max-height: 500px; overflow: hidden; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(139, 92, 246, 0.3); }
+	.map-selector-card { transition: max-height 0.4s ease; max-height: 500px; overflow: hidden; background: rgba(15, 23, 42, 0.9) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; border-left: 4px solid #8b5cf6 !important; border-radius: 10px; padding: 12px !important; }
 	.map-selector-card.collapsed { max-height: 42px !important; }
-	.map-selector-card h4 { display: flex; align-items: center; justify-content: space-between; width: calc(100% + 24px) !important; background: rgba(139, 92, 246, 0.2); margin: -12px -12px 0 -12px !important; padding: 10px 12px !important; border-bottom: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px 8px 0 0; box-sizing: border-box; color: #a78bfa; font-size: 0.8rem; cursor: pointer; user-select: none; transition: 0.2s; }
-	.map-selector-card.collapsed h4 { border-bottom-color: transparent; }
-	.map-selector-card h4:hover { background: rgba(139, 92, 246, 0.3) !important; color: #fff; }
-	.map-selector-card h4:hover span i { transform: scale(1.1); color: #fff; }
-	.map-badge { background: rgba(167, 139, 250, 0.2); color: #a78bfa; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; margin: 0 10px 0 auto; border: 1px solid rgba(167, 139, 250, 0.3); font-weight: bold; text-transform: uppercase; }
-	.map-content-wrapper { padding: 12px 0 0 0; transition: opacity 0.3s; }
-	.map-option { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; cursor: pointer; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 6px; transition: 0.2s; }
-	.map-option:hover { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); }
-	.map-option input { margin: 0 !important; width: 16px !important; height: 16px !important; cursor: pointer; accent-color: #8b5cf6; flex-shrink: 0; }
-	.map-selector-card.collapsed .toggle-icon { animation: pulse-purple 2s infinite; border-radius: 50%; background: rgba(139, 92, 246, 0.2); padding: 2px; }
+	.map-selector-card h4 { display: flex; align-items: center; justify-content: space-between; background: rgba(139, 92, 246, 0.15); margin: -12px -12px 0 -12px !important; padding: 10px 15px !important; border-bottom: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 10px 10px 0 0; letter-spacing: 1px; }
+	.map-content-wrapper { padding-top: 15px; } /* AJOUT DE L'ESPACE ICI */
+	.map-option { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; cursor: pointer; font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px; transition: all 0.2s ease; }
+	.map-option:hover { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #fff; }
+	.map-option input { appearance: none; -webkit-appearance: none; width: 34px; height: 18px; background: #334155; border-radius: 20px; position: relative; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; margin: 0 !important; }
+	.map-option input::before { content: ""; position: absolute; width: 14px; height: 14px; background: #64748b; border-radius: 50%; top: 1px; left: 1px; transition: 0.3s; }
+	.map-option input:checked { background: rgba(139, 92, 246, 0.4); border-color: #8b5cf6; }
+	.map-option input:checked::before { transform: translateX(16px); background: #a78bfa; box-shadow: 0 0 8px #8b5cf6; }
+	.map-option:has(input:checked) { background: rgba(139, 92, 246, 0.05); color: #a78bfa; border-color: rgba(139, 92, 246, 0.2); }
+	.map-badge { background: rgba(167, 139, 250, 0.15); color: #a78bfa; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; border: 1px solid rgba(167, 139, 250, 0.3); font-weight: bold; margin-right: 8px; }
+	.map-selector-card.collapsed .toggle-icon { animation: pulse-purple 2s infinite; border-radius: 50%; background: rgba(139, 92, 246, 0.2); }
 	@keyframes pulse-purple { 0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(139, 92, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); } }
 
 		/* --- 9. CARD SAR  --- */
@@ -176,30 +210,8 @@
 	.v-result { background: #ef4444; width: 3px; box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
 	
 	/* Bouton Reset Nord au centre du compas */
-.compass-reset-north {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    color: white;
-    font-weight: bold;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 20;
-    transition: all 0.2s;
-}
-
-.compass-reset-north:hover {
-    background: #ef4444; /* Rouge SNSM au survol */
-    transform: scale(1.1);
-    border-color: white;
-}
-	
+	.compass-reset-north { position: absolute; width: 30px; height: 30px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: white; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; transition: all 0.2s; } 
+	.compass-reset-north:hover { background: #ef4444; transform: scale(1.1); border-color: white; }
 
     /* --- 11. CARD PATTERN DE RECHERCHE --- */
     .search-card { width: 300px; background: rgba(15, 23, 42, 0.95) !important; border: 1px solid rgba(255,255,255,0.1) !important; border-left: 4px solid #f59e0b !important; border-radius: 8px; }
@@ -225,14 +237,14 @@
 
     /* --- 12. POSITIONS INITIALES (ANCLES SUR LE TOP) --- */
     .sar-card { top: 20px; left: 20px; border-left: 6px solid #d32f2f; }
-    .ais-card { top: 500px; left: 20px; border-left: 4px solid #4caf50; }
+    .ais-card { top: 20px; left: 700px; border-left: 4px solid #4caf50; }
     .weather-card { top: 20px; right: 20px; border-left: 6px solid #0288d1; }
     .tide-card { top: 460px; right: 20px; border-left: 6px solid #fbc02d; }
     .search-card { top: 20px; left: 360px; display: none !important; }
 	
     /* Éléments du bas : on utilise top avec calc ou vh pour éviter bottom */
     .dashboard { top: 20px; left: calc(100vw - 640px); border-left: 4px solid #00d2ff;}
-    .map-selector-card { top: 650px; left: 20px; border-left: 4px solid #8b5cf6; }
+    .map-selector-card { top: 180px; left: 700px; border-left: 4px solid #8b5cf6; }
 	
 	
 </style>
@@ -240,7 +252,7 @@
 <body>
 
 <div id="header">
-    <div style="font-weight: 900; letter-spacing: 1px;">SNSM | OPESAR V1.0.0</div>
+    <div style="font-weight: 900; letter-spacing: 1px;">SNSM | OPESAR V16.0.0</div>
     <div class="controls-container">
         <div class="control-group">
             <div class="label">Canot de sauvetage</div>
@@ -319,13 +331,16 @@
     <div class="floating-card sar-card">
     <h4>
         <span><i class="fas fa-life-ring" style="margin-right:8px;"></i>Calcul de Dérive (SAR)</span>
-        <button onclick="resetSarMission()" style="background:#ef4444; color:white; border:none; padding:2px 10px; border-radius:4px; font-size:0.65rem; font-weight:bold; cursor:pointer; border: 1px solid rgba(255,255,255,0.2);">RAZ</button>
+        <button onclick="resetSarMission()" style="background:#ef4444; color:white; border:none; padding:2px 10px; border-radius:4px; font-size:0.65rem; font-weight:bold; cursor:pointer;">RAZ</button>
     </h4>
 
     <div class="sar-content">
-        <div class="stat-row">
-            <span>Type de cible :</span>
-            <select id="targetType" onchange="updateDrift()" style="width: 170px;">
+
+        <!-- ① TYPE DE CIBLE -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">① Cible</div>
+        <div class="stat-row" style="margin-bottom:12px;">
+            <span>Type :</span>
+            <select id="targetType" onchange="updateDrift()" style="width:170px;">
                 <option value="0.05">Plaisance (moteur)</option>
                 <option value="0.07">Voilier (mât debout)</option>
                 <option value="0.02">Canot de survie</option>
@@ -333,77 +348,174 @@
             </select>
         </div>
 
-		<div class="stat-row" style="margin-bottom: 15px;">
-			<div style="display: grid; grid-template-columns: auto auto 100px; gap: 8px 10px; align-items: center;">
-				
-				<span style="font-size:0.9rem; color:#fff; font-weight: bold;">Courant,</span>
-				<span style="font-size:0.8rem; color:#cbd5e1; text-align: right;">portant au :</span>
-				<div class="sar-input-group" title="Direction du courant">
-					<input type="number" id="curDir" placeholder="000" onchange="updateDrift()">
-					<span class="unit">°</span>
-				</div>
+        <!-- ② POSITION GPS LKP -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">② Position LKP
+            <span id="lkp-status-dot" style="width:7px;height:7px;border-radius:50%;background:#334155;margin-left:6px;display:inline-block;vertical-align:middle;"></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:5px;">
+            <span style="font-size:0.7rem;color:#94a3b8;width:22px;text-align:right;">LAT</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lat-deg" placeholder="47" min="0" max="90" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">°</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lat-min" placeholder="48" min="0" max="59" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">'</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lat-sec" placeholder="04" min="0" max="59" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">"</span>
+            <select id="lkp-lat-hem" onchange="onLkpInput()" style="width:40px;height:30px;padding:0 3px;font-size:0.72rem;background:rgba(30,41,59,0.7);border:1px solid rgba(255,255,255,0.15);color:white;border-radius:4px;">
+                <option>N</option><option>S</option>
+            </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;">
+            <span style="font-size:0.7rem;color:#94a3b8;width:22px;text-align:right;">LON</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lon-deg" placeholder="003" min="0" max="180" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">°</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lon-min" placeholder="44" min="0" max="59" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">'</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lon-sec" placeholder="34" min="0" max="59" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">"</span>
+            <select id="lkp-lon-hem" onchange="onLkpInput()" style="width:40px;height:30px;padding:0 3px;font-size:0.72rem;background:rgba(30,41,59,0.7);border:1px solid rgba(255,255,255,0.15);color:white;border-radius:4px;">
+                <option>W</option><option>E</option>
+            </select>
+        </div>
+        <div id="lkp-decimal-display" style="font-size:0.67rem;color:#64748b;text-align:center;margin-bottom:7px;font-family:'Courier New',monospace;">-- , --</div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+            <button class="btn-sar-main" onclick="placeLkpFromGps()" style="flex:2;padding:7px;">
+                <i class="fas fa-crosshairs" style="margin-right:5px;"></i> VALIDER LKP
+            </button>
+            <button onclick="startSarMission()" title="Clic sur la carte"
+                style="flex:1;background:rgba(30,41,59,0.8);color:#94a3b8;border:1px solid #334155;padding:7px;border-radius:6px;cursor:pointer;font-size:0.68rem;font-weight:bold;"
+                onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'">
+                <i class="fas fa-map-marker-alt"></i> CARTE
+            </button>
+        </div>
 
-				<span></span> 
-				<span style="font-size:0.8rem; color:#cbd5e1; text-align: right;">pour :</span>
-				<div class="sar-input-group" title="Vitesse du courant">
-					<input type="number" id="curSpeed" placeholder="0.0" onchange="updateDrift()">
-					<span class="unit">nds</span>
-				</div>
-			</div>
-		</div>
+        <!-- ③ HEURES -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">③ Heures</div>
+        <div class="stat-row" style="margin-bottom:6px;">
+            <span style="font-size:0.8rem;color:#cbd5e1;">Heure LKP :</span>
+            <div class="sar-input-group"><input type="time" id="timeLKP" onchange="updateDrift()"></div>
+        </div>
+        <div class="stat-row" style="margin-bottom:12px;">
+            <span style="font-size:0.8rem;color:#cbd5e1;">Départ :</span>
+            <div class="sar-time-row">
+                <button onclick="addTimeDepart(15)" class="sar-btn-small" style="background:#0288d1;color:white;">+15</button>
+                <button onclick="setDepartNow()" class="sar-btn-small" style="background:#2e7d32;color:white;">NOW</button>
+                <div class="sar-input-group"><input type="time" id="timeDepart" onchange="updateDrift()"></div>
+            </div>
+        </div>
+
+        <!-- ④ COURANT -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">④ Courant</div>
+        <div style="display:grid;grid-template-columns:auto auto 105px;gap:6px 8px;align-items:center;margin-bottom:12px;">
+            <span style="font-size:0.8rem;color:#fff;font-weight:bold;">Portant au</span>
+            <span style="font-size:0.75rem;color:#cbd5e1;text-align:right;">direction :</span>
+            <div class="sar-input-group"><input type="number" id="curDir" placeholder="000" onchange="updateDrift()"><span class="unit">°</span></div>
+            <span></span>
+            <span style="font-size:0.75rem;color:#cbd5e1;text-align:right;">vitesse :</span>
+            <div class="sar-input-group"><input type="number" id="curSpeed" placeholder="0.0" onchange="updateDrift()"><span class="unit">nds</span></div>
+        </div>
+
+        <!-- ⑤ HOULE -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">⑤ Houle</div>
+        <div style="display:grid;grid-template-columns:auto auto 105px;gap:6px 8px;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.8rem;color:#fff;font-weight:bold;">Venant du</span>
+            <span style="font-size:0.75rem;color:#cbd5e1;text-align:right;">direction :</span>
+            <div class="sar-input-group">
+                <input type="number" id="swellDir" placeholder="---" onchange="updateDrift()">
+                <span class="unit">°</span>
+            </div>
+            <span id="swell-auto-label" style="font-size:0.6rem;color:#38bdf8;grid-column:1/4;margin-top:-3px;">↑ Auto météo — éditable</span>
+        </div>
 
         <hr>
 
-        <div class="stat-row" style="color:#ef4444; font-weight:bold; font-size:0.9rem;">
-            <span>Dérive estimée :</span>
+        <!-- ⑥ DÉRIVE -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:6px;letter-spacing:.5px;">⑥ Dérive calculée</div>
+        <div class="stat-row" style="color:#ef4444;font-weight:bold;font-size:0.9rem;margin-bottom:4px;">
+            <span>Résultante :</span>
             <span id="driftTotal">-- nds</span>
         </div>
 
-        <div id="sar-eta" class="stat-row">
-            <span style="color:#ffe0b2;">Interception :</span>
-            <b id="val-eta" style="color:#ffb74d; font-size:1rem;">-- min</b>
+        <hr>
+
+        <!-- ⑦ INTERCEPTION -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:8px;letter-spacing:.5px;">⑦ Interception</div>
+
+        <!-- Grille 2x2 des infos clés -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;padding:6px 8px;">
+                <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;">Temps</div>
+                <div id="val-eta-time" style="font-size:1rem;font-weight:bold;color:#ffb74d;">-- min</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;padding:6px 8px;">
+                <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;">Distance</div>
+                <div id="val-eta-dist" style="font-size:1rem;font-weight:bold;color:#ffb74d;">-- MN</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;padding:6px 8px;">
+                <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;">Cap direct</div>
+                <div id="val-eta-cap" style="font-size:1rem;font-weight:bold;color:#81d4fa;">--°</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;padding:6px 8px;">
+                <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;">Route</div>
+                <div id="val-eta-route" style="font-size:0.8rem;font-weight:bold;color:#4ade80;">DIRECTE</div>
+            </div>
         </div>
 
-        <div class="stat-row" style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
-			<span style="font-size:0.8rem; color:#cbd5e1;">Heure LKP :</span>
-			<div class="sar-time-row">
-				<div class="sar-input-group">
-					<input type="time" id="timeLKP" onchange="updateDrift()">
-				</div>
-			</div>
-		</div>
+        <!-- Avertissement houle (masqué par défaut) -->
+        <div id="swell-warning" style="display:none;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:5px;padding:7px 9px;margin-bottom:8px;font-size:0.75rem;color:#fbbf24;">
+            <i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>
+            <span id="swell-warning-text"></span>
+        </div>
 
-		<div class="stat-row" style="margin-top:10px;">
-			<span style="font-size:0.8rem; color:#cbd5e1;">Départ :</span>
-			<div class="sar-time-row">
-				<button onclick="addTimeDepart(15)" class="sar-btn-small" style="background:#0288d1; color:white;">+15</button>
-				<button onclick="setDepartNow()" class="sar-btn-small" style="background:#2e7d32; color:white;">NOW</button>
-				<div class="sar-input-group">
-					<input type="time" id="timeDepart" onchange="updateDrift()">
-				</div>
-			</div>
-		</div>
+        <!-- Détail zigzag (masqué par défaut) -->
+        <div id="zigzag-detail" style="display:none;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:5px;padding:7px 9px;font-size:0.75rem;color:#a5b4fc;">
+            <div style="font-weight:bold;margin-bottom:3px;"><i class="fas fa-route" style="margin-right:4px;"></i>Route optimale houle</div>
+            <div id="zigzag-caps"></div>
+        </div>
 
-        <button class="btn-sar-main" onclick="startSarMission()">
-            <i class="fas fa-crosshairs" style="margin-right:8px;"></i> PLACER LKP (CIBLE)
-        </button>
+        <!-- ID caché pour compatibilité avec ancien code -->
+        <span id="val-eta" style="display:none;">--</span>
+
     </div>
 </div>
 
 <div id="aisCard" class="floating-card ais-card">
     <h4>
-        <span><i class="fas fa-ship" style="margin-right:8px;"></i>TRAFIC MARITIME</span>
+        <span><i class="fas fa-ship" style="margin-right:7px;"></i>TRAFIC AIS TEMPS RÉEL</span>
         <div id="ais-status-light" class="ais-status-light"></div>
     </h4>
-    
-    <label class="ais-toggle-label">
-        <input type="checkbox" id="toggle-ais" onchange="toggleAISLayer()" style="margin-right:12px; cursor:pointer;">
-        <span>Activer le flux AIS</span>
+    <div class="ais-connect-row">
+        <input class="ais-api-input" type="password" id="ais-api-key" placeholder="Clé API AISStream.io…" autocomplete="off">
+        <button class="ais-connect-btn" id="ais-connect-btn" onclick="toggleAISStream()">Connecter</button>
+    </div>
+    <div class="ais-alert" id="ais-alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="ais-alert-msg">Navire proche !</span>
+    </div>
+    <div class="ais-stats">
+        <div class="ais-stat"><div class="sv" id="ais-count">0</div><div class="sl">Navires</div></div>
+        <div class="ais-stat"><div class="sv" id="ais-msg-rate">0</div><div class="sl">msg/min</div></div>
+        <div class="ais-stat"><div class="sv" id="ais-closest">--</div><div class="sl">Plus proche</div></div>
+    </div>
+    <div class="ais-filter-row">
+        <button class="ais-fbtn active" onclick="aisFilter('all',this)">Tous</button>
+        <button class="ais-fbtn" onclick="aisFilter('cargo',this)">⬛ Cargo</button>
+        <button class="ais-fbtn" onclick="aisFilter('tanker',this)">🔴 Tanker</button>
+        <button class="ais-fbtn" onclick="aisFilter('sailing',this)">⛵ Voile</button>
+        <button class="ais-fbtn" onclick="aisFilter('fishing',this)">🎣 Pêche</button>
+    </div>
+    <div class="ais-ship-list" id="ais-ship-list">
+        <div style="text-align:center;color:#334155;font-size:0.68rem;padding:20px 0;">
+            <i class="fas fa-satellite-dish" style="font-size:1.4rem;margin-bottom:6px;display:block;opacity:0.4;"></i>
+            Entrez votre clé API et connectez-vous
+        </div>
+    </div>
+    <label style="display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:#64748b;margin-bottom:8px;cursor:pointer;">
+        <span>Balisage OpenSeaMap</span>
+        <div class="ios-switch"><input type="checkbox" id="toggle-ais" onchange="toggleAISLayer()"><span class="ios-slider"></span></div>
     </label>
-    
     <div class="ais-footer">
-        <i class="fas fa-info-circle" style="margin-right:4px;"></i> 
-        Couche OpenSeaMap : Balisage et navires en temps réel.
+        <i class="fas fa-info-circle" style="margin-right:4px;opacity:0.5;"></i>
+        Clé gratuite sur <b style="color:#64748b;">aisstream.io</b>
     </div>
 </div>
 
@@ -706,7 +818,7 @@ async function getLiveWeather(lat, lng) {
     try {
         const [resL, resM] = await Promise.all([
             fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,cloud_cover,wind_speed_10m,wind_direction_10m,surface_pressure&timezone=auto`),
-            fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${offLat}&longitude=${lng}&current=sea_surface_temperature,wave_height&timezone=auto`)
+            fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${offLat}&longitude=${lng}&current=sea_surface_temperature,wave_height,wave_direction&timezone=auto`)
         ]);
         
         const dL = await resL.json(), dM = await resM.json();
@@ -715,7 +827,6 @@ async function getLiveWeather(lat, lng) {
             const windDeg = dL.current.wind_direction_10m;
             const pressure = dL.current.surface_pressure;
             
-            // Calcul surcote (1hPa = 1cm) - Standard 1013.25
             const surgeCm = Math.round(1013.25 - pressure); 
             window.currentSurgeMeters = surgeCm / 100;
 
@@ -738,6 +849,17 @@ async function getLiveWeather(lat, lng) {
         if(dM.current) {
             document.getElementById('val-water').innerText = dM.current.sea_surface_temperature + "°C";
             document.getElementById('val-swell').innerText = dM.current.wave_height + " m";
+
+            // Pré-remplir le champ direction houle (éditable par l'utilisateur)
+            if (dM.current.wave_direction !== undefined) {
+                const swellField = document.getElementById('swellDir');
+                // On ne remplace que si le champ n'a pas été édité manuellement
+                if (!swellField.dataset.manualEdit) {
+                    swellField.value = Math.round(dM.current.wave_direction);
+                    document.getElementById('swell-auto-label').style.color = '#38bdf8';
+                }
+                window.currentSwellHeight = dM.current.wave_height || 0;
+            }
         }
         
         updateTide(); 
@@ -978,135 +1100,156 @@ function renderTideChart(points, currentH) {
  * Logique : Courant standard / Vent inversé.
  */
 function updateDrift() {
-    // --- 1. RÉCUPÉRATION DES DONNÉES ---
-    
-    // Vitesse du vent et facteur de dérive (Leeway)
-    const windText = document.getElementById('val-wind').innerText;
-    const windSpeedKts = parseFloat(windText) || 0;
+    // --- 1. DONNÉES D'ENTRÉE ---
+    const windText        = document.getElementById('val-wind').innerText;
+    const windSpeedKts    = parseFloat(windText) || 0;
     const targetLeewayFactor = parseFloat(document.getElementById('targetType').value);
-    
-    // Direction du vent : provenance réelle (0° = vient du Nord)
-    // On lit le data-attribute stocké par getLiveWeather, PAS la rotation visuelle de l'icône
-    const windDir = parseFloat(document.getElementById('wind-dir-icon').dataset.windProvenance) || 0;
-    
-    // Paramètres du courant
-    const curDir = parseFloat(document.getElementById('curDir').value) || 0;
-    const curSpeed = parseFloat(document.getElementById('curSpeed').value) || 0;
+    const windDir         = parseFloat(document.getElementById('wind-dir-icon').dataset.windProvenance) || 0;
+    const curDir          = parseFloat(document.getElementById('curDir').value)   || 0;
+    const curSpeed        = parseFloat(document.getElementById('curSpeed').value) || 0;
+    const swellDir        = parseFloat(document.getElementById('swellDir').value);
+    const swellHeight     = window.currentSwellHeight || parseFloat(document.getElementById('val-swell').innerText) || 0;
 
-  // --- 2. CALCUL VECTORIEL (DÉCOMPOSITION ET SOMME PHYSIQUE) ---
+    // --- 2. CALCUL VECTORIEL DÉRIVE ---
+    const rad = (d) => d * Math.PI / 180;
+    const driftWindSpeed  = windSpeedKts * targetLeewayFactor;
+    const anglePoussee    = (windDir + 180) % 360;
 
-const rad = (d) => d * Math.PI / 180;
-const driftWindSpeed = windSpeedKts * targetLeewayFactor;
+    const vdx = driftWindSpeed * Math.sin(rad(anglePoussee)) + curSpeed * Math.sin(rad(curDir));
+    const vdy = driftWindSpeed * Math.cos(rad(anglePoussee)) + curSpeed * Math.cos(rad(curDir));
 
-// anglePoussee : Destination du vent (où il POUSSE l'objet)
-// Si windDir (provenance) est 0° (Nord), anglePoussee est 180° (Sud)
-const anglePoussee = (windDir + 180) % 360; 
+    const totalDriftSpeed = Math.sqrt(vdx * vdx + vdy * vdy);
+    let totalDriftDir     = Math.atan2(vdx, vdy) * (180 / Math.PI);
+    totalDriftDir         = (totalDriftDir + 360) % 360;
 
-// A. VECTEUR VENT ISOLÉ (Destination)
-// sin = Est(+)/Ouest(-) | cos = Nord(+)/Sud(+)
-const vdx_vent = driftWindSpeed * Math.sin(rad(anglePoussee));
-const vdy_vent = driftWindSpeed * Math.cos(rad(anglePoussee));
-
-// B. VECTEUR COURANT ISOLÉ (Destination)
-// curDir est déjà une direction de portée (Set)
-const vdx_courant = curSpeed * Math.sin(rad(curDir));
-const vdy_courant = curSpeed * Math.cos(rad(curDir));
-
-// --- C. LA RÉSULTANTE (SOMME DES DEUX FORCES) ---
-// On additionne les poussées Est/Ouest ensemble et Nord/Sud ensemble
-const vdx = vdx_vent + vdx_courant;
-const vdy = vdy_vent + vdy_courant;
-
-// --- D. SORTIES FINALES POUR TES AUTRES FONCTIONS ---
-
-// Vitesse totale combinée (Hypoténuse)
-const totalDriftSpeed = Math.sqrt(vdx * vdx + vdy * vdy);
-
-// Direction réelle du déplacement (Angle Boussole 0-360°)
-// Utilisation de atan2(X, Y) pour que 0° soit le Nord et rotation horaire
-let totalDriftDir = Math.atan2(vdx, vdy) * (180 / Math.PI);
-totalDriftDir = (totalDriftDir + 360) % 360;
-
-
-// --- FIN DU BLOC DE CALCUL ---
-
-    // Affichage texte de la force de dérive
+    // Affichage dérive
     document.getElementById('driftTotal').innerText = `${totalDriftSpeed.toFixed(1)} nds @ ${Math.round(totalDriftDir)}°`;
 
-    // --- 3. MISE À JOUR VISUELLE DU COMPAS (Échelle x20) ---
-    
-    const scale = 20; 
-    
-    // Vecteur Vent (On l'affiche selon anglePoussee)
-    document.getElementById('vector-wind').style.height = (driftWindSpeed * scale) + 'px';
+    // --- 3. COMPAS VECTORIEL ---
+    const scale = 20;
+    document.getElementById('vector-wind').style.height    = (driftWindSpeed * scale) + 'px';
     document.getElementById('vector-wind').style.transform = `rotate(${anglePoussee}deg)`;
-    
-    // Vecteur Courant
-    document.getElementById('vector-current').style.height = (curSpeed * scale) + 'px';
+    document.getElementById('vector-current').style.height    = (curSpeed * scale) + 'px';
     document.getElementById('vector-current').style.transform = `rotate(${curDir}deg)`;
-    
-    // Vecteur Résultante (Rouge)
-    document.getElementById('vector-result').style.height = (totalDriftSpeed * scale) + 'px';
+    document.getElementById('vector-result').style.height    = (totalDriftSpeed * scale) + 'px';
     document.getElementById('vector-result').style.transform = `rotate(${totalDriftDir}deg)`;
 
-    // --- 4. LOGIQUE DE NAVIGATION ET CALCUL DU DATUM SUR CARTE ---
-    
-    if (vsdMarker) {
-        // Points de départ (Port) et de référence (LKP)
-        const portKey = document.getElementById('portSelector').value;
-        const shipPos = L.latLng(ports[portKey][0], ports[portKey][1]);
-        const lkpPos = vsdMarker.getLatLng();
+    // --- 4. CALCUL HOULE & ROUTE OPTIMALE ---
+    const swellWarningEl  = document.getElementById('swell-warning');
+    const swellWarningTxt = document.getElementById('swell-warning-text');
+    const zigzagDetailEl  = document.getElementById('zigzag-detail');
+    const zigzagCapsEl    = document.getElementById('zigzag-caps');
+    const routeEl         = document.getElementById('val-eta-route');
 
-        // A. Calcul du Transit (Distance Port -> LKP pour estimer le temps de trajet)
+    // Seuil houle significative : > 1.0 m
+    const SWELL_THRESHOLD = 1.0;
+    let useZigzag = false;
+    let zigzagCaps = null;
+
+    if (!isNaN(swellDir) && swellHeight > SWELL_THRESHOLD && vsdMarker) {
+        const portKey  = document.getElementById('portSelector').value;
+        const shipPos  = L.latLng(ports[portKey][0], ports[portKey][1]);
+        const datumPos = driftEndMarker ? driftEndMarker.getLatLng() : null;
+
+        if (datumPos) {
+            const capDirect = (turf.bearing(turf.point([shipPos.lng, shipPos.lat]), turf.point([datumPos.lng, datumPos.lat])) + 360) % 360;
+
+            // Angle entre le cap direct et la houle
+            let angleDiff = Math.abs(capDirect - swellDir) % 360;
+            if (angleDiff > 180) angleDiff = 360 - angleDiff;
+
+            // Risque si < 30° (quasi face) ou > 150° (quasi arrière plein)
+            const isFaceOrArriere = angleDiff < 30 || angleDiff > 150;
+
+            if (isFaceOrArriere) {
+                useZigzag = true;
+                // Route optimale : couper la houle à 45° → 2 caps alternés
+                const cap1 = (swellDir + 45)  % 360;
+                const cap2 = (swellDir + 315) % 360; // swellDir - 45
+
+                // On choisit le cap qui se rapproche le plus du datum
+                const diff1 = Math.abs(((cap1 - capDirect) + 180 + 360) % 360 - 180);
+                const diff2 = Math.abs(((cap2 - capDirect) + 180 + 360) % 360 - 180);
+                const capA  = diff1 <= diff2 ? cap1 : cap2;
+                const capB  = diff1 <= diff2 ? cap2 : cap1;
+
+                zigzagCaps = { capA: Math.round(capA), capB: Math.round(capB), angleDiff: Math.round(angleDiff) };
+
+                const situation = angleDiff < 30 ? 'face à la houle' : 'houle de travers arrière';
+                swellWarningTxt.innerHTML = `Houle ${swellHeight}m — cap direct ${situation} (${Math.round(angleDiff)}°). Route en zigzag recommandée à ±45°.`;
+                swellWarningEl.style.display = 'block';
+
+                zigzagCapsEl.innerHTML = `Cap aller : <b style="color:#fbbf24;">${zigzagCaps.capA}°</b> &nbsp;|&nbsp; Cap retour : <b style="color:#fbbf24;">${zigzagCaps.capB}°</b>`;
+                zigzagDetailEl.style.display = 'block';
+                routeEl.textContent = 'ZIGZAG ±45°';
+                routeEl.style.color = '#fbbf24';
+            } else {
+                swellWarningEl.style.display  = 'none';
+                zigzagDetailEl.style.display  = 'none';
+                routeEl.textContent = 'DIRECTE';
+                routeEl.style.color = '#4ade80';
+            }
+        }
+    } else {
+        swellWarningEl.style.display  = 'none';
+        zigzagDetailEl.style.display  = 'none';
+        routeEl.textContent = 'DIRECTE';
+        routeEl.style.color = '#4ade80';
+    }
+
+    // --- 5. CALCUL DATUM & INTERCEPTION ---
+    if (vsdMarker) {
+        const portKey      = document.getElementById('portSelector').value;
+        const shipPos      = L.latLng(ports[portKey][0], ports[portKey][1]);
+        const lkpPos       = vsdMarker.getLatLng();
+        const shipSpeed    = parseFloat(document.getElementById('dashSpeed').innerText) || 1;
         const distTransitMN = shipPos.distanceTo(lkpPos) / 1852;
-        const shipSpeed = parseFloat(document.getElementById('dashSpeed').innerText) || 1;
         const transitTimeMin = (distTransitMN / shipSpeed) * 60;
 
-        // B. Calcul du temps total de dérive (Attente + Navigation)
         const tLKP = document.getElementById('timeLKP').value.split(':');
         const tDep = document.getElementById('timeDepart').value.split(':');
-        
         const dateLKP = new Date(); dateLKP.setHours(tLKP[0], tLKP[1], 0);
         const dateDep = new Date(); dateDep.setHours(tDep[0], tDep[1], 0);
-        
-        // Temps d'attente au port avant le départ
         const waitTime = (dateDep - dateLKP) / 60000;
-        
-        // Temps de dérive cumulé jusqu'à l'interception
         const totalDriftTimeMin = waitTime + transitTimeMin;
 
-        // C. Calcul du Point de Rendez-vous (Datum)
         const driftDistMetres = totalDriftSpeed * 1852 * (totalDriftTimeMin / 60);
         const datumPos = calculateDestination(lkpPos, totalDriftDir, driftDistMetres);
 
-        // D. Calcul du Cap final pour le navire (Port -> Datum)
-        const pointPort = turf.point([shipPos.lng, shipPos.lat]);
+        const pointPort  = turf.point([shipPos.lng, shipPos.lat]);
         const pointDatum = turf.point([datumPos.lng, datumPos.lat]);
-        const bearing = turf.bearing(pointPort, pointDatum);
-        const heading = (bearing + 360) % 360;
+        const bearing    = turf.bearing(pointPort, pointDatum);
+        const heading    = (bearing + 360) % 360;
 
-        // --- 5. AFFICHAGE DES TRACÉS SUR LA CARTE ---
-        
-        // Ligne de dérive de la cible (Rouge pointillé)
-        if (driftLine) map.removeLayer(driftLine);
-        driftLine = L.polyline([lkpPos, datumPos], { 
-            color: '#d32f2f', weight: 3, dashArray: '5, 10' 
-        }).addTo(map);
+        // Mise à jour affichage interception
+        document.getElementById('val-eta-time').textContent = Math.round(transitTimeMin) + ' min';
+        document.getElementById('val-eta-dist').textContent = distTransitMN.toFixed(1) + ' MN';
+        document.getElementById('val-eta-cap').textContent  = Math.round(heading) + '°';
 
-        // Marqueur du DATUM
-        if (driftEndMarker) map.removeLayer(driftEndMarker);
-        driftEndMarker = L.circleMarker(datumPos, { 
-            radius: 8, color: '#ffeb3b', fillColor: '#d32f2f', fillOpacity: 0.8, weight: 2 
-        }).addTo(map).bindTooltip(`DATUM (ETA: ${Math.round(transitTimeMin)} min)`, {permanent: true});
-
-        // Route du Canot (Bleue)
-        if (navLine) map.removeLayer(navLine);
-        navLine = L.polyline([shipPos, datumPos], { 
-            color: '#1565c0', weight: 4, opacity: 0.7 
-        }).addTo(map);
-
-        // Mise à jour de l'affichage texte SAR
+        // Compatibilité ancien ID
         document.getElementById('val-eta').innerText = `${Math.round(transitTimeMin)} min (${distTransitMN.toFixed(1)} MN) au ${Math.round(heading)}°`;
+
+        // Tracés carte
+        if (driftLine) map.removeLayer(driftLine);
+        driftLine = L.polyline([lkpPos, datumPos], { color: '#d32f2f', weight: 3, dashArray: '5, 10' }).addTo(map);
+
+        if (driftEndMarker) map.removeLayer(driftEndMarker);
+        driftEndMarker = L.circleMarker(datumPos, {
+            radius: 8, color: '#ffeb3b', fillColor: '#d32f2f', fillOpacity: 0.8, weight: 2
+        }).addTo(map).bindTooltip(`DATUM (${Math.round(transitTimeMin)} min)`, { permanent: true });
+
+        // Route : directe ou zigzag sur la carte
+        if (navLine) map.removeLayer(navLine);
+        if (useZigzag && zigzagCaps) {
+            // On calcule un waypoint intermédiaire à mi-chemin décalé à 45°
+            const midDist  = distTransitMN / 2;
+            const midPoint = calculateDestination(shipPos, zigzagCaps.capA, midDist * 1852);
+            navLine = L.polyline([shipPos, midPoint, datumPos], {
+                color: '#f59e0b', weight: 3, dashArray: '10, 5', opacity: 0.85
+            }).addTo(map);
+        } else {
+            navLine = L.polyline([shipPos, datumPos], { color: '#1565c0', weight: 4, opacity: 0.7 }).addTo(map);
+        }
     }
 }
 /**
@@ -1126,13 +1269,28 @@ function resetMapNorth() {
 function startSarMission() {
     map.getContainer().style.cursor = 'crosshair';
     map.once('click', function(e) {
-        if(vsdMarker) map.removeLayer(vsdMarker);
-        vsdMarker = L.marker(e.latlng, {draggable: true}).addTo(map).bindPopup("<b>LKP (Dernière Position)</b>").openPopup();
-        
+        if (vsdMarker) map.removeLayer(vsdMarker);
+        vsdMarker = L.marker(e.latlng, { draggable: true })
+            .addTo(map)
+            .bindPopup("<b>LKP (Dernière Position)</b>")
+            .openPopup();
+
+        // Remplir les champs DMS avec la position cliquée
+        updateDmsFieldsFromLatLng(e.latlng.lat, e.latlng.lng);
+
+        // Indicateur visuel
+        document.getElementById('lkp-status-dot').style.background = '#4ade80';
+        document.getElementById('lkp-status-dot').style.boxShadow  = '0 0 6px #4ade80';
+
+        vsdMarker.on('drag', () => {
+            const pos = vsdMarker.getLatLng();
+            updateDmsFieldsFromLatLng(pos.lat, pos.lng);
+            updateDrift();
+        });
+
         // Afficher la card pattern de recherche
         document.getElementById('searchCard').style.setProperty('display', 'block', 'important');
 
-        vsdMarker.on('drag', updateDrift);
         updateDrift();
         map.getContainer().style.cursor = '';
     });
@@ -1175,6 +1333,17 @@ function resetSarMission() {
     document.getElementById('timeDepart').value = timeStr;
 
     map.getContainer().style.cursor = '';
+
+    // Réinitialiser les champs GPS
+    ['lkp-lat-deg','lkp-lat-min','lkp-lat-sec','lkp-lon-deg','lkp-lon-min','lkp-lon-sec'].forEach(id => {
+        document.getElementById(id).value = '';
+    });
+    document.getElementById('lkp-lat-hem').value = 'N';
+    document.getElementById('lkp-lon-hem').value = 'W';
+    document.getElementById('lkp-decimal-display').textContent = '-- , --';
+    document.getElementById('lkp-decimal-display').style.color = '#64748b';
+    document.getElementById('lkp-status-dot').style.background = '#334155';
+    document.getElementById('lkp-status-dot').style.boxShadow  = 'none';
 
     // Masquer et réinitialiser la card pattern
     clearSearchPattern();
@@ -1221,47 +1390,129 @@ map.on('mouseout', function() {
     etaBadge.style.display = 'none';
 });
 
-// --- CONFIGURATION AIS OPENSEAMAP ---
+// ============================================================
+// AIS — AISStream.io WebSocket
+// ============================================================
+const AIS_API_KEY = '9a5cb754a648740650bbfee683c836ed89f13e6b';
 
-// 1. Définition de la couche (Layer) en variable globale
-// Cette couche récupère les tuiles transparentes contenant les navires et balises
-// --- INITIALISATION AIS ---
+let aisWS = null, aisShips = {}, aisMarkers = {}, aisMsgCount = 0, aisMsgTimer = null, aisActiveFilter = 'all';
+const AIS_PROXIMITY_NM = 0.5;
+const AIS_TYPES = {
+    cargo:    { color:'#64748b', label:'Cargo',    codes:[70,71,72,73,74,75,76,77,78,79] },
+    tanker:   { color:'#ef4444', label:'Tanker',   codes:[80,81,82,83,84,85,86,87,88,89] },
+    sailing:  { color:'#38bdf8', label:'Voile',    codes:[36,37] },
+    fishing:  { color:'#fbbf24', label:'Pêche',    codes:[30] },
+    passenger:{ color:'#a78bfa', label:'Passager', codes:[60,61,62,63,64,65,66,67,68,69] },
+    sar:      { color:'#f97316', label:'SAR',      codes:[51] },
+    other:    { color:'#475569', label:'Autre',    codes:[] },
+};
+function getShipType(t) { for(const[k,v] of Object.entries(AIS_TYPES)) if(v.codes.includes(t)) return{key:k,...v}; return{key:'other',...AIS_TYPES.other}; }
 
-// 1. Déclaration de la couche avec forçage de priorité (zIndex)
-// Variable globale pour la couche
-// Déclaration de la couche OpenSeaMap
-const aisLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-	zIndex: 1000, // On monte à 1000 pour être sûr de surplanter le fond OSM
-    opacity: 1,
-    pane: 'overlayPane' // Force l'affichage dans le panneau des superpositions
-});
+function toggleAISStream() { aisWS&&aisWS.readyState===WebSocket.OPEN ? disconnectAIS() : connectAIS(); }
 
-function toggleAISLayer() {
-    const checkbox = document.getElementById('toggle-ais');
-    const statusLight = document.getElementById('ais-status-light');
-
-    if (checkbox.checked) {
-        // Activation
-        aisLayer.addTo(map);
-        if (aisLayer.bringToFront) aisLayer.bringToFront();
-        
-        // On allume le voyant en VERT
-        statusLight.style.background = "#4caf50";
-        statusLight.style.boxShadow = "0 0 10px #4caf50, 0 0 20px rgba(76, 175, 80, 0.4)";
-        console.log("Flux AIS : Connecté");
-    } else {
-        // Désactivation
-        if (map.hasLayer(aisLayer)) {
-            map.removeLayer(aisLayer);
-        }
-        
-        // On éteint le voyant
-        statusLight.style.background = "#444";
-        statusLight.style.boxShadow = "none";
-        console.log("Flux AIS : Déconnecté");
-    }
+function connectAIS() {
+    const key = document.getElementById('ais-api-key').value.trim() || AIS_API_KEY;
+    setAISStatus('connecting');
+    aisWS = new WebSocket('wss://stream.aisstream.io/v0/stream');
+    aisWS.onopen = () => {
+        const b = map.getBounds();
+        aisWS.send(JSON.stringify({ APIkey:key, BoundingBoxes:[[[b.getSouth()-0.2,b.getWest()-0.2],[b.getNorth()+0.2,b.getEast()+0.2]]], FilterMessageTypes:["PositionReport","ShipStaticData"] }));
+        setAISStatus('connected');
+        map.on('moveend', resubscribeAIS);
+        aisMsgTimer = setInterval(() => { document.getElementById('ais-msg-rate').textContent=aisMsgCount; aisMsgCount=0; }, 60000);
+    };
+    aisWS.onmessage = e => { try { aisMsgCount++; handleAISMessage(JSON.parse(e.data)); } catch(err){} };
+    aisWS.onerror = () => setAISStatus('error');
+    aisWS.onclose = () => { setAISStatus('disconnected'); map.off('moveend',resubscribeAIS); clearInterval(aisMsgTimer); };
 }
+
+function disconnectAIS() {
+    if(aisWS){aisWS.close();aisWS=null;}
+    Object.values(aisMarkers).forEach(m=>map.removeLayer(m));
+    aisMarkers={}; aisShips={};
+    document.getElementById('ais-count').textContent='0';
+    document.getElementById('ais-closest').textContent='--';
+    document.getElementById('ais-ship-list').innerHTML='<div style="text-align:center;color:#334155;font-size:0.68rem;padding:16px 0;">Déconnecté</div>';
+    setAISStatus('disconnected');
+}
+
+function resubscribeAIS() {
+    if(!aisWS||aisWS.readyState!==WebSocket.OPEN) return;
+    const key=document.getElementById('ais-api-key').value.trim() || AIS_API_KEY, b=map.getBounds();
+    aisWS.send(JSON.stringify({APIkey:key,BoundingBoxes:[[[b.getSouth()-0.2,b.getWest()-0.2],[b.getNorth()+0.2,b.getEast()+0.2]]],FilterMessageTypes:["PositionReport","ShipStaticData"]}));
+}
+
+function handleAISMessage(msg) {
+    const mmsi=msg.MetaData?.MMSI; if(!mmsi) return;
+    if(!aisShips[mmsi]) aisShips[mmsi]={mmsi,name:'MMSI '+mmsi,type:0,lat:null,lng:null,sog:0,cog:0,lastSeen:null};
+    const ship=aisShips[mmsi]; ship.lastSeen=new Date();
+    if(msg.Message?.PositionReport){const p=msg.Message.PositionReport;ship.lat=p.Latitude;ship.lng=p.Longitude;ship.sog=p.Sog?.toFixed(1)||'0';ship.cog=Math.round(p.Cog||0);updateAISMarker(ship);}
+    if(msg.Message?.ShipStaticData){const s=msg.Message.ShipStaticData;ship.name=(s.Name||ship.name).trim();ship.type=s.Type||0;ship.dest=(s.Destination||'').trim();updateAISMarker(ship);}
+    updateAISPanel();
+}
+
+function updateAISMarker(ship) {
+    if(ship.lat===null) return;
+    const ti=getShipType(ship.type);
+    if(aisActiveFilter!=='all'&&ti.key!==aisActiveFilter){if(aisMarkers[ship.mmsi]){map.removeLayer(aisMarkers[ship.mmsi]);delete aisMarkers[ship.mmsi];}return;}
+    const icon=L.divIcon({className:'',html:`<div style="width:10px;height:10px;border-radius:50%;background:${ti.color};border:2px solid rgba(255,255,255,0.6);box-shadow:0 0 6px ${ti.color};transform:rotate(${ship.cog}deg);position:relative;"><div style="position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-bottom:5px solid ${ti.color};"></div></div>`,iconSize:[10,10],iconAnchor:[5,5]});
+    const popup=`<b>${ship.name}</b><br>${ti.label} • MMSI ${ship.mmsi}<br>${ship.sog} nds @ ${ship.cog}°${ship.dest?'<br>→ '+ship.dest:''}`;
+    if(aisMarkers[ship.mmsi]){aisMarkers[ship.mmsi].setLatLng([ship.lat,ship.lng]).setIcon(icon);aisMarkers[ship.mmsi].getPopup()?.setContent(popup);}
+    else{aisMarkers[ship.mmsi]=L.marker([ship.lat,ship.lng],{icon}).bindPopup(popup).addTo(map);}
+}
+
+function updateAISPanel() {
+    const stationPos=L.latLng(ports[document.getElementById('portSelector').value][0],ports[document.getElementById('portSelector').value][1]);
+    let ships=Object.values(aisShips).filter(s=>s.lat!==null);
+    if(aisActiveFilter!=='all') ships=ships.filter(s=>getShipType(s.type).key===aisActiveFilter);
+    ships.forEach(s=>s._dist=stationPos.distanceTo(L.latLng(s.lat,s.lng))/1852);
+    ships.sort((a,b)=>a._dist-b._dist);
+    document.getElementById('ais-count').textContent=Object.keys(aisShips).length;
+    if(ships.length){
+        document.getElementById('ais-closest').textContent=ships[0]._dist.toFixed(1)+' MN';
+        const alertEl=document.getElementById('ais-alert');
+        if(ships[0]._dist<AIS_PROXIMITY_NM){document.getElementById('ais-alert-msg').textContent=`${ships[0].name} à ${(ships[0]._dist*1852).toFixed(0)}m`;alertEl.classList.add('on');}
+        else alertEl.classList.remove('on');
+    }
+    const listEl=document.getElementById('ais-ship-list');
+    if(!ships.length){listEl.innerHTML='<div style="text-align:center;color:#334155;font-size:0.68rem;padding:12px 0;">Aucun navire pour le moment…</div>';return;}
+    listEl.innerHTML=ships.slice(0,12).map(s=>{
+        const t=getShipType(s.type),age=s.lastSeen?Math.round((Date.now()-s.lastSeen)/1000):'--';
+        return `<div class="ais-ship-item ${s._dist<1?'close':''}" onclick="map.setView([${s.lat},${s.lng}],14);aisMarkers[${s.mmsi}]?.openPopup();">
+            <div class="ais-dot" style="background:${t.color};box-shadow:0 0 5px ${t.color};"></div>
+            <div class="ais-sname">${s.name}</div>
+            <div class="ais-smeta"><b>${s._dist.toFixed(1)} MN</b><br>${s.sog} nds · ${age}s</div>
+        </div>`;
+    }).join('');
+}
+
+function aisFilter(type,btn) {
+    aisActiveFilter=type;
+    document.querySelectorAll('.ais-fbtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    Object.values(aisShips).forEach(s=>updateAISMarker(s));
+    updateAISPanel();
+}
+
+function setAISStatus(state) {
+    const light=document.getElementById('ais-status-light'),btn=document.getElementById('ais-connect-btn');
+    const s={connecting:{c:'#fbbf24',sh:'0 0 8px #fbbf24',t:'Connexion…',cl:''},connected:{c:'#10b981',sh:'0 0 10px #10b981',t:'Déconnecter',cl:'off'},disconnected:{c:'#1e3a2a',sh:'none',t:'Connecter',cl:''},error:{c:'#ef4444',sh:'0 0 8px #ef4444',t:'Réessayer',cl:''}}[state]||{c:'#1e3a2a',sh:'none',t:'Connecter',cl:''};
+    light.style.background=s.c; light.style.boxShadow=s.sh; btn.textContent=s.t; btn.className='ais-connect-btn '+s.cl;
+}
+
+setInterval(()=>{
+    const cut=Date.now()-600000;
+    Object.keys(aisShips).forEach(mmsi=>{if(aisShips[mmsi].lastSeen&&aisShips[mmsi].lastSeen<cut){if(aisMarkers[mmsi]){map.removeLayer(aisMarkers[mmsi]);delete aisMarkers[mmsi];}delete aisShips[mmsi];}});
+},60000);
+
+// Balisage OpenSeaMap (toggle séparé)
+let seamarkLayer = null;
+function toggleAISLayer() {
+    const cb=document.getElementById('toggle-ais');
+    if(!seamarkLayer) seamarkLayer=L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',{maxZoom:18,zIndex:1000,opacity:1});
+    cb.checked ? seamarkLayer.addTo(map) : (map.hasLayer(seamarkLayer)&&map.removeLayer(seamarkLayer));
+}
+
 
 // --- CONFIGURATION DES FONDS DE CARTE ---
 // voir au début du code script
@@ -1313,8 +1564,141 @@ function changeMapBase(type) {
 }
 
 // ============================================================
-// MOTEUR DE PATTERNS DE RECHERCHE SAR
+// SAISIE COORDONNÉES GPS LKP (Format DMS)
 // ============================================================
+
+/**
+ * Convertit les champs DMS en degrés décimaux et met à jour l'affichage
+ * Appelé à chaque frappe dans un champ GPS
+ */
+function onLkpInput() {
+    const latDeg = parseFloat(document.getElementById('lkp-lat-deg').value);
+    const latMin = parseFloat(document.getElementById('lkp-lat-min').value) || 0;
+    const latSec = parseFloat(document.getElementById('lkp-lat-sec').value) || 0;
+    const latHem = document.getElementById('lkp-lat-hem').value;
+
+    const lonDeg = parseFloat(document.getElementById('lkp-lon-deg').value);
+    const lonMin = parseFloat(document.getElementById('lkp-lon-min').value) || 0;
+    const lonSec = parseFloat(document.getElementById('lkp-lon-sec').value) || 0;
+    const lonHem = document.getElementById('lkp-lon-hem').value;
+
+    const display = document.getElementById('lkp-decimal-display');
+
+    // On n'affiche que si au moins degrés lat ET lon sont saisis
+    if (isNaN(latDeg) || isNaN(lonDeg)) {
+        display.textContent = '-- , --';
+        display.style.color = '#64748b';
+        return;
+    }
+
+    const lat = dmsToDecimal(latDeg, latMin, latSec, latHem);
+    const lon = dmsToDecimal(lonDeg, lonMin, lonSec, lonHem);
+
+    // Validation plage
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+        display.textContent = '⚠ Coordonnées invalides';
+        display.style.color = '#ef4444';
+        return;
+    }
+
+    display.textContent = `${lat.toFixed(5)}° , ${lon.toFixed(5)}°`;
+    display.style.color = '#4ade80';
+}
+
+/**
+ * Convertit DMS → degrés décimaux
+ */
+function dmsToDecimal(deg, min, sec, hem) {
+    const decimal = deg + (min / 60) + (sec / 3600);
+    return (hem === 'S' || hem === 'W') ? -decimal : decimal;
+}
+
+/**
+ * Valide les coordonnées DMS, place le marqueur LKP et lance le calcul
+ */
+function placeLkpFromGps() {
+    const latDeg = parseFloat(document.getElementById('lkp-lat-deg').value);
+    const latMin = parseFloat(document.getElementById('lkp-lat-min').value) || 0;
+    const latSec = parseFloat(document.getElementById('lkp-lat-sec').value) || 0;
+    const latHem = document.getElementById('lkp-lat-hem').value;
+
+    const lonDeg = parseFloat(document.getElementById('lkp-lon-deg').value);
+    const lonMin = parseFloat(document.getElementById('lkp-lon-min').value) || 0;
+    const lonSec = parseFloat(document.getElementById('lkp-lon-sec').value) || 0;
+    const lonHem = document.getElementById('lkp-lon-hem').value;
+
+    if (isNaN(latDeg) || isNaN(lonDeg)) {
+        alert('Veuillez saisir au minimum les degrés de latitude et longitude.');
+        return;
+    }
+
+    const lat = dmsToDecimal(latDeg, latMin, latSec, latHem);
+    const lon = dmsToDecimal(lonDeg, lonMin, lonSec, lonHem);
+
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+        alert('Coordonnées hors limites. Vérifiez la saisie.');
+        return;
+    }
+
+    const latlng = L.latLng(lat, lon);
+
+    // Place ou déplace le marqueur LKP
+    if (vsdMarker) map.removeLayer(vsdMarker);
+    vsdMarker = L.marker(latlng, { draggable: true })
+        .addTo(map)
+        .bindPopup(`<b>LKP (Dernière Position)</b><br><small>${latDeg}°${latMin}'${latSec}"${latHem} / ${lonDeg}°${lonMin}'${lonSec}"${lonHem}</small>`)
+        .openPopup();
+
+    vsdMarker.on('drag', () => {
+        // Quand on déplace manuellement, on met à jour les champs DMS
+        const pos = vsdMarker.getLatLng();
+        updateDmsFieldsFromLatLng(pos.lat, pos.lng);
+        updateDrift();
+    });
+
+    // Centrer la carte sur le LKP
+    map.setView(latlng, Math.max(map.getZoom(), 12));
+
+    // Indicateur visuel
+    document.getElementById('lkp-status-dot').style.background = '#4ade80';
+    document.getElementById('lkp-status-dot').style.boxShadow  = '0 0 6px #4ade80';
+
+    // Afficher la card pattern
+    document.getElementById('searchCard').style.setProperty('display', 'block', 'important');
+
+    updateDrift();
+}
+
+/**
+ * Met à jour les champs DMS depuis des coordonnées décimales
+ * (utilisé quand on déplace le marqueur à la main)
+ */
+function updateDmsFieldsFromLatLng(lat, lng) {
+    const toD = (decimal) => {
+        const abs  = Math.abs(decimal);
+        const deg  = Math.floor(abs);
+        const minF = (abs - deg) * 60;
+        const min  = Math.floor(minF);
+        const sec  = Math.round((minF - min) * 60);
+        return { deg, min, sec };
+    };
+
+    const latD = toD(lat), lonD = toD(lng);
+
+    document.getElementById('lkp-lat-deg').value = latD.deg;
+    document.getElementById('lkp-lat-min').value = latD.min;
+    document.getElementById('lkp-lat-sec').value = latD.sec;
+    document.getElementById('lkp-lat-hem').value  = lat >= 0 ? 'N' : 'S';
+
+    document.getElementById('lkp-lon-deg').value = lonD.deg;
+    document.getElementById('lkp-lon-min').value = lonD.min;
+    document.getElementById('lkp-lon-sec').value = lonD.sec;
+    document.getElementById('lkp-lon-hem').value  = lng >= 0 ? 'E' : 'W';
+
+    onLkpInput(); // Rafraîchit l'affichage décimal
+}
+
+
 
 let searchPatternLayers = [];
 let searchCircleLayer   = null;
@@ -1528,10 +1912,19 @@ function makeDraggable(el) {
 
 // Initialisation au chargement de la page
 window.addEventListener('DOMContentLoaded', () => {
-    // On rend toutes les cartes déplaçables
     document.querySelectorAll('.floating-card').forEach(card => {
         makeDraggable(card);
     });
+
+    // Détection édition manuelle du champ houle
+    const swellField = document.getElementById('swellDir');
+    if (swellField) {
+        swellField.addEventListener('input', () => {
+            swellField.dataset.manualEdit = 'true';
+            const label = document.getElementById('swell-auto-label');
+            if (label) { label.textContent = '✏ Saisie manuelle'; label.style.color = '#fbbf24'; }
+        });
+    }
 });
 
 </script>
