@@ -483,10 +483,17 @@
         <span><i class="fas fa-ship" style="margin-right:7px;"></i>TRAFIC AIS TEMPS RÉEL</span>
         <div id="ais-status-light" class="ais-status-light"></div>
     </h4>
-    <div class="ais-connect-row">
-        <input class="ais-api-input" type="password" id="ais-api-key" placeholder="Clé API AISStream.io…" autocomplete="off">
-        <button class="ais-connect-btn" id="ais-connect-btn" onclick="toggleAISStream()">Connecter</button>
-    </div>
+
+    <input type="hidden" id="ais-api-key" value="">
+
+    <label style="display:flex;align-items:center;justify-content:space-between;font-size:0.72rem;color:#94a3b8;margin-bottom:10px;cursor:pointer;">
+        <span>Flux AIS temps réel</span>
+        <div class="ios-switch">
+            <input type="checkbox" id="ais-connect-btn" onchange="toggleAISStream()">
+            <span class="ios-slider"></span>
+        </div>
+    </label>
+
     <div class="ais-alert" id="ais-alert">
         <i class="fas fa-exclamation-triangle"></i>
         <span id="ais-alert-msg">Navire proche !</span>
@@ -506,7 +513,7 @@
     <div class="ais-ship-list" id="ais-ship-list">
         <div style="text-align:center;color:#334155;font-size:0.68rem;padding:20px 0;">
             <i class="fas fa-satellite-dish" style="font-size:1.4rem;margin-bottom:6px;display:block;opacity:0.4;"></i>
-            Entrez votre clé API et connectez-vous
+            En attente de connexion…
         </div>
     </div>
     <label style="display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:#64748b;margin-bottom:8px;cursor:pointer;">
@@ -515,7 +522,7 @@
     </label>
     <div class="ais-footer">
         <i class="fas fa-info-circle" style="margin-right:4px;opacity:0.5;"></i>
-        Clé gratuite sur <b style="color:#64748b;">aisstream.io</b>
+        Flux temps réel via <b style="color:#64748b;">aisstream.io</b>
     </div>
 </div>
 
@@ -1408,7 +1415,10 @@ const AIS_TYPES = {
 };
 function getShipType(t) { for(const[k,v] of Object.entries(AIS_TYPES)) if(v.codes.includes(t)) return{key:k,...v}; return{key:'other',...AIS_TYPES.other}; }
 
-function toggleAISStream() { aisWS&&aisWS.readyState===WebSocket.OPEN ? disconnectAIS() : connectAIS(); }
+function toggleAISStream() {
+    const cb = document.getElementById('ais-connect-btn');
+    cb.checked ? connectAIS() : disconnectAIS();
+}
 
 function connectAIS() {
     const key = document.getElementById('ais-api-key').value.trim() || AIS_API_KEY;
@@ -1495,9 +1505,18 @@ function aisFilter(type,btn) {
 }
 
 function setAISStatus(state) {
-    const light=document.getElementById('ais-status-light'),btn=document.getElementById('ais-connect-btn');
-    const s={connecting:{c:'#fbbf24',sh:'0 0 8px #fbbf24',t:'Connexion…',cl:''},connected:{c:'#10b981',sh:'0 0 10px #10b981',t:'Déconnecter',cl:'off'},disconnected:{c:'#1e3a2a',sh:'none',t:'Connecter',cl:''},error:{c:'#ef4444',sh:'0 0 8px #ef4444',t:'Réessayer',cl:''}}[state]||{c:'#1e3a2a',sh:'none',t:'Connecter',cl:''};
-    light.style.background=s.c; light.style.boxShadow=s.sh; btn.textContent=s.t; btn.className='ais-connect-btn '+s.cl;
+    const light = document.getElementById('ais-status-light');
+    const cb = document.getElementById('ais-connect-btn');
+    const colors = {
+        connecting:   { c:'#fbbf24', sh:'0 0 8px #fbbf24',  checked:false },
+        connected:    { c:'#10b981', sh:'0 0 10px #10b981',  checked:true  },
+        disconnected: { c:'#1e3a2a', sh:'none',              checked:false },
+        error:        { c:'#ef4444', sh:'0 0 8px #ef4444',   checked:false },
+    };
+    const s = colors[state] || colors.disconnected;
+    light.style.background = s.c;
+    light.style.boxShadow  = s.sh;
+    cb.checked = s.checked;
 }
 
 setInterval(()=>{
