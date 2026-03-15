@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>SNSM - OPESAR V20 (Modulaire)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        #map { height: 100vh; width: 100%; position: absolute; z-index: 1; background: #0f172a; }
+        .floating-card {
+            position: absolute; z-index: 1000; background: rgba(15, 23, 42, 0.95);
+            color: white; border: 1px solid #334155; border-radius: 8px;
+            padding: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px); width: 280px;
+        }
+        .card-header { cursor: move; border-bottom: 1px solid #475569; margin-bottom: 8px; font-weight: bold; font-size: 0.85rem; display: flex; justify-content: space-between; }
+        input, select { background: #1e293b; border: 1px solid #475569; color: white; padding: 2px 5px; border-radius: 4px; font-size: 0.75rem; width: 100%; }
+        label { font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-top: 4px; display: block; }
+        .val-unit { color: #38bdf8; font-weight: bold; }
+    </style>
+</head>
+<body class="bg-slate-900 overflow-hidden">
+
+    <div id="map"></div>
+
+    <div id="weatherCard" class="floating-card" style="top: 10px; left: 10px;">
+        <div class="card-header">🌦️ MÉTÉO & LIVE <i id="weather-icon" class="fas fa-sun text-yellow-400"></i></div>
+        <div class="space-y-2">
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <div><label>Air</label><span id="val-temp" class="val-unit">--</span></div>
+                <div><label>Eau</label><span id="val-water" class="val-unit">--</span></div>
+                <div><label>Ciel</label><span id="val-cloud" class="val-unit">--</span></div>
+                <div><label>Houle</label><span id="val-swell" class="val-unit">--</span></div>
+            </div>
+            <iframe id="webcam-frame" class="w-full h-32 rounded border border-slate-700 bg-black" src=""></iframe>
+        </div>
+    </div>
+
+    <div id="tideCard" class="floating-card" style="bottom: 10px; left: 10px;">
+        <div class="card-header">🌊 MARÉES <span id="tide-level" class="text-blue-400 font-bold">-- m</span></div>
+        <div class="space-y-2">
+            <select id="portSelector" onchange="calculate()">
+                <option value="PortManec'h">Port Manec'h</option>
+                <option value="Concarneau">Concarneau</option>
+                <option value="BegMeil">Beg Meil</option>
+            </select>
+            <canvas id="tideChart" class="w-full h-20 bg-slate-800/50 rounded"></canvas>
+        </div>
+    </div>
+
+    <div id="mapTypeCard" class="floating-card" style="top: 10px; left: 300px; width: 180px;">
+        <div class="card-header">🗺️ CARTOGRAPHIE</div>
+        <div class="flex flex-col gap-1">
+            <button onclick="changeMapBase('shom')" class="text-left px-2 py-1 hover:bg-slate-700 rounded text-[11px] border border-slate-700">SHOM / Navionics</button>
+            <button onclick="changeMapBase('osm')" class="text-left px-2 py-1 hover:bg-slate-700 rounded text-[11px] border border-slate-700">OpenStreetMap</button>
+            <button onclick="changeMapBase('satellite')" class="text-left px-2 py-1 hover:bg-slate-700 rounded text-[11px] border border-slate-700">Satellite</button>
+        </div>
+        <div class="mt-2 pt-2 border-t border-slate-700">
+            <label class="flex items-center gap-2 cursor-pointer lowercase">
+                <input type="checkbox" id="toggleCoastalLines" onchange="toggleCoastalLayers(this.checked)" class="w-3"> Lignes de côte
+            </label>
+        </div>
+    </div>
+
+    <div id="sarCard" class="floating-card" style="top: 10px; right: 10px;">
+        <div class="card-header text-orange-400">🚨 CALCUL DÉRIVE (SAR)</div>
+        <div class="space-y-2">
+            <button onclick="startSarMission()" class="w-full bg-orange-600 p-2 rounded font-bold text-xs">POSER UN LKP</button>
+            <div class="grid grid-cols-2 gap-2">
+                <div><label>Heure LKP</label><input type="time" id="timeLKP" onchange="updateDrift()"></div>
+                <div><label>Vent (kts)</label><input type="number" id="wind-speed" value="15" onchange="updateDrift()"></div>
+            </div>
+            <div><label>Direction Vent (°)</label><input type="number" id="wind-direction" value="270" onchange="updateDrift()"></div>
+            
+            <div class="text-[10px] text-slate-400 mt-2">SAISIE MANUELLE DMS</div>
+            <div class="grid grid-cols-4 gap-1">
+                <input id="lkp-lat-deg" type="number" placeholder="D" oninput="onLkpInput()">
+                <input id="lkp-lat-min" type="number" placeholder="M" oninput="onLkpInput()">
+                <input id="lkp-lat-sec" type="number" placeholder="S" oninput="onLkpInput()">
+                <select id="lkp-lat-hem" onchange="onLkpInput()"><option value="N">N</option><option value="S">S</option></select>
+            </div>
+
+            <div class="bg-orange-950/20 p-2 rounded border border-orange-900/50 text-center mt-2">
+                <span class="text-[10px] block">DÉRIVE ESTIMÉE</span>
+                <span id="driftTotal" class="font-bold text-orange-400 text-lg">-- MN</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="navCard" class="floating-card" style="bottom: 10px; right: 10px; width: 220px;">
+        <div class="card-header text-blue-400">⚓ UNITÉ & NAV</div>
+        <div class="space-y-2">
+            <select id="shipSelector" onchange="calculate()">
+                <option value="nsh1">NSH1 (17.5m)</option>
+                <option value="nsc1" selected>NSC1 (12m)</option>
+                <option value="nsc4">NSC4 (Jet)</option>
+            </select>
+            <div class="flex justify-between text-xs">
+                <span>Vitesse réelle :</span> <span id="dashSpeed" class="font-bold text-blue-400">-- kts</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script src="data/flotte/fleet.js"></script>
+    
+    <script src="js/globals.js"></script>
+    <script src="js/map-engine.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/tide.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/ais.js"></script>
+    <script src="js/sar-engine.js"></script>
+    <script src="js/coastal.js"></script>
+    
+    <script src="js/config.js"></script>
+
+</body>
+</html>
