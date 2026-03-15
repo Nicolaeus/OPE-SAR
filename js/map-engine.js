@@ -30,6 +30,47 @@ async function loadBeachData() {
     }
 }
 
+/**
+ * ============================================================
+ * SECTION : GESTION DES COUCHES ET FONDS DE CARTE
+ * ============================================================
+ */
+
+function changeMapBase(type) {
+    Object.values(baseLayers).forEach(layer => {
+        if (map.hasLayer(layer)) map.removeLayer(layer);
+    });
+    
+    if (baseLayers[type]) {
+        baseLayers[type].addTo(map);
+    }
+    
+    if (typeof driftLine !== 'undefined' && driftLine && map.hasLayer(driftLine)) {
+        driftLine.bringToFront();
+    }
+    
+    if (typeof rangeCircle !== 'undefined' && rangeCircle && map.hasLayer(rangeCircle)) {
+        rangeCircle.bringToFront();
+    }
+    
+    if (typeof searchArea !== 'undefined' && searchArea && map.hasLayer(searchArea)) {
+        searchArea.bringToFront();
+    }
+
+    if (document.getElementById('toggle-ais') && document.getElementById('toggle-ais').checked) {
+        if (typeof aisLayer !== 'undefined' && aisLayer) {
+            aisLayer.addTo(map);
+        }
+    }
+}
+
+let seamarkLayer = null;
+function toggleAISLayer() {
+    const cb=document.getElementById('toggle-ais');
+    if(!seamarkLayer) seamarkLayer=L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',{maxZoom:18,zIndex:1000,opacity:1});
+    cb.checked ? seamarkLayer.addTo(map) : (map.hasLayer(seamarkLayer)&&map.removeLayer(seamarkLayer));
+}
+
 // --- CONFIGURATION DES FONDS DE CARTE ---
 // voir au début du code script
 
