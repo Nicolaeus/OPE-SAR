@@ -1,0 +1,25 @@
+{
+  "postes": [
+    {
+      "id": "kerleven",
+      "ville": "La Forêt-Fouesnant",
+      "plage": "Plage de Kerleven",
+      "coords": [47.8925, -3.9142],
+      "infrastructure": {
+        "type": "en dur",
+        "pieces": ["salle de soin", "salle de repos", "vigie", "salle de sport"]
+      },
+      "equipement": ["chaise haute", "planche de sauvetage", "irb", "jet ski"],
+      "zone_bain": {
+        "type": "Polygon",
+        "couleur": "#3b82f6",
+        "coordinates": [
+          [47.8930, -3.9160],
+          [47.8930, -3.9120],
+          [47.8915, -3.9120],
+          [47.8915, -3.9160]
+        ]
+      }
+    }
+  ]
+}
