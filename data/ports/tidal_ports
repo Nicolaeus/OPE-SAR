@@ -1,0 +1,58 @@
+{
+    "Concarneau": {
+        "datum": 2.53,
+        "constituents": [
+            { "name": "M2",  "freq": 28.9841042, "amp": 1.714, "phase": 108.4 },
+            { "name": "S2",  "freq": 30.0000000, "amp": 0.583, "phase": 141.2 },
+            { "name": "N2",  "freq": 28.4397295, "amp": 0.341, "phase": 88.1 },
+            { "name": "K1",  "freq": 15.0410686, "amp": 0.100, "phase": 221.3 },
+            { "name": "O1",  "freq": 13.9430356, "amp": 0.072, "phase": 198.7 },
+            { "name": "K2",  "freq": 30.0821373, "amp": 0.158, "phase": 141.8 },
+            { "name": "P1",  "freq": 14.9589314, "amp": 0.033, "phase": 220.1 },
+            { "name": "M4",  "freq": 57.9682084, "amp": 0.058, "phase": 32.1 },
+            { "name": "MS4", "freq": 58.9841042, "amp": 0.038, "phase": 78.4 }
+        ]
+    },
+    "PortManec'h": {
+        "datum": 2.48,
+        "constituents": [
+            { "name": "M2",  "freq": 28.9841042, "amp": 1.695, "phase": 110.2 },
+            { "name": "S2",  "freq": 30.0000000, "amp": 0.576, "phase": 143.1 },
+            { "name": "N2",  "freq": 28.4397295, "amp": 0.338, "phase": 90.0 },
+            { "name": "K1",  "freq": 15.0410686, "amp": 0.099, "phase": 222.0 },
+            { "name": "O1",  "freq": 13.9430356, "amp": 0.071, "phase": 199.5 },
+            { "name": "K2",  "freq": 30.0821373, "amp": 0.156, "phase": 143.0 },
+            { "name": "P1",  "freq": 14.9589314, "amp": 0.032, "phase": 221.0 },
+            { "name": "M4",  "freq": 57.9682084, "amp": 0.055, "phase": 34.0 },
+            { "name": "MS4", "freq": 58.9841042, "amp": 0.036, "phase": 80.0 }
+        ]
+    },
+    "BegMeil": {
+        "datum": 2.50,
+        "constituents": [
+            { "name": "M2",  "freq": 28.9841042, "amp": 1.705, "phase": 109.3 },
+            { "name": "S2",  "freq": 30.0000000, "amp": 0.579, "phase": 142.0 },
+            { "name": "N2",  "freq": 28.4397295, "amp": 0.339, "phase": 89.0 },
+            { "name": "K1",  "freq": 15.0410686, "amp": 0.099, "phase": 221.5 },
+            { "name": "O1",  "freq": 13.9430356, "amp": 0.071, "phase": 199.0 },
+            { "name": "K2",  "freq": 30.0821373, "amp": 0.157, "phase": 142.5 },
+            { "name": "P1",  "freq": 14.9589314, "amp": 0.032, "phase": 220.5 },
+            { "name": "M4",  "freq": 57.9682084, "amp": 0.056, "phase": 33.0 },
+            { "name": "MS4", "freq": 58.9841042, "amp": 0.037, "phase": 79.0 }
+        ]
+    },
+    "Doelan": {
+        "datum": 2.45,
+        "constituents": [
+            { "name": "M2",  "freq": 28.9841042, "amp": 1.680, "phase": 111.5 },
+            { "name": "S2",  "freq": 30.0000000, "amp": 0.570, "phase": 144.0 },
+            { "name": "N2",  "freq": 28.4397295, "amp": 0.335, "phase": 91.0 },
+            { "name": "K1",  "freq": 15.0410686, "amp": 0.098, "phase": 223.0 },
+            { "name": "O1",  "freq": 13.9430356, "amp": 0.070, "phase": 200.0 },
+            { "name": "K2",  "freq": 30.0821373, "amp": 0.155, "phase": 144.0 },
+            { "name": "P1",  "freq": 14.9589314, "amp": 0.032, "phase": 222.0 },
+            { "name": "M4",  "freq": 57.9682084, "amp": 0.054, "phase": 35.0 },
+            { "name": "MS4", "freq": 58.9841042, "amp": 0.035, "phase": 81.0 }
+        ]
+    }
+}
