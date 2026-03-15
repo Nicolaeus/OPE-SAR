@@ -123,6 +123,9 @@ function setDepartNow() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png').addTo(map);
 
+	// On ajoute le groupe de calques pour les lignes côtières sur la carte
+	coastalLinesGroup.addTo(map);
+
     async function loadLandData() {
         try {
             const res = await fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements.geojson');
@@ -186,6 +189,15 @@ async function getLiveWeather(lat, lng) {
         
     } catch (e) { console.warn("Météo API Error", e); }
 }
+
+// Écouteur pour charger les zones JSON quand on bouge la carte
+map.on('moveend', () => {
+    const toggle = document.getElementById('toggleCoastalLines');
+    if (toggle && toggle.checked) {
+        const center = map.getCenter();
+        updateCoastalLines(center.lat, center.lng);
+    }
+});
 
 /**
  * Gère le calcul et l'affichage des marées en 100% LOCAL
