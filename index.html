@@ -2143,5 +2143,12 @@ function toggleCoastalLayers(isEnabled) {
 }
 
 </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('PWA prête (Service Worker enregistré)'))
+      .catch(err => console.error('Erreur PWA:', err));
+  }
+</script>
 </body>
 </html>
