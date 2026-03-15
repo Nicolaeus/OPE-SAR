@@ -1,0 +1,5 @@
+[
+  { "vLimit": 60, "fuelMulti": 1.0 },
+  { "vLimit": 18, "fuelMulti": 1.3 },
+  { "vLimit": 10, "fuelMulti": 1.8 }
+]
