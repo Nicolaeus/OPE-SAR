@@ -1,0 +1,255 @@
+ /* --- 1. BASE & LAYOUT --- */
+    body { 
+        margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; 
+        display: flex; flex-direction: column; height: 100vh; 
+        background: #020617; overflow: hidden; 
+    }
+
+    #header { 
+        padding: 12px 25px; background: #0f172a; color: white; 
+        display: flex; justify-content: space-between; align-items: center; 
+        z-index: 3000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    #map-container { flex-grow: 1; position: relative; overflow: hidden; }
+    #map { width: 100%; height: 100%; background: #020617; z-index: 1; }
+
+    /* --- 2. ELEMENTS DE CONTROLE (HEADER) --- */
+    .controls-container { display: flex; gap: 15px; align-items: flex-end; }
+    .label { font-size: 0.65rem; text-transform: uppercase; color: #38bdf8; font-weight: bold; margin-bottom: 4px; }
+    select, .tow-label, input { 
+        height: 34px; padding: 0 10px; border-radius: 4px; border: 1px solid #334155; 
+        background: #1e293b; color: white; font-weight: 600; cursor: pointer; font-size: 0.85rem; 
+    }
+    .btn-group { display: flex; border-radius: 4px; overflow: hidden; border: 1px solid #334155; }
+    .sea-btn { height: 34px; padding: 0 12px; border: none; background: #1e293b; color: #94a3b8; font-weight: 600; cursor: pointer; }
+    .sea-btn.active { background: #0288d1; color: white; }
+
+	/* --- UI CHECKBOX REMORQUAGE --- */
+    .tow-control-group {display: flex;flex-direction: column;}
+
+    .tow-button-ui {display: flex;align-items: center;justify-content: center;height: 34px;padding: 0 12px;background: #1e293b; /* Même fond que les selects */border: 1px solid #334155;
+        border-radius: 4px;color: #94a3b8;font-size: 0.8rem;font-weight: 700;cursor: pointer;transition: all 0.2s;user-select: none;}
+
+    /* Changement de couleur quand coché */
+    .tow-button-ui:has(input:checked) {background: #f57c00; /* Orange alerte pour le remorquage */ color: white; border-color: #ff9800;}
+
+    .tow-button-ui input {margin-right: 8px;cursor: pointer;width: 15px;height: 15px;}
+
+
+    /* --- 3. STRUCTURE DES CARDS (ANTI-ÉTIREMENT & COMPACTE) --- */
+    .floating-card { 
+        position: absolute; 
+        width: 300px !important; /* Largeur identique pour Dashboard et Map Selector */
+        height: auto !important; 
+        min-height: 0 !important;
+        display: block !important;
+        background: rgba(15, 23, 42, 0.9);
+		color: #f1f5f9;
+        padding: 12px !important; 
+        border-radius: 8px; 
+        z-index: 2500; 
+        bottom: auto !important;
+        box-sizing: border-box;
+    }
+	
+    .floating-card h4 { 
+        cursor: move; 
+        user-select: none; 
+        margin: -10px -10px 6px -10px !important; 
+        background: rgba(255,255,255,0.05); 
+        padding: 8px 12px !important;
+        color: #38bdf8;
+        text-transform: uppercase; 
+        font-size: 0.8rem; 
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-top-left-radius: 8px; border-top-right-radius: 8px;
+        display: flex; align-items: center; gap: 8px;
+    }
+
+    /* --- 4. CARD METEO & MARÉES --- */
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; align-items: center; }
+    .weather-val { color: #81d4fa; font-weight: bold; }
+    .wind-arrow { display: inline-block !important; font-size: 1.6rem; color: #ef4444; transform-origin: center; transition: transform 0.8s ease-out; }
+    .status-up { background: rgba(2, 136, 209, 0.2); color: #81d4fa; border: 1px solid #0288d1; }
+    .status-down { background: rgba(251, 192, 45, 0.2); color: #fbc02d; border: 1px solid #fbc02d; }
+
+    /* --- 5. CARD DASHBOARD BATEAU  --- */
+    #dashShip { 
+        display: block !important; 
+        color: #00d2ff; font-weight: 800; text-transform: uppercase; 
+        font-size: 0.9rem; margin: 0 0 8px 0 !important; line-height: 1.2 !important; 
+    }
+    .dash-grid { display: grid !important; grid-template-columns: repeat(2, 1fr); gap: 6px !important; }
+    .dash-item { display: flex; flex-direction: column; background: rgba(255,255,255,0.05); padding: 6px 8px !important; border-radius: 4px; }
+    .dash-item b { color: #ffffff; }
+	
+	/* --- 6. CARD MARÉE  --- */
+	.tide-container-inline { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+	.tide-grid-inline { display: flex; gap: 6px; flex: 1; }
+	.tide-data-item { display: flex; flex: 1; flex-direction: column; align-items: center; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+	.tide-label-small { font-size: 0.6rem; text-transform: uppercase; color: #94a3b8; margin: 0; }
+	.tide-value { font-size: 0.95rem; font-weight: 800; color: #fbc02d; }
+	.tide-extremes { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.75rem; padding: 6px 4px 0 4px; border-top: 1px solid rgba(255,255,255,0.1); }
+	.tide-chart-container { position: relative; height: 65px; margin-top: 10px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+	.tide-status-overlay { position: absolute; top: 5px; left: 5px; padding: 2px 8px; border-radius: 3px; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; z-index: 10; pointer-events: none; backdrop-filter: blur(2px); }
+
+	/* --- 7. CARD TRAFIC MARITIME --- */
+	.ais-card { width: 300px; background: rgba(15, 23, 42, 0.95) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; border-left: 4px solid #10b981 !important; border-radius: 10px; padding: 12px !important; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+	.ais-card h4 { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(90deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.05) 100%); margin: -12px -12px 15px -12px !important; padding: 10px 15px !important; border-bottom: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 10px 10px 0 0; letter-spacing: 1px; }
+	.ais-status-light { width: 8px; height: 8px; background: #064e3b; border-radius: 50%; transition: all 0.4s ease; border: 1px solid rgba(0,0,0,0.5); }
+	.ais-card:has(#toggle-ais:checked) .ais-status-light { background: #10b981; box-shadow: 0 0 12px #10b981, 0 0 4px rgba(255,255,255,0.5); }
+	.ais-toggle-label { display: flex; align-items: center; justify-content: space-between; color: #94a3b8; font-size: 0.8rem; cursor: pointer; background: rgba(255, 255, 255, 0.02); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.2s ease; margin-bottom: 12px; }
+	.ais-card:has(#toggle-ais:checked) .ais-toggle-label { color: #34d399; border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05); }
+	.ios-switch { position: relative; width: 36px; height: 20px; flex-shrink: 0; order: -1; }
+	.ios-switch input { opacity: 0; width: 0; height: 0; }
+	.ios-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #1e293b; transition: .3s; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+	.ios-slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: #64748b; transition: .3s; border-radius: 50%; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2); }
+	input:checked + .ios-slider { background-color: rgba(16, 185, 129, 0.2); border-color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+	input:checked + .ios-slider:before { transform: translateX(16px); background-color: #34d399; box-shadow: 0 0 8px #10b981; }
+	.ais-footer { font-size: 0.65rem; color: #64748b; line-height: 1.4; padding: 8px 10px; background: rgba(0, 0, 0, 0.2); border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: flex-start; gap: 8px; }
+	
+	.ais-connect-row { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+	.ais-api-input { flex:1; background:rgba(30,41,59,0.9); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:7px 10px; color:#e2e8f0; font-size:0.7rem; font-family:'Courier New',monospace; outline:none; min-width:0; }
+	.ais-api-input::placeholder { color:#334155; }
+	.ais-connect-btn { background:#10b981; color:#fff; border:none; border-radius:6px; padding:7px 11px; font-size:0.7rem; font-weight:bold; cursor:pointer; white-space:nowrap; }
+	.ais-connect-btn.off { background:#ef4444; }
+	.ais-stats { display:flex; gap:5px; margin-bottom:9px; }
+	.ais-stat { flex:1; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:5px 6px; text-align:center; }
+	.ais-stat .sv { font-size:0.95rem; font-weight:bold; color:#34d399; }
+	.ais-stat .sl { font-size:0.56rem; color:#64748b; text-transform:uppercase; }
+	.ais-filter-row { display:flex; gap:4px; margin-bottom:8px; flex-wrap:wrap; }
+	.ais-fbtn { padding:3px 8px; border:1px solid rgba(255,255,255,0.1); border-radius:10px; background:rgba(30,41,59,0.6); color:#64748b; font-size:0.6rem; cursor:pointer; }
+	.ais-fbtn.active { background:rgba(16,185,129,0.2); color:#34d399; border-color:rgba(16,185,129,0.4); }
+	.ais-alert { display:none; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:6px; padding:7px 9px; font-size:0.7rem; color:#fca5a5; margin-bottom:8px; gap:6px; align-items:center; }
+	.ais-alert.on { display:flex; }
+	.ais-ship-list { max-height:190px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; margin-bottom:8px; }
+	.ais-ship-list::-webkit-scrollbar { width:3px; }
+	.ais-ship-list::-webkit-scrollbar-thumb { background:#334155; border-radius:2px; }
+	.ais-ship-item { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:6px 8px; cursor:pointer; display:flex; align-items:center; gap:7px; }
+	.ais-ship-item:hover { background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.3); }
+	.ais-ship-item.close { border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.04); }
+	.ais-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+	.ais-sname { font-size:0.73rem; font-weight:bold; color:#e2e8f0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+	.ais-smeta { font-size:0.6rem; color:#64748b; text-align:right; line-height:1.4; }
+	.ais-smeta b { color:#94a3b8; }
+	
+	/* --- Logic de repli pour la card AIS --- */
+	.ais-card {transition: max-height 0.4s ease, width 0.3s ease;max-height: 800px; /* Hauteur max quand dépliée */overflow: hidden;}
+
+	.ais-card.collapsed {max-height: 42px !important; /* Hauteur du header seul */}
+
+	/* Espacement du contenu interne */	
+	.ais-content-wrapper {padding-top: 15px;}
+
+	/* Animation de l'icône de flèche */
+	.ais-card .toggle-icon {transition: transform 0.3s ease;}
+
+	.ais-card.collapsed .toggle-icon {transform: rotate(-90deg);}
+
+	/* Pulsation sur le voyant si la card est fermée mais active (optionnel) */
+	.ais-card.collapsed:has(#toggle-ais:checked) .ais-status-light {animation: pulse-green 2s infinite;}
+
+	@keyframes pulse-green {
+		0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+		70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+		100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+	}
+
+    /* --- 8. CARD SELECTEUR DE MAP  --- */
+	.map-selector-card { transition: max-height 0.4s ease; max-height: 500px; overflow: hidden; background: rgba(15, 23, 42, 0.9) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; border-left: 4px solid #8b5cf6 !important; border-radius: 10px; padding: 12px !important; }
+	.map-selector-card.collapsed { max-height: 42px !important; }
+	.map-selector-card h4 { display: flex; align-items: center; justify-content: space-between; background: rgba(139, 92, 246, 0.15); margin: -12px -12px 0 -12px !important; padding: 10px 15px !important; border-bottom: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 10px 10px 0 0; letter-spacing: 1px; }
+	.map-content-wrapper { padding-top: 15px; } /* AJOUT DE L'ESPACE ICI */
+	.map-option { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; cursor: pointer; font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px; transition: all 0.2s ease; }
+	.map-option:hover { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #fff; }
+	.map-option input { appearance: none; -webkit-appearance: none; width: 34px; height: 18px; background: #334155; border-radius: 20px; position: relative; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; margin: 0 !important; }
+	.map-option input::before { content: ""; position: absolute; width: 14px; height: 14px; background: #64748b; border-radius: 50%; top: 1px; left: 1px; transition: 0.3s; }
+	.map-option input:checked { background: rgba(139, 92, 246, 0.4); border-color: #8b5cf6; }
+	.map-option input:checked::before { transform: translateX(16px); background: #a78bfa; box-shadow: 0 0 8px #8b5cf6; }
+	.map-option:has(input:checked) { background: rgba(139, 92, 246, 0.05); color: #a78bfa; border-color: rgba(139, 92, 246, 0.2); }
+	.map-badge { background: rgba(167, 139, 250, 0.15); color: #a78bfa; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; border: 1px solid rgba(167, 139, 250, 0.3); font-weight: bold; margin-right: 8px; }
+	.map-selector-card.collapsed .toggle-icon { animation: pulse-purple 2s infinite; border-radius: 50%; background: rgba(139, 92, 246, 0.2); }
+	@keyframes pulse-purple { 0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(139, 92, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); } }
+
+		/* --- 9. CARD SAR  --- */
+	.sar-card { width: 320px; background: rgba(15, 23, 42, 0.95) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; border-left: 4px solid #ef4444 !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important; border-radius: 8px; overflow: hidden; }
+	.sar-card h4 { display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.15); margin: -12px -12px 15px -12px !important; padding: 12px !important; border-bottom: 1px solid rgba(239, 68, 68, 0.2); color: #f87171; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; }
+	.sar-card .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; color: #cbd5e1; font-size: 0.8rem; }
+	.sar-card input, .sar-card select { background: rgba(30, 41, 59, 0.7) !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: white !important; border-radius: 4px; padding: 4px 8px; outline: none; }
+	.sar-card input:focus { border-color: #ef4444 !important; background: rgba(30, 41, 59, 1) !important; }
+	.sar-card hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 12px 0; }
+	.sar-card #sar-eta { background: rgba(255, 243, 224, 0.1); border: 1px solid rgba(255, 243, 224, 0.2); padding: 10px; border-radius: 6px; }
+	.btn-sar-main { width: 100%; background: #d32f2f !important; color: white !important; border: none !important; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; box-shadow: 0 4px 0 #9a1a1a; }
+	.btn-sar-main:hover { background: #ef4444 !important; }
+	.btn-sar-main:active { transform: translateY(2px); box-shadow: 0 2px 0 #9a1a1a; }
+	input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+	input[type=number] { -moz-appearance: textfield; }
+	.sar-input-stack { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+	.sar-input-group { display: flex; align-items: center; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px; padding: 0 8px; height: 32px; transition: all 0.2s ease; width: 110px; }
+	.sar-input-group:focus-within { border-color: #ef4444; background: rgba(15, 23, 42, 0.9); box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+	.sar-input-group input { background: transparent !important; border: none !important; color: #fff !important; font-family: 'Courier New', monospace; font-weight: bold; width: 100%; text-align: center; outline: none !important; font-size: 0.9rem; margin: 0 !important; }
+	.sar-input-group .unit { color: #64748b; font-size: 0.7rem; min-width: 25px; text-align: right; font-weight: bold; }
+	.sar-btn-small { border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.65rem; font-weight: bold; transition: 0.2s; height: 32px; }
+
+	/* --- 9. CARD SAR : Alignement Heures & Boutons --- */
+	.sar-time-row { display: flex; align-items: center; justify-content: flex-end; gap: 6px; width: 100%; }
+	.sar-btn-small { border: none; padding: 0 8px; border-radius: 4px; cursor: pointer; font-size: 0.65rem; font-weight: bold; transition: 0.2s; height: 32px; display: flex; align-items: center; justify-content: center; min-width: 45px; }
+	.sar-input-group { display: flex; align-items: center; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 4px; padding: 0 8px; height: 32px; transition: all 0.2s ease; width: 110px; box-sizing: border-box; }
+	.sar-input-group input[type="time"] { background: transparent !important; border: none !important; color: #fff !important; font-family: 'Courier New', monospace; font-weight: bold; width: 100%; text-align: center; outline: none !important; font-size: 0.9rem; padding: 0 !important; margin: 0 !important; cursor: pointer; }
+
+	/* --- 10. COMPASS VECTOR VISUALIZER (Nettoyé) --- */
+	.compass-card { 
+		position: fixed !important; bottom: 30px !important; right: 30px !important; 
+		width: 140px !important; height: 140px !important; 
+		background: rgba(15, 23, 42, 0.6) !important; border: 2px solid rgba(255, 255, 255, 0.2) !important; 
+		border-radius: 50% !important; display: flex !important; align-items: center; justify-content: center; 
+		z-index: 10000 !important; backdrop-filter: blur(5px); overflow: visible !important; 
+		cursor: move; pointer-events: auto !important; 
+	}
+	.compass-ring { position: absolute; width: 90%; height: 90%; border: 1px dashed rgba(255, 255, 255, 0.3); border-radius: 50%; top: 5%; left: 5%; }
+	.compass-axis { position: absolute; color: #fff; font-size: 0.7rem; font-weight: bold; opacity: 0.8; z-index: 5; }
+	.vector-line { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; border-radius: 10px; transition: all 0.5s ease; }
+	.v-wind { background: #0288d1; width: 2px; }
+	.v-current { background: #4caf50; width: 2px; }
+	.v-result { background: #ef4444; width: 3px; box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+	
+	/* Bouton Reset Nord au centre du compas */
+	.compass-reset-north { position: absolute; width: 30px; height: 30px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: white; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; transition: all 0.2s; } 
+	.compass-reset-north:hover { background: #ef4444; transform: scale(1.1); border-color: white; }
+
+    /* --- 11. CARD PATTERN DE RECHERCHE --- */
+    .search-card { width: 300px; background: rgba(15, 23, 42, 0.95) !important; border: 1px solid rgba(255,255,255,0.1) !important; border-left: 4px solid #f59e0b !important; border-radius: 8px; }
+    .search-card h4 { display: flex; align-items: center; justify-content: space-between; background: rgba(245, 158, 11, 0.15); margin: -12px -12px 12px -12px !important; padding: 10px 12px !important; border-bottom: 1px solid rgba(245, 158, 11, 0.25); color: #fbbf24; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; cursor: move; border-radius: 8px 8px 0 0; }
+    .search-card .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: #cbd5e1; font-size: 0.8rem; }
+    .search-card select, .search-card input { background: rgba(30,41,59,0.7) !important; border: 1px solid rgba(255,255,255,0.15) !important; color: white !important; border-radius: 4px; padding: 4px 8px; outline: none; }
+    .search-card hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0; }
+    .pattern-btn { flex: 1; padding: 6px 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(30,41,59,0.6); color: #94a3b8; font-size: 0.65rem; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; text-align: center; }
+    .pattern-btn.active { background: rgba(245,158,11,0.25); color: #fbbf24; border-color: #f59e0b; }
+    .pattern-btn:hover { background: rgba(245,158,11,0.15); color: #fde68a; }
+    .search-stat-box { display: flex; gap: 6px; margin-top: 10px; }
+    .search-stat-item { flex: 1; background: rgba(255,255,255,0.05); border-radius: 4px; padding: 6px 8px; display: flex; flex-direction: column; align-items: center; }
+    .search-stat-item .lbl { font-size: 0.6rem; text-transform: uppercase; color: #94a3b8; }
+    .search-stat-item .val { font-size: 0.9rem; font-weight: bold; color: #fbbf24; }
+    .btn-search-launch { width: 100%; background: #b45309 !important; color: white !important; border: none !important; padding: 9px; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; transition: 0.2s; margin-top: 10px; box-shadow: 0 3px 0 #78350f; }
+    .btn-search-launch:hover { background: #d97706 !important; }
+    .btn-search-launch:active { transform: translateY(2px); box-shadow: 0 1px 0 #78350f; }
+    .btn-search-clear { width: 100%; background: transparent !important; color: #64748b !important; border: 1px solid #334155 !important; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 0.72rem; transition: 0.2s; margin-top: 6px; }
+    .btn-search-clear:hover { color: #ef4444 !important; border-color: #ef4444 !important; }
+    .search-input-group { display: flex; align-items: center; background: rgba(30,41,59,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 0 8px; height: 30px; width: 95px; box-sizing: border-box; }
+    .search-input-group input { background: transparent !important; border: none !important; color: #fff !important; font-family: 'Courier New', monospace; font-weight: bold; width: 100%; text-align: center; outline: none !important; font-size: 0.85rem; }
+    .search-input-group .unit { color: #64748b; font-size: 0.65rem; min-width: 22px; text-align: right; }
+
+    /* --- 12. POSITIONS INITIALES (ANCLES SUR LE TOP) --- */
+    .sar-card { top: 20px; left: 20px; border-left: 6px solid #d32f2f; }
+    .ais-card { top: 280px; left: calc(100vw - 640px); border-left: 4px solid #4caf50; }
+    .weather-card { top: 20px; right: 20px; border-left: 6px solid #0288d1; }
+    .tide-card { top: 460px; right: 20px; border-left: 6px solid #fbc02d; }
+    .search-card { top: 20px; left: 360px; display: none !important; }
+	
+    /* Éléments du bas : on utilise top avec calc ou vh pour éviter bottom */
+    .dashboard { top: 20px; left: calc(100vw - 640px); border-left: 4px solid #00d2ff;}
+    .map-selector-card { top: 220px; left: calc(100vw - 640px); border-left: 4px solid #8b5cf6; }
+	
+	
