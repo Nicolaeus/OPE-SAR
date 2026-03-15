@@ -477,6 +477,10 @@ function renderTideChart(points, currentH) {
     });
 
     map.panTo(coords);
+	const toggle = document.getElementById('toggleCoastalLines');
+    if (toggle && toggle.checked) {
+        updateCoastalLines(coords[0], coords[1]);
+    }
     updateDrift();
 }
 
