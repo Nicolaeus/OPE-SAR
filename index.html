@@ -1,110 +1,505 @@
+<?php
+/**
+ * Projet : Système de Mission Nautique 
+ * Version : V20.0.0
+ */
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>SNSM - OPESAR V20 (Modulaire)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+	<meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>OPESAR V20.0.0</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <style>
-        #map { height: 100vh; width: 100%; position: absolute; z-index: 1; background: #0f172a; }
-        .floating-card {
-            position: absolute; z-index: 1000; background: rgba(15, 23, 42, 0.95);
-            color: white; border: 1px solid #334155; border-radius: 8px;
-            padding: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            backdrop-filter: blur(5px); width: 280px;
-        }
-        .card-header { cursor: move; border-bottom: 1px solid #475569; margin-bottom: 8px; font-weight: bold; font-size: 0.85rem; display: flex; justify-content: space-between; }
-        input, select { background: #1e293b; border: 1px solid #475569; color: white; padding: 2px 5px; border-radius: 4px; font-size: 0.75rem; width: 100%; }
-        label { font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-top: 4px; display: block; }
-        .val-unit { color: #38bdf8; font-weight: bold; }
-    </style>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="icon" type="image/svg+xml" href="assets/img/OPE-SAR_logo.svg">
 </head>
-<body class="bg-slate-900 overflow-hidden">
-
-    <div id="map"></div>
-
-    <div id="weatherCard" class="floating-card" style="top: 10px; left: 10px;">
-        <div class="card-header">🌦️ MÉTÉO & LIVE <i id="weather-icon" class="fas fa-sun text-yellow-400"></i></div>
-        <div class="space-y-2">
-            <div class="grid grid-cols-2 gap-2 text-xs">
-                <div><label>Air</label><span id="val-temp" class="val-unit">--</span></div>
-                <div><label>Eau</label><span id="val-water" class="val-unit">--</span></div>
-                <div><label>Ciel</label><span id="val-cloud" class="val-unit">--</span></div>
-                <div><label>Houle</label><span id="val-swell" class="val-unit">--</span></div>
-            </div>
-            <iframe id="webcam-frame" class="w-full h-32 rounded border border-slate-700 bg-black" src=""></iframe>
-        </div>
-    </div>
-
-    <div id="tideCard" class="floating-card" style="bottom: 10px; left: 10px;">
-        <div class="card-header">🌊 MARÉES <span id="tide-level" class="text-blue-400 font-bold">-- m</span></div>
-        <div class="space-y-2">
-            <select id="portSelector" onchange="calculate()">
-                <option value="PortManec'h">Port Manec'h</option>
-                <option value="Concarneau">Concarneau</option>
-                <option value="BegMeil">Beg Meil</option>
-            </select>
-            <canvas id="tideChart" class="w-full h-20 bg-slate-800/50 rounded"></canvas>
-        </div>
-    </div>
-
-    <div id="mapTypeCard" class="floating-card" style="top: 10px; left: 300px; width: 180px;">
-        <div class="card-header">🗺️ CARTOGRAPHIE</div>
-        <div class="flex flex-col gap-1">
-            <button onclick="changeMapBase('shom')" class="text-left px-2 py-1 hover:bg-slate-700 rounded text-[11px] border border-slate-700">SHOM / Navionics</button>
-            <button onclick="changeMapBase('osm')" class="text-left px-2 py-1 hover:bg-slate-700 rounded text-[11px] border border-slate-700">OpenStreetMap</button>
-            <button onclick="changeMapBase('satellite')" class="text-left px-2 py-1 hover:bg-slate-700 rounded text-[11px] border border-slate-700">Satellite</button>
-        </div>
-        <div class="mt-2 pt-2 border-t border-slate-700">
-            <label class="flex items-center gap-2 cursor-pointer lowercase">
-                <input type="checkbox" id="toggleCoastalLines" onchange="toggleCoastalLayers(this.checked)" class="w-3"> Lignes de côte
-            </label>
-        </div>
-    </div>
-
-    <div id="sarCard" class="floating-card" style="top: 10px; right: 10px;">
-        <div class="card-header text-orange-400">🚨 CALCUL DÉRIVE (SAR)</div>
-        <div class="space-y-2">
-            <button onclick="startSarMission()" class="w-full bg-orange-600 p-2 rounded font-bold text-xs">POSER UN LKP</button>
-            <div class="grid grid-cols-2 gap-2">
-                <div><label>Heure LKP</label><input type="time" id="timeLKP" onchange="updateDrift()"></div>
-                <div><label>Vent (kts)</label><input type="number" id="wind-speed" value="15" onchange="updateDrift()"></div>
-            </div>
-            <div><label>Direction Vent (°)</label><input type="number" id="wind-direction" value="270" onchange="updateDrift()"></div>
-            
-            <div class="text-[10px] text-slate-400 mt-2">SAISIE MANUELLE DMS</div>
-            <div class="grid grid-cols-4 gap-1">
-                <input id="lkp-lat-deg" type="number" placeholder="D" oninput="onLkpInput()">
-                <input id="lkp-lat-min" type="number" placeholder="M" oninput="onLkpInput()">
-                <input id="lkp-lat-sec" type="number" placeholder="S" oninput="onLkpInput()">
-                <select id="lkp-lat-hem" onchange="onLkpInput()"><option value="N">N</option><option value="S">S</option></select>
-            </div>
-
-            <div class="bg-orange-950/20 p-2 rounded border border-orange-900/50 text-center mt-2">
-                <span class="text-[10px] block">DÉRIVE ESTIMÉE</span>
-                <span id="driftTotal" class="font-bold text-orange-400 text-lg">-- MN</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="navCard" class="floating-card" style="bottom: 10px; right: 10px; width: 220px;">
-        <div class="card-header text-blue-400">⚓ UNITÉ & NAV</div>
-        <div class="space-y-2">
+<body>
+	
+<!-- header --> <!-- à remplacer par une card ou un menu puis sous menu -->
+<div id="header">
+    <img src="assets/images/logo.svg" alt="Logo SNSM" style="height: 40px; width: auto;">
+    <div style="font-weight: 900; letter-spacing: 1px;">OPESAR V20.0.0</div>
+    <div class="controls-container">
+        <div class="control-group">
+            <div class="label">Canot de sauvetage</div>
             <select id="shipSelector" onchange="calculate()">
                 <option value="nsh1">NSH1 (17.5m)</option>
-                <option value="nsc1" selected>NSC1 (12m)</option>
+                <option value="nsh2">NSH2 (14.5m)</option>
+                <option value="nsc1">NSC1 (12m)</option>
+                <option value="nsc2">NSC2 (8.5m)</option>
+                <option value="nsc3" selected>NSC3 (6.4m)</option>
                 <option value="nsc4">NSC4 (Jet)</option>
             </select>
-            <div class="flex justify-between text-xs">
-                <span>Vitesse réelle :</span> <span id="dashSpeed" class="font-bold text-blue-400">-- kts</span>
+        </div>
+        <div class="control-group">
+            <div class="label">Vitesse</div>
+            <select id="vSelector" onchange="calculate()">
+                <option value="v5nds" selected>5 noeuds</option>
+                <option value="v10nds">10 noeuds</option>
+                <option value="v15nds">15 noeuds</option>
+                <option value="v20nds">20 noeuds</option>
+                <option value="v25nds">25 noeuds</option>
+                <option value="v30nds">30 noeuds</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <div class="label">Station SNSM</div>
+            <select id="portSelector" onchange="calculate()">
+                <option value="PortManec'h" selected>Port Manec'h</option>
+                <option value="Concarneau">Concarneau</option>
+                <option value="BegMeil">Beg Meil</option>
+				<option value="Doelan">Doëlan</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <div class="label">État de la mer (simulé)</div>
+            <div class="btn-group">
+                <button class="sea-btn active" onclick="setSea(0, this)">BELLE</button>
+                <button class="sea-btn" onclick="setSea(1, this)">FORMÉE</button>
+                <button class="sea-btn" onclick="setSea(2, this)">FORTE</button>
+            </div>
+        </div>
+		<div class="control-group">
+			<div class="label">Visibilité</div>
+			<div class="btn-group">
+				<button id="btn-day" class="sea-btn active" onclick="setVis(true, this)">Jour</button>
+				<button id="btn-night" class="sea-btn" onclick="setVis(false, this)">Nuit</button>
+				<button id="btn-fog" class="sea-btn" onclick="setVis('fog', this)">Brouillard</button>
+			</div>
+		</div>
+        <div class="tow-control-group">
+			<div class="label">Statut</div>
+			<label class="tow-button-ui">
+				<input type="checkbox" id="towCheck" onchange="calculate()"> 
+				<i class="fas fa-anchor" style="margin-right:5px"></i> REMORQUAGE
+			</label>
+		</div>
+    </div>
+</div>
+<!-- affichage de la map -->
+<div id="map-container">
+    <div id="map"></div>
+	
+    <!-- ETA Point -->
+	<div id="eta-cursor-badge" style="
+    position: fixed; 
+    display: none; 
+    background: rgba(26, 35, 126, 0.9); 
+    color: white; 
+    padding: 5px 10px; 
+    border-radius: 4px; 
+    font-size: 12px; 
+    font-weight: bold; 
+    pointer-events: none; 
+    z-index: 10000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    border: 1px solid #ffca28;
+"></div>
+
+
+	<!-- CARD SAR -->
+    <div id="sarCard" class="floating-card sar-card collapsed">
+    <h4 onclick="this.closest('.floating-card').classList.toggle('collapsed')" title="Cliquer pour déplier la recherche SAR">
+        <span><i class="fas fa-life-ring" style="margin-right:8px;"></i>Calcul de Dérive (SAR)</span>
+        <button onclick="resetSarMission()" style="background:#ef4444; color:white; border:none; padding:2px 10px; border-radius:4px; font-size:0.65rem; font-weight:bold; cursor:pointer;">RAZ</button>
+    </h4>
+
+    <div class="sar-content">
+
+        <!-- ① TYPE DE CIBLE -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">① Cible</div>
+        <div class="stat-row" style="margin-bottom:12px;">
+            <span>Type :</span>
+            <select id="targetType" onchange="updateDrift()" style="width:170px;">
+                <option value="0.05">Plaisance (moteur)</option>
+                <option value="0.07">Voilier (mât debout)</option>
+                <option value="0.02">Canot de survie</option>
+                <option value="0.01">Homme à la mer</option>
+            </select>
+        </div>
+
+        <!-- ② POSITION GPS LKP -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">② Position LKP
+            <span id="lkp-status-dot" style="width:7px;height:7px;border-radius:50%;background:#334155;margin-left:6px;display:inline-block;vertical-align:middle;"></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:5px;">
+            <span style="font-size:0.7rem;color:#94a3b8;width:22px;text-align:right;">LAT</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lat-deg" placeholder="47" min="0" max="90" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">°</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lat-min" placeholder="48" min="0" max="59" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">'</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lat-sec" placeholder="04" min="0" max="59" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">"</span>
+            <select id="lkp-lat-hem" onchange="onLkpInput()" style="width:40px;height:30px;padding:0 3px;font-size:0.72rem;background:rgba(30,41,59,0.7);border:1px solid rgba(255,255,255,0.15);color:white;border-radius:4px;">
+                <option>N</option><option>S</option>
+            </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;">
+            <span style="font-size:0.7rem;color:#94a3b8;width:22px;text-align:right;">LON</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lon-deg" placeholder="003" min="0" max="180" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">°</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lon-min" placeholder="44" min="0" max="59" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">'</span>
+            <div class="sar-input-group" style="width:55px;"><input type="number" id="lkp-lon-sec" placeholder="34" min="0" max="59" oninput="onLkpInput()"></div>
+            <span style="color:#64748b;font-size:0.75rem;">"</span>
+            <select id="lkp-lon-hem" onchange="onLkpInput()" style="width:40px;height:30px;padding:0 3px;font-size:0.72rem;background:rgba(30,41,59,0.7);border:1px solid rgba(255,255,255,0.15);color:white;border-radius:4px;">
+                <option>W</option><option>E</option>
+            </select>
+        </div>
+        <div id="lkp-decimal-display" style="font-size:0.67rem;color:#64748b;text-align:center;margin-bottom:7px;font-family:'Courier New',monospace;">-- , --</div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+            <button class="btn-sar-main" onclick="placeLkpFromGps()" style="flex:2;padding:7px;">
+                <i class="fas fa-crosshairs" style="margin-right:5px;"></i> VALIDER LKP
+            </button>
+            <button onclick="startSarMission()" title="Clic sur la carte"
+                style="flex:1;background:rgba(30,41,59,0.8);color:#94a3b8;border:1px solid #334155;padding:7px;border-radius:6px;cursor:pointer;font-size:0.68rem;font-weight:bold;"
+                onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'">
+                <i class="fas fa-map-marker-alt"></i> CARTE
+            </button>
+        </div>
+
+        <!-- ③ HEURES -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">③ Heures</div>
+        <div class="stat-row" style="margin-bottom:6px;">
+            <span style="font-size:0.8rem;color:#cbd5e1;">Heure LKP :</span>
+            <div class="sar-input-group"><input type="time" id="timeLKP" onchange="updateDrift()"></div>
+        </div>
+        <div class="stat-row" style="margin-bottom:12px;">
+            <span style="font-size:0.8rem;color:#cbd5e1;">Départ :</span>
+            <div class="sar-time-row">
+                <button onclick="addTimeDepart(15)" class="sar-btn-small" style="background:#0288d1;color:white;">+15</button>
+                <button onclick="setDepartNow()" class="sar-btn-small" style="background:#2e7d32;color:white;">NOW</button>
+                <div class="sar-input-group"><input type="time" id="timeDepart" onchange="updateDrift()"></div>
+            </div>
+        </div>
+
+        <!-- ④ COURANT -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">④ Courant</div>
+        <div style="display:grid;grid-template-columns:auto auto 105px;gap:6px 8px;align-items:center;margin-bottom:12px;">
+            <span style="font-size:0.8rem;color:#fff;font-weight:bold;">Portant au</span>
+            <span style="font-size:0.75rem;color:#cbd5e1;text-align:right;">direction :</span>
+            <div class="sar-input-group"><input type="number" id="curDir" placeholder="000" onchange="updateDrift()"><span class="unit">°</span></div>
+            <span></span>
+            <span style="font-size:0.75rem;color:#cbd5e1;text-align:right;">vitesse :</span>
+            <div class="sar-input-group"><input type="number" id="curSpeed" placeholder="0.0" onchange="updateDrift()"><span class="unit">nds</span></div>
+        </div>
+
+        <!-- ⑤ HOULE -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:5px;letter-spacing:.5px;">⑤ Houle</div>
+        <div style="display:grid;grid-template-columns:auto auto 105px;gap:6px 8px;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.8rem;color:#fff;font-weight:bold;">Venant du</span>
+            <span style="font-size:0.75rem;color:#cbd5e1;text-align:right;">direction :</span>
+            <div class="sar-input-group">
+                <input type="number" id="swellDir" placeholder="---" onchange="updateDrift()">
+                <span class="unit">°</span>
+            </div>
+            <span id="swell-auto-label" style="font-size:0.6rem;color:#38bdf8;grid-column:1/4;margin-top:-3px;">↑ Auto météo — éditable</span>
+        </div>
+
+        <hr>
+
+        <!-- ⑥ DÉRIVE -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:6px;letter-spacing:.5px;">⑥ Dérive calculée</div>
+        <div class="stat-row" style="color:#ef4444;font-weight:bold;font-size:0.9rem;margin-bottom:4px;">
+            <span>Résultante :</span>
+            <span id="driftTotal">-- nds</span>
+        </div>
+
+        <hr>
+
+        <!-- ⑦ INTERCEPTION -->
+        <div style="font-size:0.62rem;text-transform:uppercase;color:#64748b;font-weight:bold;margin-bottom:8px;letter-spacing:.5px;">⑦ Interception</div>
+
+        <!-- Grille 2x2 des infos clés -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;padding:6px 8px;">
+                <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;">Temps</div>
+                <div id="val-eta-time" style="font-size:1rem;font-weight:bold;color:#ffb74d;">-- min</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;padding:6px 8px;">
+                <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;">Distance</div>
+                <div id="val-eta-dist" style="font-size:1rem;font-weight:bold;color:#ffb74d;">-- MN</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;padding:6px 8px;">
+                <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;">Cap direct</div>
+                <div id="val-eta-cap" style="font-size:1rem;font-weight:bold;color:#81d4fa;">--°</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;padding:6px 8px;">
+                <div style="font-size:0.6rem;color:#94a3b8;text-transform:uppercase;">Route</div>
+                <div id="val-eta-route" style="font-size:0.8rem;font-weight:bold;color:#4ade80;">DIRECTE</div>
+            </div>
+        </div>
+
+        <!-- Avertissement houle (masqué par défaut) -->
+        <div id="swell-warning" style="display:none;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:5px;padding:7px 9px;margin-bottom:8px;font-size:0.75rem;color:#fbbf24;">
+            <i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i>
+            <span id="swell-warning-text"></span>
+        </div>
+
+        <!-- Détail zigzag (masqué par défaut) -->
+        <div id="zigzag-detail" style="display:none;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:5px;padding:7px 9px;font-size:0.75rem;color:#a5b4fc;">
+            <div style="font-weight:bold;margin-bottom:3px;"><i class="fas fa-route" style="margin-right:4px;"></i>Route optimale houle</div>
+            <div id="zigzag-caps"></div>
+        </div>
+
+        <!-- ID caché pour compatibilité avec ancien code -->
+        <span id="val-eta" style="display:none;">--</span>
+
+    </div>
+</div>
+	
+<!-- AIS Card -->
+<div id="aisCard" class="floating-card ais-card collapsed">
+    <h4 onclick="this.closest('.aisCard').classList.toggle('collapsed')" title="Cliquer pour déplier le trafic AIS">
+        <span><i class="fas fa-ship" style="margin-right:7px;"></i>TRAFIC AIS TEMPS RÉEL</span>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div id="ais-status-light" class="ais-status-light"></div>
+            <i class="fas fa-chevron-down toggle-icon" style="font-size:0.7rem; opacity: 0.5;"></i>
+        </div>
+    </h4>
+
+    <div class="ais-content-wrapper">
+        <div class="ais-connect-row">
+            <input class="ais-api-input" type="password" id="ais-api-key" placeholder="Clé API AISStream.io…" autocomplete="off">
+            <button class="ais-connect-btn" id="ais-connect-btn" onclick="toggleAISStream()">Connecter</button>
+        </div>
+        
+        <div class="ais-alert" id="ais-alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="ais-alert-msg">Navire proche !</span>
+        </div>
+        
+        <div class="ais-stats">
+            <div class="ais-stat"><div class="sv" id="ais-count">0</div><div class="sl">Navires</div></div>
+            <div class="ais-stat"><div class="sv" id="ais-msg-rate">0</div><div class="sl">msg/min</div></div>
+            <div class="ais-stat"><div class="sv" id="ais-closest">--</div><div class="sl">Plus proche</div></div>
+        </div>
+        
+        <div class="ais-filter-row">
+            <button class="ais-fbtn active" onclick="aisFilter('all',this)">Tous</button>
+            <button class="ais-fbtn" onclick="aisFilter('cargo',this)">⬛ Cargo</button>
+            <button class="ais-fbtn" onclick="aisFilter('tanker',this)">🔴 Tanker</button>
+            <button class="ais-fbtn" onclick="aisFilter('sailing',this)">⛵ Voile</button>
+            <button class="ais-fbtn" onclick="aisFilter('fishing',this)">🎣 Pêche</button>
+        </div>
+        
+        <div class="ais-ship-list" id="ais-ship-list">
+            <div style="text-align:center;color:#334155;font-size:0.68rem;padding:20px 0;">
+                <i class="fas fa-satellite-dish" style="font-size:1.4rem;margin-bottom:6px;display:block;opacity:0.4;"></i>
+                Entrez votre clé API et connectez-vous
+            </div>
+        </div>
+        
+        <label style="display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:#64748b;margin-bottom:8px;cursor:pointer;">
+            <span>Balisage OpenSeaMap</span>
+            <div class="ios-switch"><input type="checkbox" id="toggle-ais" onchange="toggleAISLayer()"><span class="ios-slider"></span></div>
+        </label>
+        
+        <div class="ais-footer">
+            <i class="fas fa-info-circle" style="margin-right:4px;opacity:0.5;"></i>
+            Clé gratuite sur <b style="color:#64748b;">aisstream.io</b>
+        </div>
+    </div>
+</div>
+
+	<!-- Dashboard boat Card -->
+	<div id="dashboardCard" class="floating-card dashboard">
+	    <h4 style="margin:0; border:none;"><i class="fas fa-ship"></i> ÉTAT NAVIRE</h4>
+	    <div id="dashShip">--</div>
+	    <div class="dash-grid">
+	        <div class="dash-item"><span class="label">Vitesse</span><b id="dashSpeed">--</b></div>
+	        <div class="dash-item"><span class="label">Rayon</span><b id="dashRange">--</b></div>
+	        <div class="dash-item"><span class="label">Réservoir</span><b id="dashTank">--</b></div>
+	        <div class="dash-item highlight"><span class="label">Conso</span><b id="dashCons">--</b></div>
+	    </div>
+	</div>
+
+	<!-- Weather Card -->
+    <div id="weatherCard" class="floating-card weather-card">
+        <h4>Navigation</h4>
+        <div class="stat-row"><span>Couverture nuageuse :</span> <span class="weather-val" id="val-cloud">--</span></div>
+        <div class="stat-row"><span>Vent :</span> 
+            <div class="wind-box"><span class="weather-val" id="val-wind">--</span><span id="wind-dir-icon" class="wind-arrow">↑</span></div>
+        </div>
+        <div class="stat-row"><span>Houle :</span> <span class="weather-val" id="val-swell">--</span></div>
+        <div class="stat-row"><span>Temp. Air :</span> <span class="weather-val" id="val-temp-air">--</span></div>
+        <div class="stat-row"><span>Temp. Eau :</span> <span class="weather-val" id="val-water">--</span></div>
+		<div class="stat-row"><span>Pression :</span><span class="weather-val" id="val-pressure">-- hPa</span></div>
+        <iframe id="webcam-frame" src="" width="100%" height="150px" frameborder="0" style="margin-top:10px; border-radius:4px;"></iframe>
+    </div>
+
+	<!-- Tides Card -->
+    <div id="tideCard" class="floating-card tide-card collapsed">
+    <h4 onclick="this.closest('.floating-card').classList.toggle('collapsed')" title="Cliquer pour voir les marées">
+		<i class="fas fa-water"></i> Marées (Temps Réel)
+	</h4>
+
+    <div class="tide-container-inline">
+        <div class="tide-grid-inline">
+            <div class="tide-data-item">
+                <span class="tide-label-small">Coeff</span>
+                <span id="val-coeff" class="tide-value">--</span>
+            </div>
+            <div class="tide-data-item">
+                <span class="tide-label-small">Marnage</span>
+                <span id="val-marnage" class="tide-value">-- m</span>
+            </div>
+            <div class="tide-data-item">
+                <span class="tide-label-small">Hauteur</span>
+                <span id="val-cur-height" class="tide-value">-- m</span>
             </div>
         </div>
     </div>
 
+    <div class="tide-extremes">
+        <span><b style="color:#ef4444;">PM :</b> <span id="val-pm-time">--:--</span></span>
+        <span><b style="color:#38bdf8;">BM :</b> <span id="val-bm-time">--:--</span></span>
+    </div>
+
+    <div class="tide-chart-container">
+        <div id="tideTrend" class="tide-status-overlay status-up">Chargement...</div>
+        <canvas id="tideChart"></canvas>
+    </div>
+</div>
+
+	<!-- MapSelector Card -->
+<div id="mapSelectorCard" class="floating-card map-selector-card collapsed">
+    <h4 onclick="this.closest('.floating-card').classList.toggle('collapsed')" title="Cliquer pour déplier les options">
+        <span><i class="fas fa-layer-group" style="margin-right:8px;"></i>TYPE DE CARTE</span>
+        <span class="map-badge">Fonds: 3</span> <i class="fas fa-chevron-down toggle-icon" style="font-size:0.7rem; width:14px; height:14px; display:flex; align-items:center; justify-content:center;"></i>
+    </h4>
+    
+    <div class="map-content-wrapper">
+        <div class="map-options">
+            <label class="map-option">
+                <input type="radio" name="map-type" value="osm" checked onchange="changeMapBase(this.value)">
+                <span>OpenStreetMap + OpenSeaMap</span>
+            </label>
+            <label class="map-option">
+                <input type="radio" name="map-type" value="satellite" onchange="changeMapBase(this.value)">
+                <span>Satellite Hybride (ArcGIS)</span>
+            </label>
+			<label class="map-option">
+                <input type="radio" name="map-type" value="dark" onchange="changeMapBase(this.value)">
+                <span>Mode nuit</span>
+            </label>
+			<label class="map-option">
+				<div style="display:flex; align-items:center;">
+					<span class="map-badge" style="background: rgba(248, 113, 113, 0.15); color: #f87171; border-color: rgba(248, 113, 113, 0.3);">ZONES</span>
+					<span>Limites Côtières (300m/2MN)</span>
+				</div>
+				<input type="checkbox" id="toggleCoastalLines" onchange="toggleCoastalLayers(this.checked)">
+			</label>
+        </div>
+    </div>
+</div>
+
+<!-- CARD PATTERN DE RECHERCHE SAR (masquée jusqu'au placement du LKP) -->
+<div id="searchCard" class="floating-card search-card" style="display:none !important">
+    <h4>
+        <span><i class="fas fa-search" style="margin-right:8px;"></i>Pattern de Recherche</span>
+        <span id="search-status-dot" style="width:8px;height:8px;border-radius:50%;background:#334155;display:inline-block;"></span>
+    </h4>
+
+    <div class="stat-row" style="margin-bottom:8px;">
+        <span style="font-size:0.75rem;color:#94a3b8;">Basé sur le DATUM calculé</span>
+    </div>
+
+    <div style="display:flex;gap:4px;margin-bottom:10px;">
+        <button class="pattern-btn active" id="btn-expanding" onclick="selectPattern('expanding')">Carré</button>
+        <button class="pattern-btn" id="btn-creeping"  onclick="selectPattern('creeping')">Raquette</button>
+        <button class="pattern-btn" id="btn-sector"   onclick="selectPattern('sector')">Secteur</button>
+        <button class="pattern-btn" id="btn-parallel" onclick="selectPattern('parallel')">Parallèle</button>
+    </div>
+
+    <hr>
+
+    <div class="stat-row">
+        <span>Espacement (S) :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchSpacing" value="0.3" step="0.1" min="0.1" onchange="renderSearchPattern()">
+            <span class="unit">MN</span>
+        </div>
+    </div>
+
+    <div class="stat-row" id="row-sector-angle" style="display:none;">
+        <span>Angle secteur :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchSectorAngle" value="120" min="30" max="300" onchange="renderSearchPattern()">
+            <span class="unit">°</span>
+        </div>
+    </div>
+
+    <div class="stat-row" id="row-orientation" style="display:none;">
+        <span>Orientation :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchOrientation" value="0" min="0" max="360" onchange="renderSearchPattern()">
+            <span class="unit">°</span>
+        </div>
+    </div>
+
+    <div class="stat-row">
+        <span id="label-passes">Nombre de passes :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchPasses" value="4" min="1" max="12" onchange="renderSearchPattern()">
+            <span class="unit" id="unit-passes">n</span>
+        </div>
+    </div>
+
+    <div class="stat-row">
+        <span>Rayon incertitude :</span>
+        <div class="search-input-group">
+            <input type="number" id="searchUncertainty" value="0.5" step="0.1" min="0" onchange="renderSearchPattern()">
+            <span class="unit">MN</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="search-stat-box">
+        <div class="search-stat-item"><span class="lbl">Surface</span><span class="val" id="stat-surface">--</span></div>
+        <div class="search-stat-item"><span class="lbl">Distance</span><span class="val" id="stat-distance">--</span></div>
+        <div class="search-stat-item"><span class="lbl">Durée</span><span class="val" id="stat-duration">--</span></div>
+    </div>
+
+    <button class="btn-search-launch" onclick="renderSearchPattern()">
+        <i class="fas fa-route" style="margin-right:6px;"></i> GÉNÉRER LE PATTERN
+    </button>
+    <button class="btn-search-clear" onclick="clearSearchPattern()">Effacer le pattern</button>
+</div>
+
+	<!-- Compass Card -->
+<div id="compassCard" class="floating-card compass-card"  style="width: 200px; height: 200px;">
+    <div class="compass-ring"></div>
+    <span class="compass-axis" style="top: 5px;">N</span>
+    <span class="compass-axis" style="right: 8px;">E</span>
+    <span class="compass-axis" style="bottom: 5px;">S</span>
+    <span class="compass-axis" style="left: 8px;">W</span>
+    
+    <div id="vector-wind" class="vector-line" style="background:#0288d1; width:3px; position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; z-index: 5;"></div>
+    <div id="vector-current" class="vector-line" style="background:#4caf50; width:3px; position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; z-index: 5;"></div>
+    <div id="vector-result" class="vector-line" style="background:#ef4444; width:4px; position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; z-index: 10;"></div>
+    
+    <div onclick="resetMapNorth()" 
+         style="width: 24px; height: 24px; background: #fff; border-radius: 50%; z-index: 20; display: flex; align-items: center; justify-content: center; color: #0f172a; font-size: 12px; font-weight: bold; cursor: pointer; border: 2px solid #ef4444; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        N
+    </div>
+</div>
+
+	<!-- Close map container-->
+</div>
+	
+<!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+	<!-- <script src="js/coastal.js"></script>
+	<script src="js/app.js"></script> -->
+
     
     <script src="data/flotte/fleet.js"></script>
     
@@ -119,5 +514,15 @@
     
     <script src="js/config.js"></script>
 
+
+    
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('PWA prête (Service Worker enregistré)'))
+      .catch(err => console.error('Erreur PWA:', err));
+  }
+</script>
 </body>
 </html>
+
