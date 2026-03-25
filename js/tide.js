@@ -1,86 +1,63 @@
 /**
  * TIDE.JS
- * Calcul des marées par la méthode harmonique et affichage du graphique.
+ * Moteur de calcul des marées (Méthode Harmonique) et rendu graphique.
  */
 
 const J2000 = new Date('2000-01-01T12:00:00Z');
-let TIDAL_DATA = null;
 
 /**
- * Chargement initial des données de ports
- */
-async function loadTidalData() {
-    try {
-        const response = await fetch('data/ports/tidal_ports.json');
-        TIDAL_DATA = await response.json();
-        console.log("🌊 Données marégraphiques chargées.");
-        updateTide(); // Première exécution
-    } catch (e) {
-        console.error("Erreur chargement tidal_ports.json:", e);
-    }
-}
-
-/**
- * Calcul de la hauteur d'eau à une date précise
+ * Calcul de la hauteur d'eau à une date précise pour un port donné
+ * @param {Date} date - L'instant T
+ * @param {string} portKey - La clé du port (ex: 'PortManec\'h')
  */
 function tideAt(date, portKey) {
+    // Note : TIDAL_DATA doit être chargé ou présent dans globals.js
     if (!TIDAL_DATA || !TIDAL_DATA[portKey]) return 0;
     
     const port = TIDAL_DATA[portKey];
-    const t = (date - J2000) / 3600000; // Heures depuis J2000
-    let h = port.datum;
+    const t = (date - J2000) / 3600000; // Nombre d'heures depuis J2000
+    let h = port.datum; // Niveau moyen (Z0)
 
     // Somme des constituants harmoniques (M2, S2, N2, K1, O1)
+    // On reprend exactement tes formules de sommation cosinusoidale
     for (const c of port.constituents) {
         h += c.amp * Math.cos((c.freq * t - c.phase) * Math.PI / 180);
     }
 
-    // Ajout de la surcote météo (provenant de weather.js via window)
-    const surge = window.currentSurgeMeters || 0;
-    return Math.max(0, h + surge);
+    // Intégration de la surcote météo (window.currentSurgeMeters calculé dans weather.js)
+    return h + (window.currentSurgeMeters || 0);
 }
 
 /**
- * Mise à jour globale de l'UI Marée
+ * Mise à jour de l'affichage de la marée (Texte + Graphique)
  */
 function updateTide() {
     const portKey = document.getElementById('portSelector').value;
-    if (!TIDAL_DATA) {
-        loadTidalData();
-        return;
-    }
-
     const now = new Date();
+    
+    // 1. Calcul de la hauteur actuelle
     const currentH = tideAt(now, portKey);
-
-    // 1. Mise à jour des textes
-    const tideValEl = document.getElementById('tide-level');
-    if (tideValEl) {
-        tideValEl.innerText = currentH.toFixed(2) + " m";
-        // Petit indicateur visuel pour la surcote
-        if (window.currentSurgeMeters !== 0) {
-            tideValEl.title = `Inclut ${(window.currentSurgeMeters * 100).toFixed(0)}cm de surcote/décote`;
-        }
+    const tideDisplay = document.getElementById('val-tide');
+    if (tideDisplay) {
+        tideDisplay.innerText = currentH.toFixed(2) + " m";
     }
 
-    // 2. Calcul des extrêmes du jour (PM/BM) pour l'affichage
+    // 2. Génération des points pour le graphique (sur 24h)
     const points = [];
-    const baseDate = new Date(now);
-    baseDate.setHours(0, 0, 0, 0);
-
-    for (let i = 0; i <= 96; i++) { // Toutes les 15 min sur 24h
-        const d = new Date(baseDate.getTime() + i * 15 * 60000);
-        points.push(tideAt(d, portKey));
+    const startTime = new Date(now.getTime() - 6 * 3600000); // 6h avant
+    for (let i = 0; i <= 24; i++) {
+        const checkTime = new Date(startTime.getTime() + i * 3600000);
+        points.push(tideAt(checkTime, portKey));
     }
 
-    // 3. Rendu du graphique Canvas
-    drawTideChart(points, currentH);
+    renderTideChart(points);
 }
 
 /**
- * Dessin du graphique de marée
+ * Rendu du graphique sur le Canvas
+ * Reprise de ta logique de dessin 2D (Canvas API)
  */
-function drawTideChart(points, currentH) {
+function renderTideChart(points) {
     const canvas = document.getElementById('tideChart');
     if (!canvas) return;
     
@@ -98,7 +75,7 @@ function drawTideChart(points, currentH) {
     const getX = (i) => (i / (points.length - 1)) * w;
     const getY = (val) => (h - padding) - ((val - minVal) / range) * (h - 2 * padding);
 
-    // Dégradé de remplissage
+    // Dessin du dégradé (Zone sous la courbe)
     const grad = ctx.createLinearGradient(0, 0, 0, h);
     grad.addColorStop(0, 'rgba(2, 136, 209, 0.3)');
     grad.addColorStop(1, 'rgba(2, 136, 209, 0)');
@@ -110,23 +87,23 @@ function drawTideChart(points, currentH) {
     ctx.fillStyle = grad;
     ctx.fill();
 
-    // Ligne de courbe
+    // Dessin de la ligne de courbe principale
     ctx.beginPath();
-    points.forEach((v, i) => i === 0 ? ctx.moveTo(getX(i), getY(v)) : ctx.lineTo(getX(i), getY(v)));
+    ctx.setLineDash([]);
     ctx.strokeStyle = '#0288d1';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
+    points.forEach((v, i) => {
+        if (i === 0) ctx.moveTo(getX(i), getY(v));
+        else ctx.lineTo(getX(i), getY(v));
+    });
     ctx.stroke();
 
-    // Marqueur temps actuel
-    const now = new Date();
-    const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
-    const currentX = (minutesSinceMidnight / 1440) * w;
-
+    // Indicateur "Maintenant" (Ligne verticale rouge)
+    const nowX = getX(6); // Puisqu'on a commencé 6h avant, l'heure actuelle est à l'index 6
     ctx.beginPath();
     ctx.setLineDash([5, 5]);
-    ctx.moveTo(currentX, 0);
-    ctx.lineTo(currentX, h);
     ctx.strokeStyle = '#ef4444';
+    ctx.moveTo(nowX, 0);
+    ctx.lineTo(nowX, h);
     ctx.stroke();
-    ctx.setLineDash([]);
 }
