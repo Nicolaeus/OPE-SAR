@@ -102,7 +102,7 @@
 
 
 	<!-- CARD SAR -->
-    <div class="floating-card sar-card collapsed">
+    <div id="sarCard" class="floating-card sar-card collapsed">
     <h4 onclick="this.closest('.sar-card').classList.toggle('collapsed')" title="Cliquer pour déplier la recherche SAR">
         <span><i class="fas fa-life-ring" style="margin-right:8px;"></i>Calcul de Dérive (SAR)</span>
         <button onclick="resetSarMission()" style="background:#ef4444; color:white; border:none; padding:2px 10px; border-radius:4px; font-size:0.65rem; font-weight:bold; cursor:pointer;">RAZ</button>
@@ -306,18 +306,18 @@
 </div>
 
 
-<div class="floating-card dashboard">
-    <h4 style="margin:0; border:none;"><i class="fas fa-ship"></i> ÉTAT NAVIRE</h4>
-    <div id="dashShip">--</div>
-    <div class="dash-grid">
-        <div class="dash-item"><span class="label">Vitesse</span><b id="dashSpeed">--</b></div>
-        <div class="dash-item"><span class="label">Rayon</span><b id="dashRange">--</b></div>
-        <div class="dash-item"><span class="label">Réservoir</span><b id="dashTank">--</b></div>
-        <div class="dash-item highlight"><span class="label">Conso</span><b id="dashCons">--</b></div>
-    </div>
-</div>
+	<div id="dashboardCard" class="floating-card dashboard">
+	    <h4 style="margin:0; border:none;"><i class="fas fa-ship"></i> ÉTAT NAVIRE</h4>
+	    <div id="dashShip">--</div>
+	    <div class="dash-grid">
+	        <div class="dash-item"><span class="label">Vitesse</span><b id="dashSpeed">--</b></div>
+	        <div class="dash-item"><span class="label">Rayon</span><b id="dashRange">--</b></div>
+	        <div class="dash-item"><span class="label">Réservoir</span><b id="dashTank">--</b></div>
+	        <div class="dash-item highlight"><span class="label">Conso</span><b id="dashCons">--</b></div>
+	    </div>
+	</div>
 
-    <div class="floating-card weather-card">
+    <div id="weatherCard" class="floating-card weather-card">
         <h4>Navigation</h4>
         <div class="stat-row"><span>Couverture nuageuse :</span> <span class="weather-val" id="val-cloud">--</span></div>
         <div class="stat-row"><span>Vent :</span> 
@@ -393,7 +393,7 @@
 </div>
 
 <!-- CARD PATTERN DE RECHERCHE SAR (masquée jusqu'au placement du LKP) -->
-<div class="floating-card search-card" id="searchCard" style="display:none !important">
+<div id="searchCard" class="floating-card search-card" style="display:none !important">
     <h4>
         <span><i class="fas fa-search" style="margin-right:8px;"></i>Pattern de Recherche</span>
         <span id="search-status-dot" style="width:8px;height:8px;border-radius:50%;background:#334155;display:inline-block;"></span>
@@ -466,7 +466,7 @@
     <button class="btn-search-clear" onclick="clearSearchPattern()">Effacer le pattern</button>
 </div>
 
-<div class="floating-card compass-card" id="sar-compass" style="width: 200px; height: 200px;">
+<div id="compassCard" class="floating-card compass-card"  style="width: 200px; height: 200px;">
     <div class="compass-ring"></div>
     <span class="compass-axis" style="top: 5px;">N</span>
     <span class="compass-axis" style="right: 8px;">E</span>
