@@ -68,8 +68,8 @@
         display: flex; align-items: center; gap: 8px;
     }
 
-    /* --- 4. CARD METEO & MARÉES --- */
-	.tide-card{width:380px !important;}
+    /* --- 4. CARD METEO --- */
+	
     .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; align-items: center; }
     .weather-val { color: #81d4fa; font-weight: bold; }
     .wind-arrow { display: inline-block !important; font-size: 1.6rem; color: #ef4444; transform-origin: center; transition: transform 0.8s ease-out; }
@@ -87,6 +87,10 @@
     .dash-item b { color: #ffffff; }
 	
 	/* --- 6. CARD MARÉE  --- */
+	.tide-card.collapsed{max-height:50px;}
+	.tide-card.collapsed .sar-content{display:none;}
+	.tide-card.collapsed h4{animation:pulse-red 2s infinite;}@keyframes pulse-red{0%{box-shadow:0 0 0 0 rgba(239,68,68,0.4);}70%{box-shadow:0 0 0 6px rgba(239,68,68,0);}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}}
+
 	.tide-container-inline { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
 	.tide-grid-inline { display: flex; gap: 6px; flex: 1; }
 	.tide-data-item { display: flex; flex: 1; flex-direction: column; align-items: center; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
