@@ -175,3 +175,34 @@ function updateLkpFromDms() {
     updateDrift();
     calculate();
 }
+
+// À mettre à la fin de map-engine.js
+function dmsToDecimal(deg, min, sec, hem) {
+    let val = deg + min / 60 + sec / 3600;
+    return (hem === 'S' || hem === 'W') ? -val : val;
+}
+
+function updateLkpFromDms() {
+    const lat = dmsToDecimal(
+        parseInt(document.getElementById('latDeg').value) || 0,
+        parseInt(document.getElementById('latMin').value) || 0,
+        parseInt(document.getElementById('latSec').value) || 0,
+        document.getElementById('latHem').value
+    );
+    const lng = dmsToDecimal(
+        parseInt(document.getElementById('lngDeg').value) || 0,
+        parseInt(document.getElementById('lngMin').value) || 0,
+        parseInt(document.getElementById('lngSec').value) || 0,
+        document.getElementById('lngHem').value
+    );
+
+    const pos = L.latLng(lat, lng);
+    if (vsdMarker) {
+        vsdMarker.setLatLng(pos);
+    } else {
+        vsdMarker = L.marker(pos, { draggable: true }).addTo(map);
+    }
+    map.panTo(pos);
+    updateDrift();
+    calculate();
+}
