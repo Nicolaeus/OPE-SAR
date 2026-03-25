@@ -192,6 +192,10 @@
 	.sar-input-group input { background: transparent !important; border: none !important; color: #fff !important; font-family: 'Courier New', monospace; font-weight: bold; width: 100%; text-align: center; outline: none !important; font-size: 0.9rem; margin: 0 !important; }
 	.sar-input-group .unit { color: #64748b; font-size: 0.7rem; min-width: 25px; text-align: right; font-weight: bold; }
 	.sar-btn-small { border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.65rem; font-weight: bold; transition: 0.2s; height: 32px; }
+	.sar-card{transition:max-height 0.3s ease;max-height:2000px;overflow:hidden;}
+	.sar-card.collapsed{max-height:50px;}
+	.sar-card.collapsed .sar-content{display:none;}
+	.sar-card.collapsed h4{animation:pulse-red 2s infinite;}@keyframes pulse-red{0%{box-shadow:0 0 0 0 rgba(239,68,68,0.4);}70%{box-shadow:0 0 0 6px rgba(239,68,68,0);}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}}
 
 	/* --- 9. CARD SAR : Alignement Heures & Boutons --- */
 	.sar-time-row { display: flex; align-items: center; justify-content: flex-end; gap: 6px; width: 100%; }
