@@ -128,7 +128,28 @@ function drawExpandingSquare(startPos, spacing) {
         dist += spacing;
     }
 }
+function drawSectorSearch(startPos, spacing) {
+    const radius = spacing * 1852; // NM en mètres
+    let currentBearing = 0;
 
+    for (let i = 0; i < 3; i++) {
+        // Ligne vers l'extérieur
+        let p1 = calculateDestination(startPos, currentBearing, radius);
+        let l1 = L.polyline([startPos, p1], { color: '#fbbf24', weight: 3 }).addTo(map);
+        searchPatternLayers.push(l1);
+
+        // Ligne de traverse (120°)
+        let p2 = calculateDestination(p1, (currentBearing + 150) % 360, radius);
+        let l2 = L.polyline([p1, p2], { color: '#fbbf24', weight: 3 }).addTo(map);
+        searchPatternLayers.push(l2);
+
+        // Retour au centre
+        let l3 = L.polyline([p2, startPos], { color: '#fbbf24', weight: 3 }).addTo(map);
+        searchPatternLayers.push(l3);
+
+        currentBearing = (currentBearing + 120) % 360;
+    }
+}
 // ============================================================
 // SECTION 3 : COMMANDES DE MISSION
 // ============================================================
