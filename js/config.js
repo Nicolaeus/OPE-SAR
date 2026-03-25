@@ -6,6 +6,23 @@
 // ============================================================
 // SECTION 1 : INITIALISATION GÉNÉRALE
 // ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Allumage du moteur Leaflet
+    if (typeof initMap === 'function') initMap();
+
+    // 2. Fenêtres déplaçables
+    document.querySelectorAll('.floating-card').forEach(card => makeDraggable(card));
+
+    // 3. Premier calcul (après un micro-délai pour Leaflet)
+    setTimeout(() => {
+        if (typeof calculate === 'function') calculate();
+    }, 500);
+
+    // 4. Écouteurs pour la saisie manuelle de coordonnées
+    document.querySelectorAll('.dms-input').forEach(input => {
+        input.addEventListener('change', updateLkpFromDms);
+    });
+});
 
 window.addEventListener('DOMContentLoaded', async () => {
     console.log("⚓ Mission Nautique SAR : Initialisation...");
