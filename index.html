@@ -103,7 +103,7 @@
 
 	<!-- CARD SAR -->
     <div id="sarCard" class="floating-card sar-card collapsed">
-    <h4 onclick="this.closest('.sar-card').classList.toggle('collapsed')" title="Cliquer pour déplier la recherche SAR">
+    <h4 onclick="this.closest('.floating-card').classList.toggle('collapsed')" title="Cliquer pour déplier la recherche SAR">
         <span><i class="fas fa-life-ring" style="margin-right:8px;"></i>Calcul de Dérive (SAR)</span>
         <button onclick="resetSarMission()" style="background:#ef4444; color:white; border:none; padding:2px 10px; border-radius:4px; font-size:0.65rem; font-weight:bold; cursor:pointer;">RAZ</button>
     </h4>
@@ -253,7 +253,7 @@
 </div>
 
 <div id="aisCard" class="floating-card ais-card collapsed">
-    <h4 onclick="this.closest('.ais-card').classList.toggle('collapsed')" title="Cliquer pour déplier le trafic AIS">
+    <h4 onclick="this.closest('.aisCard').classList.toggle('collapsed')" title="Cliquer pour déplier le trafic AIS">
         <span><i class="fas fa-ship" style="margin-right:7px;"></i>TRAFIC AIS TEMPS RÉEL</span>
         <div style="display: flex; align-items: center; gap: 10px;">
             <div id="ais-status-light" class="ais-status-light"></div>
