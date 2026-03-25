@@ -175,7 +175,7 @@
 
 		/* --- 9. CARD SAR  --- */
 	.sar-card { width: 320px; background: rgba(15, 23, 42, 0.95) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; border-left: 4px solid #ef4444 !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important; border-radius: 8px; overflow: hidden; }
-	.sar-card h4 { display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.15); margin: -12px -12px 15px -12px !important; padding: 12px !important; border-bottom: 1px solid rgba(239, 68, 68, 0.2); color: #f87171; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; }
+	.sar-card h4 { cursor:pointer; display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.15); margin: -12px -12px 15px -12px !important; padding: 12px !important; border-bottom: 1px solid rgba(239, 68, 68, 0.2); color: #f87171; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; }
 	.sar-card .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; color: #cbd5e1; font-size: 0.8rem; }
 	.sar-card input, .sar-card select { background: rgba(30, 41, 59, 0.7) !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: white !important; border-radius: 4px; padding: 4px 8px; outline: none; }
 	.sar-card input:focus { border-color: #ef4444 !important; background: rgba(30, 41, 59, 1) !important; }
