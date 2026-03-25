@@ -69,6 +69,7 @@
     }
 
     /* --- 4. CARD METEO & MARÉES --- */
+	.tide-card{width:380px !important;}
     .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; align-items: center; }
     .weather-val { color: #81d4fa; font-weight: bold; }
     .wind-arrow { display: inline-block !important; font-size: 1.6rem; color: #ef4444; transform-origin: center; transition: transform 0.8s ease-out; }
