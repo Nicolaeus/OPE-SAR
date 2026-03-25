@@ -19,7 +19,8 @@
 	<link rel="icon" type="image/svg+xml" href="assets/img/OPE-SAR_logo.svg">
 </head>
 <body>
-
+	
+<!-- header --> <!-- à remplacer par une card ou un menu puis sous menu -->
 <div id="header">
     <img src="assets/images/logo.svg" alt="Logo SNSM" style="height: 40px; width: auto;">
     <div style="font-weight: 900; letter-spacing: 1px;">OPESAR V20.0.0</div>
@@ -80,7 +81,7 @@
 		</div>
     </div>
 </div>
-
+<!-- affichage de la map -->
 <div id="map-container">
     <div id="map"></div>
 	
@@ -251,7 +252,8 @@
 
     </div>
 </div>
-
+	
+<!-- AIS Card -->
 <div id="aisCard" class="floating-card ais-card collapsed">
     <h4 onclick="this.closest('.aisCard').classList.toggle('collapsed')" title="Cliquer pour déplier le trafic AIS">
         <span><i class="fas fa-ship" style="margin-right:7px;"></i>TRAFIC AIS TEMPS RÉEL</span>
@@ -305,7 +307,7 @@
     </div>
 </div>
 
-
+	<!-- Dashboard boat Card -->
 	<div id="dashboardCard" class="floating-card dashboard">
 	    <h4 style="margin:0; border:none;"><i class="fas fa-ship"></i> ÉTAT NAVIRE</h4>
 	    <div id="dashShip">--</div>
@@ -317,6 +319,7 @@
 	    </div>
 	</div>
 
+	<!-- Weather Card -->
     <div id="weatherCard" class="floating-card weather-card">
         <h4>Navigation</h4>
         <div class="stat-row"><span>Couverture nuageuse :</span> <span class="weather-val" id="val-cloud">--</span></div>
@@ -330,6 +333,7 @@
         <iframe id="webcam-frame" src="" width="100%" height="150px" frameborder="0" style="margin-top:10px; border-radius:4px;"></iframe>
     </div>
 
+	<!-- Tides Card -->
     <div id="tideCard" class="floating-card tide-card">
     <h4><i class="fas fa-water"></i> Marées (Temps Réel)</h4>
 
@@ -361,6 +365,7 @@
     </div>
 </div>
 
+	<!-- MapSelector Card -->
 <div id="mapSelectorCard" class="floating-card map-selector-card collapsed">
     <h4 onclick="this.closest('.floating-card').classList.toggle('collapsed')" title="Cliquer pour déplier les options">
         <span><i class="fas fa-layer-group" style="margin-right:8px;"></i>TYPE DE CARTE</span>
@@ -466,6 +471,7 @@
     <button class="btn-search-clear" onclick="clearSearchPattern()">Effacer le pattern</button>
 </div>
 
+	<!-- Compass Card -->
 <div id="compassCard" class="floating-card compass-card"  style="width: 200px; height: 200px;">
     <div class="compass-ring"></div>
     <span class="compass-axis" style="top: 5px;">N</span>
@@ -483,8 +489,10 @@
     </div>
 </div>
 
+	<!-- Close map container-->
 </div>
-
+	
+<!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 	<script src="js/coastal.js"></script>
