@@ -117,3 +117,13 @@ function makeDraggable(el) {
         document.onmousemove = null;
     }
 }
+
+// À vérifier/ajouter dans les listeners de config.js
+document.getElementById('btn-start-sar')?.addEventListener('click', startSarMission);
+document.getElementById('btn-reset-sar')?.addEventListener('click', resetSarMission);
+document.getElementById('btn-connect-ais')?.addEventListener('click', connectAIS);
+
+// Listener pour la mise à jour manuelle des coordonnées
+document.querySelectorAll('.dms-input').forEach(input => {
+    input.addEventListener('change', updateLkpFromDms);
+});
