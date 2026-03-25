@@ -119,3 +119,59 @@ function changeMapBase(type) {
         }
     }
 }
+
+// À ajouter dans map-engine.js
+/**
+ * Met à jour les champs DMS de l'interface à partir d'une position Lat/Lng
+ */
+function updateDmsFieldsFromLatLng(lat, lng) {
+    const latD = Math.floor(Math.abs(lat));
+    const latM = Math.floor((Math.abs(lat) - latD) * 60);
+    const latS = Math.round(((Math.abs(lat) - latD) * 60 - latM) * 60);
+    const latH = lat >= 0 ? 'N' : 'S';
+
+    const lngD = Math.floor(Math.abs(lng));
+    const lngM = Math.floor((Math.abs(lng) - lngD) * 60);
+    const lngS = Math.round(((Math.abs(lng) - lngD) * 60 - lngM) * 60);
+    const lngH = lng >= 0 ? 'E' : 'W';
+
+    document.getElementById('latDeg').value = latD;
+    document.getElementById('latMin').value = latM;
+    document.getElementById('latSec').value = latS;
+    document.getElementById('latHem').value = latH;
+
+    document.getElementById('lngDeg').value = lngD;
+    document.getElementById('lngMin').value = lngM;
+    document.getElementById('lngSec').value = lngS;
+    document.getElementById('lngHem').value = lngH;
+}
+
+/**
+ * Place le LKP manuellement à partir des champs DMS du formulaire
+ */
+function updateLkpFromDms() {
+    const lat = dmsToDecimal(
+        parseInt(document.getElementById('latDeg').value),
+        parseInt(document.getElementById('latMin').value),
+        parseInt(document.getElementById('latSec').value),
+        document.getElementById('latHem').value
+    );
+    const lng = dmsToDecimal(
+        parseInt(document.getElementById('lngDeg').value),
+        parseInt(document.getElementById('lngMin').value),
+        parseInt(document.getElementById('lngSec').value),
+        document.getElementById('lngHem').value
+    );
+
+    const pos = L.latLng(lat, lng);
+    
+    if (vsdMarker) {
+        vsdMarker.setLatLng(pos);
+    } else {
+        vsdMarker = L.marker(pos, { draggable: true }).addTo(map);
+    }
+    
+    map.panTo(pos);
+    updateDrift();
+    calculate();
+}
