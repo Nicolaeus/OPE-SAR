@@ -83,7 +83,8 @@
 
 <div id="map-container">
     <div id="map"></div>
-    
+	
+    <!-- ETA Point -->
 	<div id="eta-cursor-badge" style="
     position: fixed; 
     display: none; 
@@ -98,9 +99,11 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     border: 1px solid #ffca28;
 "></div>
-	
-    <div class="floating-card sar-card">
-    <h4>
+
+
+	<!-- CARD SAR -->
+    <div class="floating-card sar-card collapsed">
+    <h4 onclick="this.closest('.sar-card').classList.toggle('collapsed')" title="Cliquer pour déplier la recherche SAR">
         <span><i class="fas fa-life-ring" style="margin-right:8px;"></i>Calcul de Dérive (SAR)</span>
         <button onclick="resetSarMission()" style="background:#ef4444; color:white; border:none; padding:2px 10px; border-radius:4px; font-size:0.65rem; font-weight:bold; cursor:pointer;">RAZ</button>
     </h4>
