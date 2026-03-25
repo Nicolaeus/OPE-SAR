@@ -43,6 +43,28 @@ let ports = {
     'Doelan': [47.7711, -3.6102]
 };
 
+// À ajouter dans globals.js (Section 4)
+const TIDAL_DATA = {
+    'PortManec\'h': {
+        datum: 3.15,
+        constituents: [
+            { name: 'M2', amp: 1.45, freq: 28.984104, phase: 185.2 },
+            { name: 'S2', amp: 0.52, freq: 30.0,      phase: 220.5 },
+            { name: 'N2', amp: 0.28, freq: 28.43973,  phase: 160.8 },
+            { name: 'K1', amp: 0.08, freq: 15.041069, phase: 70.2 },
+            { name: 'O1', amp: 0.06, freq: 13.943035, phase: 50.5 }
+        ]
+    },
+    'Concarneau': {
+        datum: 3.20,
+        constituents: [
+            { name: 'M2', amp: 1.48, freq: 28.984104, phase: 188.5 },
+            { name: 'S2', amp: 0.54, freq: 30.0,      phase: 224.1 },
+            { name: 'N2', amp: 0.30, freq: 28.43973,  phase: 164.2 }
+        ]
+    }
+};
+
 const seaStates = {
     'calm': { vLimit: 60, fuelMulti: 1.0 },
     'choppy': { vLimit: 18, fuelMulti: 1.3 },
