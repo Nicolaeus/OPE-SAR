@@ -335,7 +335,9 @@
 
 	<!-- Tides Card -->
     <div id="tideCard" class="floating-card tide-card">
-    <h4><i class="fas fa-water"></i> Marées (Temps Réel)</h4>
+    <h4 onclick="this.closest('.floating-card').classList.toggle('collapsed')" title="Cliquer pour voir les marées">
+		<i class="fas fa-water"></i> Marées (Temps Réel)
+	</h4>
 
     <div class="tide-container-inline">
         <div class="tide-grid-inline">
