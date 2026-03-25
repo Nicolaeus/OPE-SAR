@@ -91,8 +91,12 @@
 	.tide-card{transition:max-height 0.3s ease;max-height:1000px;overflow:hidden;}
 	.tide-chart-container{height:100px;}
 	.tide-card.collapsed{max-height:50px;}
-	.tide-card.collapsed > *:not(h4){display:none;}
+	.tide-card{transition:max-height 0.3s ease;max-height:1000px;overflow:hidden;min-height:240px;}
+	.tide-card.collapsed{max-height:50px;}
+	.tide-card>*:not(h4){transition:opacity 0.2s ease;}
+	.tide-card.collapsed>*:not(h4){opacity:0;pointer-events:none;}
 	.tide-card.collapsed h4{animation:pulse-red 2s infinite;}@keyframes pulse-red{0%{box-shadow:0 0 0 0 rgba(239,68,68,0.4);}70%{box-shadow:0 0 0 6px rgba(239,68,68,0);}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}}
+	
 
 	.tide-container-inline { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
 	.tide-grid-inline { display: flex; gap: 6px; flex: 1; }
