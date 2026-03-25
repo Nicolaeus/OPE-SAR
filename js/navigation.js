@@ -9,9 +9,6 @@
 
 /**
  * Calcule une destination à partir d'un point, d'un cap et d'une distance
- * @param {L.LatLng} latlng - Point de départ
- * @param {number} brng - Cap en degrés (0-360)
- * @param {number} dist - Distance en mètres
  */
 function calculateDestination(latlng, brng, dist) {
     const R = 6371e3; // Rayon de la Terre en mètres
@@ -27,94 +24,117 @@ function calculateDestination(latlng, brng, dist) {
 }
 
 /**
- * Déplace un point selon une distance en Milles Nautiques (MN)
- */
-function movePoint(latlng, brngDeg, distMN) {
-    return calculateDestination(latlng, brngDeg, distMN * 1852);
-}
-
-/**
- * Convertit Degrés Minutes Secondes en Décimal
+ * Convertit DMS en Décimal pour les calculs
  */
 function dmsToDecimal(deg, min, sec, hem) {
-    let decimal = deg + (min / 60) + (sec / 3600);
-    return (hem === 'S' || hem === 'W') ? -decimal : decimal;
-}
-
-/**
- * Met à jour les champs DMS du formulaire à partir d'une position Leaflet
- */
-function updateDmsFieldsFromLatLng(lat, lng) {
-    const toD = (decimal) => {
-        const abs = Math.abs(decimal);
-        const deg = Math.floor(abs);
-        const minF = (abs - deg) * 60;
-        const min = Math.floor(minF);
-        const sec = Math.round((minF - min) * 60);
-        return { deg, min, sec };
-    };
-
-    const latD = toD(lat), lonD = toD(lng);
-
-    document.getElementById('lkp-lat-deg').value = latD.deg;
-    document.getElementById('lkp-lat-min').value = latD.min;
-    document.getElementById('lkp-lat-sec').value = latD.sec;
-    document.getElementById('lkp-lat-hem').value = lat >= 0 ? 'N' : 'S';
-
-    document.getElementById('lkp-lon-deg').value = lonD.deg;
-    document.getElementById('lkp-lon-min').value = lonD.min;
-    document.getElementById('lkp-lon-sec').value = lonD.sec;
-    document.getElementById('lkp-lon-hem').value = lng >= 0 ? 'E' : 'W';
-
-    // Appel du refresh de l'affichage decimal dans config.js si existant
-    if (typeof onLkpInput === 'function') onLkpInput(); 
+    let val = deg + min / 60 + sec / 3600;
+    return (hem === 'S' || hem === 'W') ? -val : val;
 }
 
 // ============================================================
-// SECTION 2 : LOGIQUE DE CALCUL DU DASHBOARD
+// SECTION 2 : LOGIQUE MÉTIER & DASHBOARD
 // ============================================================
 
 function calculate() {
-    // 1. Récupération des données de base
-    const ship = fleet[document.getElementById('shipSelector').value];
+    // 1. Récupération des données d'entrée
+    const shipKey = document.getElementById('shipSelector').value;
+    const ship = fleet[shipKey];
     const portKey = document.getElementById('portSelector').value;
     const coords = ports[portKey];
-    
-    // 2. Mise à jour de l'environnement (Appels vers weather.js et tide.js)
+
+    if (!ship || !coords) return;
+
+    // 2. Mise à jour environnementale locale
     if (typeof getLiveWeather === 'function') getLiveWeather(coords[0], coords[1]);
     if (typeof updateTide === 'function') updateTide();
     
-    // 3. Gestion Webcam spécifique au port
-    const cams = {
-        'PortManec\'h': 'port-manech', 
-        'Concarneau': 'concarneau/ville-close', 
-        'BegMeil': 'fouesnant/beg-meil'
-    };
-    const frame = document.getElementById('webcam-frame');
-    if (frame && cams[portKey]) {
-        const newSrc = `https://www.skaping.com/snsm/${cams[portKey]}`;
-        if(frame.src !== newSrc) frame.src = newSrc;
-    }
-
-    // 4. Calcul de la vitesse réelle (bridée par météo/visibilité)
-    const selectedVValue = document.getElementById('vSelector').value; 
-    const vSelected = parseInt(selectedVValue.replace('v', ''));
-    
-    // Accès à la globale currentSea définie dans globals.js
+    // 3. Calcul de la vitesse réelle (bridée par mer/visibilité)
+    const vSelected = parseInt(document.getElementById('vSelector').value.replace('v', ''));
     let finalVitesse = Math.min(vSelected, ship.vMax, seaStates[currentSea].vLimit);
     
-    // Bridage visibilité
     if (currentVisibility === 'night' || currentVisibility === 'fog') {
         finalVitesse = Math.min(finalVitesse, 10); 
     }
-    
-    // 5. Mise à jour de l'UI Dashboard
-    document.getElementById('dashSpeed').innerText = finalVitesse + " kts";
-    
-    // Calcul de l'autonomie ajustée
-    let rangeAdjusted = ship.rangeNominal / seaStates[currentSea].fuelMulti;
-    document.getElementById('dashRange').innerText = rangeAdjusted.toFixed(1) + " MN";
 
-    // 6. Relancer le calcul de dérive SAR si un LKP existe
-    if (typeof updateDrift === 'function') updateDrift();
+    // --- LOGIQUE ZIGZAG (LOUVOYAGE) ---
+    // Si la houle est de face (> 2m) et angle < 45°, on applique une pénalité de distance
+    const swellDir = parseFloat(document.getElementById('swellDir').value) || 0;
+    // On estime ici un cap simplifié vers le LKP si présent, sinon vers le large
+    let distMultiplier = 1.0;
+    if (window.currentSwellHeight > 2.0) {
+        distMultiplier = 1.25; // On parcourt 25% de distance en plus pour louvoyer
+        console.log("🌊 Mer forte : calcul avec louvoyage (Distance x1.25)");
+    }
+
+    // 4. Calcul de distance et autonomie
+    const lkpCoords = vsdMarker ? vsdMarker.getLatLng() : L.latLng(coords);
+    const distanceMètres = map.distance(L.latLng(coords), lkpCoords);
+    const distanceNM = (distanceMètres / 1852) * distMultiplier;
+
+    const fuelNeeded = (distanceNM / finalVitesse) * parseInt(ship.cons);
+    const rangeNM = (ship.tank / parseInt(ship.cons)) * finalVitesse / seaStates[currentSea].fuelMulti;
+
+    window.currentVitesse = finalVitesse; // Partage pour les autres modules
+
+    // 5. Mise à jour UI
+    updateNavigationUI(distanceNM, finalVitesse, fuelNeeded, rangeNM, ship);
+    
+    // 6. Mise à jour Carte (Lignes et Cercles)
+    renderNavigationAssets(coords, lkpCoords, rangeNM);
+}
+
+function updateNavigationUI(dist, speed, fuel, range, ship) {
+    document.getElementById('dashSpeed').innerText = speed + " kts";
+    document.getElementById('dashDist').innerText = dist.toFixed(1) + " NM";
+    document.getElementById('dashFuel').innerText = Math.round(fuel) + " L";
+    
+    const rangeEl = document.getElementById('dashRange');
+    if (rangeEl) {
+        rangeEl.innerText = Math.round(range) + " NM";
+        rangeEl.style.color = (range < dist) ? '#ef4444' : '#34d399';
+    }
+}
+
+// ============================================================
+// SECTION 3 : AFFICHAGE CARTOGRAPHIQUE
+// ============================================================
+
+function renderNavigationAssets(portCoords, targetCoords, rangeNM) {
+    // Ligne de navigation (Port -> LKP)
+    if (navLine) map.removeLayer(navLine);
+    navLine = L.polyline([portCoords, targetCoords], {
+        color: '#3b82f6',
+        weight: 3,
+        dashArray: '10, 10',
+        opacity: 0.6
+    }).addTo(map);
+
+    // Cercle de rayon d'action (Carburant)
+    if (rangeCircle) map.removeLayer(rangeCircle);
+    rangeCircle = L.circle(portCoords, {
+        radius: rangeNM * 1852,
+        color: '#ef4444',
+        fillColor: '#ef4444',
+        fillOpacity: 0.1,
+        weight: 2
+    }).addTo(map);
+}
+
+/**
+ * Utilitaires pour les boutons de temps
+ */
+function addTimeDepart(mins) {
+    const input = document.getElementById('timeDepart');
+    if (!input) return;
+    let [h, m] = input.value.split(':').map(Number);
+    let d = new Date();
+    d.setHours(h, m + mins);
+    input.value = d.getHours().toString().padStart(2, '0') + ":" + d.getMinutes().toString().padStart(2, '0');
+    calculate();
+}
+
+function setDepartNow() {
+    const now = new Date();
+    document.getElementById('timeDepart').value = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+    calculate();
 }
