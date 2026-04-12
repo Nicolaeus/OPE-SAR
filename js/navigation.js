@@ -1,5 +1,169 @@
 /**
  * NAVIGATION.JS
+ * Calcul du dashboard navire : vitesse réelle, rayon d'action, isochrones.
+ * Gestion des états de mer et de visibilité.
+ *
+ * Dépendances : globals.js (fleet, ports, portCams, seaStates, currentSea,
+ *               currentVisibility, rangeCircle, isoLayers, landMass, map)
+ *              weather.js (getLiveWeather, updateWebcam)
+ *              tide.js    (updateTide)
+ *              sar-engine.js (updateDrift)
+ */
+
+// ============================================================
+// 1. CALCUL PRINCIPAL — DASHBOARD
+// ============================================================
+
+/**
+ * Recalcule tout à chaque changement d'input header
+ * (navire, port, vitesse, mer, visibilité, remorquage).
+ */
+function calculate() {
+    const ship    = fleet[document.getElementById('shipSelector').value];
+    const portKey = document.getElementById('portSelector').value;
+    const coords  = ports[portKey];
+    if (!ship || !coords) return;
+
+    // 1. Météo + webcam
+    getLiveWeather(coords[0], coords[1]);
+    updateTide();
+    updateWebcam(portKey);
+
+    // 2. Vitesse réelle (bridée état de mer + visibilité + vMax navire)
+    const vSelected   = parseInt(document.getElementById('vSelector').value.replace('v', ''));
+    let finalVitesse  = Math.min(vSelected, ship.vMax, seaStates[currentSea].vLimit);
+    if (currentVisibility === 'night' || currentVisibility === 'fog') {
+        finalVitesse = Math.min(finalVitesse, 10);
+    }
+
+    // 3. Rayon d'action (avec malus remorquage et état de mer)
+    const isTowing = document.getElementById('towCheck').checked;
+    let r = ship.rangeNominal / seaStates[currentSea].fuelMulti;
+    if (isTowing) r /= ship.towPenalty;
+
+    // 4. Mise à jour dashboard
+    document.getElementById('dashShip').innerText  = ship.name;
+    document.getElementById('dashSpeed').innerText = finalVitesse + ' kts';
+    document.getElementById('dashRange').innerText = r.toFixed(1) + ' MN';
+    document.getElementById('dashTank').innerText  = ship.tank + ' L';
+    document.getElementById('dashCons').innerText  = ship.cons;
+
+    // 5. Nettoyage anciens tracés
+    if (rangeCircle) map.removeLayer(rangeCircle);
+    isoLayers.forEach(l => map.removeLayer(l));
+    isoLayers = [];
+
+    // 6. Cercle d'autonomie (découpé sur la masse terrestre si disponible)
+    try {
+        const circleTurf = turf.circle([coords[1], coords[0]], r, { units: 'nauticalmiles' });
+        let finalGeo = circleTurf;
+        if (landMass) {
+            const diff = turf.difference(circleTurf, landMass);
+            if (diff) finalGeo = diff;
+        }
+        rangeCircle = L.geoJSON(finalGeo, {
+            style: { color: isTowing ? '#ef6c00' : '#1565c0', weight: 3, fillOpacity: 0.1 }
+        }).addTo(map);
+    } catch (e) { console.warn('Turf — rayon d\'action:', e); }
+
+    // 7. Isochrones 15 / 30 / 45 / 60 min
+    [15, 30, 45, 60].forEach(minutes => {
+        const distMN = finalVitesse * (minutes / 60);
+        if (distMN > r) return; // Hors autonomie
+        try {
+            const isoTurf = turf.circle([coords[1], coords[0]], distMN, { units: 'nauticalmiles' });
+            let isoGeo = isoTurf;
+            if (landMass) {
+                const diff = turf.difference(isoTurf, landMass);
+                if (diff) isoGeo = diff;
+            }
+            const layer = L.geoJSON(isoGeo, {
+                style: { color: '#2e7d32', weight: 1, dashArray: '5, 8', fill: false }
+            }).addTo(map).bindTooltip(`${minutes} min`, { sticky: true, opacity: 0.6 });
+            isoLayers.push(layer);
+        } catch (e) { console.warn('Turf — isochrone:', e); }
+    });
+
+    // 8. Recentrage carte sur le port
+    map.panTo(coords);
+
+    // 9. Mise à jour lignes côtières si actives
+    const toggleCoastal = document.getElementById('toggleCoastalLines');
+    if (toggleCoastal && toggleCoastal.checked && typeof updateCoastalLines === 'function') {
+        updateCoastalLines(coords[0], coords[1]);
+    }
+
+    // 10. Recalcul dérive SAR si un LKP est posé
+    if (typeof updateDrift === 'function') updateDrift();
+}
+
+// ============================================================
+// 2. ÉTAT DE MER
+// ============================================================
+
+/**
+ * Appelée par les boutons BELLE / FORMÉE / FORTE dans le header.
+ * @param {number}      level  Index dans seaStates (0 | 1 | 2)
+ * @param {HTMLElement} btn    Bouton cliqué (pour activer la classe)
+ */
+function setSea(level, btn) {
+    currentSea = level;
+    document.querySelectorAll('.sea-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    calculate();
+}
+
+// ============================================================
+// 3. VISIBILITÉ
+// ============================================================
+
+/**
+ * Appelée par les boutons Jour / Nuit / Brouillard dans le header.
+ * @param {string|boolean} mode  'day' | 'night' | 'fog'  (true → 'day')
+ * @param {HTMLElement}    btn
+ */
+function setVis(mode, btn) {
+    // Normalisation (le bouton Jour passe true depuis le HTML original)
+    currentVisibility = (mode === true) ? 'day' : mode;
+
+    btn.parentElement.querySelectorAll('.sea-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Filtre visuel sur la carte
+    const mapEl = document.getElementById('map');
+    if (mapEl) {
+        if (currentVisibility === 'fog')   mapEl.style.filter = 'contrast(0.7) brightness(1.1) blur(0.5px)';
+        else if (currentVisibility === 'night') mapEl.style.filter = 'brightness(0.6) contrast(1.2)';
+        else                               mapEl.style.filter = '';
+    }
+
+    calculate();
+}
+
+// ============================================================
+// 4. UTILITAIRE GÉODÉSIQUE
+// ============================================================
+
+/**
+ * Calcule la position d'arrivée à partir d'un point, d'un cap et d'une distance.
+ * Formule de Vincenty simplifiée (sphère).
+ *
+ * @param  {L.LatLng} latlng  Point de départ
+ * @param  {number}   brng    Cap en degrés (0 = Nord)
+ * @param  {number}   dist    Distance en mètres
+ * @returns {L.LatLng}
+ */
+function calculateDestination(latlng, brng, dist) {
+    const R  = 6371e3;
+    const d  = dist / R;
+    const θ  = brng * Math.PI / 180;
+    const φ1 = latlng.lat * Math.PI / 180;
+    const λ1 = latlng.lng * Math.PI / 180;
+    const φ2 = Math.asin(Math.sin(φ1) * Math.cos(d) + Math.cos(φ1) * Math.sin(d) * Math.cos(θ));
+    const λ2 = λ1 + Math.atan2(Math.sin(θ) * Math.sin(d) * Math.cos(φ1), Math.cos(d) - Math.sin(φ1) * Math.sin(φ2));
+    return L.latLng(φ2 * 180 / Math.PI, λ2 * 180 / Math.PI);
+}/**
+ * NAVIGATION.JS
  * Moteur de calcul opérationnel : Route, Consommation, ETA et Zigzag.
  */
 
