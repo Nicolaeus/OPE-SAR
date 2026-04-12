@@ -1,176 +1,273 @@
 /**
  * MAP-ENGINE.JS
- * Gestion de Leaflet, des fonds de carte et des conversions de coordonnées.
+ * Initialisation Leaflet, gestion des fonds de carte,
+ * marqueurs fixes SNSM, badge ETA curseur et logique drag des cards.
+ *
+ * Dépendances : globals.js (map, baseLayers, rangeCircle, driftLine,
+ *               isoLayers, navLine, ports, landMass)
+ * Doit être chargé APRÈS globals.js et Leaflet/Turf.
  */
 
+// ============================================================
+// 1. INITIALISATION DE LA CARTE
+// ============================================================
+
 /**
- * 1. INITIALISATION DE LA CARTE
+ * Crée l'instance Leaflet, définit les fonds de carte,
+ * charge la masse terrestre et place les marqueurs de station.
+ * Appelée une seule fois au boot depuis config.js.
  */
 function initMap() {
-    // Création de l'objet map (variable globale définie dans globals.js)
+
+    // --- Fonds de carte (packs Fond + OpenSeaMap) ---
+    baseLayers.osm = L.layerGroup([
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            crossOrigin: true
+        }),
+        L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenSeaMap contributors'
+        })
+    ]);
+
+    baseLayers.satellite = L.layerGroup([
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri'
+        }),
+        L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenSeaMap contributors'
+        })
+    ]);
+
+    baseLayers.dark = L.layerGroup([
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }),
+        L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenSeaMap contributors'
+        })
+    ]);
+
+    // --- Création de la carte ---
     map = L.map('map', {
-        center: [47.75, -3.5], // Centré par défaut sur la zone Bretagne Sud
-        zoom: 10,
+        center: [47.8012, -3.7429],
+        zoom: 12,
         zoomControl: false
     });
 
-    // Ajout du contrôle de zoom en bas à droite
+    // Fond OSM par défaut
+    baseLayers.osm.addTo(map);
+
+    // Contrôle zoom repositionné en bas à droite (loin du pouce gauche sur mobile)
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    // Définition des fonds de carte
-    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+    // --- Calque lignes côtières (géré par coastal.js) ---
+    // coastalLinesGroup est déclaré dans coastal.js, on l'ajoute à la carte ici
+    if (typeof coastalLinesGroup !== 'undefined') {
+        coastalLinesGroup.addTo(map);
+    }
+
+    // --- Écouteur déplacement carte → rechargement zones côtières ---
+    map.on('moveend', () => {
+        const toggle = document.getElementById('toggleCoastalLines');
+        if (toggle && toggle.checked) {
+            const center = map.getCenter();
+            if (typeof updateCoastalLines === 'function') {
+                updateCoastalLines(center.lat, center.lng);
+            }
+        }
     });
 
-    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri'
-    });
+    // --- Chargement masse terrestre (pour calculs Turf) ---
+    loadLandData();
 
-    // On stocke dans l'objet global baseLayers
-    window.baseLayers = {
-        "osm": osm,
-        "sat": satellite
-    };
+    // --- Marqueurs fixes des stations SNSM ---
+    initStationMarkers();
 
-    // On active OSM par défaut
-    osm.addTo(map);
-    
-    // On prépare le calque pour les plages (beachLayer est global)
-    beachLayer.addTo(map);
-    loadBeachData();
+    // --- Badge ETA au survol de la carte ---
+    initEtaBadge();
 }
 
+// ============================================================
+// 2. MASSE TERRESTRE (Turf — détection route/terre)
+// ============================================================
+
+async function loadLandData() {
+    try {
+        const res = await fetch(
+            'https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements.geojson'
+        );
+        const data = await res.json();
+        landMass = turf.combine(data).features[0];
+        // Premier calcul une fois les données disponibles
+        if (typeof calculate === 'function') calculate();
+    } catch (e) {
+        console.error('GeoJSON masse terrestre :', e);
+        // On calcule quand même sans détection terre
+        if (typeof calculate === 'function') calculate();
+    }
+}
+
+// ============================================================
+// 3. FONDS DE CARTE
+// ============================================================
+
 /**
- * 2. GESTION DES COUCHES ET FONDS DE CARTE
+ * Change le fond de carte actif.
+ * @param {string} type  Clé dans baseLayers : 'osm' | 'satellite' | 'dark'
  */
 function changeMapBase(type) {
-    // Retirer toutes les couches de base actives
+    // Retirer tous les fonds actifs
     Object.values(baseLayers).forEach(layer => {
         if (map.hasLayer(layer)) map.removeLayer(layer);
     });
-    
-    // Activer la nouvelle couche
+
+    // Activer le nouveau fond
     if (baseLayers[type]) {
         baseLayers[type].addTo(map);
     }
-    
-    // Assurer que les éléments de calcul (dérives, zones) restent au-dessus
-    if (typeof driftLine !== 'undefined' && driftLine && map.hasLayer(driftLine)) driftLine.bringToFront();
-    if (typeof rangeCircle !== 'undefined' && rangeCircle && map.hasLayer(rangeCircle)) rangeCircle.bringToFront();
-    if (typeof searchArea !== 'undefined' && searchArea && map.hasLayer(searchArea)) searchArea.bringToFront();
 
-    // Gestion du calque AIS/Seamark si coché
-    const cb = document.getElementById('toggle-ais');
-    if (cb && cb.checked && typeof aisLayer !== 'undefined' && aisLayer) {
-        aisLayer.addTo(map);
-    }
+    // Ramener les calques de calcul au premier plan
+    if (driftLine   && map.hasLayer(driftLine))   driftLine.bringToFront();
+    if (rangeCircle && map.hasLayer(rangeCircle)) rangeCircle.bringToFront();
+    if (navLine     && map.hasLayer(navLine))     navLine.bringToFront();
+    isoLayers.forEach(l => { if (map.hasLayer(l)) l.bringToFront(); });
 }
 
+// ============================================================
+// 4. TOGGLE BALISAGE OPENSEAMAP (seamark séparé)
+// ============================================================
+
 let seamarkLayer = null;
+
+/**
+ * Active/désactive le calque OpenSeaMap indépendamment du fond de carte.
+ * Appelée par le toggle dans la card AIS (index.html).
+ */
 function toggleAISLayer() {
     const cb = document.getElementById('toggle-ais');
     if (!seamarkLayer) {
-        seamarkLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            zIndex: 1000,
-            opacity: 1
-        });
+        seamarkLayer = L.tileLayer(
+            'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
+            { maxZoom: 18, zIndex: 1000, opacity: 1 }
+        );
     }
-    
-    if (cb.checked) {
-        seamarkLayer.addTo(map);
-    } else {
-        if (map.hasLayer(seamarkLayer)) map.removeLayer(seamarkLayer);
-    }
+    cb.checked ? seamarkLayer.addTo(map)
+               : (map.hasLayer(seamarkLayer) && map.removeLayer(seamarkLayer));
 }
+
+// ============================================================
+// 5. MARQUEURS FIXES — STATIONS SNSM
+// ============================================================
+
+function initStationMarkers() {
+    const snsmIcon = L.icon({
+        iconUrl:    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+        shadowUrl:  'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize:   [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor:[1, -34],
+        shadowSize: [41, 41]
+    });
+
+    Object.entries(ports).forEach(([name, coords]) => {
+        L.marker(coords, { icon: snsmIcon })
+            .addTo(map)
+            .bindPopup(`<b>Station SNSM — ${name}</b><br>Prête pour intervention`);
+    });
+}
+
+// ============================================================
+// 6. BADGE ETA AU SURVOL DE LA CARTE
+// ============================================================
+
+function initEtaBadge() {
+    const badge = document.getElementById('eta-cursor-badge');
+    if (!badge) return;
+
+    map.on('mousemove', (e) => {
+        // N'afficher que si on n'est pas en mode placement de marqueur
+        if (map.getContainer().style.cursor === 'crosshair') {
+            badge.style.display = 'none';
+            return;
+        }
+
+        const portKey  = document.getElementById('portSelector').value;
+        const startPos = L.latLng(ports[portKey][0], ports[portKey][1]);
+        const distMN   = startPos.distanceTo(e.latlng) / 1852;
+        const vitesse  = parseFloat(document.getElementById('dashSpeed').innerText) || 1;
+        const timeMin  = (distMN / vitesse) * 60;
+        const hours    = Math.floor(timeMin / 60);
+        const mins     = Math.round(timeMin % 60);
+        const label    = hours > 0 ? `${hours}h${mins}` : `${mins} min`;
+
+        badge.style.display = 'block';
+        badge.style.left    = (e.originalEvent.pageX + 15) + 'px';
+        badge.style.top     = (e.originalEvent.pageY + 15) + 'px';
+        badge.innerHTML     = `⏱️ ${label} (${distMN.toFixed(1)} MN)`;
+    });
+
+    map.on('mouseout', () => {
+        badge.style.display = 'none';
+    });
+}
+
+// ============================================================
+// 7. RESET ORIENTATION NORD
+// ============================================================
 
 /**
- * 3. DONNÉES ET MARQUEURS (Plages)
+ * Recentre la carte au Nord (0°).
+ * Appelée par le bouton N du compas.
  */
-async function loadBeachData() {
-    try {
-        const response = await fetch('data/postes_plages.json');
-        if (!response.ok) return;
-        const data = await response.json();
-
-        data.postes.forEach(poste => {
-            const marker = L.marker(poste.coords, {
-                icon: L.divIcon({
-                    className: 'beach-icon',
-                    html: '<i class="fas fa-life-ring"></i>',
-                    iconSize: [24, 24]
-                })
-            }).addTo(beachLayer);
-
-            marker.bindPopup(`<b>${poste.plage}</b><br>Infrastructure: ${poste.infrastructure.type}`);
-
-            if (poste.zone_bain && poste.zone_bain.coordinates) {
-                L.polygon(poste.zone_bain.coordinates, {
-                    color: poste.zone_bain.couleur || '#3b82f6',
-                    weight: 2,
-                    fillOpacity: 0.3
-                }).addTo(beachLayer);
-            }
-        });
-    } catch (e) {
-        console.error("Erreur chargement postes :", e);
+function resetMapNorth() {
+    if (map.setBearing) {
+        map.setBearing(0);
+    } else {
+        map.setView(map.getCenter(), map.getZoom(), { animate: true });
     }
 }
+
+// ============================================================
+// 8. CARDS FLOTTANTES — DRAG & DROP SOURIS
+//    Sur mobile, ce système sera remplacé par sheet-manager.js
+// ============================================================
 
 /**
- * 4. CONVERSIONS ET COORDONNÉES
+ * Rend une card flottante déplaçable à la souris via son header h4.
+ * @param {HTMLElement} el  L'élément .floating-card
  */
-function dmsToDecimal(deg, min, sec, hem) {
-    let val = parseFloat(deg) + parseFloat(min) / 60 + parseFloat(sec) / 3600;
-    return (hem === 'S' || hem === 'W') ? -val : val;
-}
+function makeDraggable(el) {
+    const handle = el.querySelector('h4') || el;
+    let x0 = 0, y0 = 0, x1 = 0, y1 = 0;
 
-function updateDmsFieldsFromLatLng(lat, lng) {
-    const latD = Math.floor(Math.abs(lat));
-    const latM = Math.floor((Math.abs(lat) - latD) * 60);
-    const latS = Math.round(((Math.abs(lat) - latD) * 60 - latM) * 60);
-    const latH = lat >= 0 ? 'N' : 'S';
+    handle.addEventListener('mousedown', (e) => {
+        // Ne pas déclencher si clic sur un bouton dans le header
+        if (e.target.closest('button')) return;
 
-    const lngD = Math.floor(Math.abs(lng));
-    const lngM = Math.floor((Math.abs(lng) - lngD) * 60);
-    const lngS = Math.round(((Math.abs(lng) - lngD) * 60 - lngM) * 60);
-    const lngH = lng >= 0 ? 'E' : 'W';
+        e.preventDefault();
+        el.style.bottom = 'auto'; // Désancre du bas si positionné ainsi
 
-    if (document.getElementById('latDeg')) {
-        document.getElementById('latDeg').value = latD;
-        document.getElementById('latMin').value = latM;
-        document.getElementById('latSec').value = latS;
-        document.getElementById('latHem').value = latH;
-        document.getElementById('lngDeg').value = lngD;
-        document.getElementById('lngMin').value = lngM;
-        document.getElementById('lngSec').value = lngS;
-        document.getElementById('lngHem').value = lngH;
-    }
-}
+        x0 = e.clientX;
+        y0 = e.clientY;
 
-function updateLkpFromDms() {
-    const lat = dmsToDecimal(
-        document.getElementById('latDeg').value,
-        document.getElementById('latMin').value,
-        document.getElementById('latSec').value,
-        document.getElementById('latHem').value
-    );
-    const lng = dmsToDecimal(
-        document.getElementById('lngDeg').value,
-        document.getElementById('lngMin').value,
-        document.getElementById('lngSec').value,
-        document.getElementById('lngHem').value
-    );
+        const onMove = (e) => {
+            x1 = x0 - e.clientX;
+            y1 = y0 - e.clientY;
+            x0 = e.clientX;
+            y0 = e.clientY;
+            el.style.top  = (el.offsetTop  - y1) + 'px';
+            el.style.left = (el.offsetLeft - x1) + 'px';
+        };
 
-    const pos = L.latLng(lat, lng);
-    
-    if (vsdMarker) {
-        vsdMarker.setLatLng(pos);
-    } else {
-        vsdMarker = L.marker(pos, { draggable: true }).addTo(map);
-    }
-    
-    map.panTo(pos);
-    if (typeof updateDrift === 'function') updateDrift();
-    if (typeof calculate === 'function') calculate();
+        const onUp = () => {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup',   onUp);
+        };
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup',   onUp);
+    });
 }
