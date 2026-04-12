@@ -1,6 +1,13 @@
-// ============================================================
-// GESTION DE LA CARD DÉTAILS STATION
-// ============================================================
+/**
+ * STATION-CARD-INFO.JS
+ * Gestion de l'affichage des détails des stations SNSM dans une card flottante.
+ * Ce fichier est indépendant du moteur de rendu de la carte.
+ */
+
+/**
+ * Remplit et affiche la card avec les données d'une station.
+ * @param {Object} station - L'objet station provenant du JSON.
+ */
 
 function displayStationDetails(station) {
     // 1. Mise à jour des textes simples
