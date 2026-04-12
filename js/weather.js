@@ -1,101 +1,111 @@
 /**
  * WEATHER.JS
- * Récupération des données Open-Meteo et mise à jour de l'état environnemental.
+ * Récupération météo Open-Meteo (terrestre + marine) et mise à jour de l'UI.
+ *
+ * Dépendances : globals.js (currentSurgeMeters, currentSwellHeight)
+ * Appelle après fetch : updateTide() (tide.js), updateDrift() (sar-engine.js)
  */
 
 /**
- * Interroge les API météo pour un point donné
- * @param {number} lat - Latitude
- * @param {number} lng - Longitude
+ * Interroge les deux API Open-Meteo en parallèle pour un point géographique.
+ * Met à jour la card météo et pousse les variables globales de surcote et de houle.
+ *
+ * @param {number} lat  Latitude du port actif
+ * @param {number} lng  Longitude du port actif
  */
 async function getLiveWeather(lat, lng) {
-    // On applique ton décalage de 0.02 degré vers le large pour les données marines
-    const offLat = lat - 0.02; 
-    
+    // Léger décalage vers le large pour l'API marine (évite les valeurs côtières aberrantes)
+    const offLat = lat - 0.02;
+
     try {
         const [resL, resM] = await Promise.all([
-            // API Terrestre : Vent, Pression, Nuages
             fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,cloud_cover,wind_speed_10m,wind_direction_10m,surface_pressure&timezone=auto`),
-            // API Marine : Température eau, Houle (hauteur et direction)
             fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${offLat}&longitude=${lng}&current=sea_surface_temperature,wave_height,wave_direction&timezone=auto`)
         ]);
-        
+
         const dL = await resL.json();
         const dM = await resM.json();
-        
-        // --- 1. TRAITEMENT MÉTÉO TERRE (Vent, Pression, Nuages) ---
-        if(dL.current) {
-            const windDeg = dL.current.wind_direction_10m;
-            const pressure = dL.current.surface_pressure;
-            const cloudCover = dL.current.cloud_cover;
-            
-            // Mise à jour des inputs UI
-            document.getElementById('windDir').value = Math.round(windDeg);
-            document.getElementById('windSpd').value = Math.round(dL.current.wind_speed_10m);
-            document.getElementById('val-temp').innerText = dL.current.temperature_2m + "°C";
 
-            // Calcul de la surcote (Loi de Laplace : 1hPa de moins = 1cm d'eau en plus)
-            // Référence standard : 1013.25 hPa
-            const surgeCm = Math.round(1013.25 - pressure); 
+        // --- 1. MÉTÉO TERRESTRE (vent, pression, nuages, température air) ---
+        if (dL.current) {
+            const windDeg   = dL.current.wind_direction_10m;
+            const windKts   = Math.round(dL.current.wind_speed_10m / 1.852);
+            const pressure  = dL.current.surface_pressure;
+            const surgeCm   = Math.round(1013.25 - pressure);
+
+            // Surcote/décote barométrique — utilisée par tide.js
             window.currentSurgeMeters = surgeCm / 100;
 
-            // Détermination de la visibilité jour/nuit (simplifiée par l'icône)
-            updateWeatherIcon(cloudCover);
-        }
+            // Direction vent en texte (rose des vents 16 points)
+            const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+            const windDirStr = dirs[Math.round(windDeg / 22.5) % 16];
 
-        // --- 2. TRAITEMENT MÉTÉO MER (Houle & Temp Eau) ---
-        if(dM.current) {
-            document.getElementById('val-water').innerText = dM.current.sea_surface_temperature + "°C";
-            document.getElementById('val-swell').innerText = dM.current.wave_height + " m";
+            // Mise à jour card météo
+            _setText('val-cloud',    dL.current.cloud_cover + '%');
+            _setText('val-temp-air', dL.current.temperature_2m + '°C');
+            _setText('val-wind',     windKts + ' kts ' + windDirStr);
 
-            const swellField = document.getElementById('swellDir');
-            // On ne met à jour la direction de houle que si l'utilisateur ne l'a pas modifiée manuellement
-            if (swellField && !swellField.dataset.manualEdit) {
-                swellField.value = Math.round(dM.current.wave_direction || 0);
-                const label = document.getElementById('swell-auto-label');
-                if (label) {
-                    label.textContent = '🔄 Auto';
-                    label.style.color = '#38bdf8';
-                }
+            const pressureEl = document.getElementById('val-pressure');
+            if (pressureEl) {
+                const trendLabel = surgeCm > 0 ? ' (Surcote +' : ' (Décote ';
+                pressureEl.innerText = Math.round(pressure) + ' hPa' + trendLabel + Math.abs(surgeCm) + 'cm)';
             }
-            
-            // Variable globale cruciale pour le calcul du zigzag dans navigation.js
-            window.currentSwellHeight = dM.current.wave_height || 0;
+
+            // Flèche direction vent (rotée dans la card météo + data-attribute pour SAR)
+            const windArrow = document.getElementById('wind-dir-icon');
+            if (windArrow) {
+                windArrow.style.transform = `rotate(${windDeg + 180}deg)`;
+                windArrow.dataset.windProvenance = windDeg;
+            }
         }
-        
-        // --- 3. SYNCHRONISATION DES AUTRES MODULES ---
-        // La météo ayant changé, on force le recalcul de la marée et de la dérive
-        if (typeof updateTide === 'function') updateTide(); 
+
+        // --- 2. MÉTÉO MARINE (houle, température eau) ---
+        if (dM.current) {
+            _setText('val-water', dM.current.sea_surface_temperature + '°C');
+            _setText('val-swell', dM.current.wave_height + ' m');
+
+            // Pré-remplir direction houle seulement si l'utilisateur n'a pas saisi manuellement
+            if (dM.current.wave_direction !== undefined) {
+                const swellField = document.getElementById('swellDir');
+                if (swellField && !swellField.dataset.manualEdit) {
+                    swellField.value = Math.round(dM.current.wave_direction);
+                    const label = document.getElementById('swell-auto-label');
+                    if (label) {
+                        label.textContent = '↑ Auto météo — éditable';
+                        label.style.color = '#38bdf8';
+                    }
+                }
+                // Variable globale utilisée par sar-engine.js pour le calcul zigzag
+                window.currentSwellHeight = dM.current.wave_height || 0;
+            }
+        }
+
+        // --- 3. SYNCHRONISATION DES MODULES DÉPENDANTS ---
+        if (typeof updateTide  === 'function') updateTide();
         if (typeof updateDrift === 'function') updateDrift();
 
     } catch (e) {
-        console.error("Erreur API Météo :", e);
+        console.warn('getLiveWeather — API Error:', e);
     }
 }
 
 /**
- * Gère l'affichage de l'icône météo et l'état de visibilité
+ * Webcam Skaping associée au port sélectionné.
+ * Appelée par calculate() dans navigation.js.
+ *
+ * @param {string} portKey  Clé du port (doit correspondre à portCams dans globals.js)
  */
-function updateWeatherIcon(cloudCover) {
-    const weatherIcon = document.getElementById('weather-icon');
-    if (!weatherIcon) return;
+function updateWebcam(portKey) {
+    const frame = document.getElementById('webcam-frame');
+    if (!frame) return;
+    const slug = portCams[portKey];
+    if (!slug) return;
+    const newSrc = `https://www.skaping.com/snsm/${slug}`;
+    if (frame.src !== newSrc) frame.src = newSrc;
+}
 
-    const hour = new Date().getHours();
-    const isNight = hour < 7 || hour > 21;
-
-    if (isNight) {
-        weatherIcon.className = "fas fa-moon text-indigo-400";
-        currentVisibility = 'night';
-    } else {
-        if (cloudCover > 70) {
-            weatherIcon.className = "fas fa-cloud text-gray-400";
-            currentVisibility = 'day'; // On pourrait ajouter 'fog' si cloud_cover est extrême
-        } else if (cloudCover > 20) {
-            weatherIcon.className = "fas fa-cloud-sun text-blue-300";
-            currentVisibility = 'day';
-        } else {
-            weatherIcon.className = "fas fa-sun text-yellow-400";
-            currentVisibility = 'day';
-        }
-    }
+// ── utilitaire privé ──────────────────────────────────────────
+function _setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = value;
 }
