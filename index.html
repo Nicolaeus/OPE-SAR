@@ -104,6 +104,42 @@
 <div id="map-container">
     <div id="map"></div>
 
+    <!-- Badge station au clic -->
+    <div id="station-detail-card" class="floating-card station-card" style="display: none;">
+        <div class="card-header-snsm">
+            <div class="status-badge">
+                <span class="dot"></span> OPÉRATIONNEL
+            </div>
+            <button onclick="closeStationCard()" class="btn-close-snsm" title="Fermer">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="card-body-snsm">
+            <h2 id="card-station-nom" class="station-title">Station SNSM</h2>
+            <p id="card-station-adresse" class="station-address">
+                <i class="fas fa-map-marker-alt"></i> --
+            </p>
+            
+            <div class="moyens-section">
+                <h4 class="section-subtitle">
+                    <i class="fas fa-ship"></i> Moyens nautiques
+                </h4>
+                <div id="card-nautiques-list" class="moyens-grid">
+                    </div>
+            </div>
+    
+            <div class="contact-footer-snsm">
+                <a id="card-phone" href="#" class="btn-snsm-action">
+                    <i class="fas fa-phone"></i> Appeler
+                </a>
+                <a id="card-web" href="#" target="_blank" class="btn-snsm-action outline">
+                    <i class="fas fa-external-link-alt"></i> Fiche
+                </a>
+            </div>
+        </div>
+    </div>
+    
     <!-- Badge ETA au survol -->
     <div id="eta-cursor-badge" style="
         position:fixed; display:none;
