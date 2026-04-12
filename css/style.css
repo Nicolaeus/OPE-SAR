@@ -268,4 +268,133 @@
     .dashboard { top: 20px; left: calc(100vw - 640px); border-left: 4px solid #00d2ff;}
     .map-selector-card { top: 220px; left: calc(100vw - 640px); border-left: 4px solid #8b5cf6; }
 	
-	
+	/* --- 13. STATION CARD STYLE --- */
+.station-card {position: absolute;top: 80px;left: 20px;width: 300px;max-height: 85vh;background: rgba(15, 23, 42, 0.98) !important;border: 1px solid rgba(56, 189, 248, 0.4) !important;box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    display: none; /* Masquée par défaut */
+    flex-direction: column;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+.card-header-snsm {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.status-badge {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+}
+
+.status-badge .dot {
+    height: 7px;
+    width: 7px;
+    background-color: #4ade80;
+    border-radius: 50%;
+    margin-right: 6px;
+    box-shadow: 0 0 8px #4ade80;
+}
+
+.btn-close-snsm {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.btn-close-snsm:hover {
+    color: #f8fafc;
+}
+
+.station-title {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.station-address {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 5px 0 15px 0;
+}
+
+.section-subtitle {
+    font-size: 0.7rem;
+    color: #38bdf8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.boat-item-snsm {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border-left: 3px solid #f97316; /* Orange SNSM */
+}
+
+.boat-name {
+    color: #f1f5f9;
+    font-weight: bold;
+    font-size: 0.85rem;
+    display: block;
+}
+
+.boat-specs {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    margin-top: 2px;
+}
+
+.contact-footer-snsm {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn-snsm-action {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background: #0288d1;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-snsm-action:hover {
+    background: #039be5;
+}
+
+.btn-snsm-action.outline {
+    background: transparent;
+    border: 1px solid #334155;
+    color: #94a3b8;
+}
+
+.btn-snsm-action.outline:hover {
+    border-color: #64748b;
+    color: #f8fafc;
+}
