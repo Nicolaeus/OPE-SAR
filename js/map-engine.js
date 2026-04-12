@@ -172,10 +172,26 @@ function initStationMarkers() {
         shadowSize: [41, 41]
     });
 
-    Object.entries(ports).forEach(([name, coords]) => {
-        L.marker(coords, { icon: snsmIcon })
-            .addTo(map)
-            .bindPopup(`<b>Station SNSM — ${name}</b><br>Prête pour intervention`);
+    // On boucle sur ton dataset (stations provient de ton JSON chargé)
+    // Note : Assure-toi que 'stations' est accessible (global ou passé en paramètre)
+    if (typeof stations !== 'undefined') {
+        stations.forEach(station => {
+            if (station.localisation && station.localisation.latitude) {
+                const marker = L.marker([station.localisation.latitude, station.localisation.longitude], { icon: snsmIcon })
+                    .addTo(map);
+                
+                // AU CLIC : On affiche la card au lieu de la popup Leaflet
+                marker.on('click', (e) => {
+                    L.DomEvent.stopPropagation(e); // Empêche le clic de se propager à la carte
+                    displayStationDetails(station);
+                });
+            }
+        });
+    }
+
+    // Fermer la card si on clique ailleurs sur la carte
+    map.on('click', () => {
+        closeStationCard();
     });
 }
 
