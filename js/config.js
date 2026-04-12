@@ -1,146 +1,100 @@
 /**
  * CONFIG.JS
- * Chef d'orchestre : Initialisation, écouteurs d'événements et Service Worker.
+ * Chef d'orchestre : boot de l'application, écouteurs d'événements, Service Worker.
+ *
+ * Doit être chargé EN DERNIER, après tous les autres modules.
+ * Ne contient aucune logique métier — seulement du câblage.
  */
 
 // ============================================================
-// SECTION 1 : INITIALISATION GÉNÉRALE
+// 1. BOOT — DOMContentLoaded (un seul écouteur)
 // ============================================================
-window.addEventListener('DOMContentLoaded', () => {
-    // 1. Allumage du moteur Leaflet
-    if (typeof initMap === 'function') initMap();
 
-    // 2. Fenêtres déplaçables
+window.addEventListener('DOMContentLoaded', () => {
+    console.log('⚓ OPESAR — Initialisation...');
+
+    // 1. Carte Leaflet
+    initMap();
+
+    // 2. Cards flottantes déplaçables (desktop)
     document.querySelectorAll('.floating-card').forEach(card => makeDraggable(card));
 
-    // 3. Premier calcul (après un micro-délai pour Leaflet)
-    setTimeout(() => {
-        if (typeof calculate === 'function') calculate();
-    }, 500);
+    // 3. Heure initiale dans les champs SAR
+    const now     = new Date();
+    const timeStr = _pad(now.getHours()) + ':' + _pad(now.getMinutes());
+    const timeLKP = document.getElementById('timeLKP');
+    const timeDep = document.getElementById('timeDepart');
+    if (timeLKP) timeLKP.value = timeStr;
+    if (timeDep) timeDep.value = timeStr;
 
-    // 4. Écouteurs pour la saisie manuelle de coordonnées
-    document.querySelectorAll('.dms-input').forEach(input => {
-        input.addEventListener('change', updateLkpFromDms);
-    });
-});
-
-window.addEventListener('DOMContentLoaded', async () => {
-    console.log("⚓ Mission Nautique SAR : Initialisation...");
-
-    // 1. Rendre les cartes flottantes déplaçables (Ta logique originale)
-    document.querySelectorAll('.floating-card').forEach(card => {
-        makeDraggable(card);
-    });
-
-    // 2. Initialiser les champs de temps (Heure actuelle par défaut)
-    if (typeof setDepartNow === 'function') setDepartNow();
-
-    // 3. Charger la zone côtière par défaut (Ex: Cornouaille)
-    if (typeof loadCoastalZone === 'function') loadCoastalZone('bretagne_so');
-
-    // 4. Lancer un premier calcul global
-    if (typeof calculate === 'function') calculate();
-
-    // 5. Enregistrer le Service Worker pour le mode Offline
-    registerServiceWorker();
-});
-
-// ============================================================
-// SECTION 2 : ÉCOUTEURS D'ÉVÉNEMENTS (LISTENERS)
-// ============================================================
-
-/**
- * Branchement des changements d'inputs sur la fonction calculate()
- */
-const autoCalculateTriggers = [
-    'shipSelector', 'portSelector', 'vSelector', 
-    'windDir', 'windSpd', 'currDir', 'currSpd', 
-    'timeLKP', 'timeDepart'
-];
-
-autoCalculateTriggers.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-        el.addEventListener('input', () => {
-            // Si on change la météo manuellement, on peut appeler updateDrift directement
-            if (id.includes('wind') || id.includes('curr')) {
-                if (typeof updateDrift === 'function') updateDrift();
-            }
-            if (typeof calculate === 'function') calculate();
+    // 4. Écoute saisie manuelle houle
+    const swellField = document.getElementById('swellDir');
+    if (swellField) {
+        swellField.addEventListener('input', () => {
+            swellField.dataset.manualEdit = 'true';
+            const label = document.getElementById('swell-auto-label');
+            if (label) { label.textContent = '✏ Saisie manuelle'; label.style.color = '#fbbf24'; }
         });
     }
+
+    // 5. Écouteurs inputs header → recalcul automatique
+    _bindCalculate(['shipSelector', 'portSelector', 'vSelector', 'towCheck']);
+
+    // 6. Écouteurs champs SAR → recalcul dérive
+    _bindDrift(['curDir', 'curSpeed', 'swellDir', 'timeLKP', 'timeDepart', 'targetType']);
+
+    // 7. Service Worker (PWA offline)
+    _registerServiceWorker();
+
+    // 8. Premier calcul (délai 300ms — Leaflet a besoin d'un tick pour init)
+    setTimeout(() => {
+        if (typeof calculate === 'function') calculate();
+    }, 300);
+
+    console.log('⚓ OPESAR — Prêt.');
 });
 
-/**
- * Détection de l'édition manuelle de la houle
- */
-const swellField = document.getElementById('swellDir');
-if (swellField) {
-    swellField.addEventListener('input', () => {
-        swellField.dataset.manualEdit = 'true';
-        const label = document.getElementById('swell-auto-label');
-        if (label) {
-            label.textContent = '✍️ Manuel';
-            label.style.color = '#fbbf24';
-        }
-        if (typeof calculate === 'function') calculate();
+// ============================================================
+// 2. ÉCOUTEURS D'ÉVÉNEMENTS
+// ============================================================
+
+function _bindCalculate(ids) {
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const event = el.tagName === 'INPUT' && el.type === 'checkbox' ? 'change' : 'change';
+        el.addEventListener(event, () => {
+            if (typeof calculate === 'function') calculate();
+        });
+    });
+}
+
+function _bindDrift(ids) {
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('change', () => {
+            if (typeof updateDrift === 'function') updateDrift();
+        });
+        el.addEventListener('input', () => {
+            if (typeof updateDrift === 'function') updateDrift();
+        });
     });
 }
 
 // ============================================================
-// SECTION 3 : GESTION DU SERVICE WORKER & UI
+// 3. SERVICE WORKER
 // ============================================================
 
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('SW: Enregistré avec succès (Scope: ' + reg.scope + ')'))
-            .catch(err => console.error('SW: Échec de l\'enregistrement', err));
-    }
+function _registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+    navigator.serviceWorker.register('./sw.js')
+        .then(reg  => console.log('SW enregistré — scope:', reg.scope))
+        .catch(err => console.error('SW échec:', err));
 }
 
-/**
- * Fonction makeDraggable (Ta fonction originale de app(2).js)
- */
-function makeDraggable(el) {
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    const header = el.querySelector('.card-header') || el;
+// ============================================================
+// 4. UTILITAIRE
+// ============================================================
 
-    header.onmousedown = dragMouseDown;
-
-    function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        el.style.bottom = "auto"; // Désactive l'ancrage bas
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        el.style.top = (el.offsetTop - pos2) + "px";
-        el.style.left = (el.offsetLeft - pos1) + "px";
-    }
-
-    function closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
-}
-
-// À vérifier/ajouter dans les listeners de config.js
-document.getElementById('btn-start-sar')?.addEventListener('click', startSarMission);
-document.getElementById('btn-reset-sar')?.addEventListener('click', resetSarMission);
-document.getElementById('btn-connect-ais')?.addEventListener('click', connectAIS);
-
-// Listener pour la mise à jour manuelle des coordonnées
-document.querySelectorAll('.dms-input').forEach(input => {
-    input.addEventListener('change', updateLkpFromDms);
-});
+function _pad(n) { return String(n).padStart(2, '0'); }
