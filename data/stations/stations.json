@@ -1,0 +1,3822 @@
+[
+  {
+    "id": "SNS213",
+    "stationNumber": "SNS 213",
+    "name": "Cayeux-sur-Mer",
+    "lat": 50.1831,
+    "lng": 1.4932,
+    "department": "Somme",
+    "region": "Hauts-de-France",
+    "address": "Place de l'Amiral Courbet",
+    "postcode": "80410",
+    "city": "Cayeux-sur-Mer",
+    "phone": "03 22 26 04 04",
+    "email": "president.cayeux-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/hauts-de-france/somme/cayeux-sur-mer/station-snsm-de-cayeux-sur-mer-213",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche - Mer du Nord",
+      "zone": "Somme",
+      "homePort": "Cayeux-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS213B1",
+          "name": "Benoit-Chasles",
+          "registration": "SNS 213",
+          "type": "Vedette",
+          "class": "V2ng",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Cayeux-sur-Mer",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS160",
+    "stationNumber": "SNS 160",
+    "name": "Berck-sur-Mer",
+    "lat": 50.4071,
+    "lng": 1.5583,
+    "department": "Pas-de-Calais",
+    "region": "Hauts-de-France",
+    "address": "Avenue du Phare",
+    "postcode": "62600",
+    "city": "Berck",
+    "phone": "03 21 84 94 45",
+    "email": "president.berck-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/hauts-de-france/pas-de-calais/berck/station-snsm-de-berck-sur-mer-160",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche - Mer du Nord",
+      "zone": "Pas-de-Calais Côte d'Opale",
+      "homePort": "Berck-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS160B1",
+          "name": "Jean-Baptiste-Tristan",
+          "registration": "SNS 160",
+          "type": "Vedette tractée (canot de plage)",
+          "class": "V2ng",
+          "status": "active"
+        }
+      ],
+      "vehicles": [
+        {
+          "id": "SNS62V1",
+          "name": "Tracteur de mise à l'eau",
+          "type": "Tracteur",
+          "status": "active"
+        }
+      ],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Berck-sur-Mer",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS026",
+    "stationNumber": "SNS 026",
+    "name": "Boulogne-sur-Mer",
+    "lat": 50.7303,
+    "lng": 1.5947,
+    "department": "Pas-de-Calais",
+    "region": "Hauts-de-France",
+    "address": "Bassin Napoléon - Quai de la liane",
+    "postcode": "62200",
+    "city": "Boulogne-sur-Mer",
+    "phone": "03 21 31 34 35",
+    "email": "president.boulogne-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/hauts-de-france/pas-de-calais/boulogne-sur-mer/station-snsm-de-boulogne-sur-mer-26",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche - Mer du Nord",
+      "zone": "Pas-de-Calais Côte d'Opale",
+      "homePort": "Boulogne-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS076",
+          "name": "Président Jacques Huret",
+          "registration": "SNS 076",
+          "type": "Canot Tous Temps",
+          "class": "CTT",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Boulogne-sur-Mer",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS077",
+    "stationNumber": "SNS 077",
+    "name": "Calais",
+    "lat": 50.9664,
+    "lng": 1.8465,
+    "department": "Pas-de-Calais",
+    "region": "Hauts-de-France",
+    "address": "Quai de la Colonne",
+    "postcode": "62100",
+    "city": "Calais",
+    "phone": "03 21 34 55 12",
+    "email": "president.calais@snsm.org",
+    "website": "https://etablissement.snsm.org/hauts-de-france/pas-de-calais/calais/station-snsm-de-calais-77",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche - Mer du Nord",
+      "zone": "Pas-de-Calais Pas-de-Calais",
+      "homePort": "Calais"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS077B1",
+          "name": "Notre-Dame du Cran",
+          "registration": "SNS 077",
+          "type": "Canot Tous Temps",
+          "class": "CTT",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Calais",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS050",
+    "stationNumber": "SNS 050",
+    "name": "Dunkerque",
+    "lat": 51.0483,
+    "lng": 2.3732,
+    "department": "Nord",
+    "region": "Hauts-de-France",
+    "address": "Quai de la Citadelle",
+    "postcode": "59140",
+    "city": "Dunkerque",
+    "phone": "03 28 66 10 10",
+    "email": "president.dunkerque@snsm.org",
+    "website": "https://etablissement.snsm.org/hauts-de-france/nord/dunkerque/station-snsm-de-dunkerque-50",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche - Mer du Nord",
+      "zone": "Flandres",
+      "homePort": "Dunkerque (Bassin du Commerce)"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS050B1",
+          "name": "Jean Bart II",
+          "registration": "SNS 050",
+          "type": "Canot Tous Temps",
+          "class": "CTT",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Dunkerque",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS125",
+    "stationNumber": "SNS 125",
+    "name": "Ouistreham",
+    "lat": 49.2845,
+    "lng": -0.2522,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "14 Place du Général de Gaulle",
+    "postcode": "14150",
+    "city": "Ouistreham",
+    "phone": "06 07 80 07 97",
+    "email": "president.ouistreham@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/ouistreham/station-snsm-de-ouistreham-125",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Ouistreham"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS091",
+          "name": "Sainte-Anne-des-Flots",
+          "registration": "SNS 091",
+          "type": "Canot Tous Temps",
+          "class": "CTT",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Ouistreham",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS131",
+    "stationNumber": "SNS 131",
+    "name": "Honfleur",
+    "lat": 49.4203,
+    "lng": 0.2332,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Quai de la Quarantaine",
+    "postcode": "14600",
+    "city": "Honfleur",
+    "phone": "02 31 89 00 00",
+    "email": "president.honfleur@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/honfleur/station-snsm-de-honfleur-131",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Honfleur"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS131B1",
+          "name": "Notre-Dame du port",
+          "registration": "SNS 131",
+          "type": "Vedette",
+          "class": "V2ng",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Honfleur",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS247",
+    "stationNumber": "SNS 247",
+    "name": "Courseulles-sur-Mer",
+    "lat": 49.3364,
+    "lng": -0.4578,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Quai des Frères Labrèque",
+    "postcode": "14470",
+    "city": "Courseulles-sur-Mer",
+    "phone": "07 83 79 96 99",
+    "email": "president.courseulles-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/courseulles-sur-mer/station-snsm-de-courseulles-sur-mer-247",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Courseulles-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS247B1",
+          "name": "Mona Rigolet",
+          "registration": "SNS 247",
+          "type": "Vedette",
+          "class": "V2ng",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Courseulles-sur-Mer",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS421",
+    "stationNumber": "SNS 421",
+    "name": "Trouville-Deauville",
+    "lat": 49.3662,
+    "lng": 0.0811,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Quai Albert 1er",
+    "postcode": "14360",
+    "city": "Trouville-sur-Mer",
+    "phone": "02 31 88 15 22",
+    "email": "president.trouville-deauville@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/trouville-sur-mer/station-snsm-de-trouville-deauville-421",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Trouville-Deauville"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS421B1",
+          "name": "Jean-Claude Brize",
+          "registration": "SNS 421",
+          "type": "Semi-rigide",
+          "class": "SR",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Trouville-Deauville",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_VEULETTES_SUR_MER",
+    "stationNumber": null,
+    "name": "Veulettes-sur-Mer",
+    "lat": 49.8519,
+    "lng": 0.5947,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "Digue Jean Corruble",
+    "postcode": "76450",
+    "city": "Veulettes-sur-Mer",
+    "phone": null,
+    "email": "president.veulettes-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/veulettes-sur-mer/station-snsm-de-veulettes-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Veulettes-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6441",
+          "name": "Paul-Emile",
+          "registration": "SNS 6-441",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_LES_PETITES_DALLES",
+    "stationNumber": null,
+    "name": "Les Petites Dalles",
+    "lat": 49.8225,
+    "lng": 0.5228,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "Plage des Petites Dalles",
+    "postcode": "76540",
+    "city": "Sassetot-le-Mauconduit",
+    "phone": null,
+    "email": "president.les-petites-dalles@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/sassetot-le-mauconduit/station-snsm-des-petites-dalles",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Les Petites Dalles"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6222",
+          "name": "Les Deux Dalles",
+          "registration": "SNS 6222",
+          "type": "Pneumatique",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_FECAMP",
+    "stationNumber": null,
+    "name": "Fécamp",
+    "lat": 49.7594,
+    "lng": 0.3644,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "Chaussée Levasseur",
+    "postcode": "76400",
+    "city": "Fécamp",
+    "phone": "02 35 28 21 82",
+    "email": "president.fecamp@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/fecamp/station-snsm-de-fecamp",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Fécamp"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS089",
+          "name": "Cap Fagnet",
+          "registration": "SNS 089",
+          "type": "Vedette de 1ère classe",
+          "class": "V1",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_YPORT",
+    "stationNumber": null,
+    "name": "Yport",
+    "lat": 49.7408,
+    "lng": 0.3142,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "Plage d'Yport",
+    "postcode": "76111",
+    "city": "Yport",
+    "phone": null,
+    "email": "president.yport@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/yport/station-snsm-de-yport",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Yport"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6380",
+          "name": "Jean-Pierre",
+          "registration": "SNS 6-380",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_BENERVILLE",
+    "stationNumber": null,
+    "name": "Benerville",
+    "lat": 49.3444,
+    "lng": 0.0406,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Promenade Michel d'Ornano",
+    "postcode": "14910",
+    "city": "Benerville-sur-Mer",
+    "phone": null,
+    "email": "president.benerville@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/benerville-sur-mer/station-snsm-de-benerville",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Benerville-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6365",
+          "name": "Sainte-Barbe",
+          "registration": "SNS 6-365",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_VILLERS_SUR_MER",
+    "stationNumber": null,
+    "name": "Villers-sur-Mer",
+    "lat": 49.3244,
+    "lng": -0.0058,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Place Jean Mermoz",
+    "postcode": "14640",
+    "city": "Villers-sur-Mer",
+    "phone": null,
+    "email": "president.villers-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/villers-sur-mer/station-snsm-de-villers-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Villers-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6364",
+          "name": "Jean-Pierre et Chantal",
+          "registration": "SNS 6-364",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_DIVES_SUR_MER",
+    "stationNumber": null,
+    "name": "Dives-sur-Mer",
+    "lat": 49.2889,
+    "lng": -0.1036,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Port de Guillaume le Conquérant",
+    "postcode": "14160",
+    "city": "Dives-sur-Mer",
+    "phone": null,
+    "email": "president.dives-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/dives-sur-mer/station-snsm-de-dives-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Port de Dives-Cabourg-Houlgate"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS267",
+          "name": "Capitaine Jean-Marie",
+          "registration": "SNS 267",
+          "type": "Vedette de 2ème classe",
+          "class": "V2",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_HOULGATE",
+    "stationNumber": null,
+    "name": "Houlgate",
+    "lat": 49.3039,
+    "lng": -0.0811,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage de Houlgate",
+    "postcode": "14510",
+    "city": "Houlgate",
+    "phone": null,
+    "email": "president.houlgate@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/houlgate/station-snsm-de-houlgate",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Houlgate"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6324",
+          "name": "Pour Toi",
+          "registration": "SNS 6-324",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_OUISTREHAM",
+    "stationNumber": "SNS 091",
+    "name": "Ouistreham",
+    "lat": 49.2853,
+    "lng": -0.2492,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Jetée Est, Port de Ouistreham",
+    "postcode": "14150",
+    "city": "Ouistreham",
+    "phone": "02 31 97 15 15",
+    "email": "president.ouistreham@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/ouistreham/station-snsm-de-ouistreham-091",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados / Baie de Seine",
+      "homePort": "Ouistreham"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS091",
+          "name": "Sainte-Anne-des-Flots",
+          "registration": "SNS 091",
+          "type": "Canot Tous Temps",
+          "class": "CTT",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS452",
+    "stationNumber": "SNS 452",
+    "name": "Port-en-Bessin",
+    "lat": 49.3491,
+    "lng": -0.7554,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Quai Letourneur",
+    "postcode": "14520",
+    "city": "Port-en-Bessin-Huppain",
+    "phone": "06 06 49 73 27",
+    "email": "president.port-en-bessin@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/port-en-bessin-huppain/station-snsm-de-port-en-bessin-452",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Port-en-Bessin"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS452B1",
+          "name": "Madone des Feux",
+          "registration": "SNS 452",
+          "type": "Vedette",
+          "class": "V2ng",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Port-en-Bessin",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_FORT_MAHON",
+    "stationNumber": null,
+    "name": "Fort-Mahon-Plage",
+    "lat": 50.3414,
+    "lng": 1.5615,
+    "department": "Somme",
+    "region": "Hauts-de-France",
+    "address": "Mairie de Fort-Mahon-Plage",
+    "postcode": "80120",
+    "city": "Fort-Mahon-Plage",
+    "phone": "03 22 27 70 24",
+    "email": "president.fort-mahon-plage@snsm.org",
+    "website": "https://etablissement.snsm.org/hauts-de-france/somme/fort-mahon-plage/station-snsm-de-fort-mahon-plage",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche",
+      "zone": "Somme",
+      "homePort": "Fort-Mahon-Plage"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS8052",
+          "name": "Paul Delcroix",
+          "registration": "SNS 8052",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_LE_CROTOY",
+    "stationNumber": null,
+    "name": "Le Crotoy",
+    "lat": 50.2157,
+    "lng": 1.6234,
+    "department": "Somme",
+    "region": "Hauts-de-France",
+    "address": "Plage Le Crotoy",
+    "postcode": "80550",
+    "city": "Le Crotoy",
+    "phone": "06 73 48 78 84",
+    "email": "president.le-crotoy@snsm.org",
+    "website": "https://etablissement.snsm.org/hauts-de-france/somme/le-crotoy/station-snsm-du-crotoy",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche",
+      "zone": "Baie de Somme",
+      "homePort": "Le Crotoy"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6340",
+          "name": "Jean-Paul - Marie-Thérèse",
+          "registration": "SNS 6-340",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_AULT",
+    "stationNumber": null,
+    "name": "Ault",
+    "lat": 50.1002,
+    "lng": 1.4485,
+    "department": "Somme",
+    "region": "Hauts-de-France",
+    "address": "47 Rue Saint-Pierre",
+    "postcode": "80460",
+    "city": "Ault",
+    "phone": "03 22 60 60 60",
+    "email": "president.ault@snsm.org",
+    "website": "https://etablissement.snsm.org/hauts-de-france/somme/ault/station-snsm-de-ault",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche",
+      "zone": "Somme Sud",
+      "homePort": "Ault"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6215",
+          "name": "Zodiac",
+          "registration": "SNS 6215",
+          "type": "Pneumatique",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_ST_VALERY_CAUX",
+    "stationNumber": null,
+    "name": "Saint-Valéry-en-Caux",
+    "lat": 49.8711,
+    "lng": 0.6922,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "Quai de la Criée",
+    "postcode": "76460",
+    "city": "Saint-Valéry-en-Caux",
+    "phone": null,
+    "email": "president.saint-valery-en-caux@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/saint-valery-en-caux/station-snsm-de-saint-valery-en-caux",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Saint-Valéry-en-Caux"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS223",
+          "name": "Yvon et Jean-Claude",
+          "registration": "SNS 223",
+          "type": "Vedette de 2ème classe",
+          "class": "V2",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS068",
+    "stationNumber": "SNS 068",
+    "name": "Dieppe",
+    "lat": 49.9298,
+    "lng": 1.0838,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "Quai Gaston Lalitte",
+    "postcode": "76200",
+    "city": "Dieppe",
+    "phone": "02 35 84 16 07",
+    "email": "president.dieppe@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/dieppe/station-snsm-de-dieppe-68",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Dieppe"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS080",
+          "name": "Notre Dame de Bonsecours",
+          "registration": "SNS 080",
+          "type": "Canot Tous Temps",
+          "class": "CTT",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Dieppe",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS161",
+    "stationNumber": "SNS 161",
+    "name": "Le Havre",
+    "lat": 49.4914,
+    "lng": 0.1002,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "127 Boulevard Clemenceau",
+    "postcode": "76600",
+    "city": "Le Havre",
+    "phone": null,
+    "email": "snsm.lehavre@gmail.com",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/le-havre/station-snsm-du-havre-161",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Le Havre"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS161B1",
+          "name": "Président Pierre Huby",
+          "registration": "SNS 161",
+          "type": "Vedette",
+          "class": "V1ng",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Le Havre",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS018",
+    "stationNumber": "SNS 018",
+    "name": "Fécamp",
+    "lat": 49.7592,
+    "lng": 0.3725,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "36 Rue Théagène Boufart",
+    "postcode": "76400",
+    "city": "Fécamp",
+    "phone": "07 73 99 67 39",
+    "email": "president.fecamp@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/fecamp/station-snsm-de-fecamp-18",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Fécamp"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS018B1",
+          "name": "Cap Fagnet",
+          "registration": "SNS 018",
+          "type": "Vedette",
+          "class": "V1ng",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Fécamp",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS211",
+    "stationNumber": "SNS 211",
+    "name": "Le Tréport",
+    "lat": 50.0617,
+    "lng": 1.3708,
+    "department": "Seine-Maritime",
+    "region": "Normandie",
+    "address": "Port de plaisance",
+    "postcode": "76470",
+    "city": "Le Tréport",
+    "phone": null,
+    "email": "president.le-treport@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/seine-maritime/le-treport/station-snsm-du-treport-211",
+    "partoo": null,
+    "cross": "CROSS Gris-Nez",
+    "operational": {
+      "cross": "CROSS Gris-Nez",
+      "srr": "Manche",
+      "zone": "Seine-Maritime",
+      "homePort": "Le Tréport"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS211B1",
+          "name": "Président JC Fortini",
+          "registration": "SNS 211",
+          "type": "Vedette",
+          "class": "V2ng",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+    "weatherStation": null,
+    "tideReference": "Le Tréport",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_LUC_SUR_MER",
+    "stationNumber": null,
+    "name": "Luc-sur-Mer",
+    "lat": 49.3175,
+    "lng": -0.3475,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage de Luc-sur-Mer",
+    "postcode": "14530",
+    "city": "Luc-sur-Mer",
+    "phone": null,
+    "email": "president.luc-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/luc-sur-mer/station-snsm-de-luc-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Luc-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6363",
+          "name": "L'Etoile",
+          "registration": "SNS 6-363",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_ST_AUBIN_SUR_MER",
+    "stationNumber": null,
+    "name": "Saint-Aubin-sur-Mer",
+    "lat": 49.3328,
+    "lng": -0.3883,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Digue de Saint-Aubin",
+    "postcode": "14750",
+    "city": "Saint-Aubin-sur-Mer",
+    "phone": null,
+    "email": "president.saint-aubin-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/saint-aubin-sur-mer/station-snsm-de-saint-aubin-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Saint-Aubin-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6251",
+          "name": "Saint-Aubin",
+          "registration": "SNS 6251",
+          "type": "Pneumatique",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_BERNIERES_SUR_MER",
+    "stationNumber": null,
+    "name": "Bernières-sur-Mer",
+    "lat": 49.3364,
+    "lng": -0.4219,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage de Bernières",
+    "postcode": "14990",
+    "city": "Bernières-sur-Mer",
+    "phone": null,
+    "email": "president.bernieres-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/bernieres-sur-mer/station-snsm-de-bernieres-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Bernières-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6221",
+          "name": "Bernières",
+          "registration": "SNS 6221",
+          "type": "Pneumatique",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_GRAYE_SUR_MER",
+    "stationNumber": null,
+    "name": "Graye-sur-Mer",
+    "lat": 49.3375,
+    "lng": -0.4703,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage de Graye",
+    "postcode": "14470",
+    "city": "Graye-sur-Mer",
+    "phone": null,
+    "email": "president.graye-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/graye-sur-mer/station-snsm-de-graye-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Graye-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6144",
+          "name": "Brèche d'Asnelles",
+          "registration": "SNS 6-144",
+          "type": "Pneumatique",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_COURSEULLES_SUR_MER",
+    "stationNumber": "SNS 247",
+    "name": "Courseulles-sur-Mer",
+    "lat": 49.3361,
+    "lng": -0.4564,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Quai des Alliés",
+    "postcode": "14470",
+    "city": "Courseulles-sur-Mer",
+    "phone": "02 31 37 41 45",
+    "email": "president.courseulles-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/courseulles-sur-mer/station-snsm-de-courseulles-sur-mer-247",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados / Côte de Nacre",
+      "homePort": "Courseulles-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS247",
+          "name": "Mona Rigolet",
+          "registration": "SNS 247",
+          "type": "Vedette de 2ème classe",
+          "class": "V2",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_LION_SUR_MER",
+    "stationNumber": null,
+    "name": "Lion-sur-Mer",
+    "lat": 49.3031,
+    "lng": -0.3139,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Digue de Lion-sur-Mer",
+    "postcode": "14780",
+    "city": "Lion-sur-Mer",
+    "phone": null,
+    "email": "president.lion-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/lion-sur-mer/station-snsm-de-lion-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Lion-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6312",
+          "name": "Lion",
+          "registration": "SNS 6-312",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_HERMANVILLE_SUR_MER",
+    "stationNumber": null,
+    "name": "Hermanville-sur-Mer",
+    "lat": 49.2942,
+    "lng": -0.2981,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage d'Hermanville",
+    "postcode": "14880",
+    "city": "Hermanville-sur-Mer",
+    "phone": null,
+    "email": "president.hermanville-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/hermanville-sur-mer/station-snsm-de-hermanville-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Hermanville-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6211",
+          "name": "Hermanville",
+          "registration": "SNS 6211",
+          "type": "Pneumatique",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_VER_SUR_MER",
+    "stationNumber": null,
+    "name": "Ver-sur-Mer",
+    "lat": 49.3406,
+    "lng": -0.5286,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage de Ver",
+    "postcode": "14114",
+    "city": "Ver-sur-Mer",
+    "phone": null,
+    "email": "president.ver-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/ver-sur-mer/station-snsm-de-ver-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Ver-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6411",
+          "name": "Saint-Vigor",
+          "registration": "SNS 6-411",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_ST_COME_DE_FRESNE",
+    "stationNumber": null,
+    "name": "Saint-Côme-de-Fresné",
+    "lat": 49.3444,
+    "lng": -0.6053,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage du Débarquement",
+    "postcode": "14960",
+    "city": "Saint-Côme-de-Fresné",
+    "phone": null,
+    "email": "president.saint-come-de-fresne@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/saint-come-de-fresne/station-snsm-de-saint-come-de-fresne",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Saint-Côme-de-Fresné"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6232",
+          "name": "Fresné",
+          "registration": "SNS 6232",
+          "type": "Pneumatique",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_ASNELLES",
+    "stationNumber": null,
+    "name": "Asnelles",
+    "lat": 49.3442,
+    "lng": -0.5847,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage d'Asnelles",
+    "postcode": "14960",
+    "city": "Asnelles",
+    "phone": null,
+    "email": "president.asnelles@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/asnelles/station-snsm-dasnelles",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Asnelles"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6351",
+          "name": "La Relève",
+          "registration": "SNS 6-351",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_ARROMANCHES",
+    "stationNumber": null,
+    "name": "Arromanches-les-Bains",
+    "lat": 49.3403,
+    "lng": -0.6219,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage d'Arromanches",
+    "postcode": "14117",
+    "city": "Arromanches-les-Bains",
+    "phone": null,
+    "email": "president.arromanches@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/arromanches-les-bains/station-snsm-darromanches-les-bains",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados",
+      "homePort": "Arromanches-les-Bains"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6402",
+          "name": "Port Winston",
+          "registration": "SNS 6-402",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_PORT_EN_BESSIN",
+    "stationNumber": "SNS 215",
+    "name": "Port-en-Bessin",
+    "lat": 49.3486,
+    "lng": -0.7533,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Quai Letourneur",
+    "postcode": "14520",
+    "city": "Port-en-Bessin-Huppain",
+    "phone": "02 31 21 92 11",
+    "email": "president.port-en-bessin@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/port-en-bessin-huppain/station-snsm-de-port-en-bessin-215",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados / Bessin",
+      "homePort": "Port-en-Bessin"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS215",
+          "name": "Madone des Feux",
+          "registration": "SNS 215",
+          "type": "Vedette de 2ème classe",
+          "class": "V2",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_VIERVILLE_SUR_MER",
+    "stationNumber": null,
+    "name": "Vierville-sur-Mer",
+    "lat": 49.3808,
+    "lng": -0.9039,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Plage d'Omaha Beach",
+    "postcode": "14710",
+    "city": "Vierville-sur-Mer",
+    "phone": null,
+    "email": "president.vierville-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/vierville-sur-mer/station-snsm-de-vierville-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados / Omaha Beach",
+      "homePort": "Vierville-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6321",
+          "name": "Omaha",
+          "registration": "SNS 6-321",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_GRANDCAMP_MAISY",
+    "stationNumber": "SNS 204",
+    "name": "Grandcamp-Maisy",
+    "lat": 49.3908,
+    "lng": -1.0425,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Port de Grandcamp",
+    "postcode": "14450",
+    "city": "Grandcamp-Maisy",
+    "phone": "02 31 22 61 32",
+    "email": "president.grandcamp-maisy@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/grandcamp-maisy/station-snsm-de-grandcamp-maisy-204",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados / Baie des Veys",
+      "homePort": "Grandcamp-Maisy"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS204",
+          "name": "Trident",
+          "registration": "SNS 204",
+          "type": "Vedette de 2ème classe",
+          "class": "V2",
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },
+  {
+    "id": "SNS_ISIGNY_SUR_MER",
+    "stationNumber": null,
+    "name": "Isigny-sur-Mer",
+    "lat": 49.3242,
+    "lng": -1.1072,
+    "department": "Calvados",
+    "region": "Normandie",
+    "address": "Quai de l'Ancien Port",
+    "postcode": "14230",
+    "city": "Isigny-sur-Mer",
+    "phone": null,
+    "email": "president.isigny-sur-mer@snsm.org",
+    "website": "https://etablissement.snsm.org/normandie/calvados/isigny-sur-mer/station-snsm-de-isigny-sur-mer",
+    "partoo": null,
+    "cross": "CROSS Jobourg",
+    "operational": {
+      "cross": "CROSS Jobourg",
+      "srr": "Manche",
+      "zone": "Calvados / Fond de Baie",
+      "homePort": "Isigny-sur-Mer"
+    },
+    "assets": {
+      "boats": [
+        {
+          "id": "SNS6391",
+          "name": "L'Aure",
+          "registration": "SNS 6-391",
+          "type": "Semi-rigide",
+          "class": null,
+          "status": "active"
+        }
+      ],
+      "vehicles": [],
+      "drones": []
+    },
+    "crew": {
+      "active": null,
+      "reserve": null
+    },
+    "contacts": [],
+    "webcams": [],
+	"weatherStation": null,
+    "tideReference": null,
+    "createdAt": null,
+    "updatedAt": null
+  },  
+    {
+        "id": "SNS074",
+        "stationNumber": "SNS 074",
+        "name": "Granville",
+        "lat": 48.8351,
+        "lng": -1.6031,
+        "department": "Manche",
+        "region": "Normandie",
+        "address": "Port de Commerce",
+        "postcode": "50400",
+        "city": "Granville",
+        "phone": "02 33 50 11 12",
+        "email": "station-granville@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Baie du Mont-Saint-Michel Nord",
+            "homePort": "Granville"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS008",
+                    "name": "Notre-Dame du Cap Lihou",
+                    "registration": "SNS008",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Granville",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS212",
+        "stationNumber": "SNS 212",
+        "name": "Carteret",
+        "lat": 49.3562,
+        "lng": -1.7841,
+        "department": "Manche",
+        "region": "Normandie",
+        "address": "Port de Carteret",
+        "postcode": "50270",
+        "city": "Barneville-Carteret",
+        "phone": null,
+        "email": "station-carteret@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Secteur Anglo-Normand",
+            "homePort": "Carteret"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS150",
+                    "name": "Amiral de Tourville",
+                    "registration": "SNS150",
+                    "type": "Vedette de 1ère classe",
+                    "class": "V1",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Carteret",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS066",
+        "stationNumber": "SNS 066",
+        "name": "Goury - La Hague",
+        "lat": 49.7154,
+        "lng": -1.9421,
+        "department": "Manche",
+        "region": "Normandie",
+        "address": "Port de Goury",
+        "postcode": "50440",
+        "city": "La Hague",
+        "phone": "02 33 52 72 25",
+        "email": "station-goury@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Raz Blanchard",
+            "homePort": "Goury"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS003",
+                    "name": "Mona Rigolet",
+                    "registration": "SNS003",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Goury",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS084",
+        "stationNumber": "SNS 084",
+        "name": "Cherbourg",
+        "lat": 49.6438,
+        "lng": -1.6112,
+        "department": "Manche",
+        "region": "Normandie",
+        "address": "Port Chantereyne",
+        "postcode": "50100",
+        "city": "Cherbourg-en-Cotentin",
+        "phone": "02 33 94 25 35",
+        "email": "station-cherbourg@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Rade de Cherbourg",
+            "homePort": "Cherbourg"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS006",
+                    "name": "Mona Rigolet II",
+                    "registration": "SNS006",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Cherbourg",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS081",
+        "stationNumber": "SNS 081",
+        "name": "Saint-Vaast-la-Hougue",
+        "lat": 49.5875,
+        "lng": -1.2652,
+        "department": "Manche",
+        "region": "Normandie",
+        "address": "Quai Vauban",
+        "postcode": "50550",
+        "city": "Saint-Vaast-la-Hougue",
+        "phone": null,
+        "email": "station-saint-vaast@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Est Cotentin",
+            "homePort": "Saint-Vaast"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS091",
+                    "name": "Président Tournier",
+                    "registration": "SNS091",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Saint-Vaast-la-Hougue",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS219",
+        "stationNumber": "SNS 219",
+        "name": "Barfleur",
+        "lat": 49.6712,
+        "lng": -1.2641,
+        "department": "Manche",
+        "region": "Normandie",
+        "address": "Le Port",
+        "postcode": "50760",
+        "city": "Barfleur",
+        "phone": null,
+        "email": "station-barfleur@snsm.org",
+        "website": "https://www.snsm-barfleur.org",
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Pointe de Barfleur",
+            "homePort": "Barfleur"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS210",
+                    "name": "Amiral de Tourville II",
+                    "registration": "SNS210",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Barfleur",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS071",
+        "stationNumber": "SNS 071",
+        "name": "Saint-Malo",
+        "lat": 48.6432,
+        "lng": -2.0298,
+        "department": "Ille-et-Vilaine",
+        "region": "Bretagne",
+        "address": "Gare Maritime de la Bourse",
+        "postcode": "35400",
+        "city": "Saint-Malo",
+        "phone": "02 99 40 40 40",
+        "email": "station-saint-malo@snsm.org",
+        "website": "https://www.snsm-saintmalo.org",
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Côte d'Émeraude",
+            "homePort": "Saint-Malo"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS002",
+                    "name": "Pourquoi Pas ?",
+                    "registration": "SNS002",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Saint-Malo",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS163",
+        "stationNumber": "SNS 163",
+        "name": "Dinard",
+        "lat": 48.6331,
+        "lng": -2.0532,
+        "department": "Ille-et-Vilaine",
+        "region": "Bretagne",
+        "address": "Port de Plaisance",
+        "postcode": "35800",
+        "city": "Dinard",
+        "phone": null,
+        "email": "station-dinard@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Rance / Dinard",
+            "homePort": "Dinard"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS234",
+                    "name": "Commandant de la Droitière",
+                    "registration": "SNS234",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Saint-Malo",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS244",
+        "stationNumber": "SNS 244",
+        "name": "Cancale",
+        "lat": 48.6687,
+        "lng": -1.8542,
+        "department": "Ille-et-Vilaine",
+        "region": "Bretagne",
+        "address": "Port de la Houle",
+        "postcode": "35260",
+        "city": "Cancale",
+        "phone": null,
+        "email": "station-cancale@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Jobourg",
+        "operational": {
+            "cross": "CROSS Jobourg",
+            "srr": "Manche",
+            "zone": "Baie du Mont-Saint-Michel",
+            "homePort": "La Houle"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS622",
+                    "name": "La Cancalaise",
+                    "registration": "SNS622",
+                    "type": "Semi-rigide",
+                    "class": "SR",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Cancale",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS098",
+        "stationNumber": "SNS 098",
+        "name": "Ploumanac'h",
+        "lat": 48.8322,
+        "lng": -3.4831,
+        "department": "Côtes-d'Armor",
+        "region": "Bretagne",
+        "address": "Port de Ploumanac'h",
+        "postcode": "22700",
+        "city": "Perros-Guirec",
+        "phone": "02 96 91 43 14",
+        "email": "station-ploumanach@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Manche",
+            "zone": "Côte de Granit Rose",
+            "homePort": "Ploumanac'h"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS075",
+                    "name": "Président Toutain",
+                    "registration": "SNS075",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Perros-Guirec",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS162",
+        "stationNumber": "SNS 162",
+        "name": "Loguivy-de-la-Mer",
+        "lat": 48.8189,
+        "lng": -3.0641,
+        "department": "Côtes-d'Armor",
+        "region": "Bretagne",
+        "address": "Port de Loguivy",
+        "postcode": "22620",
+        "city": "Ploubazlanec",
+        "phone": null,
+        "email": "station-loguivy@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Manche",
+            "zone": "Goëlo / Bréhat",
+            "homePort": "Loguivy"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS214",
+                    "name": "Zant-Ivy II",
+                    "registration": "SNS214",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Paimpol",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS016",
+        "stationNumber": "SNS 016",
+        "name": "Saint-Quay-Portrieux",
+        "lat": 48.6531,
+        "lng": -2.8247,
+        "department": "Côtes-d'Armor",
+        "region": "Bretagne",
+        "address": "Port d'Armor",
+        "postcode": "22410",
+        "city": "Saint-Quay-Portrieux",
+        "phone": "02 96 70 51 02",
+        "email": "station-saint-quay@snsm.org",
+        "website": "https://www.snsm-saintquay.org",
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Manche",
+            "zone": "Baie de Saint-Brieuc",
+            "homePort": "Saint-Quay"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS156",
+                    "name": "Président Ampoulange",
+                    "registration": "SNS156",
+                    "type": "Vedette de 1ère classe",
+                    "class": "V1",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Saint-Quay-Portrieux",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS082",
+        "stationNumber": "SNS 082",
+        "name": "Erquy",
+        "lat": 48.6322,
+        "lng": -2.4689,
+        "department": "Côtes-d'Armor",
+        "region": "Bretagne",
+        "address": "Maison de la Mer, Port d'Erquy",
+        "postcode": "22430",
+        "city": "Erquy",
+        "phone": null,
+        "email": "station-erquy@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Manche",
+            "zone": "Baie de Saint-Brieuc Est",
+            "homePort": "Erquy"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS254",
+                    "name": "Côte de Penthièvre",
+                    "registration": "SNS254",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Erquy",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS143",
+        "stationNumber": "SNS 143",
+        "name": "Saint-Cast-le-Guildo",
+        "lat": 48.6384,
+        "lng": -2.2536,
+        "department": "Côtes-d'Armor",
+        "region": "Bretagne",
+        "address": "Port de Saint-Cast",
+        "postcode": "22380",
+        "city": "Saint-Cast-le-Guildo",
+        "phone": "02 96 41 84 90",
+        "email": "station-saint-cast@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen / Jobourg",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Manche",
+            "zone": "Côte d'Émeraude",
+            "homePort": "Saint-Cast"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS209",
+                    "name": "Notre-Dame du Guildo",
+                    "registration": "SNS209",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Saint-Cast",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS088",
+        "stationNumber": "SNS 088",
+        "name": "Île de Sein",
+        "lat": 48.0378,
+        "lng": -4.8512,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Le Port",
+        "postcode": "29990",
+        "city": "Île-de-Sein",
+        "phone": null,
+        "email": "station-ile-de-sein@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Raz de Sein",
+            "homePort": "Île de Sein"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS044",
+                    "name": "Ville de Paris",
+                    "registration": "SNS044",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Île de Sein",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS064",
+        "stationNumber": "SNS 064",
+        "name": "Île d'Ouessant",
+        "lat": 48.4552,
+        "lng": -5.0975,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Port du Stiff",
+        "postcode": "29242",
+        "city": "Ouessant",
+        "phone": "02 98 48 82 23",
+        "email": "station-ouessant@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Mer d'Iroise",
+            "homePort": "Le Stiff"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS001",
+                    "name": "Patron François Morin",
+                    "registration": "SNS001",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Ouessant",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS018",
+        "stationNumber": "SNS 018",
+        "name": "Molène",
+        "lat": 48.3965,
+        "lng": -4.9654,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Le Port",
+        "postcode": "29259",
+        "city": "Île-de-Molène",
+        "phone": null,
+        "email": "station-molene@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Archipel de Molène",
+            "homePort": "Molène"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS066",
+                    "name": "Jean Cam",
+                    "registration": "SNS066",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Molène",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS153",
+        "stationNumber": "SNS 153",
+        "name": "Argenton - Porspoder",
+        "lat": 48.4822,
+        "lng": -4.7571,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Port d'Argenton",
+        "postcode": "29840",
+        "city": "Porspoder",
+        "phone": null,
+        "email": "station-argenton@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Mer d'Iroise Nord",
+            "homePort": "Argenton"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS207",
+                    "name": "Commandant Garreau",
+                    "registration": "SNS207",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Le Conquet",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS019",
+        "stationNumber": "SNS 019",
+        "name": "Portsall - Kersaint",
+        "lat": 48.5222,
+        "lng": -4.6989,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Port de Portsall",
+        "postcode": "29830",
+        "city": "Ploudalmézeau",
+        "phone": "02 98 48 64 31",
+        "email": "station-portsall@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Bas-Léon",
+            "homePort": "Portsall"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS093",
+                    "name": "La Portsallaise",
+                    "registration": "SNS093",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Portsall",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS156",
+        "stationNumber": "SNS 156",
+        "name": "L'Aber Wrac'h",
+        "lat": 48.5997,
+        "lng": -4.5647,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Port de l'Aber Wrac'h",
+        "postcode": "29870",
+        "city": "Landéda",
+        "phone": "02 98 04 93 42",
+        "email": "station-aber-wrach@snsm.org",
+        "website": "https://www.snsm-aberwrach.fr",
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Côte des Légendes",
+            "homePort": "Aber Wrac'h"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS218",
+                    "name": "Président Joseph Oulhen",
+                    "registration": "SNS218",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Aber Wrac'h",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS080",
+        "stationNumber": "SNS 080",
+        "name": "Roscoff",
+        "lat": 48.7236,
+        "lng": -3.9822,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Port de Bloscon",
+        "postcode": "29680",
+        "city": "Roscoff",
+        "phone": "02 98 61 14 40",
+        "email": "station-roscoff@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Haut-Léon",
+            "homePort": "Bloscon"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS090",
+                    "name": "Président Michel Le Gast",
+                    "registration": "SNS090",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Roscoff",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS065",
+        "stationNumber": "SNS 065",
+        "name": "Brest",
+        "lat": 48.3824,
+        "lng": -4.4741,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Port du Chateau",
+        "postcode": "29200",
+        "city": "Brest",
+        "phone": "02 98 44 47 47",
+        "email": "station-brest@snsm.org",
+        "website": "https://etablissement.snsm.org/bretagne/finistere/brest",
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Rade de Brest",
+            "homePort": "Brest"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS151",
+                    "name": "Pilote Trémintin II",
+                    "registration": "SNS151",
+                    "type": "Vedette de 1ère classe",
+                    "class": "V1",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Brest",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS086",
+        "stationNumber": "SNS 086",
+        "name": "Camaret-sur-Mer",
+        "lat": 48.2759,
+        "lng": -4.5912,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Quai Téphany",
+        "postcode": "29570",
+        "city": "Camaret-sur-Mer",
+        "phone": null,
+        "email": "station-camaret@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Iroise",
+            "homePort": "Camaret"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS074",
+                    "name": "Notre-Dame de Rocamadour",
+                    "registration": "SNS074",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Camaret",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS063",
+        "stationNumber": "SNS 063",
+        "name": "Audierne",
+        "lat": 48.0212,
+        "lng": -4.5342,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Quai Jean Jaurès",
+        "postcode": "29770",
+        "city": "Audierne",
+        "phone": "02 98 70 08 22",
+        "email": "station-audierne@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Baie d'Audierne",
+            "homePort": "Sainte-Evette"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS267",
+                    "name": "Amiral Amédée Courbet",
+                    "registration": "SNS267",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Audierne",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS017",
+        "stationNumber": "SNS 017",
+        "name": "Penmarch - Saint-Guénolé",
+        "lat": 47.8184,
+        "lng": -4.3773,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Port de Saint-Guénolé",
+        "postcode": "29760",
+        "city": "Penmarc'h",
+        "phone": null,
+        "email": "station-penmarch@snsm.org",
+        "website": "https://www.snsm-penmarch.org",
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Finistère Sud",
+            "homePort": "Saint-Guénolé"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS083",
+                    "name": "Prince d'Eckmühl",
+                    "registration": "SNS083",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Saint-Guénolé",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS062",
+        "stationNumber": "SNS 062",
+        "name": "Le Guilvinec",
+        "lat": 47.7947,
+        "lng": -4.2831,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Terre-plein du Port",
+        "postcode": "29730",
+        "city": "Le Guilvinec",
+        "phone": "02 98 58 11 05",
+        "email": "station-guilvinec@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Finistère Sud",
+            "homePort": "Le Guilvinec"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS161",
+                    "name": "Men Meur",
+                    "registration": "SNS161",
+                    "type": "Vedette de 1ère classe",
+                    "class": "V1",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Le Guilvinec",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS213",
+        "stationNumber": "SNS 213",
+        "name": "Loctudy",
+        "lat": 47.8341,
+        "lng": -4.1681,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Port de Plaisance",
+        "postcode": "29750",
+        "city": "Loctudy",
+        "phone": null,
+        "email": "station-loctudy@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Finistère Sud",
+            "homePort": "Loctudy"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS236",
+                    "name": "Margodig",
+                    "registration": "SNS236",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Loctudy",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS091",
+        "stationNumber": "SNS 091",
+        "name": "Trégunc - Pointe de Trévignon",
+        "lat": 47.7946,
+        "lng": -3.8524,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": "Route de Pointe de Trévignon",
+        "postcode": "29910",
+        "city": "Trégunc",
+        "phone": "06 86 87 71 12",
+        "email": "president.trevignon-concarneau@snsm.org",
+        "website": "https://etablissement.snsm.org/bretagne/finistere/tregunc",
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Finistère Sud",
+            "homePort": "Pointe de Trévignon"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS160",
+                    "name": "La Tréguncoise",
+                    "registration": "SNS160",
+                    "type": "Vedette de 1ère classe",
+                    "class": "V1",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": {
+            "active": null,
+            "reserve": null
+        },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Concarneau",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS097",
+        "stationNumber": "SNS 097",
+        "name": "Le Pays de Lorient",
+        "lat": 47.7333,
+        "lng": -3.3333,
+        "department": "Morbihan",
+        "region": "Bretagne",
+        "address": "Bâtiment du môle, Port de Sainte Catherine",
+        "postcode": "56570",
+        "city": "Locmiquélic",
+        "phone": "06 75 01 32 65",
+        "email": "president.pays-de-lorient@snsm.org",
+        "website": "https://etablissement.snsm.org/bretagne/morbihan/locmiquelic",
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Morbihan",
+            "homePort": "Locmiquélic"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS152",
+                    "name": "Notre-Dame du Ter",
+                    "registration": "SNS152",
+                    "type": "Vedette de 1ère classe",
+                    "class": "V1",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": {
+            "active": null,
+            "reserve": null
+        },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Lorient",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS031",
+        "stationNumber": "SNS 031",
+        "name": "La Presqu'île de Quiberon",
+        "lat": 47.4812,
+        "lng": -3.1167,
+        "department": "Morbihan",
+        "region": "Bretagne",
+        "address": "Quai de Houat",
+        "postcode": "56170",
+        "city": "Quiberon",
+        "phone": "06 43 30 39 59",
+        "email": "president.presqu-ile-de-quiberon@snsm.org",
+        "website": "https://etablissement.snsm.org/bretagne/morbihan",
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Morbihan Quiberon",
+            "homePort": "Port-Maria"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS060",
+                    "name": "Zant-Ivy",
+                    "registration": "SNS060",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": {
+            "active": null,
+            "reserve": null
+        },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Quiberon",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS284",
+        "stationNumber": "SNS 284",
+        "name": "Auray - La Trinité",
+        "lat": 47.5852,
+        "lng": -3.0297,
+        "department": "Morbihan",
+        "region": "Bretagne",
+        "address": "Cours des Quais",
+        "postcode": "56470",
+        "city": "La Trinité-sur-Mer",
+        "phone": "06 12 38 32 01",
+        "email": "president.auray-la-trinite@snsm.org",
+        "website": "https://etablissement.snsm.org/bretagne/morbihan/la-trinite-sur-mer/station-snsm-dauray-la-trinite-284",
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Baie de Quiberon",
+            "homePort": "La Trinité-sur-Mer"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS144",
+                    "name": "Capitaine de Vaisseau de Kerros",
+                    "registration": "SNS144",
+                    "type": "Vedette de 1ère classe",
+                    "class": "V1",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": {
+            "active": null,
+            "reserve": null
+        },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "La Trinité-sur-Mer",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS005",
+        "stationNumber": "SNS 005",
+        "name": "Le Croisic",
+        "lat": 47.2931,
+        "lng": -2.5113,
+        "department": "Loire-Atlantique",
+        "region": "Pays de la Loire",
+        "address": "2 Place du Tréhic",
+        "postcode": "44490",
+        "city": "Le Croisic",
+        "phone": null,
+        "email": "snsm.station-snsm-le-croisic@snsm.org",
+        "website": "https://etablissement.snsm.org/pays-de-la-loire/loire-atlantique",
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Loire-Atlantique Nord",
+            "homePort": "Le Croisic"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS095",
+                    "name": "Pierre Robert Maréchal",
+                    "registration": "SNS095",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": {
+            "active": null,
+            "reserve": null
+        },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Le Croisic",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS211",
+        "stationNumber": "SNS 211",
+        "name": "Côte d'Amour - Pornichet",
+        "lat": 47.2642,
+        "lng": -2.3389,
+        "department": "Loire-Atlantique",
+        "region": "Pays de la Loire",
+        "address": "Port de Pornichet",
+        "postcode": "44380",
+        "city": "Pornichet",
+        "phone": null,
+        "email": "president.pornichet@snsm.org",
+        "website": "https://www.snsmcotedamour.fr",
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Baie de Pouliguen",
+            "homePort": "Pornichet"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS201",
+                    "name": "La Couronnerie",
+                    "registration": "SNS201",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": {
+            "active": null,
+            "reserve": null
+        },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Saint-Nazaire",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS061",
+        "stationNumber": "SNS 061",
+        "name": "Concarneau",
+        "lat": 47.8732,
+        "lng": -3.9142,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": null,
+        "postcode": null,
+        "city": "Concarneau",
+        "phone": null,
+        "email": null,
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Finistère Sud",
+            "homePort": "Concarneau"
+        },
+        "assets": {
+            "boats": [],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": {
+            "active": null,
+            "reserve": null
+        },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Concarneau",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS149",
+        "stationNumber": "SNS 149",
+        "name": "Port Manec'h",
+        "lat": 47.8006,
+        "lng": -3.7376,
+        "department": "Finistère",
+        "region": "Bretagne",
+        "address": null,
+        "postcode": null,
+        "city": "Névez",
+        "phone": null,
+        "email": null,
+        "website": "https://etablissement.snsm.org/bretagne/finistere/nevez/station-snsm-de-port-manech-149",
+        "partoo": null,
+        "cross": "CROSS Corsen",
+        "operational": {
+            "cross": "CROSS Corsen",
+            "srr": "Atlantique",
+            "zone": "Finistère Sud",
+            "homePort": "Port Manec'h"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS687",
+                    "name": "CENABUM",
+                    "registration": "SNS687",
+                    "type": "Semi-rigide",
+                    "class": "NSC3",
+                    "status": "active",
+					"crewOnBoard" : "4",
+					"motors" : "115cv",
+					"towingPower" : "10 Tonnes"
+                }
+            ],
+            "vehicles": [
+			{
+					"id": "SNS9901",
+                    "name": "K",
+                    "immatriculation": "AA-xxx-BB",
+                    "type": "Master",
+                    "class": "master",
+                    "status": "active",
+					"motors" : "115cv",
+					"towing" : "2.5 Tonnes"
+			}
+			],
+            "drones": []
+        },
+        "crew": {
+            "active": "4",
+            "reserve": "8"
+        },
+        "contacts": [],
+        "webcams": [
+		{
+					"name": "Port Manec'h",
+					"url": "https://www.skaping.com/snsm/port-manech",
+					"provider": "Skaping"
+		}
+		],
+        "weatherStation": null,
+        "tideReference": "Port Manec'h",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS069",
+        "stationNumber": "SNS 069",
+        "name": "Île de Groix",
+        "lat": 47.6385,
+        "lng": -3.4475,
+        "department": "Morbihan",
+        "region": "Bretagne",
+        "address": "Port-Tudy",
+        "postcode": "56590",
+        "city": "Groix",
+        "phone": null,
+        "email": "station-groix@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Morbihan",
+            "homePort": "Port-Tudy"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS082",
+                    "name": "Notre-Dame du Calme",
+                    "registration": "SNS082",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Groix",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS142",
+        "stationNumber": "SNS 142",
+        "name": "Étel",
+        "lat": 47.6534,
+        "lng": -3.2031,
+        "department": "Morbihan",
+        "region": "Bretagne",
+        "address": "Quai de la Criée",
+        "postcode": "56410",
+        "city": "Étel",
+        "phone": "02 97 55 35 35",
+        "email": "station-etel@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Barre d'Étel",
+            "homePort": "Étel"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS204",
+                    "name": "La Barre",
+                    "registration": "SNS204",
+                    "type": "Vedette de 2ème classe (Spécifique Barre)",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Étel",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS096",
+        "stationNumber": "SNS 096",
+        "name": "Belle-Île-en-Mer",
+        "lat": 47.3482,
+        "lng": -3.1511,
+        "department": "Morbihan",
+        "region": "Bretagne",
+        "address": "Le Palais",
+        "postcode": "56360",
+        "city": "Le Palais",
+        "phone": null,
+        "email": "station-belle-ile@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Iles du Large",
+            "homePort": "Le Palais"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS084",
+                    "name": "Gerveur",
+                    "registration": "SNS084",
+                    "type": "Canot Tous Temps",
+                    "class": "CTT",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Le Palais",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS429",
+        "stationNumber": "SNS 429",
+        "name": "Golfe du Morbihan",
+        "lat": 47.5994,
+        "lng": -2.7611,
+        "department": "Morbihan",
+        "region": "Bretagne",
+        "address": "Port-Blanc",
+        "postcode": "56870",
+        "city": "Baden",
+        "phone": null,
+        "email": "station-golfe-morbihan@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Golfe",
+            "homePort": "Port-Blanc"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS634",
+                    "name": "Enez Vran",
+                    "registration": "SNS634",
+                    "type": "Semi-rigide",
+                    "class": "SR",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Vannes",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS261",
+        "stationNumber": "SNS 261",
+        "name": "Pornic",
+        "lat": 47.1132,
+        "lng": -2.1024,
+        "department": "Loire-Atlantique",
+        "region": "Pays de la Loire",
+        "address": "Port de la Noëveillard",
+        "postcode": "44210",
+        "city": "Pornic",
+        "phone": "02 40 82 11 12",
+        "email": "station-pornic@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Baie de Bourgneuf",
+            "homePort": "Pornic"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS208",
+                    "name": "Notre-Dame du Bon Garant",
+                    "registration": "SNS208",
+                    "type": "Vedette de 2ème classe",
+                    "class": "V2",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Pornic",
+        "createdAt": null,
+        "updatedAt": null
+    },
+    {
+        "id": "SNS714",
+        "stationNumber": "SNS 714",
+        "name": "Nantes (Fluviale)",
+        "lat": 47.2184,
+        "lng": -1.5536,
+        "department": "Loire-Atlantique",
+        "region": "Pays de la Loire",
+        "address": "Quai de la Fosse",
+        "postcode": "44000",
+        "city": "Nantes",
+        "phone": null,
+        "email": "station-nantes@snsm.org",
+        "website": null,
+        "partoo": null,
+        "cross": "CROSS Étel",
+        "operational": {
+            "cross": "CROSS Étel",
+            "srr": "Atlantique",
+            "zone": "Estuaire de la Loire",
+            "homePort": "Nantes"
+        },
+        "assets": {
+            "boats": [
+                {
+                    "id": "SNS714",
+                    "name": "L'Épervier",
+                    "registration": "SNS714",
+                    "type": "Semi-rigide",
+                    "class": "SR",
+                    "status": "active"
+                }
+            ],
+            "vehicles": [],
+            "drones": []
+        },
+        "crew": { "active": null, "reserve": null },
+        "contacts": [],
+        "webcams": [],
+        "weatherStation": null,
+        "tideReference": "Nantes",
+        "createdAt": null,
+        "updatedAt": null
+    }
+]

@@ -1,0 +1,347 @@
+html,
+body,
+#app,
+#map {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+    background: #0f172a;
+	font-family:
+        'Inter',
+        sans-serif;
+}
+
+
+#map-toolbar {
+
+    position: absolute;
+
+    top: 10px;
+
+    left: 10px;
+
+    z-index: 9999;
+
+    background: white;
+
+    padding: 8px;
+
+    border-radius: 8px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+
+}
+
+.opsar-notification-container {
+
+    position: fixed;
+
+    top: 82px;
+
+    right: 16px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    width: min(360px, calc(100vw - 32px));
+
+    z-index: 30000;
+
+    pointer-events: none;
+
+}
+
+.opsar-notification {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 12px 12px 12px 14px;
+
+    border-radius: 8px;
+
+    color: #f8fafc;
+
+    background: rgba(15, 23, 42, .96);
+
+    border: 1px solid rgba(148, 163, 184, .30);
+
+    box-shadow: 0 16px 36px rgba(0, 0, 0, .35);
+
+    backdrop-filter: blur(12px);
+
+    pointer-events: auto;
+
+    animation: opsar-notification-in .18s ease-out;
+
+}
+
+.opsar-notification-message {
+
+    flex: 1;
+
+    font-size: 13px;
+
+    line-height: 1.35;
+
+}
+
+.opsar-notification-close {
+
+    width: 24px;
+
+    height: 24px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: rgba(255, 255, 255, .08);
+
+    color: #cbd5e1;
+
+    cursor: pointer;
+
+}
+
+.opsar-notification-close:hover {
+
+    background: rgba(255, 255, 255, .16);
+
+    color: white;
+
+}
+
+.opsar-notification-info {
+
+    border-color: rgba(56, 189, 248, .45);
+
+}
+
+.opsar-notification-success {
+
+    border-color: rgba(74, 222, 128, .45);
+
+}
+
+.opsar-notification-warning {
+
+    border-color: rgba(245, 158, 11, .55);
+
+}
+
+.opsar-notification-error {
+
+    border-color: rgba(239, 68, 68, .55);
+
+}
+
+.opsar-notification-closing {
+
+    opacity: 0;
+
+    transform: translateX(12px);
+
+    transition: opacity .18s ease, transform .18s ease;
+
+}
+
+@keyframes opsar-notification-in {
+
+    from {
+        opacity: 0;
+        transform: translateX(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+}
+
+@media(max-width:768px) {
+
+    .opsar-notification-container {
+
+        top: 70px;
+
+        right: 10px;
+
+        width: calc(100vw - 20px);
+
+    }
+
+}
+
+.leaflet-tooltip.opsar-station-tooltip {
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .38);
+
+    color: #e2e8f0;
+
+}
+
+.leaflet-tooltip.opsar-station-tooltip::before {
+
+    border-top-color: rgba(15, 23, 42, .96);
+
+}
+
+.opsar-station-tip {
+
+    width: 260px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(56, 189, 248, .35);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(15, 23, 42, .97),
+            rgba(8, 13, 26, .97)
+        );
+
+    backdrop-filter: blur(10px);
+
+}
+
+.opsar-station-tip-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(14, 165, 233, .22),
+            rgba(249, 115, 22, .18)
+        );
+
+    border-bottom: 1px solid rgba(148, 163, 184, .18);
+
+}
+
+.opsar-station-tip-number {
+
+    flex-shrink: 0;
+
+    padding: 3px 7px;
+
+    border-radius: 6px;
+
+    background: rgba(249, 115, 22, .18);
+
+    color: #fdba74;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+}
+
+.opsar-station-tip-name {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #f8fafc;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+}
+
+.opsar-station-tip-body {
+
+    padding: 9px 12px 11px;
+
+}
+
+.opsar-station-tip-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 5px 0;
+
+    border-bottom: 1px solid rgba(148, 163, 184, .10);
+
+    font-size: 12px;
+
+}
+
+.opsar-station-tip-row:last-child {
+
+    border-bottom: none;
+
+}
+
+.opsar-station-tip-row span {
+
+    flex-shrink: 0;
+
+    color: #94a3b8;
+
+}
+
+.opsar-station-tip-row strong {
+
+    min-width: 0;
+
+    color: #f8fafc;
+
+    font-weight: 700;
+
+    text-align: right;
+
+    overflow-wrap: anywhere;
+
+}
+
+@media(max-width:768px) {
+
+    .opsar-station-tip {
+
+        width: min(260px, calc(100vw - 36px));
+
+    }
+
+}
+

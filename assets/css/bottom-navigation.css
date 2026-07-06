@@ -1,0 +1,164 @@
+.opsar-bottom-nav {
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:70px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    background:
+        rgba(11,20,38,.95);
+
+    backdrop-filter:
+        blur(12px);
+
+    border-top:
+        1px solid rgba(124,58,237,.25);
+
+    z-index:20000;
+
+}
+
+.opsar-nav-btn {
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:2px;
+
+    background:none;
+
+    border:none;
+
+    color:#94a3b8;
+
+    cursor:pointer;
+
+    min-width:50px;
+
+}
+
+.opsar-nav-btn span {
+
+    font-size:10px;
+
+}
+
+.opsar-nav-btn.active {
+
+    color:#60a5fa;
+
+}
+
+.opsar-nav-btn:hover {
+
+    color:#ffffff;
+
+}
+
+@media(max-width:768px){
+
+    .opsar-bottom-nav {
+
+        height: calc(64px + env(safe-area-inset-bottom, 0px));
+
+        padding: 4px 8px env(safe-area-inset-bottom, 0px);
+
+        box-sizing: border-box;
+
+        justify-content: flex-start;
+
+        gap: 2px;
+
+        overflow-x: auto;
+
+        overflow-y: hidden;
+
+        scrollbar-width: none;
+
+    }
+
+    .opsar-bottom-nav::-webkit-scrollbar {
+
+        display: none;
+
+    }
+
+    .opsar-nav-btn {
+
+        min-width: 58px;
+
+        height: 54px;
+
+        padding: 0 4px;
+
+        border-radius: 8px;
+
+        flex-shrink: 0;
+
+    }
+
+    .opsar-nav-btn span {
+
+        max-width: 54px;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+
+        font-size: 9px;
+
+    }
+
+    .opsar-nav-btn.active {
+
+        background: rgba(96,165,250,.12);
+
+    }
+
+}
+
+@media(max-width:380px){
+
+    .opsar-bottom-nav {
+
+        height: calc(58px + env(safe-area-inset-bottom, 0px));
+
+        padding-left: 6px;
+
+        padding-right: 6px;
+
+    }
+
+    .opsar-nav-btn {
+
+        min-width: 52px;
+
+        height: 48px;
+
+    }
+
+    .opsar-nav-btn span {
+
+        max-width: 48px;
+
+        font-size: 8px;
+
+    }
+
+}

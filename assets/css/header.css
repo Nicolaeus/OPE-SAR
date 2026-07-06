@@ -1,0 +1,164 @@
+.opsar-header {
+
+    position:absolute;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:70px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 16px;
+
+    background:
+        rgba(11,20,38,.95);
+
+    border-bottom:
+        1px solid rgba(124,58,237,.25);
+
+    backdrop-filter:
+        blur(12px);
+
+    z-index:20000;
+
+}
+
+.opsar-header-left {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.opsar-logo {
+
+    width:42px;
+
+    height:42px;
+
+    object-fit:contain;
+
+}
+
+.opsar-title-group {
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.opsar-title {
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+.opsar-subtitle {
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+}
+
+.opsar-weather-widget {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:8px 14px;
+
+    border-radius:12px;
+
+    background:
+        rgba(15,23,42,.85);
+
+    border:
+        1px solid
+        rgba(56,189,248,.35);
+
+    color:#f8fafc;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    backdrop-filter:
+        blur(8px);
+
+    box-shadow:
+        0 0 12px
+        rgba(56,189,248,.15);
+
+}
+
+.weather-separator {
+
+    opacity: .35;
+
+    margin: 0 6px;
+
+}
+
+@media(max-width:768px){
+
+    .opsar-header {
+
+        height:60px;
+
+        padding:0 10px;
+
+    }
+
+    .opsar-title {
+
+        font-size:15px;
+
+    }
+
+    .opsar-weather-widget {
+
+        gap:6px;
+
+        padding:6px 8px;
+
+    }
+
+    .weather-line {
+
+        font-size:11px;
+
+    }
+
+}
+
+.opsar-direction-arrow {
+
+    display:inline-block;
+
+    width:18px;
+
+    text-align:center;
+
+    margin-right:6px;
+
+    color:#38bdf8;
+
+}
