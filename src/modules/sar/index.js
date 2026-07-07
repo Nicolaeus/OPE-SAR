@@ -25,6 +25,14 @@ export default {
             }
         });
 
+        window.addEventListener('sar:card:open', () => {
+            if (!SARCard.isOpen()) {
+                SARCard.create();
+            } else {
+                SARCard.instance?.bringToFront?.();
+            }
+        });
+
         // ---------------------------------------------------------------
         // LKP sélectionné (depuis carte ou validation DMS)
         // ---------------------------------------------------------------
