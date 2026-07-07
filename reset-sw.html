@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset OPE-SAR</title>
+</head>
+<body style="margin:0;background:#0f172a;color:#e2e8f0;font-family:Arial,sans-serif;">
+    <main style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;">
+        <section style="max-width:640px;border:1px solid rgba(56,189,248,.35);border-radius:8px;padding:20px;background:rgba(15,23,42,.96);">
+            <h1 style="margin:0 0 12px;font-size:22px;">Reset OPE-SAR</h1>
+            <p id="status" style="line-height:1.5;">Nettoyage du service worker et des caches en cours...</p>
+            <a id="home" href="./index.html" style="display:none;color:#38bdf8;font-weight:700;">Retour a l'application</a>
+        </section>
+    </main>
+
+    <script>
+        (async () => {
+            const messages = [];
+
+            if ('serviceWorker' in navigator) {
+                const registrations =
+                    await navigator.serviceWorker.getRegistrations();
+
+                await Promise.all(
+                    registrations.map(registration =>
+                        registration.unregister()
+                    )
+                );
+
+                messages.push(
+                    `${registrations.length} service worker supprime(s)`
+                );
+            }
+
+            if ('caches' in window) {
+                const keys =
+                    await caches.keys();
+
+                await Promise.all(
+                    keys.map(key =>
+                        caches.delete(key)
+                    )
+                );
+
+                messages.push(
+                    `${keys.length} cache(s) supprime(s)`
+                );
+            }
+
+            document.getElementById('status').textContent =
+                messages.join(' - ') || 'Aucun cache a nettoyer.';
+
+            document.getElementById('home').style.display =
+                'inline-block';
+        })().catch(error => {
+            document.getElementById('status').textContent =
+                `Erreur reset: ${error.message}`;
+        });
+    </script>
+</body>
+</html>

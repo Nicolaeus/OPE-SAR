@@ -1,0 +1,41 @@
+.opsar-tide-table {
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:6px;
+
+}
+
+.opsar-tide-table th {
+
+    padding:8px;
+
+    text-align:center;
+
+    color:#38bdf8;
+
+    font-size:12px;
+
+}
+
+.opsar-tide-table td {
+
+    padding:8px;
+
+    text-align:center;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.08);
+
+}
+
+.opsar-tide-table td:first-child {
+
+    text-align:left;
+
+    font-weight:600;
+
+}

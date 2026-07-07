@@ -1,0 +1,97 @@
+.opsar-card[id^="osc-"] {
+
+    max-width: 340px;
+
+    width: min(340px, calc(100vw - 16px));
+
+    box-sizing: border-box;
+
+}
+
+.osc-asset-row {
+
+    padding: 8px;
+
+    margin-bottom: 6px;
+
+    border-radius: 6px;
+
+    background: rgba(
+        15,
+        23,
+        42,
+        0.75
+    );
+
+    border: 1px solid rgba(
+        255,
+        255,
+        255,
+        0.08
+    );
+
+}
+
+.osc-asset-row b {
+
+    color: #f8fafc;
+
+}
+
+.osc-timeline-row {
+
+    padding: 8px;
+
+    margin-bottom: 6px;
+
+    border-radius: 6px;
+
+    background: rgba(
+        15,
+        23,
+        42,
+        0.7
+    );
+
+    border: 1px solid rgba(
+        255,
+        255,
+        255,
+        0.08
+    );
+
+}
+
+.osc-timeline-time {
+
+    color: #38bdf8;
+
+    font-size: 0.75rem;
+
+    font-weight: 600;
+
+    margin-bottom: 4px;
+
+}
+
+.osc-timeline-message {
+
+    color: #f8fafc;
+
+    font-size: 0.85rem;
+
+}
+
+@media (max-width: 768px) {
+
+    .opsar-card[id^="osc-"] {
+
+        width: auto !important;
+
+        min-width: 0 !important;
+
+        max-width: none !important;
+
+    }
+
+}

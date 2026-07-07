@@ -1,0 +1,688 @@
+.opsar-card {
+
+    position:absolute;
+
+    width: min(340px, calc(100vw - 16px));
+
+    min-width:0;
+
+    max-width:340px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(15,23,42,.96),
+            rgba(11,18,32,.96)
+        );
+
+    backdrop-filter:
+        blur(14px);
+
+    border:
+        1px solid rgba(
+            124,
+            58,
+            237,
+            .20
+        );
+
+    border-radius:16px;
+
+    box-shadow:
+        0 12px 40px rgba(
+            0,
+            0,
+            0,
+            .45
+        );
+
+    color:#e2e8f0;
+
+    overflow:hidden;
+
+    z-index:1000;
+	
+	max-height: calc(100vh - 140px);
+
+}
+
+.opsar-card-header {
+
+    height:52px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 16px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(8,15,32,.95),
+            rgba(18,32,62,.95)
+        );
+
+    border-bottom:
+
+        1px solid
+        rgba(6,182,212,.25);
+
+    cursor:move;
+
+    position:relative;
+
+}
+
+.opsar-card-header::after {
+
+    content:'';
+
+    position:absolute;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    height:1px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(6,182,212,.6),
+            transparent
+        );
+
+}
+
+
+.opsar-section-title {
+
+    color:#38bdf8;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-top:18px;
+
+    margin-bottom:10px;
+
+    padding-bottom:6px;
+
+    border-bottom:
+
+        1px solid
+        rgba(56,189,248,.15);
+
+}
+
+.opsar-card-actions {
+
+    display:flex;
+
+    gap:6px;
+
+}
+
+.opsar-card-actions button {
+
+    width:26px;
+
+    height:26px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+
+    color:#94a3b8;
+
+    transition:.2s;
+
+}
+
+.opsar-card-actions button:hover {
+
+    background:
+        rgba(
+            124,
+            58,
+            237,
+            .25
+        );
+
+    color:white;
+
+}
+
+.opsar-card-body {
+
+    padding:14px;
+
+    font-size:13px;
+	
+	overflow-y: auto;
+
+	max-height: calc(
+		100vh - 220px
+	);
+
+}
+
+.opsar-card-body::-webkit-scrollbar {
+
+    width:8px;
+
+}
+
+.opsar-card-body::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(
+            56,
+            189,
+            248,
+            .4
+        );
+
+    border-radius:4px;
+
+}
+
+.opsar-card-section {
+
+    margin-bottom:14px;
+
+}
+
+.opsar-section-title {
+
+    font-size:11px;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    color:#38bdf8;
+
+    margin-bottom:8px;
+
+    letter-spacing:.4px;
+
+}
+
+.opsar-radio,
+.opsar-checkbox,
+.opsar-toggle {
+
+    display:block;
+
+    margin-bottom:8px;
+
+    cursor:pointer;
+
+}
+
+.station-actions {
+
+    margin-top:16px;
+
+}
+
+.opsar-btn-primary {
+
+    width:100%;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ea580c,
+            #c2410c
+        );
+
+    transition:.2s;
+
+}
+
+.opsar-btn-primary:hover {
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(
+            234,
+            88,
+            12,
+            .35
+        );
+
+}
+
+.opsar-card-red {
+
+    border-color:
+        rgba(239,68,68,.35);
+
+}
+
+.opsar-card-orange {
+
+    border-color:
+        rgba(249,115,22,.35);
+
+}
+
+.opsar-card-cyan {
+
+    border-color:
+        rgba(6,182,212,.35);
+
+}
+
+.opsar-card-blue {
+
+    border-color:
+        rgba(59,130,246,.35);
+
+}
+
+.opsar-card-green {
+
+    border-color:
+        rgba(16,185,129,.35);
+
+}
+
+.opsar-card-purple {
+
+    border-color:
+        rgba(124,58,237,.35);
+
+}
+
+.opsar-card-title {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.opsar-card-icon {
+
+    font-size:16px;
+
+}
+
+.opsar-row {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:6px;
+
+}
+
+.opsar-label {
+
+    color:#94a3b8;
+
+}
+
+.opsar-value {
+
+    color:white;
+
+    font-weight:500;
+
+}
+
+/* =====================================
+   IOS SWITCH
+===================================== */
+
+.opsar-toggle,
+.opsar-checkbox,
+.opsar-radio {
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:10px;
+
+    padding:6px 0;
+
+    user-select:none;
+
+}
+
+.opsar-toggle input,
+.opsar-checkbox input,
+.opsar-radio input {
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    width:46px;
+
+    height:26px;
+
+    border-radius:26px;
+
+    background:#334155;
+
+    position:relative;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    flex-shrink:0;
+
+}
+
+.opsar-toggle input::before,
+.opsar-checkbox input::before,
+.opsar-radio input::before {
+
+    content:'';
+
+    position:absolute;
+
+    width:20px;
+
+    height:20px;
+
+    top:3px;
+
+    left:3px;
+
+    border-radius:50%;
+
+    background:white;
+
+    transition:.25s;
+
+}
+
+.opsar-toggle input:checked,
+.opsar-checkbox input:checked,
+.opsar-radio input:checked {
+
+    background:#06b6d4;
+
+}
+
+.opsar-toggle input:checked::before,
+.opsar-checkbox input:checked::before,
+.opsar-radio input:checked::before {
+
+    transform:translateX(20px);
+
+}
+
+/* =====================================
+   MOBILE CARD LAYOUT
+===================================== */
+
+@media (max-width: 768px) {
+
+    .opsar-card {
+
+        position: fixed !important;
+
+        top: calc(60px + env(safe-area-inset-top, 0px) + 8px) !important;
+
+        left: max(8px, env(safe-area-inset-left, 0px)) !important;
+
+        right: max(8px, env(safe-area-inset-right, 0px)) !important;
+
+        bottom: calc(70px + env(safe-area-inset-bottom, 0px) + 8px) !important;
+
+        width: auto !important;
+
+        min-width: 0 !important;
+
+        max-width: none !important;
+
+        max-height: none !important;
+
+        display: flex;
+
+        flex-direction: column;
+
+        border-radius: 10px;
+
+        box-sizing: border-box;
+
+        z-index: 15000;
+
+    }
+
+    .opsar-card-header {
+
+        height: 46px;
+
+        min-height: 46px;
+
+        padding: 0 12px;
+
+        cursor: default;
+
+        flex-shrink: 0;
+
+    }
+
+    .opsar-card-title {
+
+        min-width: 0;
+
+        gap: 6px;
+
+    }
+
+    .opsar-card-title span:last-child {
+
+        display: block;
+
+        min-width: 0;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+
+        font-size: 13px;
+
+        letter-spacing: 0;
+
+    }
+
+    .opsar-card-icon {
+
+        flex-shrink: 0;
+
+        font-size: 15px;
+
+    }
+
+    .opsar-card-actions {
+
+        flex-shrink: 0;
+
+        gap: 4px;
+
+    }
+
+    .opsar-card-actions button {
+
+        width: 30px;
+
+        height: 30px;
+
+        border-radius: 7px;
+
+        font-size: 16px;
+
+    }
+
+    .opsar-card-body {
+
+        flex: 1;
+
+        min-height: 0;
+
+        max-height: none !important;
+
+        padding: 12px 12px calc(18px + env(safe-area-inset-bottom, 0px));
+
+        overflow-y: auto;
+
+        overscroll-behavior: contain;
+
+        -webkit-overflow-scrolling: touch;
+
+        font-size: 12px;
+
+    }
+
+    .opsar-card-section {
+
+        margin-bottom: 12px;
+
+    }
+
+    .opsar-section-title {
+
+        margin-top: 12px;
+
+        margin-bottom: 8px;
+
+        padding-bottom: 5px;
+
+        font-size: 10px;
+
+        letter-spacing: .3px;
+
+    }
+
+    .opsar-row {
+
+        gap: 8px;
+
+        align-items: flex-start;
+
+    }
+
+    .opsar-label {
+
+        min-width: 0;
+
+        overflow-wrap: anywhere;
+
+    }
+
+    .opsar-value {
+
+        max-width: 52%;
+
+        text-align: right;
+
+        overflow-wrap: anywhere;
+
+    }
+
+    .opsar-btn,
+    .opsar-btn-primary {
+
+        min-height: 40px;
+
+        white-space: normal;
+
+        line-height: 1.15;
+
+    }
+
+    .opsar-card iframe {
+
+        height: 220px !important;
+
+        max-height: 34vh;
+
+    }
+
+}
+
+@media (max-width: 380px) {
+
+    .opsar-card {
+
+        top: calc(56px + env(safe-area-inset-top, 0px) + 6px) !important;
+
+        left: max(6px, env(safe-area-inset-left, 0px)) !important;
+
+        right: max(6px, env(safe-area-inset-right, 0px)) !important;
+
+        bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 6px) !important;
+
+        border-radius: 8px;
+
+    }
+
+    .opsar-card-body {
+
+        padding: 10px 10px calc(16px + env(safe-area-inset-bottom, 0px));
+
+    }
+
+    .opsar-value {
+
+        max-width: 48%;
+
+    }
+
+}
