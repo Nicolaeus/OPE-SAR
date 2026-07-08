@@ -11,6 +11,7 @@ export default {
 
         MapService.createMap();
 
+		console.log('🗺 Initialisation widget Map Infos');
 		MapInfoWidget.init();
 
         window.OPESAR = window.OPESAR || {};
