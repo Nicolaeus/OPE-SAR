@@ -121,3 +121,18 @@
     color:#0F4C81;
 
 }
+#map-info-widget {
+
+    position: absolute;
+
+    left: 20px;
+
+    bottom: 90px;
+
+    z-index: 9999;
+
+    background: red;
+
+    padding: 10px;
+
+}
