@@ -1,0 +1,23 @@
+#map {
+
+    position: relative;
+
+}
+
+#map-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 1000;
+
+}
+
+#map-overlay > * {
+
+    pointer-events: auto;
+
+}
