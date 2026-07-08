@@ -63,7 +63,14 @@ export default {
 
         `;
 
-        document.body.appendChild(widget);
+        const mapContainer = document.getElementById('map');
+
+        if (!mapContainer) {
+            console.error('Conteneur #map introuvable');
+            return;
+        }
+        
+        mapContainer.appendChild(widget);
 
         const panel =
             document.getElementById(
