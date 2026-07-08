@@ -3503,9 +3503,9 @@
         "email": null,
         "website": "https://etablissement.snsm.org/bretagne/finistere/nevez/station-snsm-de-port-manech-149",
         "partoo": null,
-        "cross": "CROSS Corsen",
+        "cross": "CROSS A Etel",
         "operational": {
-            "cross": "CROSS Corsen",
+            "cross": "CROSS A Etel",
             "srr": "Atlantique",
             "zone": "Finistère Sud",
             "homePort": "Port Manec'h"
