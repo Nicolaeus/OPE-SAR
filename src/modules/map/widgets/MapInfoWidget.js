@@ -1,9 +1,16 @@
+import MapOverlay from '../../../shared/ui/panels/MapOverlay.js';
+
 export default {
 
     init() {
 
-        // Évite les doublons
         if (document.getElementById('map-info-widget')) {
+            return;
+        }
+
+        const overlay = MapOverlay.get();
+
+        if (!overlay) {
             return;
         }
 
@@ -31,6 +38,7 @@ export default {
 
                     <button id="map-info-close">
                         ✕
+
                     </button>
 
                 </div>
@@ -63,42 +71,39 @@ export default {
 
         `;
 
-        const mapContainer = document.getElementById('map');
-
-        if (!mapContainer) {
-            console.error('Conteneur #map introuvable');
-            return;
-        }
-        
-        mapContainer.appendChild(widget);
+        overlay.appendChild(widget);
 
         const panel =
-            document.getElementById(
-                'map-info-panel'
+            widget.querySelector(
+                '#map-info-panel'
             );
 
-        document
-            .getElementById(
-                'map-info-button'
+        widget
+            .querySelector(
+                '#map-info-button'
             )
             .addEventListener(
                 'click',
                 () => {
 
-                    panel.classList.toggle('open');
+                    panel.classList.toggle(
+                        'open'
+                    );
 
                 }
             );
 
-        document
-            .getElementById(
-                'map-info-close'
+        widget
+            .querySelector(
+                '#map-info-close'
             )
             .addEventListener(
                 'click',
                 () => {
 
-                    panel.classList.remove('open');
+                    panel.classList.remove(
+                        'open'
+                    );
 
                 }
             );
