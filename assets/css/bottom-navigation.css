@@ -81,7 +81,7 @@
 
         justify-content: flex-start;
 
-        gap: 4px;
+        gap: 8px;
 
         overflow-x: auto;
 
@@ -99,9 +99,9 @@
 
     .opsar-nav-btn {
 
-        min-width: 58px;
+        min-width: 64px;
 
-        height: 54px;
+        height: 64px;
 
         padding: 0 4px;
 
