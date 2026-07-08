@@ -7,11 +7,11 @@ export default {
 
     async init() {
 
-        console.log('🗺 Initialisation module Map');
-
-        MapService.createMap();
-
+        console.log('🗺 Initialisation module MAP');
 		console.log('🗺 Initialisation widget Map Infos');
+        
+		MapService.createMap();
+		
 		MapInfoWidget.init();
 
         window.OPESAR = window.OPESAR || {};
