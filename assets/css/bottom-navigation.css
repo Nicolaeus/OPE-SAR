@@ -73,15 +73,15 @@
 
     .opsar-bottom-nav {
 
-        height: calc(64px + env(safe-area-inset-bottom, 0px));
+        height: calc(82px + env(safe-area-inset-bottom, 0px));
 
-        padding: 4px 8px env(safe-area-inset-bottom, 0px);
+        padding: 6px 8px env(safe-area-inset-bottom, 0px);
 
         box-sizing: border-box;
 
         justify-content: flex-start;
 
-        gap: 2px;
+        gap: 4px;
 
         overflow-x: auto;
 
@@ -137,7 +137,7 @@
 
     .opsar-bottom-nav {
 
-        height: calc(58px + env(safe-area-inset-bottom, 0px));
+        height: calc(76px + env(safe-area-inset-bottom, 0px));
 
         padding-left: 6px;
 
