@@ -1,6 +1,7 @@
 import MapService from './services/MapService.js';
 import LayerManager from './services/LayerManager.js';
 import MapLayersCard from './cards/MapLayersCard.js';
+import MapInfoWidget from './widgets/MapInfoWidget.js';
 
 export default {
 
@@ -9,6 +10,8 @@ export default {
         console.log('🗺 Initialisation module Map');
 
         MapService.createMap();
+
+		MapInfoWidget.init();
 
         window.OPESAR = window.OPESAR || {};
 
