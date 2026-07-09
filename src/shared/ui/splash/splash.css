@@ -1,0 +1,162 @@
+#opsar-splash{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:999999;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:
+        linear-gradient(
+            180deg,
+            #071220,
+            #102742
+        );
+
+    transition:
+        opacity .6s;
+
+}
+
+#opsar-splash.hide{
+
+    opacity:0;
+
+    pointer-events:none;
+
+}
+
+.opsar-splash-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+}
+
+.opsar-splash-title{
+
+    color:white;
+
+    font-size:38px;
+
+    font-weight:700;
+
+    letter-spacing:3px;
+
+}
+
+.opsar-splash-subtitle{
+
+    color:#9fb3c8;
+
+    margin-top:8px;
+
+    margin-bottom:40px;
+
+    text-align:center;
+
+}
+
+.opsar-splash-logo{
+
+    width:180px;
+
+    animation:
+        pulse 2s infinite;
+
+}
+
+.opsar-loader{
+
+    width:220px;
+
+    height:6px;
+
+    border-radius:8px;
+
+    overflow:hidden;
+
+    background:
+        rgba(255,255,255,.15);
+
+    margin-top:36px;
+
+}
+
+.opsar-loader-bar{
+
+    width:0;
+
+    height:100%;
+
+    background:#49b7ff;
+
+    animation:
+        loading 2s linear forwards;
+
+}
+
+.opsar-splash-version{
+
+    margin-top:30px;
+
+    color:#b7c8d9;
+
+}
+
+.opsar-splash-credit{
+
+    margin-top:6px;
+
+    color:#7c8fa4;
+
+    font-size:13px;
+
+}
+
+@keyframes loading{
+
+    from{
+
+        width:0;
+
+    }
+
+    to{
+
+        width:100%;
+
+    }
+
+}
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.05);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
