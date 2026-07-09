@@ -55,7 +55,7 @@ export default class SplashScreen {
 
                 <div class="opsar-splash-credit">
 
-                    © 2026 Nicolas XXXXX
+                    © 2026 Nicolas PIRAULT
 
                 </div>
 
