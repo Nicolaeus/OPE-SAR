@@ -7,25 +7,47 @@ export default class StationCard extends BaseCardController{
 
     static create(station) {
 
-        if (this.instance) {
+   if (this.instance) {
 
-            this.instance.element.remove();
+        this.instance.element.remove();
 
-        }
+    }
 
-        const card =
-			new BaseCard({
+    if (!station) {
 
-				id: 'station-card',
+        const card = new BaseCard({
 
-				title:
-					`${station.stationNumber}`,
+            id: 'station-card',
 
-				color:'cyan',
+            title: 'Stations',
 
-				icon:'⚓'
+            color: 'cyan',
 
-			});
+            icon: '⚓'
+
+        });
+
+        const section =
+
+            new CardSection('Aucune station');
+
+        section.add(document.createTextNode(
+
+            'Sélectionnez une station sur la carte.'
+
+        ));
+
+        card.add(section.element);
+
+        card.render(document.getElementById('app'));
+
+        this.instance = card;
+
+        return card;
+
+    }
+
+    // ... le reste de ton code actuel
 
         // =================================
         // IDENTITÉ
