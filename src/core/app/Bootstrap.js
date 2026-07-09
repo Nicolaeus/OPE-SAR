@@ -28,6 +28,8 @@ export default class Bootstrap {
 
 		SplashScreen.show();
 
+		console.log("Splash demandé");
+
 		await new Promise(
 		    resolve =>
 		        requestAnimationFrame(resolve)
