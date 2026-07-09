@@ -63,6 +63,7 @@ export default class SplashScreen {
 
         `;
 
+        console.log("Ajout du splash au DOM");
         document.body.appendChild(
             splash
         );
