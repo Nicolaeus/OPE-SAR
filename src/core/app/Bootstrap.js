@@ -30,6 +30,16 @@ export default class Bootstrap {
 
 		await new Promise(
 		    resolve =>
+		        requestAnimationFrame(resolve)
+		);
+		
+		await new Promise(
+		    resolve =>
+		        requestAnimationFrame(resolve)
+		);
+
+		await new Promise(
+		    resolve =>
 		        setTimeout(resolve, 10000)
 		);
 
