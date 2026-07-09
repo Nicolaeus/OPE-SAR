@@ -7,19 +7,20 @@ export default class StationCard extends BaseCardController{
 
     static create(station) {
 
-   if (this.instance) {
+    if (this.instance) {
 
         this.instance.element.remove();
 
     }
 
-    if (!station) {
-
-        const card = new BaseCard({
+    const card =
+        new BaseCard({
 
             id: 'station-card',
 
-            title: 'Stations',
+            title: station
+                ? `${station.stationNumber}`
+                : 'Stations',
 
             color: 'cyan',
 
@@ -27,27 +28,44 @@ export default class StationCard extends BaseCardController{
 
         });
 
+    // =================================
+    // AUCUNE STATION
+    // =================================
+
+    if (!station) {
+
         const section =
+            new CardSection(
+                'Aucune station'
+            );
 
-            new CardSection('Aucune station');
+        const content =
+            document.createElement('div');
 
-        section.add(document.createTextNode(
+        content.innerHTML = `
 
-            'Sélectionnez une station sur la carte.'
+            <p>
+                Aucune station n'est actuellement sélectionnée.
+            </p>
 
-        ));
+            <p>
+                Sélectionnez une station sur la carte pour afficher
+                ses informations.
+            </p>
+
+        `;
+
+        section.add(content);
 
         card.add(section.element);
 
-        card.render(document.getElementById('app'));
-
-        this.instance = card;
-
-        return card;
-
     }
 
-    // ... le reste de ton code actuel
+    // =================================
+    // STATION SÉLECTIONNÉE
+    // =================================
+
+    else {
 
         // =================================
         // IDENTITÉ
@@ -73,9 +91,7 @@ export default class StationCard extends BaseCardController{
 
         `;
 
-        identity.add(
-            identityContent
-        );
+        identity.add(identityContent);
 
         // =================================
         // OPÉRATIONNEL
@@ -132,36 +148,27 @@ export default class StationCard extends BaseCardController{
             assetsContent.innerHTML =
                 '<div>Aucun moyen renseigné</div>';
 
-        }
-        else {
+        } else {
 
             boats.forEach(
                 boat => {
 
                     const row =
-                        document.createElement(
-                            'div'
-                        );
+                        document.createElement('div');
 
                     row.innerHTML = `
-
                         ${boat.registration}
                         (${boat.class})
-
                     `;
 
-                    assetsContent.appendChild(
-                        row
-                    );
+                    assetsContent.appendChild(row);
 
                 }
             );
 
         }
 
-        assets.add(
-            assetsContent
-        );
+        assets.add(assetsContent);
 
         // =================================
         // CONTACTS
@@ -178,13 +185,11 @@ export default class StationCard extends BaseCardController{
         contactsContent.innerHTML = `
 
             <div>
-                📞
-                ${station.phone ?? '-'}
+                📞 ${station.phone ?? '-'}
             </div>
 
             <div>
-                ✉
-                ${station.email ?? '-'}
+                ✉ ${station.email ?? '-'}
             </div>
 
         `;
@@ -193,91 +198,84 @@ export default class StationCard extends BaseCardController{
             contactsContent
         );
 
-		// =================================
-		// ACTIONS
-		// =================================
+        // =================================
+        // ACTIONS
+        // =================================
 
-		const actions =
-			document.createElement('div');
+        const actions =
+            document.createElement('div');
 
-		actions.className =
-			'station-actions';
+        actions.className =
+            'station-actions';
 
-		const referenceButton =
-			document.createElement('button');
+        const referenceButton =
+            document.createElement('button');
 
-		referenceButton.className =
-			'opsar-btn-primary';
+        referenceButton.className =
+            'opsar-btn-primary';
 
-		referenceButton.textContent =
-			'Définir comme station de référence';
+        referenceButton.textContent =
+            'Définir comme station de référence';
 
-		referenceButton.addEventListener(
-			'click',
-			() => {
+        referenceButton.addEventListener(
+            'click',
+            () => {
 
-				StationReferenceService.save(
-					station.id
-				);
+                StationReferenceService.save(
+                    station.id
+                );
 
-				console.log(
-					'⚓ Station de référence enregistrée :',
-					station.name
-				);
+                console.log(
+                    '⚓ Station de référence enregistrée :',
+                    station.name
+                );
 
-			}
-		);
+            }
+        );
 
-		actions.appendChild(
-			referenceButton
-		);
+        actions.appendChild(
+            referenceButton
+        );
 
         // =================================
         // ASSEMBLAGE
         // =================================
 
-        card.add(
-            identity.element
-        );
+        card.add(identity.element);
+        card.add(operational.element);
+        card.add(assets.element);
+        card.add(contacts.element);
+        card.add(actions);
 
-        card.add(
-            operational.element
-        );
+    }
 
-        card.add(
-            assets.element
-        );
+    // =================================
+    // COMMUN À TOUS LES CAS
+    // =================================
 
-        card.add(
-            contacts.element
-        );
-		
-		card.add(
-            actions
-        );
+    card.render(
+        document.getElementById(
+            'app'
+        )
+    );
 
-        card.render(
-            document.getElementById(
-                'app'
-            )
-        );
+    this.instance =
+        card;
 
-        this.instance =
-            card;
-			
-		card.element.addEventListener(
+    card.element.addEventListener(
 
-			'card:close',
+        'card:close',
 
-			() => {
+        () => {
 
-				StationCard.close();
+            StationCard.close();
 
-			}
+        }
 
-		);
+    );
 
-        return card;
+    return card;
+
 
     }
 
