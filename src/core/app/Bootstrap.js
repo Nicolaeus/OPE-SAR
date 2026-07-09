@@ -2,7 +2,7 @@ import App from './App.js';
 
 import Registry from './Registry.js';
 
-import SplashScreen from '../../shared/ui/splash/SplashScreen.js';
+import SplashScreen from '../../shared/ui/splash/splashScreen.js';
 
 import AppHeader from '../../shared/ui/header/AppHeader.js';
 
