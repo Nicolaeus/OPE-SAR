@@ -30,7 +30,7 @@ export default class Bootstrap {
 
 		await new Promise(
 		    resolve =>
-		        setTimeout(resolve, 5000)
+		        setTimeout(resolve, 10000)
 		);
 
         console.log('⚓ OPE-SAR V21');
