@@ -6,6 +6,8 @@ export default class SplashScreen {
 
     static show() {
 
+        console.log("show() appelé");
+
         this.#startTime = performance.now();
 
         if (this.#element) {
