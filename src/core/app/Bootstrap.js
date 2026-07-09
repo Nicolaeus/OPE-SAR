@@ -29,8 +29,9 @@ export default class Bootstrap {
 		SplashScreen.show();
 
 		await new Promise(
-	        resolve => requestAnimationFrame(resolve)
-	    );
+		    resolve =>
+		        setTimeout(resolve, 5000)
+		);
 
         console.log('⚓ OPE-SAR V21');
 		
