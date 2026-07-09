@@ -2,6 +2,8 @@ import App from './App.js';
 
 import Registry from './Registry.js';
 
+import SplashScreen from '../../shared/ui/splash/SplashScreen.js';
+
 import AppHeader from '../../shared/ui/header/AppHeader.js';
 
 import BottomNavigation from '../../shared/ui/navigation/BottomNavigation.js';
@@ -23,6 +25,11 @@ import SettingsModule from '../../modules/settings/index.js';
 export default class Bootstrap {
 
     static async start() {
+
+		SplashScreen.show();
+
+		const start =
+		    performance.now();
 
         console.log('⚓ OPE-SAR V21');
 		
@@ -69,6 +76,25 @@ export default class Bootstrap {
 			)
 		);
 
+
+		const elapsed =
+		    performance.now() - start;
+		
+		const remaining =
+		    Math.max(
+		        1500 - elapsed,
+		        0
+		    );
+		
+		setTimeout(
+		    () => {
+		
+		        SplashScreen.hide();
+		
+		    },
+		    remaining
+		);
+		
 		console.log(
 			'✅ Application démarrée'
 		);
