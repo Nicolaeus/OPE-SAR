@@ -16,12 +16,6 @@
   ],
   "icons": [
     {
-      "src": "./assets/images/logos/OPESAR_logo_sf.png",
-      "sizes": "1254x1254",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
       "src": "./assets/images/icons/station/icon_station_128.png",
       "sizes": "128x128",
       "type": "image/png",
@@ -32,6 +26,26 @@
       "sizes": "256x256",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+        "src": "./assets/images/logos/256x256.png",
+        "sizes": "256x256",
+        "type": "image/png",
+        "purpose": "any"
+    },
+
+    {
+        "src": "./assets/images/logos/512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+    },
+
+    {
+        "src": "./assets/images/logos/512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
     }
   ]
 }
