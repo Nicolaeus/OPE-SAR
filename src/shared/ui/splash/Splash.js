@@ -77,7 +77,7 @@ export default class SplashScreen {
     
             const remaining =
                 Math.max(
-                    3000 - elapsed,
+                    5000 - elapsed,
                     0
                 );
     
