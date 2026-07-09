@@ -28,6 +28,10 @@ export default class Bootstrap {
 
 		SplashScreen.show();
 
+		await new Promise(
+	        resolve => requestAnimationFrame(resolve)
+	    );
+
         console.log('⚓ OPE-SAR V21');
 		
 		const header = AppHeader.create();
