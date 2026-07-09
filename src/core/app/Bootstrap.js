@@ -28,9 +28,6 @@ export default class Bootstrap {
 
 		SplashScreen.show();
 
-		const start =
-		    performance.now();
-
         console.log('⚓ OPE-SAR V21');
 		
 		const header = AppHeader.create();
@@ -77,23 +74,7 @@ export default class Bootstrap {
 		);
 
 
-		const elapsed =
-		    performance.now() - start;
-		
-		const remaining =
-		    Math.max(
-		        1500 - elapsed,
-		        0
-		    );
-		
-		setTimeout(
-		    () => {
-		
-		        SplashScreen.hide();
-		
-		    },
-		    remaining
-		);
+		await SplashScreen.hide();
 		
 		console.log(
 			'✅ Application démarrée'
