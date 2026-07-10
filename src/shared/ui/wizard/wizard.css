@@ -126,39 +126,33 @@
 
 .opsar-wizard-icon {
 
-    width: 78px;
+    width:90px;
 
-    height: 78px;
+    height:90px;
 
-    margin: 0 auto 18px;
+    margin:0 auto 18px;
 
-    border-radius: 50%;
+    display:flex;
 
-    display: flex;
+    justify-content:center;
 
-    align-items: center;
+    align-items:center;
 
-    justify-content: center;
+}
 
-    font-size: 34px;
+.opsar-wizard-logo{
 
-    background:
+    width:90px;
 
-        linear-gradient(
+    height:90px;
 
-            135deg,
+    object-fit:contain;
 
-            #3b82f6,
-
-            #2563eb
-
+    filter:
+        drop-shadow(
+            0 8px 24px
+            rgba(37,99,235,.35)
         );
-
-    color: white;
-
-    box-shadow:
-
-        0 12px 35px rgba(59,130,246,.35);
 
 }
 
