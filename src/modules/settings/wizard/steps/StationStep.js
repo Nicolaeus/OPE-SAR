@@ -1,6 +1,6 @@
-import WizardStep from '../../../shared/ui/wizard/WizardStep.js';
+import WizardStep from '../../../../shared/ui/wizard/WizardStep.js';
 
-import StationManager from '../../stations/services/StationManager.js';
+import StationManager from '../../../stations/services/StationManager.js';
 
 export default class StationStep extends WizardStep {
 
