@@ -1,0 +1,201 @@
+/* ==========================================================
+   Wizard Step
+   Styles communs à toutes les étapes du Wizard
+   ========================================================== */
+
+.opsar-step {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    gap: 18px;
+
+    width: 100%;
+
+    height: 100%;
+
+    animation:
+        wizardStepFade
+        .30s ease;
+
+}
+
+.opsar-step-logo {
+
+    width: 120px;
+
+    height: 120px;
+
+    object-fit: contain;
+
+    margin-top: 6px;
+
+    filter:
+        drop-shadow(
+            0 10px 26px
+            rgba(37,99,235,.35)
+        );
+
+}
+
+.opsar-step-icon {
+
+    font-size: 58px;
+
+    margin-top: 8px;
+
+}
+
+.opsar-step-title {
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+}
+
+.opsar-step-subtitle {
+
+    margin: 0;
+
+    color: #60a5fa;
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+}
+
+.opsar-step-description {
+
+    max-width: 320px;
+
+    margin: 0;
+
+    color: #cbd5e1;
+
+    line-height: 1.65;
+
+    font-size: 15px;
+
+}
+
+.opsar-step-group {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+    margin-top: 8px;
+
+}
+
+.opsar-step-card {
+
+    padding: 16px 18px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    transition:
+        .25s;
+
+}
+
+.opsar-step-card:hover {
+
+    background:
+        rgba(255,255,255,.08);
+
+}
+
+.opsar-step-card-title {
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+}
+
+.opsar-step-card-description {
+
+    margin-top: 6px;
+
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+.opsar-step-separator {
+
+    width: 72px;
+
+    height: 2px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(96,165,250,.45);
+
+}
+
+.opsar-step-footer {
+
+    margin-top: auto;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+}
+
+/* ==========================================================
+   Animation
+   ========================================================== */
+
+@keyframes wizardStepFade {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(18px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
