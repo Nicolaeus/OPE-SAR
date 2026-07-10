@@ -3,7 +3,9 @@ export default class BottomNavigation {
     static create() {
 
         const nav =
-            document.createElement('nav');
+            document.createElement(
+                'nav'
+            );
 
         nav.className =
             'opsar-bottom-nav';
@@ -12,76 +14,76 @@ export default class BottomNavigation {
 
             <button
                 class="opsar-nav-btn active"
-                data-module="map">
-
-                🗺
-                <span>Carte</span>
-
-            </button>
-
-            <button
-                class="opsar-nav-btn"
-                data-module="stations">
-
-                ⚓
-                <span>Stations</span>
-
-            </button>
-
-            <button
-                class="opsar-nav-btn"
                 data-module="weather">
 
-                🌦
-                <span>Météo</span>
+                <span
+                    class="opsar-nav-icon">
 
-            </button>
-			
-			<button
-				class="opsar-nav-btn"
-				data-module="tides">
+                    🌦
 
-				🌊
+                </span>
 
-				<span>
-					Marées
-				</span>
+                <span
+                    class="opsar-nav-label">
 
-			</button>
+                    Météo
 
-            <button
-                class="opsar-nav-btn"
-                data-module="ais">
-
-                📡
-                <span>AIS</span>
+                </span>
 
             </button>
 
             <button
                 class="opsar-nav-btn"
+                data-module="tides">
+
+                <span
+                    class="opsar-nav-icon">
+
+                    🌊
+
+                </span>
+
+                <span
+                    class="opsar-nav-label">
+
+                    Marées
+
+                </span>
+
+            </button>
+
+            <button
+                class="
+                    opsar-nav-btn
+                    opsar-nav-btn-sar"
                 data-module="sar">
 
-                🚨
-                <span>SAR</span>
+                <span
+                    class="opsar-nav-icon">
 
-            </button>
-			
-			<button
-                class="opsar-nav-btn"
-                data-module="osc">
+                    🚨
 
-                🎯
-                <span>OSC</span>
+                </span>
 
             </button>
 
             <button
                 class="opsar-nav-btn"
-                data-module="settings">
+                data-module="more">
 
-                ⚙
-                <span>Config</span>
+                <span
+                    class="opsar-nav-icon">
+
+                    ⋯
+
+                </span>
+
+                <span
+                    class="opsar-nav-label">
+
+                    Plus
+
+                </span>
 
             </button>
 
@@ -91,20 +93,27 @@ export default class BottomNavigation {
             .querySelectorAll(
                 '.opsar-nav-btn'
             )
-            .forEach(button => {
+            .forEach(
 
-                button.addEventListener(
-					'click',
-					() => {
+                button => {
 
-						this.activate(
-							button
-						);
+                    button.addEventListener(
 
-					}
-				);
+                        'click',
 
-            });
+                        () => {
+
+                            this.activate(
+                                button
+                            );
+
+                        }
+
+                    );
+
+                }
+
+            );
 
         return nav;
 
@@ -112,52 +121,90 @@ export default class BottomNavigation {
 
     static activate(button) {
 
-    const alreadyActive =
-        button.classList.contains(
-            'active'
-        );
+        const module =
+            button.dataset.module;
 
-    document
-        .querySelectorAll(
-            '.opsar-nav-btn'
-        )
-        .forEach(btn => {
+        // =====================================
+        // Bouton Plus
+        // =====================================
 
-            btn.classList.remove(
-                'active'
+        if (
+
+            module === 'more'
+
+        ) {
+
+            window.dispatchEvent(
+
+                new CustomEvent(
+
+                    'navigation:more'
+
+                )
+
             );
 
-        });
+            return;
 
-    if (!alreadyActive) {
+        }
+
+        // =====================================
+        // Activation visuelle
+        // =====================================
+
+        document
+            .querySelectorAll(
+                '.opsar-nav-btn'
+            )
+            .forEach(
+
+                btn => {
+
+                    if (
+
+                        btn.dataset.module !==
+                        'more'
+
+                    ) {
+
+                        btn.classList.remove(
+                            'active'
+                        );
+
+                    }
+
+                }
+
+            );
 
         button.classList.add(
             'active'
         );
 
-    }
+        // =====================================
+        // Notification
+        // =====================================
 
-    const module =
-        button.dataset.module;
+        window.dispatchEvent(
 
-    window.dispatchEvent(
+            new CustomEvent(
 
-        new CustomEvent(
+                'navigation:change',
 
-            'navigation:change',
+                {
 
-            {
-                detail: {
-                    module,
-                    active:
-                        !alreadyActive
+                    detail: {
+
+                        module
+
+                    }
+
                 }
-            }
 
-        )
+            )
 
-    );
+        );
 
-}
+    }
 
 }
