@@ -19,6 +19,9 @@ export default class Wizard {
 
         this.element = null;
 
+        this.onFinish =
+            config.onFinish ?? null;
+
     }
 
     show() {
@@ -171,48 +174,57 @@ export default class Wizard {
         this._renderStep();
 
     }
+async next() {
 
-    next() {
+    const step =
+        this.steps[
+            this.currentStep
+        ];
 
-        const step =
-            this.steps[
-                this.currentStep
-            ];
+    if (
 
-        if (
+        step &&
+        typeof step.save ===
+        'function'
 
-            step &&
-            typeof step.save ===
-            'function'
+    ) {
 
-        ) {
+        await step.save(
 
-            step.save(
+            this.data
 
-                this.data
-
-            );
-
-        }
-
-        if (
-
-            this.currentStep >=
-            this.steps.length - 1
-
-        ) {
-
-            this.close();
-
-            return;
-
-        }
-
-        this.currentStep++;
-
-        this.render();
+        );
 
     }
+
+    if (
+
+        this.currentStep >=
+        this.steps.length - 1
+
+    ) {
+
+        if (
+
+            this.onFinish
+
+        ) {
+
+            await this.onFinish();
+
+        }
+
+        this.close();
+
+        return;
+
+    }
+
+    this.currentStep++;
+
+    this.render();
+
+}
 
     previous() {
 
