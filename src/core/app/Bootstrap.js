@@ -8,9 +8,9 @@ import Database
 import SettingsService
     from '../services/SettingsService.js';
 
-// import CacheManager from '../cache/CacheManager.js';
+import CacheManager from '../cache/CacheManager.js';
 
-// import SplashScreen from '../../shared/ui/splash/Splash.js';
+import SplashScreen from '../../shared/ui/splash/Splash.js';
 
 import AppHeader from '../../shared/ui/header/AppHeader.js';
 
@@ -171,7 +171,7 @@ export default class Bootstrap {
         // Premier lancement
         // =============================================
 
-        await WizardLauncher.launch();
+       // await WizardLauncher.launch();
 
         // =============================================
         // Fin du splash
