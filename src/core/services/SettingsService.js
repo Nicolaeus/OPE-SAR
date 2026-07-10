@@ -23,22 +23,90 @@ export default class SettingsService {
 
     static DEFAULT_SETTINGS = {
 
-        id:
-            this.SETTINGS_ID,
+    id:
+        this.SETTINGS_ID,
 
-        initialized:
-            false,
+    // =============================================
+    // Application
+    // =============================================
 
-        referenceStation:
-            null,
+    initialized:
+        false,
 
-        theme:
-            'auto',
+    language:
+        'fr',
 
-        defaultMode:
-            'sar'
+    theme:
+        'auto',
 
-    };
+    mapTheme:
+        'standard',
+
+    // =============================================
+    // Navigation
+    // =============================================
+
+    defaultMode:
+        'sar',
+
+    referenceStation:
+        null,
+
+    // =============================================
+    // Unités
+    // =============================================
+
+    distanceUnit:
+        'nm',
+
+    speedUnit:
+        'kts',
+
+    windUnit:
+        'kts',
+
+    temperatureUnit:
+        'c',
+
+    depthUnit:
+        'm',
+
+    coordinateFormat:
+        'dd',
+
+    // =============================================
+    // Carte
+    // =============================================
+
+    showAIS:
+        true,
+
+    showWeather:
+        true,
+
+    showStations:
+        true,
+
+    showTides:
+        true,
+
+    showGrid:
+        false,
+
+    // =============================================
+    // Notifications
+    // =============================================
+
+    notifications:
+        true,
+
+    sound:
+        true,
+
+    vibration:
+        true
+
+};
 
     // =====================================================
     // Initialisation
