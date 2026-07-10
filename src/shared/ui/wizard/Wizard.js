@@ -394,10 +394,10 @@ async next() {
 
                 'click',
 
-                () => {
+                async () => {
 
-                    this.next();
-
+                    await this.next();
+                
                 }
 
             );
