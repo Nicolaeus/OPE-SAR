@@ -66,6 +66,10 @@ export default class Bootstrap {
 
         await SettingsService.initialize();
 
+        await ThemeService.apply();
+
+        ThemeService.listen();
+
         await CacheManager.cleanExpired();
 
         console.log(
