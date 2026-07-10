@@ -48,9 +48,12 @@ export default class Wizard {
 
                         <div
                             class="opsar-wizard-icon">
-
-                            ${this.icon}
-
+                        
+                            <img
+                                class="opsar-wizard-logo"
+                                src="./assets/images/logos/OPESAR_logo.png"
+                                alt="OPE-SAR">
+                        
                         </div>
 
                         <h2>
