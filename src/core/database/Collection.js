@@ -4,75 +4,34 @@
  * ----------------------------------------------------------
  * Collections.js
  *
- * Déclaration centralisée des collections IndexedDB.
+ * Déclaration des collections IndexedDB.
  *
- * Toutes les collections de l'application sont définies ici.
+ * Les données de référence (JSON, API, GRIB...)
+ * ne sont PAS stockées ici.
  *
- * Aucun nom de collection ne doit être écrit en dur
- * ailleurs dans le projet.
+ * Seules les données utilisateur et les caches
+ * persistants sont enregistrés.
  * ==========================================================
  */
 
 const Collections = Object.freeze({
 
     // =============================================
-    // Paramètres
+    // Paramètres utilisateur
     // =============================================
 
     SETTINGS:
         'settings',
 
     // =============================================
-    // Stations SNSM
-    // =============================================
-
-    STATIONS:
-        'stations',
-
-    STATION_REFERENCES:
-        'station_references',
-
-    // =============================================
-    // Cartographie
-    // =============================================
-
-    MAP:
-        'map',
-
-    LAYERS:
-        'layers',
-
-    // =============================================
-    // Météo
-    // =============================================
-
-    WEATHER:
-        'weather',
-
-    TIDES:
-        'tides',
-
-    AIS:
-        'ais',
-
-    // =============================================
-    // SAR
+    // Missions SAR
     // =============================================
 
     MISSIONS:
         'missions',
 
-    PATTERNS:
-        'patterns',
-
-    SEARCH_AREAS:
-        'search_areas',
-
-    DRIFT:
-        'drift',
-
     // =============================================
-    // OSC
+    // Missions OSC
     // =============================================
 
     OSC:
@@ -80,9 +39,6 @@ const Collections = Object.freeze({
 
     SITREPS:
         'sitreps',
-
-    TIMELINE:
-        'timeline',
 
     // =============================================
     // Documents
