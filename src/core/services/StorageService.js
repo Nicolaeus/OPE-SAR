@@ -13,6 +13,7 @@
  */
 
 import Database from '../database/Database.js';
+import Sources from '../database/Sources.js';
 
 export default class StorageService {
 
@@ -43,7 +44,7 @@ export default class StorageService {
                 now,
 
             source:
-                'local',
+                Sources.LOCAL,
 
             ...values
 
@@ -120,7 +121,7 @@ export default class StorageService {
 
                 existing?.source ??
 
-                'local'
+                Sources.LOCAL
 
         };
 
