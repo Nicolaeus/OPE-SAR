@@ -4,16 +4,20 @@
  * ----------------------------------------------------------
  * StorageService.js
  *
- * Service unique de persistance.
+ * Couche unique de persistance.
  *
- * Les modules utilisent uniquement cette classe.
+ * Tous les modules utilisent ce service.
  *
- * Database.js reste totalement transparent.
+ * StorageService ne connait pas le métier.
+ * Il fournit uniquement les opérations CRUD.
  * ==========================================================
  */
 
-import Database from '../database/Database.js';
-import Sources from '../database/Sources.js';
+import Database
+    from '../database/Database.js';
+
+import Sources
+    from '../database/Sources.js';
 
 export default class StorageService {
 
@@ -74,53 +78,46 @@ export default class StorageService {
 
     ) {
 
-        const now =
-            Date.now();
+        if (!object.id) {
+
+            object.id =
+                crypto.randomUUID();
+
+        }
 
         const existing =
 
-            object.id
+            await Database.get(
 
-                ? await Database.get(
+                collection,
 
-                    collection,
+                object.id
 
-                    object.id
+            );
 
-                )
+        const now =
+            Date.now();
 
-                : null;
-
-        const data = {
+        const record = {
 
             ...(existing ?? {}),
 
             ...object,
 
             id:
-
-                object.id ??
-
-                crypto.randomUUID(),
+                object.id,
 
             createdAt:
-
                 existing?.createdAt ??
-
                 object.createdAt ??
-
                 now,
 
             updatedAt:
-
                 now,
 
             source:
-
                 object.source ??
-
                 existing?.source ??
-
                 Sources.LOCAL
 
         };
@@ -129,11 +126,11 @@ export default class StorageService {
 
             collection,
 
-            data
+            record
 
         );
 
-        return data;
+        return record;
 
     }
 
@@ -254,6 +251,126 @@ export default class StorageService {
             collection
 
         );
+
+    }
+
+    // =====================================================
+    // Export d'une collection
+    // =====================================================
+
+    static async export(
+
+        collection
+
+    ) {
+
+        return Database.getAll(
+
+            collection
+
+        );
+
+    }
+
+    // =====================================================
+    // Import d'une collection
+    // =====================================================
+
+    static async import(
+
+        collection,
+
+        records = []
+
+    ) {
+
+        for (
+
+            const record
+
+            of records
+
+        ) {
+
+            await this.save(
+
+                collection,
+
+                record
+
+            );
+
+        }
+
+    }
+
+    // =====================================================
+    // Sauvegarde complète
+    // =====================================================
+
+    static async backup(
+
+        collections
+
+    ) {
+
+        const backup = {};
+
+        for (
+
+            const collection
+
+            of collections
+
+        ) {
+
+            backup[collection] =
+
+                await this.export(
+
+                    collection
+
+                );
+
+        }
+
+        return backup;
+
+    }
+
+    // =====================================================
+    // Restauration complète
+    // =====================================================
+
+    static async restore(
+
+        backup
+
+    ) {
+
+        for (
+
+            const collection
+
+            in backup
+
+        ) {
+
+            await this.clear(
+
+                collection
+
+            );
+
+            await this.import(
+
+                collection,
+
+                backup[collection]
+
+            );
+
+        }
 
     }
 
