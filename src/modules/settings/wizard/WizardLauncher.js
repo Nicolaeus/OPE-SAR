@@ -25,10 +25,10 @@ import ThemeStep
     from './steps/ThemeStep.js';
 
 import ModeStep
-    from './steps/ModeStep.js';
+    from './steps/DefaultModeStep.js';
 
 import SummaryStep
-    from './steps/SummaryStep.js';
+    from './steps/FinishStep.js';
 
 export default class WizardLauncher {
 
@@ -53,9 +53,9 @@ export default class WizardLauncher {
 
                 new ThemeStep(),
 
-                new ModeStep(),
+                new DefaultModeStep(),
 
-                new SummaryStep()
+                new FinishStep()
 
             ],
 
