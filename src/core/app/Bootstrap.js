@@ -54,9 +54,9 @@ export default class Bootstrap {
 
         await SettingsService.initialize();
 
-        await ThemeService.apply();
+        // await ThemeService.apply();
 
-        ThemeService.listen();
+        // ThemeService.listen();
 
         await CacheManager.cleanExpired();
 
