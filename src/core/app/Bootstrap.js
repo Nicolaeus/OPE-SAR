@@ -8,41 +8,29 @@ import Database
 import SettingsService
     from '../services/SettingsService.js';
 
-import CacheManager
-    from '../cache/CacheManager.js';
+// import CacheManager from '../cache/CacheManager.js';
 
-import SplashScreen
-    from '../../shared/ui/splash/Splash.js';
+// import SplashScreen from '../../shared/ui/splash/Splash.js';
 
-import AppHeader
-    from '../../shared/ui/header/AppHeader.js';
+import AppHeader from '../../shared/ui/header/AppHeader.js';
 
-import BottomNavigation
-    from '../../shared/ui/navigation/BottomNavigation.js';
+import BottomNavigation from '../../shared/ui/navigation/BottomNavigation.js';
 
-import WizardLauncher
-    from '../../modules/settings/wizard/WizardLauncher.js';
+// import WizardLauncher from '../../modules/settings/wizard/WizardLauncher.js';
 
-import MapModule
-    from '../../modules/map/index.js';
+import MapModule from '../../modules/map/index.js';
 
-import StationsModule
-    from '../../modules/stations/index.js';
+import StationsModule from '../../modules/stations/index.js';
 
-import WeatherModule
-    from '../../modules/weather/index.js';
+import WeatherModule from '../../modules/weather/index.js';
 
-import TidesModule
-    from '../../modules/tides/index.js';
+import TidesModule from '../../modules/tides/index.js';
 
-import SARModule
-    from '../../modules/sar/index.js';
+import SARModule from '../../modules/sar/index.js';
 
-import OSCModule
-    from '../../modules/osc/index.js';
+import OSCModule from '../../modules/osc/index.js';
 
-import SettingsModule
-    from '../../modules/settings/index.js';
+import SettingsModule from '../../modules/settings/index.js';
 
 export default class Bootstrap {
 
