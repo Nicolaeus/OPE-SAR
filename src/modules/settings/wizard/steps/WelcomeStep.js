@@ -1,4 +1,4 @@
-import WizardStep from '../../../shared/ui/wizard/WizardStep.js';
+import WizardStep from '../../../../shared/ui/wizard/WizardStep.js';
 
 export default class WelcomeStep extends WizardStep {
 
