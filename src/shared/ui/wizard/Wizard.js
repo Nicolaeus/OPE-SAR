@@ -7,10 +7,15 @@ export default class Wizard {
         this.title =
             config.title ?? '';
 
+        this.icon =
+            config.icon ?? '⚙';
+
         this.steps =
             config.steps ?? [];
 
         this.currentStep = 0;
+
+        this.data = {};
 
         this.element = null;
 
@@ -28,52 +33,66 @@ export default class Wizard {
             document.createElement('div');
 
         this.element.className =
-            'opsar-wizard';
+            'opsar-wizard hidden';
 
         this.element.innerHTML = `
 
-            <div class="opsar-wizard-window">
-
-                <div class="opsar-wizard-header">
-
-                    <h2>
-
-                        ${this.title}
-
-                    </h2>
-
-                </div>
+            <div
+                class="opsar-wizard-backdrop">
 
                 <div
-                    id="wizard-progress"
-                    class="opsar-wizard-progress">
+                    class="opsar-wizard-window">
 
-                </div>
+                    <div
+                        class="opsar-wizard-header">
 
-                <div
-                    id="wizard-content"
-                    class="opsar-wizard-content">
+                        <div
+                            class="opsar-wizard-icon">
 
-                </div>
+                            ${this.icon}
 
-                <div
-                    class="opsar-wizard-footer">
+                        </div>
 
-                    <button
-                        id="wizard-prev"
-                        class="opsar-btn-secondary">
+                        <h2>
 
-                        ← Précédent
+                            ${this.title}
 
-                    </button>
+                        </h2>
 
-                    <button
-                        id="wizard-next"
-                        class="opsar-btn-primary">
+                    </div>
 
-                        Suivant →
+                    <div
+                        id="wizard-progress"
+                        class="opsar-wizard-progress">
 
-                    </button>
+                    </div>
+
+                    <div
+                        id="wizard-content"
+                        class="opsar-wizard-content">
+
+                    </div>
+
+                    <div
+                        class="opsar-wizard-footer">
+
+                        <button
+                            id="wizard-prev"
+                            class="opsar-btn-secondary">
+
+                            Retour
+
+                        </button>
+
+                        <button
+                            id="wizard-next"
+                            class="opsar-btn-primary">
+
+                            Continuer
+
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -82,7 +101,23 @@ export default class Wizard {
         `;
 
         document.body.appendChild(
+
             this.element
+
+        );
+
+        requestAnimationFrame(
+
+            () => {
+
+                this.element.classList.remove(
+
+                    'hidden'
+
+                );
+
+            }
+
         );
 
         this._bindEvents();
@@ -102,11 +137,27 @@ export default class Wizard {
 
         }
 
-        this.element.remove();
+        this.element.classList.add(
 
-        this.element = null;
+            'closing'
 
-        Wizard.instance = null;
+        );
+
+        setTimeout(
+
+            () => {
+
+                this.element.remove();
+
+                this.element = null;
+
+                Wizard.instance = null;
+
+            },
+
+            300
+
+        );
 
     }
 
@@ -120,9 +171,32 @@ export default class Wizard {
 
     next() {
 
+        const step =
+            this.steps[
+                this.currentStep
+            ];
+
         if (
+
+            step &&
+            typeof step.save ===
+            'function'
+
+        ) {
+
+            step.save(
+
+                this.data
+
+            );
+
+        }
+
+        if (
+
             this.currentStep >=
             this.steps.length - 1
+
         ) {
 
             this.close();
@@ -140,7 +214,9 @@ export default class Wizard {
     previous() {
 
         if (
+
             this.currentStep === 0
+
         ) {
 
             return;
@@ -152,8 +228,7 @@ export default class Wizard {
         this.render();
 
     }
-
-    _renderProgress() {
+        _renderProgress() {
 
         const progress =
             this.element.querySelector(
@@ -172,9 +247,20 @@ export default class Wizard {
                     );
 
                 dot.className =
-                    index === this.currentStep
-                        ? 'active'
-                        : '';
+                    'wizard-dot';
+
+                if (
+
+                    index ===
+                    this.currentStep
+
+                ) {
+
+                    dot.classList.add(
+                        'active'
+                    );
+
+                }
 
                 progress.appendChild(
                     dot
@@ -193,6 +279,10 @@ export default class Wizard {
                 '#wizard-content'
             );
 
+        container.classList.remove(
+            'slide'
+        );
+
         container.innerHTML = '';
 
         const step =
@@ -201,18 +291,34 @@ export default class Wizard {
             ];
 
         if (
+
             step &&
             typeof step.render ===
             'function'
+
         ) {
 
             container.appendChild(
 
-                step.render()
+                step.render(
+                    this.data
+                )
 
             );
 
         }
+
+        requestAnimationFrame(
+
+            () => {
+
+                container.classList.add(
+                    'slide'
+                );
+
+            }
+
+        );
 
         this.element
             .querySelector(
@@ -221,15 +327,29 @@ export default class Wizard {
             .disabled =
             this.currentStep === 0;
 
-        this.element
-            .querySelector(
+        const nextButton =
+            this.element.querySelector(
                 '#wizard-next'
-            )
-            .textContent =
+            );
+
+        if (
+
             this.currentStep ===
             this.steps.length - 1
-                ? 'Terminer'
-                : 'Suivant →';
+
+        ) {
+
+            nextButton.textContent =
+                'Commencer';
+
+        }
+
+        else {
+
+            nextButton.textContent =
+                'Continuer';
+
+        }
 
     }
 
