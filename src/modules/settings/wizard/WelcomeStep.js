@@ -18,71 +18,121 @@ export default class WelcomeStep extends WizardStep {
             );
 
         container.className =
-            'opsar-welcome-step';
+            'opsar-step';
 
         container.innerHTML = `
 
+            <img
+
+                class="opsar-step-logo"
+
+                src="./assets/images/logos/OPESAR_logo.png"
+
+                alt="OPE-SAR"
+
+            >
+
+            <h1
+                class="opsar-step-title">
+
+                OPE-SAR
+
+            </h1>
+
+            <h2
+                class="opsar-step-subtitle">
+
+                Bienvenue à bord
+
+            </h2>
+
             <div
-                class="opsar-welcome">
+                class="opsar-step-separator">
 
-                <img
+            </div>
 
-                    class="opsar-welcome-logo"
+            <p
+                class="opsar-step-description">
 
-                    src="./assets/images/logos/OPESAR_logo.png"
+                Merci d'utiliser OPE-SAR.
 
-                    alt="OPE-SAR"
+                <br><br>
 
-                >
+                Cet assistant va configurer
+                votre application afin de
+                l'adapter à votre utilisation.
 
-                <h1>
+            </p>
 
-                    OPE-SAR
-
-                </h1>
-
-                <h2>
-
-                    Bienvenue
-
-                </h2>
-
-                <p>
-
-                    Merci d'utiliser OPE-SAR.
-
-                </p>
-
-                <p>
-
-                    Cet assistant va configurer
-                    votre application en moins
-                    d'une minute.
-
-                </p>
+            <div
+                class="opsar-step-group">
 
                 <div
-                    class="opsar-welcome-info">
+                    class="opsar-step-card">
 
-                    <div>
+                    <div
+                        class="opsar-step-card-title">
 
-                        ⚓ Station SNSM
+                        ⚓ Station de référence
 
                     </div>
 
-                    <div>
+                    <div
+                        class="opsar-step-card-description">
+
+                        Sélection de votre station
+                        opérationnelle.
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="opsar-step-card">
+
+                    <div
+                        class="opsar-step-card-title">
 
                         🌙 Apparence
 
                     </div>
 
-                    <div>
+                    <div
+                        class="opsar-step-card-description">
+
+                        Choix du thème
+                        de l'application.
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="opsar-step-card">
+
+                    <div
+                        class="opsar-step-card-title">
 
                         🚨 Mode par défaut
 
                     </div>
 
+                    <div
+                        class="opsar-step-card-description">
+
+                        SAR ou OSC
+                        au démarrage.
+
+                    </div>
+
                 </div>
+
+            </div>
+
+            <div
+                class="opsar-step-footer">
+
+                Étape 1 sur 5
 
             </div>
 
@@ -94,7 +144,8 @@ export default class WelcomeStep extends WizardStep {
 
     save(data) {
 
-        data.firstLaunch = true;
+        data.firstLaunch =
+            true;
 
     }
 
