@@ -6,20 +6,13 @@
  *
  * Gestion centralisée du cache applicatif.
  *
- * Toutes les données temporaires transitent
- * par cette classe :
+ * Les données temporaires transitent toutes
+ * par cette classe.
  *
- * - météo
- * - AIS
- * - GRIB
- * - calculs
- * - tuiles
- *
+ * Le cache est stocké dans IndexedDB via
+ * StorageService.
  * ==========================================================
  */
-
-import StorageService
-    from '../services/StorageService.js';
 
 import Collections
     from '../database/Collections.js';
@@ -27,11 +20,16 @@ import Collections
 import Sources
     from '../database/Sources.js';
 
+import StorageService
+    from '../services/StorageService.js';
+
 export default class CacheManager {
 
-    // =====================================================
-    // Enregistrement
-    // =====================================================
+    /**
+     * =============================================
+     * Enregistrement
+     * =============================================
+     */
 
     static async put(
 
@@ -43,14 +41,11 @@ export default class CacheManager {
 
     ) {
 
-        const ttl =
-
-            options.ttl ??
-
-            3600;
-
         const now =
             Date.now();
+
+        const ttl =
+            options.ttl ?? 3600;
 
         return StorageService.save(
 
@@ -63,14 +58,11 @@ export default class CacheManager {
 
                 value,
 
-                source:
-                    Sources.LOCAL,
-
-                createdAt:
-                    now,
-
                 expiresAt:
-                    now + (ttl * 1000)
+                    now + (ttl * 1000),
+
+                source:
+                    Sources.LOCAL
 
             }
 
@@ -78,9 +70,11 @@ export default class CacheManager {
 
     }
 
-    // =====================================================
-    // Lecture
-    // =====================================================
+    /**
+     * =============================================
+     * Lecture
+     * =============================================
+     */
 
     static async get(
 
@@ -98,11 +92,7 @@ export default class CacheManager {
 
             );
 
-        if (
-
-            !entry
-
-        ) {
+        if (!entry) {
 
             return null;
 
@@ -110,14 +100,14 @@ export default class CacheManager {
 
         if (
 
-            entry.expiresAt < Date.now()
+            this.isExpired(
+                entry
+            )
 
         ) {
 
             await this.remove(
-
                 key
-
             );
 
             return null;
@@ -128,9 +118,55 @@ export default class CacheManager {
 
     }
 
-    // =====================================================
-    // Suppression
-    // =====================================================
+    /**
+     * =============================================
+     * Existence
+     * =============================================
+     */
+
+    static async exists(
+
+        key
+
+    ) {
+
+        return (
+
+            await this.get(
+                key
+            )
+
+        ) !== null;
+
+    }
+
+    /**
+     * =============================================
+     * Informations
+     * =============================================
+     */
+
+    static async info(
+
+        key
+
+    ) {
+
+        return StorageService.load(
+
+            Collections.CACHE,
+
+            key
+
+        );
+
+    }
+
+    /**
+     * =============================================
+     * Suppression
+     * =============================================
+     */
 
     static async remove(
 
@@ -148,9 +184,11 @@ export default class CacheManager {
 
     }
 
-    // =====================================================
-    // Vider complètement le cache
-    // =====================================================
+    /**
+     * =============================================
+     * Vidage complet
+     * =============================================
+     */
 
     static async clear() {
 
@@ -162,9 +200,11 @@ export default class CacheManager {
 
     }
 
-    // =====================================================
-    // Nettoyage automatique
-    // =====================================================
+    /**
+     * =============================================
+     * Nettoyage
+     * =============================================
+     */
 
     static async cleanExpired() {
 
@@ -183,9 +223,7 @@ export default class CacheManager {
 
             const entry
 
-            of
-
-            entries
+            of entries
 
         ) {
 
@@ -207,43 +245,47 @@ export default class CacheManager {
 
     }
 
-    // =====================================================
-    // Présence
-    // =====================================================
+    /**
+     * =============================================
+     * Temps restant
+     * =============================================
+     */
 
-    static async exists(
+    static getRemainingTime(
 
-        key
+        entry
 
     ) {
 
-        const value =
+        return Math.max(
 
-            await this.get(
+            entry.expiresAt -
 
-                key
+            Date.now(),
 
-            );
+            0
 
-        return value !== null;
+        );
 
     }
 
-    // =====================================================
-    // Informations
-    // =====================================================
+    /**
+     * =============================================
+     * Expiration
+     * =============================================
+     */
 
-    static async info(
+    static isExpired(
 
-        key
+        entry
 
     ) {
 
-        return StorageService.load(
+        return (
 
-            Collections.CACHE,
+            entry.expiresAt <=
 
-            key
+            Date.now()
 
         );
 
