@@ -1,0 +1,27 @@
+.opsar-step-select{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+
+        rgba(255,255,255,.08);
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.opsar-step-select option{
+
+    color:black;
+
+}
