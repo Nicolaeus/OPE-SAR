@@ -1,0 +1,437 @@
+/* =======================================================
+   OPE-SAR Wizard
+   ======================================================= */
+
+.opsar-wizard {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 50000;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        rgba(7,12,22,.35);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    transition:
+        opacity .30s ease;
+
+}
+
+.opsar-wizard.hidden {
+
+    opacity: 0;
+
+    pointer-events: none;
+
+}
+
+.opsar-wizard.closing {
+
+    opacity: 0;
+
+}
+
+/* =======================================================
+   Backdrop
+   ======================================================= */
+
+.opsar-wizard-backdrop {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+}
+
+/* =======================================================
+   Sheet
+   ======================================================= */
+
+.opsar-wizard-window {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    min-height: 620px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    border-radius: 30px;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            rgba(18,30,55,.97),
+
+            rgba(11,20,38,.98)
+
+        );
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+
+        0 35px 90px rgba(0,0,0,.45);
+
+    animation:
+
+        wizardSheet .45s ease;
+
+}
+
+/* =======================================================
+   Header
+   ======================================================= */
+
+.opsar-wizard-header {
+
+    padding: 34px 28px 24px;
+
+    text-align: center;
+
+}
+
+.opsar-wizard-icon {
+
+    width: 78px;
+
+    height: 78px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 34px;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #3b82f6,
+
+            #2563eb
+
+        );
+
+    color: white;
+
+    box-shadow:
+
+        0 12px 35px rgba(59,130,246,.35);
+
+}
+
+.opsar-wizard-header h2 {
+
+    margin: 0;
+
+    color: white;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    letter-spacing: -.5px;
+
+}
+
+/* =======================================================
+   Progress
+   ======================================================= */
+
+.opsar-wizard-progress {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding-bottom: 24px;
+
+}
+
+.wizard-dot {
+
+    width: 9px;
+
+    height: 9px;
+
+    border-radius: 50%;
+
+    background:
+
+        rgba(255,255,255,.18);
+
+    transition:
+
+        all .30s ease;
+
+}
+
+.wizard-dot.active {
+
+    width: 26px;
+
+    border-radius: 999px;
+
+    background:
+
+        #60a5fa;
+
+}
+
+/* =======================================================
+   Content
+   ======================================================= */
+
+.opsar-wizard-content {
+
+    flex: 1;
+
+    padding: 0 28px;
+
+    overflow-y: auto;
+
+    color: white;
+
+    animation:
+
+        fadeContent .30s ease;
+
+}
+
+.opsar-wizard-content.slide {
+
+    animation:
+
+        slideContent .30s ease;
+
+}
+
+/* =======================================================
+   Footer
+   ======================================================= */
+
+.opsar-wizard-footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 24px 28px 28px;
+
+}
+
+/* =======================================================
+   Boutons
+   ======================================================= */
+
+.opsar-wizard-footer button {
+
+    flex: 1;
+
+    height: 52px;
+
+    border-radius: 16px;
+
+    border: none;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+
+        .25s;
+
+}
+
+.opsar-btn-primary {
+
+    background:
+
+        #2563eb;
+
+    color: white;
+
+}
+
+.opsar-btn-primary:hover {
+
+    background:
+
+        #3b82f6;
+
+}
+
+.opsar-btn-secondary {
+
+    background:
+
+        rgba(255,255,255,.08);
+
+    color: white;
+
+}
+
+.opsar-btn-secondary:hover {
+
+    background:
+
+        rgba(255,255,255,.14);
+
+}
+
+.opsar-btn-secondary:disabled {
+
+    opacity: .35;
+
+    cursor: default;
+
+}
+
+/* =======================================================
+   Animations
+   ======================================================= */
+
+@keyframes wizardSheet {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+
+            translateY(50px)
+            scale(.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+@keyframes slideContent {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+
+            translateX(25px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+
+            translateX(0);
+
+    }
+
+}
+
+@keyframes fadeContent {
+
+    from {
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+/* =======================================================
+   Smartphone
+   ======================================================= */
+
+@media (max-width:768px){
+
+    .opsar-wizard-backdrop{
+
+        padding:16px;
+
+        align-items:flex-end;
+
+    }
+
+    .opsar-wizard-window{
+
+        max-width:none;
+
+        width:100%;
+
+        min-height:78vh;
+
+        border-radius:
+
+            28px 28px 0 0;
+
+    }
+
+}
