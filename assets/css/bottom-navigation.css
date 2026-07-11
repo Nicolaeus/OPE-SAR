@@ -300,7 +300,9 @@
 
 .opsar-bottom-nav.menu-open{
 
-    transform:translateY(100%);
+    transform:
+        translateX(-50%)
+        translateY(120px);
 
     opacity:0;
 
