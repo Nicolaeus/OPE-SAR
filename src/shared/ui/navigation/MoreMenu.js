@@ -21,6 +21,13 @@ export default class MoreMenu {
                 </h2>
 
                 <div class="opsar-more-grid">
+                
+                    <button
+                        class="opsar-more-item"
+                        data-module="map">
+                        <span>🗺️</span>
+                        <small>Cartes</small>
+                    </button>
 
                     <button class="opsar-more-item"
                         data-module="stations">
