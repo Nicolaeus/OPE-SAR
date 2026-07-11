@@ -1,0 +1,136 @@
+.opsar-more-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.35);
+
+    backdrop-filter:blur(6px);
+
+    display:flex;
+
+    align-items:flex-end;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
+
+    z-index:5000;
+
+}
+
+.opsar-more-overlay.open{
+
+    opacity:1;
+
+    pointer-events:auto;
+
+}
+
+.opsar-more-sheet{
+
+    width:100%;
+
+    background:#ffffff;
+
+    border-radius:28px 28px 0 0;
+
+    padding:18px 20px 36px;
+
+    transform:translateY(100%);
+
+    transition:.25s;
+
+    box-shadow:
+        0 -10px 40px rgba(0,0,0,.15);
+
+}
+
+.opsar-more-overlay.open
+.opsar-more-sheet{
+
+    transform:translateY(0);
+
+}
+
+.opsar-more-handle{
+
+    width:48px;
+
+    height:5px;
+
+    background:#d0d0d0;
+
+    border-radius:99px;
+
+    margin:0 auto 18px;
+
+}
+
+.opsar-more-title{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    font-size:18px;
+
+}
+
+.opsar-more-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:16px;
+
+}
+
+.opsar-more-item{
+
+    border:none;
+
+    background:#f5f7fb;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.opsar-more-item:hover{
+
+    background:#e9f2ff;
+
+}
+
+.opsar-more-item span{
+
+    font-size:28px;
+
+}
+
+.opsar-more-item small{
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
