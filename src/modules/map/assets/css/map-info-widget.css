@@ -303,7 +303,7 @@
 
             calc(
 
-                138px +
+                110px +
 
                 env(safe-area-inset-bottom)
 
@@ -341,7 +341,7 @@
 
             calc(
 
-                145px +
+                110px +
 
                 env(safe-area-inset-bottom)
 
