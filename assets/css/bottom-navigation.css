@@ -42,7 +42,11 @@
     z-index: 30000;
 
 }
-.opsar-bottom-nav::before {
+/* ==========================================
+   Socle noir derrière le bouton SAR
+========================================== */
+
+.opsar-bottom-nav::after {
 
     content: "";
 
@@ -50,22 +54,25 @@
 
     left: 50%;
 
-    top: -24px;
+    top: -18px;
 
     transform: translateX(-50%);
 
-    width: 106px;
+    width: 118px;
 
-    height: 58px;
+    height: 62px;
 
-    background: rgba(15,23,42,.96);
+    background: rgba(15,23,42,.98);
 
-    border-radius: 0 0 54px 54px;
+    border-radius: 999px;
+
+    z-index: 0;
+
+    pointer-events: none;
 
     box-shadow:
-        0 -2px 0 rgba(255,255,255,.04);
 
-    z-index: -1;
+        0 8px 18px rgba(0,0,0,.30);
 
 }
 /* ======================================== */
@@ -334,5 +341,22 @@
     opacity:0;
 
     pointer-events:none;
+
+}
+
+
+.opsar-nav-btn{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.opsar-nav-btn-sar{
+
+    position:relative;
+
+    z-index:3;
 
 }
