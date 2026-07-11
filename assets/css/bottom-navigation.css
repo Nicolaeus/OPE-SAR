@@ -7,23 +7,14 @@
 :root{
 
     --dock-height:64px;
-
     --dock-radius:999px;
-
     --dock-width:360px;
-
-    --dock-bg-top:rgba(22,30,48,.82);
-
-    --dock-bg-bottom:rgba(13,19,33,.92);
-
+    --dock-bg-top: rgba(28,38,58,.60);
+    --dock-bg-bottom: rgba(12,18,30,.72);
     --dock-border:rgba(255,255,255,.08);
-
     --dock-shadow:
-
         0 18px 42px rgba(0,0,0,.28),
-
         0 6px 18px rgba(0,0,0,.18);
-
 }
 
 /* ==========================================================
@@ -312,31 +303,6 @@
 
 }
 
-/* ==========================================================
-   Pastille active
-   ========================================================== */
-
-.opsar-nav-btn.active::after{
-
-    content:"";
-
-    position:absolute;
-
-    bottom:-5px;
-
-    width:4px;
-
-    height:4px;
-
-    border-radius:50%;
-
-    background:#56B6FF;
-
-    box-shadow:
-
-        0 0 6px rgba(86,182,255,.35);
-
-}
 
 /* ==========================================================
    Responsive
