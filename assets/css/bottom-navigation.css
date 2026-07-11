@@ -84,7 +84,7 @@
 }
 
 /* ==========================================================
-   Léger reflet supérieur
+   wrapper
    ========================================================== */
 
 .opsar-sar-wrapper::before{
@@ -100,21 +100,26 @@
     background:
 
         linear-gradient(
+
             180deg,
-            rgba(44,54,77,.98) 0%,
-            rgba(25,33,50,.98) 55%,
-            rgba(14,20,34,.98) 100%
+
+            var(--dock-bg-top),
+
+            var(--dock-bg-bottom)
+
         );
+
+    backdrop-filter:blur(30px);
+
+    -webkit-backdrop-filter:blur(30px);
 
     border:
 
-        1px solid rgba(255,255,255,.06);
+        1px solid var(--dock-border);
 
     box-shadow:
 
-        0 10px 24px rgba(0,0,0,.25),
-
-        inset 0 1px 0 rgba(255,255,255,.05);
+        var(--dock-shadow);
 
 }
 
