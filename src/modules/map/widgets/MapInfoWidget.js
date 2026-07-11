@@ -78,35 +78,57 @@ export default {
                 '#map-info-panel'
             );
 
-        widget
-            .querySelector(
+        const button =
+            widget.querySelector(
                 '#map-info-button'
-            )
-            .addEventListener(
-                'click',
-                () => {
-
-                    panel.classList.toggle(
-                        'open'
-                    );
-
-                }
             );
 
-        widget
-            .querySelector(
+        const closeButton =
+            widget.querySelector(
                 '#map-info-close'
-            )
-            .addEventListener(
-                'click',
-                () => {
-
-                    panel.classList.remove(
-                        'open'
-                    );
-
-                }
             );
+
+        button.addEventListener(
+
+            'click',
+        
+            () => {
+        
+                panel.classList.toggle(
+                    'open'
+                );
+        
+                button.classList.toggle(
+        
+                    'active',
+        
+                    panel.classList.contains(
+                        'open'
+                    )
+        
+                );
+        
+            }
+        
+        );
+
+        closeButton.addEventListener(
+        
+            'click',
+        
+            () => {
+        
+                panel.classList.remove(
+                    'open'
+                );
+        
+                button.classList.remove(
+                    'active'
+                );
+        
+            }
+        
+        );
 
     }
 
