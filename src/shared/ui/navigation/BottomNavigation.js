@@ -129,7 +129,7 @@ export default class BottomNavigation {
 
             new CustomEvent(
 
-                'navigation:toggle',
+                'navigation:change',
 
                 {
 
