@@ -254,16 +254,18 @@
 
 @media (max-width: 480px) {
 
-    .opsar-bottom-nav {
-
-        width: calc(100vw - 24px);
-
-        height: 72px;
-
-        border-radius: 28px;
-
-        padding: 0 12px;
-
+    .opsar-bottom-nav{
+    
+        width:calc(100vw - 28px);
+    
+        height:74px;
+    
+        bottom:calc(28px + env(safe-area-inset-bottom));
+    
+        border-radius:30px;
+    
+        padding:0 14px;
+    
     }
 
     .opsar-nav-btn {
