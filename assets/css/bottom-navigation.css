@@ -1,20 +1,28 @@
 /* ==========================================================
    OPE-SAR
-   Bottom Navigation V3
-   Inspired by iOS 26
+   Bottom Navigation V3.1
    ========================================================== */
 
 :root{
 
-    --dock-height:64px;
+    --dock-width:340px;
+
+    --dock-height:60px;
+
     --dock-radius:999px;
-    --dock-width:360px;
-    --dock-bg-top: rgba(28,38,58,.60);
-    --dock-bg-bottom: rgba(12,18,30,.72);
+
+    --dock-bg-top:rgba(30,40,60,.58);
+
+    --dock-bg-bottom:rgba(14,20,34,.72);
+
     --dock-border:rgba(255,255,255,.08);
+
     --dock-shadow:
-        0 18px 42px rgba(0,0,0,.28),
-        0 6px 18px rgba(0,0,0,.18);
+
+        0 18px 40px rgba(0,0,0,.22),
+
+        0 6px 18px rgba(0,0,0,.16);
+
 }
 
 /* ==========================================================
@@ -27,7 +35,7 @@
 
     left:50%;
 
-    bottom:20px;
+    bottom:28px;
 
     transform:translateX(-50%);
 
@@ -35,7 +43,7 @@
 
         var(--dock-width),
 
-        calc(100vw - 48px)
+        calc(100vw - 56px)
 
     );
 
@@ -47,55 +55,9 @@
 
     align-items:center;
 
-    padding:0 18px;
+    padding:0 14px;
 
-    border-radius:var(--dock-radius);
-
-    background:
-
-        linear-gradient(
-
-            180deg,
-
-            var(--dock-bg-top),
-
-            var(--dock-bg-bottom)
-
-        );
-
-    backdrop-filter:blur(30px);
-
-    -webkit-backdrop-filter:blur(30px);
-
-    border:1px solid var(--dock-border);
-
-    box-shadow:var(--dock-shadow);
-
-    overflow:visible;
-
-    z-index:30000;
-
-    transition:
-
-        transform .30s ease,
-
-        opacity .30s ease;
-
-}
-
-/* ==========================================================
-   wrapper
-   ========================================================== */
-
-.opsar-sar-wrapper::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    border-radius:50%;
+    border-radius:999px;
 
     background:
 
@@ -121,59 +83,103 @@
 
         var(--dock-shadow);
 
+    overflow:visible;
+
+    z-index:30000;
+
+    transition:
+
+        transform .25s ease,
+
+        opacity .25s ease;
+
+}
+
+/* ==========================================================
+   Reflet supérieur
+   ========================================================== */
+
+.opsar-bottom-nav::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:14px;
+
+    right:14px;
+
+    top:1px;
+
+    height:1px;
+
+    border-radius:999px;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.12),
+
+            transparent
+
+        );
+
 }
 
 /* ==========================================================
    Responsive
    ========================================================== */
 
-@media (max-width:768px){
+@media(max-width:768px){
 
     .opsar-bottom-nav{
 
-        width:calc(100vw - 48px);
+        width:
 
-        bottom:calc(
-
-            20px +
-
-            env(safe-area-inset-bottom)
-
-        );
-
-        height:64px;
-
-        padding:0 14px;
-
-    }
-
-}
-
-@media (max-width:430px){
-
-    .opsar-bottom-nav{
-
-        width:calc(100vw - 52px);
-
-        bottom:calc(
-
-            30px +
-
-            env(safe-area-inset-bottom)
-
-        );
-
-    }
-
-}
-
-@media (max-width:360px){
-
-    .opsar-bottom-nav{
-
-        width:calc(100vw - 40px);
+            calc(100vw - 56px);
 
         height:60px;
+
+        bottom:
+
+            calc(
+
+                34px +
+
+                env(safe-area-inset-bottom)
+
+            );
+
+    }
+
+}
+
+@media(max-width:430px){
+
+    .opsar-bottom-nav{
+
+        width:
+
+            calc(100vw - 60px);
+
+    }
+
+}
+
+@media(max-width:360px){
+
+    .opsar-bottom-nav{
+
+        width:
+
+            calc(100vw - 48px);
+
+        height:58px;
 
     }
 
@@ -187,9 +193,9 @@
 
     position:relative;
 
-    width:58px;
+    width:56px;
 
-    height:52px;
+    height:48px;
 
     display:flex;
 
@@ -199,76 +205,37 @@
 
     align-items:center;
 
-    gap:4px;
+    gap:3px;
 
     flex-shrink:0;
 
     border:none;
 
-    border-radius:18px;
+    border-radius:16px;
 
-    background:rgba(255,255,255,.02);;
+    background:transparent;
 
     color:rgba(255,255,255,.62);
 
     cursor:pointer;
 
+    z-index:2;
+
     transition:
 
-        background .25s ease,
+        color .20s ease,
 
-        color .25s ease,
+        background .20s ease,
 
-        transform .18s ease,
+        transform .16s ease,
 
-        opacity .25s ease;
-
-}
-
-/* ======================================== */
-
-.opsar-nav-btn:hover{
-
-    color:#ffffff;
-    background: rgba(255,255,255,.05);
+        box-shadow .20s ease;
 
 }
 
-/* ======================================== */
-
-.opsar-nav-btn:active{
-
-    transform:scale(.96);
-
-}
-
-/* ======================================== */
-
-.opsar-nav-btn.active{
-
-    background:
-
-        linear-gradient(
-
-            180deg,
-
-            rgba(86,182,255,.16),
-
-            rgba(86,182,255,.08)
-
-        );
-
-    border-radius:18px;
-
-    box-shadow:
-
-        inset 0 1px 0 rgba(255,255,255,.08);
-
-}
-
-/* ==========================================================
-   Icônes
-   ========================================================== */
+/* ==========================================
+   Icône
+========================================== */
 
 .opsar-nav-icon{
 
@@ -288,13 +255,11 @@
 
 }
 
-/* ==========================================================
-   Libellés
-   ========================================================== */
+/* ==========================================
+   Texte
+========================================== */
 
 .opsar-nav-label{
-
-    margin-top:1px;
 
     font-size:10px;
 
@@ -308,18 +273,87 @@
 
 }
 
+/* ==========================================
+   Hover Desktop
+========================================== */
 
-/* ==========================================================
+@media(hover:hover){
+
+    .opsar-nav-btn:hover{
+
+        color:#ffffff;
+
+        background:
+
+            rgba(255,255,255,.04);
+
+        transform:
+
+            translateY(-1px);
+
+    }
+
+}
+
+/* ==========================================
+   Press Smartphone
+========================================== */
+
+.opsar-nav-btn:active{
+
+    transform:
+
+        scale(.96);
+
+}
+
+/* ==========================================
+   Bouton actif
+========================================== */
+
+.opsar-nav-btn.active{
+
+    color:#ffffff;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            rgba(70,155,255,.16),
+
+            rgba(70,155,255,.08)
+
+        );
+
+    box-shadow:
+
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+}
+
+/* ==========================================
+   PAS de point bleu
+========================================== */
+
+.opsar-nav-btn.active::after{
+
+    display:none;
+
+}
+
+/* ==========================================
    Responsive
-   ========================================================== */
+========================================== */
 
-@media (max-width:768px){
+@media(max-width:768px){
 
     .opsar-nav-btn{
 
-        width:54px;
+        width:52px;
 
-        height:48px;
+        height:46px;
 
     }
 
@@ -341,11 +375,13 @@
 
 }
 
-@media (max-width:360px){
+@media(max-width:360px){
 
     .opsar-nav-btn{
 
         width:48px;
+
+        height:44px;
 
     }
 
@@ -359,15 +395,12 @@
 
 /* ==========================================================
    SAR Wrapper
+   (Positionnement uniquement)
    ========================================================== */
 
 .opsar-sar-wrapper{
 
     position:relative;
-
-    width:82px;
-
-    height:82px;
 
     display:flex;
 
@@ -375,44 +408,13 @@
 
     align-items:center;
 
+    width:74px;
+
+    height:74px;
+
     flex-shrink:0;
 
-    margin-top:-28px;
-
-}
-
-/* ==========================================================
-   Anneau anthracite
-   ========================================================== */
-
-.opsar-sar-wrapper::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    border-radius:50%;
-
-    background:
-
-        linear-gradient(
-            180deg,
-            rgba(44,54,77,.98) 0%,
-            rgba(25,33,50,.98) 55%,
-            rgba(14,20,34,.98) 100%
-        );
-
-    border:
-
-        1px solid rgba(255,255,255,.06);
-
-    box-shadow:
-
-        0 10px 24px rgba(0,0,0,.25),
-
-        inset 0 1px 0 rgba(255,255,255,.05);
+    margin-top:-22px;
 
 }
 
@@ -424,15 +426,9 @@
 
     position:relative;
 
-    z-index:2;
+    width:58px;
 
-    width:64px;
-
-    height:64px;
-
-    border:none;
-
-    border-radius:50%;
+    height:58px;
 
     display:flex;
 
@@ -440,96 +436,87 @@
 
     align-items:center;
 
-    cursor:pointer;
-
-    color:white;
-
-    background:
-
-        linear-gradient(
-
-            180deg,
-
-            #ff6b73,
-
-            #d61f3d
-
-        );
-
-    box-shadow:
-
-        inset 0 1px 2px rgba(255,255,255,.20),
-
-        0 6px 16px rgba(214,31,61,.22),
-
-        0 3px 8px rgba(0,0,0,.18);
-
-    transition:
-
-        transform .18s ease,
-
-        box-shadow .25s ease;
-
-}
-
-.opsar-nav-btn-sar:hover{
-
-    transform:
-
-        translateY(-2px);
-
-}
-
-.opsar-nav-btn-sar:active{
-
-    transform:
-
-        scale(.96);
-
-}
-
-.opsar-nav-btn-sar.active{
-
-    box-shadow:
-
-        inset 0 1px 2px rgba(255,255,255,.25),
-
-        0 8px 18px rgba(214,31,61,.28),
-
-        0 3px 10px rgba(0,0,0,.22);
-
-}
-
-.opsar-nav-btn-sar.active{
-
-    background:
-
-        linear-gradient(
-            180deg,
-            #ff6b73,
-            #d61f3d
-        );
+    border:none;
 
     border-radius:50%;
 
+    cursor:pointer;
+
+    color:#fff;
+
+    overflow:visible;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            #ff6b73 0%,
+
+            #d81f3d 100%
+
+        );
+
     box-shadow:
 
-        inset 0 1px 2px rgba(255,255,255,.25),
+        0 8px 18px rgba(216,31,61,.20),
 
-        0 8px 18px rgba(214,31,61,.28),
-
-        0 3px 10px rgba(0,0,0,.22);
+        inset 0 1px 2px rgba(255,255,255,.18);
 
 }
-.opsar-nav-btn-sar.active::after{
 
-    display:none;
+/* ==========================================================
+   Anneau autour du bouton
+   ========================================================== */
+
+.opsar-nav-btn-sar::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-8px;
+
+    z-index:-1;
+
+    border-radius:50%;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            var(--dock-bg-top),
+
+            var(--dock-bg-bottom)
+
+        );
+
+    border:
+
+        1px solid var(--dock-border);
+
+    backdrop-filter:blur(30px);
+
+    -webkit-backdrop-filter:blur(30px);
+
+    box-shadow:
+
+        0 10px 24px rgba(0,0,0,.20),
+
+        inset 0 1px 0 rgba(255,255,255,.05);
 
 }
+
+/* ==========================================================
+   Icône
+   ========================================================== */
 
 .opsar-nav-btn-sar .opsar-nav-icon{
 
-    font-size:28px;
+    font-size:26px;
 
     line-height:1;
 
@@ -542,32 +529,86 @@
 }
 
 /* ==========================================================
-   Responsive
+   Hover
    ========================================================== */
 
-@media (max-width:768px){
+@media(hover:hover){
+
+    .opsar-nav-btn-sar:hover{
+
+        transform:
+
+            translateY(-2px);
+
+    }
+
+}
+
+/* ==========================================================
+   Press
+   ========================================================== */
+
+.opsar-nav-btn-sar:active{
+
+    transform:
+
+        scale(.95);
+
+}
+
+/* ==========================================================
+   Actif
+   ========================================================== */
+
+.opsar-nav-btn-sar.active{
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            #ff7378,
+
+            #e11d48
+
+        );
+
+}
+
+.opsar-nav-btn-sar.active::after{
+
+    display:none;
+
+}
+
+/* ==========================================================
+   Smartphone
+   ========================================================== */
+
+@media(max-width:768px){
 
     .opsar-sar-wrapper{
 
-        width:78px;
+        width:70px;
 
-        height:78px;
+        height:70px;
 
-        margin-top:-26px;
+        margin-top:-20px;
 
     }
 
     .opsar-nav-btn-sar{
 
-        width:60px;
+        width:56px;
 
-        height:60px;
+        height:56px;
 
     }
 
-    .opsar-nav-btn-sar .opsar-nav-icon{
+    .opsar-nav-btn-sar::before{
 
-        font-size:26px;
+        inset:-7px;
 
     }
 
@@ -581,7 +622,7 @@
 
     animation:
 
-        opsarDockAppear .35s ease-out;
+        opsarDockAppear .30s ease-out;
 
 }
 
@@ -595,7 +636,7 @@
 
             translateX(-50%)
 
-            translateY(18px);
+            translateY(14px);
 
     }
 
@@ -614,7 +655,7 @@
 }
 
 /* ==========================================================
-   Masquage lorsque le BottomSheet est ouvert
+   BottomSheet ouvert
    ========================================================== */
 
 .opsar-bottom-nav.menu-open{
@@ -643,12 +684,12 @@
 
     box-shadow:
 
-        0 0 0 3px rgba(86,182,255,.25);
+        0 0 0 3px rgba(86,182,255,.20);
 
 }
 
 /* ==========================================================
-   Désactivation de la sélection
+   Désactivation sélection
    ========================================================== */
 
 .opsar-bottom-nav,
@@ -666,7 +707,7 @@
 }
 
 /* ==========================================================
-   Transition globale
+   Transitions globales
    ========================================================== */
 
 .opsar-nav-btn,
@@ -675,39 +716,46 @@
 
     transition:
 
-        background .20s ease,
+        background .18s ease,
 
-        color .20s ease,
+        color .18s ease,
 
         transform .16s ease,
 
-        box-shadow .20s ease,
+        box-shadow .18s ease,
 
-        opacity .20s ease;
+        opacity .18s ease;
 
 }
 
 /* ==========================================================
-   Hover desktop uniquement
+   Sécurité des clics
    ========================================================== */
 
-@media (hover:hover){
+/* Les éléments décoratifs ne doivent jamais
+   intercepter les clics */
 
-    .opsar-nav-btn:hover{
+.opsar-bottom-nav::before,
 
-        transform:
+.opsar-nav-btn-sar::before{
 
-            translateY(-1px);
+    pointer-events:none;
 
-    }
+}
 
-    .opsar-nav-btn-sar:hover{
+/* Le wrapper ne sert qu'au centrage */
 
-        transform:
+.opsar-sar-wrapper{
 
-            translateY(-2px);
+    pointer-events:none;
 
-    }
+}
+
+/* Le bouton SAR reste cliquable */
+
+.opsar-nav-btn-sar{
+
+    pointer-events:auto;
 
 }
 
@@ -715,7 +763,7 @@
    Smartphone
    ========================================================== */
 
-@media (max-width:768px){
+@media(max-width:768px){
 
     .opsar-bottom-nav{
 
@@ -723,7 +771,7 @@
 
             calc(
 
-                36px +
+                32px +
 
                 env(safe-area-inset-bottom)
 
@@ -734,10 +782,10 @@
 }
 
 /* ==========================================================
-   iPhone très étroit
+   iPhone étroit
    ========================================================== */
 
-@media (max-width:390px){
+@media(max-width:390px){
 
     .opsar-bottom-nav{
 
@@ -745,17 +793,7 @@
 
             calc(
 
-                100vw - 56px
-
-            );
-
-        bottom:
-
-            calc(
-
-                38px +
-
-                env(safe-area-inset-bottom)
+                100vw - 52px
 
             );
 
