@@ -15,6 +15,7 @@ import SplashScreen from '../../shared/ui/splash/Splash.js';
 import AppHeader from '../../shared/ui/header/AppHeader.js';
 
 import BottomNavigation from '../../shared/ui/navigation/BottomNavigation.js';
+import MoreMenu from '../../shared/ui/navigation/MoreMenu.js';
 
 // import WizardLauncher from '../../modules/settings/wizard/WizardLauncher.js';
 
@@ -79,6 +80,10 @@ export default class Bootstrap {
 
         appContainer.appendChild(
             BottomNavigation.create()
+        );
+        
+        appContainer.appendChild(
+    		MoreMenu.create()
         );
 
         // =============================================
