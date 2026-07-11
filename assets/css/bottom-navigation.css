@@ -529,6 +529,33 @@
 
 }
 
+.opsar-nav-btn-sar.active{
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #ff6b73,
+            #d61f3d
+        );
+
+    border-radius:50%;
+
+    box-shadow:
+
+        inset 0 1px 2px rgba(255,255,255,.25),
+
+        0 8px 18px rgba(214,31,61,.28),
+
+        0 3px 10px rgba(0,0,0,.22);
+
+}
+.opsar-nav-btn-sar.active::after{
+
+    display:none;
+
+}
+
 .opsar-nav-btn-sar .opsar-nav-icon{
 
     font-size:28px;
