@@ -11,7 +11,7 @@
 
     transform: translateX(-50%);
 
-    bottom: calc(20px + env(safe-area-inset-bottom));
+    bottom: calc(28px + env(safe-area-inset-bottom));
 
     width: min(420px, calc(100vw - 32px));
 
