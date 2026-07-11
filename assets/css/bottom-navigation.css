@@ -1,6 +1,6 @@
 /* ==========================================================
    OPE-SAR
-   Bottom Navigation V3
+   Bottom Navigation V4
    ========================================================== */
 
 .opsar-bottom-nav{
@@ -13,17 +13,17 @@
 
     bottom:calc(22px + env(safe-area-inset-bottom));
 
-    width:min(400px, calc(100vw - 44px));
+    width:min(400px,calc(100vw - 42px));
 
-    height:76px;
+    height:78px;
 
     display:flex;
 
     justify-content:space-evenly;
 
-    align-items:center;
+    align-items:flex-end;
 
-    padding:0 18px;
+    padding:0 14px 12px;
 
     background:rgba(15,23,42,.92);
 
@@ -31,111 +31,35 @@
 
     -webkit-backdrop-filter:blur(24px);
 
-    border:1px solid rgba(255,255,255,.06);
-
     border-radius:999px;
+
+    border:1px solid rgba(255,255,255,.06);
 
     box-shadow:
 
-        0 20px 55px rgba(0,0,0,.45),
+        0 16px 45px rgba(0,0,0,.45),
 
-        0 8px 22px rgba(0,0,0,.28);
-
-    overflow:visible;
+        0 8px 22px rgba(0,0,0,.25);
 
     isolation:isolate;
 
+    overflow:visible;
+
     z-index:30000;
 
-    transition:
-
-        transform .25s ease,
-
-        opacity .25s ease;
-
 }
 
 /* ==========================================================
-   Socle du bouton SAR
-   ========================================================== */
-
-.opsar-bottom-nav::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:50%;
-
-    top:-20px;
-
-    transform:translateX(-50%);
-
-    width:122px;
-
-    height:64px;
-
-    background:#0f172a;
-
-    border-radius:999px;
-
-    box-shadow:
-
-        0 10px 22px rgba(0,0,0,.30);
-
-    z-index:-1;
-
-    pointer-events:none;
-
-}
-
-/* Petit reflet supérieur */
-
-.opsar-bottom-nav::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:16px;
-
-    right:16px;
-
-    top:0;
-
-    height:1px;
-
-    border-radius:999px;
-
-    background:linear-gradient(
-
-        90deg,
-
-        transparent,
-
-        rgba(255,255,255,.12),
-
-        transparent
-
-    );
-
-    pointer-events:none;
-
-}
-
-/* ==========================================================
-   Boutons
+   Boutons standards
    ========================================================== */
 
 .opsar-nav-btn{
 
     position:relative;
 
-    z-index:2;
+    width:62px;
 
-    width:64px;
-
-    height:58px;
+    height:54px;
 
     display:flex;
 
@@ -145,7 +69,7 @@
 
     align-items:center;
 
-    gap:5px;
+    gap:4px;
 
     border:none;
 
@@ -153,13 +77,15 @@
 
     background:transparent;
 
-    color:rgba(255,255,255,.58);
+    color:rgba(255,255,255,.60);
 
     cursor:pointer;
 
     transition:
 
         all .25s ease;
+
+    z-index:5;
 
 }
 
@@ -171,19 +97,15 @@
 
 .opsar-nav-btn.active{
 
-    background:rgba(83,182,255,.10);
+    background:rgba(83,182,255,.12);
 
     color:#53b6ff;
 
 }
 
-/* ==========================================================
-   Icônes
-   ========================================================== */
-
 .opsar-nav-icon{
 
-    font-size:24px;
+    font-size:23px;
 
     line-height:1;
 
@@ -197,7 +119,51 @@
 
     letter-spacing:.3px;
 
-    transition:.25s;
+}
+
+/* ==========================================================
+   Wrapper SAR
+   ========================================================== */
+
+.opsar-sar-wrapper{
+
+    position:relative;
+
+    width:96px;
+
+    height:96px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-shrink:0;
+
+}
+
+/* ==========================================================
+   Socle noir
+   ========================================================== */
+
+.opsar-sar-base{
+
+    position:absolute;
+
+    width:94px;
+
+    height:94px;
+
+    border-radius:50%;
+
+    background:#101827;
+
+    box-shadow:
+
+        0 10px 24px rgba(0,0,0,.45);
+
+    z-index:1;
 
 }
 
@@ -207,19 +173,29 @@
 
 .opsar-nav-btn-sar{
 
-    position:relative;
+    position:absolute;
 
-    z-index:10;
+    top:10px;
 
-    width:74px;
+    left:50%;
 
-    height:74px;
+    transform:translateX(-50%);
 
-    margin-top:-42px;
+    width:72px;
+
+    height:72px;
 
     border:none;
 
     border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
 
     color:white;
 
@@ -227,44 +203,75 @@
 
         linear-gradient(
             180deg,
-            #ff6464,
-            #e0002f
+            #ff7070 0%,
+            #ff3b4d 40%,
+            #d90429 100%
         );
 
     box-shadow:
 
-        0 12px 28px rgba(0,0,0,.35),
+        inset 0 2px 4px rgba(255,255,255,.25),
 
-        0 0 26px rgba(255,0,60,.35);
+        0 8px 18px rgba(0,0,0,.30),
+
+        0 0 26px rgba(255,0,60,.30);
+
+    transition:
+
+        transform .25s ease,
+
+        box-shadow .25s ease;
+
+    z-index:10;
 
 }
 
-/* ==========================================================
-   Faux support noir autour du bouton SAR
-   ========================================================== */
+.opsar-nav-btn-sar:hover{
 
-.opsar-nav-btn-sar::before{
+    transform:
 
-    content:"";
+        translateX(-50%)
 
-    position:absolute;
+        translateY(-3px);
 
-    inset:-10px;
+}
 
-    border-radius:50%;
+.opsar-nav-btn-sar:active{
 
-    background:#0f172a;
+    transform:
 
-    z-index:-1;
+        translateX(-50%)
+
+        scale(.95);
+
+}
+
+.opsar-nav-btn-sar.active{
 
     box-shadow:
 
-        0 10px 22px rgba(0,0,0,.30);
+        inset 0 2px 5px rgba(255,255,255,.30),
+
+        0 10px 24px rgba(0,0,0,.35),
+
+        0 0 36px rgba(255,40,80,.45);
+
+}
+
+.opsar-nav-btn-sar .opsar-nav-icon{
+
+    font-size:30px;
+
+}
+
+.opsar-nav-btn-sar .opsar-nav-label{
+
+    display:none;
 
 }
 
 /* ==========================================================
-   Bouton rouge
+   Halo lumineux
    ========================================================== */
 
 .opsar-nav-btn-sar::after{
@@ -273,49 +280,23 @@
 
     position:absolute;
 
-    inset:0;
+    inset:-6px;
 
     border-radius:50%;
 
     background:
 
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.15),
-            transparent
+        radial-gradient(
+
+            circle,
+
+            rgba(255,40,80,.18),
+
+            transparent 70%
+
         );
 
-    pointer-events:none;
-
-}
-
-.opsar-nav-btn-sar:hover{
-
-    transform:translateY(-3px);
-
-}
-
-.opsar-nav-btn-sar.active{
-
-    background:
-
-        linear-gradient(
-            180deg,
-            #ff7777,
-            #ff1f48
-        );
-
-}
-
-.opsar-nav-btn-sar .opsar-nav-icon{
-
-    font-size:31px;
-
-}
-
-.opsar-nav-btn-sar .opsar-nav-label{
-
-    display:none;
+    z-index:-1;
 
 }
 
@@ -329,7 +310,7 @@
 
     position:absolute;
 
-    bottom:-6px;
+    bottom:-7px;
 
     width:6px;
 
@@ -341,7 +322,7 @@
 
     box-shadow:
 
-        0 0 10px rgba(83,182,255,.6);
+        0 0 8px rgba(83,182,255,.55);
 
 }
 
@@ -353,25 +334,45 @@
 
     .opsar-bottom-nav{
 
-        width:calc(100vw - 42px);
+        width:calc(100vw - 40px);
 
-        height:74px;
+        height:76px;
 
-        bottom:calc(26px + env(safe-area-inset-bottom));
+        bottom:calc(28px + env(safe-area-inset-bottom));
 
-        padding:0 14px;
-
-        border-radius:999px;
+        padding:0 12px 12px;
 
     }
 
-    .opsar-bottom-nav::before{
+    .opsar-sar-wrapper{
 
-        width:118px;
+        width:90px;
 
-        height:60px;
+        height:90px;
 
-        top:-18px;
+    }
+
+    .opsar-sar-base{
+
+        width:88px;
+
+        height:88px;
+
+    }
+
+    .opsar-nav-btn-sar{
+
+        width:68px;
+
+        height:68px;
+
+        top:10px;
+
+    }
+
+    .opsar-nav-btn-sar .opsar-nav-icon{
+
+        font-size:28px;
 
     }
 
@@ -379,37 +380,19 @@
 
         width:58px;
 
-        height:54px;
-
-        gap:4px;
+        height:50px;
 
     }
 
     .opsar-nav-icon{
 
-        font-size:22px;
+        font-size:21px;
 
     }
 
     .opsar-nav-label{
 
         font-size:10px;
-
-    }
-
-    .opsar-nav-btn-sar{
-
-        width:70px;
-
-        height:70px;
-
-        margin-top:-38px;
-
-    }
-
-    .opsar-nav-btn-sar .opsar-nav-icon{
-
-        font-size:29px;
 
     }
 
@@ -425,20 +408,20 @@
 
         width:calc(100vw - 24px);
 
-        padding:0 10px;
+        padding:0 8px 12px;
 
     }
 
     .opsar-nav-btn{
 
-        width:54px;
+        width:52px;
 
     }
 
 }
 
 /* ==========================================================
-   Animation d'apparition
+   Apparition
    ========================================================== */
 
 .opsar-bottom-nav{
@@ -456,10 +439,8 @@
         opacity:0;
 
         transform:
-
             translateX(-50%)
-
-            translateY(24px);
+            translateY(30px);
 
     }
 
@@ -468,9 +449,7 @@
         opacity:1;
 
         transform:
-
             translateX(-50%)
-
             translateY(0);
 
     }
@@ -478,7 +457,27 @@
 }
 
 /* ==========================================================
-   Masquage lorsque le BottomSheet est ouvert
+   Pression des boutons
+   ========================================================== */
+
+.opsar-nav-btn:active{
+
+    transform:scale(.94);
+
+}
+
+.opsar-nav-btn-sar:active{
+
+    transform:
+
+        translateX(-50%)
+
+        scale(.94);
+
+}
+
+/* ==========================================================
+   Dock masqué lorsque le BottomSheet est ouvert
    ========================================================== */
 
 .opsar-bottom-nav.menu-open{
@@ -492,25 +491,5 @@
     opacity:0;
 
     pointer-events:none;
-
-}
-
-/* ==========================================================
-   Petit effet de pression
-   ========================================================== */
-
-.opsar-nav-btn:active{
-
-    transform:scale(.94);
-
-}
-
-.opsar-nav-btn-sar:active{
-
-    transform:
-
-        translateY(-2px)
-
-        scale(.93);
 
 }
