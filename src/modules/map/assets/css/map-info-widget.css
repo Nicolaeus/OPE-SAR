@@ -154,16 +154,11 @@
     border-radius:22px;
 
     background:
-
-        linear-gradient(
-
-            180deg,
-
-            rgba(24,34,52,.96),
-
-            rgba(13,20,33,.98)
-
-        );
+    linear-gradient(
+        180deg,
+        rgba(15,23,42,.96),
+        rgba(11,18,32,.96)
+    );
 
     border:
 
@@ -207,43 +202,36 @@
 
     background:
 
-        linear-gradient(
+    linear-gradient(
+        90deg,
+        rgba(8,15,32,.95),
+        rgba(18,32,62,.95)
+    );
 
-            180deg,
+border-bottom:
 
-            #1E5E98,
-
-            #164A78
-
-        );
-
-    border-bottom:
-
-        1px solid rgba(255,255,255,.08);
+    1px solid
+    rgba(6,182,212,.25);
 
 }
 
 .map-info-header button{
 
-    width:34px;
+    width:26px;
 
-    height:34px;
+    height:26px;
 
     border:none;
 
-    border-radius:10px;
+    border-radius:8px;
 
-    background:transparent;
+    background:
 
-    color:rgba(255,255,255,.80);
+        rgba(255,255,255,.05);
 
-    cursor:pointer;
+    color:#94a3b8;
 
-    transition:
-
-        background .20s ease,
-
-        color .20s ease;
+    transition:.2s;
 
 }
 
@@ -251,11 +239,12 @@
 
     background:
 
-        rgba(255,255,255,.10);
+        rgba(124,58,237,.25);
 
     color:white;
 
 }
+
 
 /* ==========================================================
    Contenu
@@ -265,7 +254,7 @@
 
     padding:18px;
 
-    color:#D7E2F0;
+    color:#e2e8f0;
 
     font-size:13px;
 
@@ -275,13 +264,14 @@
 
 .map-info-section{
 
-    padding-bottom:16px;
+    margin-bottom:14px;
 
-    margin-bottom:16px;
+    padding-bottom:12px;
 
     border-bottom:
 
-        1px solid rgba(255,255,255,.06);
+        1px solid
+        rgba(56,189,248,.12);
 
 }
 
@@ -402,5 +392,41 @@
             calc(100vw - 28px);
 
     }
+
+}
+
+.map-info-header{
+
+    position:relative;
+
+}
+
+.map-info-header::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:0;
+
+    width:100%;
+
+    height:1px;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(6,182,212,.6),
+
+            transparent
+
+        );
 
 }
