@@ -12,82 +12,65 @@ export default class BottomNavigation {
 
         nav.innerHTML = `
 
-            <button
-                class="opsar-nav-btn active"
-                data-module="weather">
+    <button
+        class="opsar-nav-btn active"
+        data-module="weather">
 
-                <span
-                    class="opsar-nav-icon">
+        <span class="opsar-nav-icon">
+            🌦
+        </span>
 
-                    🌦
+        <span class="opsar-nav-label">
+            Météo
+        </span>
 
-                </span>
+    </button>
 
-                <span
-                    class="opsar-nav-label">
+    <button
+        class="opsar-nav-btn"
+        data-module="tides">
 
-                    Météo
+        <span class="opsar-nav-icon">
+            🌊
+        </span>
 
-                </span>
+        <span class="opsar-nav-label">
+            Marées
+        </span>
 
-            </button>
+    </button>
 
-            <button
-                class="opsar-nav-btn"
-                data-module="tides">
+    <div class="opsar-sar-wrapper">
 
-                <span
-                    class="opsar-nav-icon">
+        <div class="opsar-sar-base"></div>
 
-                    🌊
+        <button
+            class="opsar-nav-btn opsar-nav-btn-sar"
+            data-module="sar">
 
-                </span>
+            <span class="opsar-nav-icon">
+                🚨
+            </span>
 
-                <span
-                    class="opsar-nav-label">
+        </button>
 
-                    Marées
+    </div>
 
-                </span>
+    <button
+        class="opsar-nav-btn"
+        data-module="more">
 
-            </button>
+        <span class="opsar-nav-icon">
+            ⋯
+        </span>
 
-            <button
-                class="
-                    opsar-nav-btn
-                    opsar-nav-btn-sar"
-                data-module="sar">
+        <span class="opsar-nav-label">
+            Plus
+        </span>
 
-                <span
-                    class="opsar-nav-icon">
+    </button>
 
-                    🚨
-
-                </span>
-
-            </button>
-
-            <button
-                class="opsar-nav-btn"
-                data-module="more">
-
-                <span
-                    class="opsar-nav-icon">
-
-                    ⋯
-
-                </span>
-
-                <span
-                    class="opsar-nav-label">
-
-                    Plus
-
-                </span>
-
-            </button>
-
-        `;
+`;
 
         nav
             .querySelectorAll(
