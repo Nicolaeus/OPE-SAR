@@ -36,7 +36,7 @@
 
     left:50%;
 
-    bottom:34px;
+    bottom:20px;
 
     transform:translateX(-50%);
 
@@ -139,7 +139,7 @@
 
         bottom:calc(
 
-            34px +
+            20px +
 
             env(safe-area-inset-bottom)
 
