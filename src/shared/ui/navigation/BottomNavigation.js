@@ -42,19 +42,19 @@ export default class BottomNavigation {
 
     <div class="opsar-sar-wrapper">
 
-        <div class="opsar-sar-base"></div>
+    <button
+        class="opsar-nav-btn opsar-nav-btn-sar"
+        data-module="sar">
 
-        <button
-            class="opsar-nav-btn opsar-nav-btn-sar"
-            data-module="sar">
+        <span class="opsar-nav-icon">
 
-            <span class="opsar-nav-icon">
-                🚨
-            </span>
+            🚨
 
-        </button>
+        </span>
 
-    </div>
+    </button>
+
+</div>
 
     <button
         class="opsar-nav-btn"
