@@ -42,7 +42,32 @@
     z-index: 30000;
 
 }
+.opsar-bottom-nav::before {
 
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+
+    top: -24px;
+
+    transform: translateX(-50%);
+
+    width: 106px;
+
+    height: 58px;
+
+    background: rgba(15,23,42,.96);
+
+    border-radius: 0 0 54px 54px;
+
+    box-shadow:
+        0 -2px 0 rgba(255,255,255,.04);
+
+    z-index: -1;
+
+}
 /* ======================================== */
 
 .opsar-nav-btn {
@@ -129,11 +154,11 @@
 
 .opsar-nav-btn-sar {
 
-    width: 72px;
+    width: 74px;
 
-    height: 72px;
+    height: 74px;
 
-    margin-top: -34px;
+    margin-top: -42px;
 
     border-radius: 50%;
 
@@ -153,9 +178,9 @@
 
     box-shadow:
 
-        0 14px 28px rgba(217,4,41,.45),
+        0 10px 26px rgba(217,4,41,.45),
 
-        0 4px 12px rgba(0,0,0,.35);
+        0 8px 18px rgba(0,0,0,.35);
 
     transition:
 
