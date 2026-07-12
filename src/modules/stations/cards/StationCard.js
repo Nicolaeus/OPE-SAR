@@ -19,7 +19,7 @@ export default class StationCard extends BaseCardController{
             id: 'station-card',
 
             title: station
-                ? `${station.stationNumber}`
+                ? `${station.name}`
                 : 'Stations',
 
             color: 'cyan',
