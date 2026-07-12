@@ -476,9 +476,8 @@
 
         top:
             calc(
-                64px +
                 env(safe-area-inset-top) +
-                12px
+                98px
             ) !important;
 
         left:12px !important;
@@ -487,7 +486,7 @@
 
         bottom:
             calc(
-                112px +
+                98px +
                 env(safe-area-inset-bottom)
             ) !important;
 
