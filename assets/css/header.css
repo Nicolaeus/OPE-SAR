@@ -9,7 +9,7 @@
 
     top:
         calc(
-            12px +
+            6px +
             env(safe-area-inset-top)
         );
 
