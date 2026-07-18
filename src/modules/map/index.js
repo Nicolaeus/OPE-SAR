@@ -2,13 +2,20 @@ import MapService from './services/MapService.js';
 import LayerManager from './services/LayerManager.js';
 import MapLayersCard from './cards/MapLayersCard.js';
 
+import MapOverlay from '../../shared/ui/panels/MapOverlay.js';
+import MapInfoWidget from './widgets/MapInfoWidget.js';
+
 export default {
 
     async init() {
 
-        console.log('🗺 Initialisation module Map');
-
-        MapService.createMap();
+        console.log('🗺 Initialisation module MAP');
+		console.log('🗺 Initialisation widget Map Infos');
+        
+		MapService.createMap();
+		
+		MapOverlay.init();
+		MapInfoWidget.init();
 
         window.OPESAR = window.OPESAR || {};
 

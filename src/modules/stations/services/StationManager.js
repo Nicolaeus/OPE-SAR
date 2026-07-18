@@ -276,7 +276,7 @@ export default class StationManager {
     if (label) {
 
         label.textContent =
-            `${station.stationNumber} ${station.name}`;
+            station.name;
 
     }
 

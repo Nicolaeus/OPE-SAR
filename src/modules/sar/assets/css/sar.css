@@ -738,6 +738,262 @@
 
 }
 
+.opsar-datum-tip-card {
+
+    width: 192px;
+
+    min-width: 0;
+
+    border-radius: 8px;
+
+    border: 1px solid rgba(56, 189, 248, .34);
+
+    background: rgba(17, 24, 39, .96);
+
+    box-shadow: 0 14px 34px rgba(15, 23, 42, .42);
+
+}
+
+.opsar-datum-tip-card .opsar-datum-tip-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    padding: 8px 9px 6px;
+
+    border-bottom: 1px solid rgba(148, 163, 184, .18);
+
+}
+
+.opsar-datum-tip-card .opsar-datum-tip-title {
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #f8fafc;
+
+    font-size: 12px;
+
+    letter-spacing: .2px;
+
+}
+
+.opsar-tip-toggle {
+
+    width: 24px;
+
+    height: 22px;
+
+    border: 1px solid rgba(148, 163, 184, .3);
+
+    border-radius: 5px;
+
+    background: rgba(15, 23, 42, .84);
+
+    color: #e2e8f0;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+}
+
+.opsar-datum-tip-time {
+
+    padding: 5px 9px 0;
+
+    color: #38bdf8;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+.opsar-datum-tip-coords,
+.opsar-datum-tip-metric {
+
+    display: grid;
+
+    gap: 3px;
+
+    padding: 8px 9px;
+
+    border-bottom: 1px solid rgba(148, 163, 184, .12);
+
+}
+
+.opsar-datum-tip-coords span,
+.opsar-datum-tip-metric span {
+
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .35px;
+
+}
+
+.opsar-datum-tip-coords strong,
+.opsar-datum-tip-metric strong {
+
+    color: #f8fafc;
+
+    font-size: 12px;
+
+    line-height: 1.25;
+
+}
+
+.opsar-datum-tip-metric strong {
+
+    color: #fbbf24;
+
+}
+
+.opsar-datum-tip-actions {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 6px;
+
+    padding: 8px 9px 9px;
+
+}
+
+.opsar-datum-tip-actions button {
+
+    height: 28px;
+
+    border: 1px solid rgba(56, 189, 248, .32);
+
+    border-radius: 5px;
+
+    background: rgba(15, 23, 42, .92);
+
+    color: #e0f2fe;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+}
+
+.opsar-datum-tip-actions button:hover {
+
+    border-color: rgba(56, 189, 248, .72);
+
+    color: #fff;
+
+}
+
+.opsar-datum-tip-card.collapsed {
+
+    width: auto;
+
+}
+
+.opsar-datum-tip-card.collapsed .opsar-datum-tip-time,
+.opsar-datum-tip-card.collapsed .opsar-tip-body {
+
+    display: none;
+
+}
+
+#sar-card.opsar-card-hidden-for-map {
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform: translateY(10px) scale(.98);
+
+    transition: opacity .16s ease, transform .16s ease;
+
+}
+
+#sar-card.opsar-card-return-from-map {
+
+    animation: opsar-sar-card-return .18s ease-out;
+
+}
+
+@keyframes opsar-sar-card-return {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .leaflet-tooltip.opsar-datum-tooltip {
+
+        transform: translate(20px, -18px);
+
+    }
+
+    .opsar-datum-tip-card {
+
+        width: min(188px, calc(100vw - 28px));
+
+    }
+
+    .opsar-datum-tip-card.collapsed {
+
+        width: auto;
+
+        max-width: 150px;
+
+    }
+
+    .opsar-datum-tip-card.collapsed .opsar-datum-tip-header {
+
+        padding: 6px 7px;
+
+        border-bottom: 0;
+
+    }
+
+    .opsar-datum-tip-card.collapsed .opsar-datum-tip-title {
+
+        font-size: 11px;
+
+        white-space: nowrap;
+
+    }
+
+    .opsar-tip-toggle {
+
+        width: 22px;
+
+        height: 20px;
+
+    }
+
+}
+
 /* ==========================================
    BODY SCROLLABLE — corrige le crop en bas
    100dvh exclut la barre d'adresse mobile.

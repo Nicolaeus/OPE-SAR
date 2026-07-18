@@ -1,0 +1,53 @@
+.opsar-theme-option{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    cursor:pointer;
+
+    background:
+
+        rgba(255,255,255,.05);
+
+    border:
+
+        1px solid rgba(255,255,255,.08);
+
+    transition:.25s;
+
+}
+
+.opsar-theme-option:hover{
+
+    background:
+
+        rgba(255,255,255,.08);
+
+}
+
+.opsar-theme-option input{
+
+    width:18px;
+
+    height:18px;
+
+    accent-color:#3b82f6;
+
+}
+
+.opsar-theme-option span{
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:500;
+
+}

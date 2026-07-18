@@ -1,12 +1,23 @@
-.opsar-header {
+/* ==========================================================
+   OPE-SAR
+   Header
+   ========================================================== */
 
-    position:absolute;
+.opsar-header{
 
-    top:0;
-    left:0;
-    right:0;
+    position:fixed;
 
-    height:70px;
+    top:
+        calc(
+            6px +
+            env(safe-area-inset-top)
+        );
+
+    left:16px;
+
+    right:16px;
+
+    height:74px;
 
     display:flex;
 
@@ -14,68 +25,150 @@
 
     justify-content:space-between;
 
-    padding:0 16px;
+    padding:0 18px;
+
+    border-radius:26px;
 
     background:
-        rgba(11,20,38,.95);
 
-    border-bottom:
-        1px solid rgba(124,58,237,.25);
+        linear-gradient(
 
-    backdrop-filter:
-        blur(12px);
+            180deg,
+
+            rgba(32,44,66,.72),
+
+            rgba(17,25,39,.88)
+
+        );
+
+    border:
+
+        1px solid rgba(
+            255,
+            255,
+            255,
+            .08
+        );
+
+    backdrop-filter:blur(24px);
+
+    -webkit-backdrop-filter:blur(24px);
+
+    box-shadow:
+
+        0 14px 36px rgba(
+            0,
+            0,
+            0,
+            .20
+        ),
+
+        inset 0 1px 0 rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+
+    transition:
+
+        transform .28s ease,
+
+        opacity .28s ease;
 
     z-index:20000;
 
 }
 
-.opsar-header-left {
+/* ==========================================================
+   Etat caché
+   ========================================================== */
+
+.opsar-header.hidden{
+
+    transform:translateY(-92px);
+
+    opacity:.08;
+
+}
+
+/* ==========================================================
+   Partie gauche
+   ========================================================== */
+
+.opsar-header-left{
 
     display:flex;
 
     align-items:center;
 
-    gap:12px;
+    gap:14px;
 
 }
 
-.opsar-logo {
+/* ==========================================================
+   Logo
+   ========================================================== */
 
-    width:42px;
+.opsar-logo{
 
-    height:42px;
+    width:48px;
+
+    height:48px;
 
     object-fit:contain;
 
+    border-radius:16px;
+
+    flex-shrink:0;
+
 }
 
-.opsar-title-group {
+/* ==========================================================
+   Titres
+   ========================================================== */
+
+.opsar-title-group{
 
     display:flex;
 
     flex-direction:column;
 
+    min-width:0;
+
 }
 
-.opsar-title {
+.opsar-title{
 
-    color:white;
+    margin:0;
+
+    color:#ffffff;
 
     font-size:18px;
 
     font-weight:700;
 
-}
-
-.opsar-subtitle {
-
-    color:#94a3b8;
-
-    font-size:12px;
+    letter-spacing:.25px;
 
 }
 
-.opsar-weather-widget {
+.opsar-subtitle{
+
+    margin-top:2px;
+
+    color:#9fb0c5;
+
+    font-size:13px;
+
+    white-space:nowrap;
+
+}
+
+/* ==========================================================
+   Widget météo
+   ========================================================== */
+
+.opsar-weather-widget{
 
     display:flex;
 
@@ -83,16 +176,27 @@
 
     gap:12px;
 
-    padding:8px 14px;
+    padding:10px 16px;
 
-    border-radius:12px;
+    border-radius:18px;
 
     background:
-        rgba(15,23,42,.85);
+
+        rgba(
+            255,
+            255,
+            255,
+            .04
+        );
 
     border:
-        1px solid
-        rgba(56,189,248,.35);
+
+        1px solid rgba(
+            255,
+            255,
+            255,
+            .06
+        );
 
     color:#f8fafc;
 
@@ -100,65 +204,178 @@
 
     cursor:pointer;
 
-    backdrop-filter:
-        blur(8px);
+    backdrop-filter:blur(18px);
 
-    box-shadow:
-        0 0 12px
-        rgba(56,189,248,.15);
+    -webkit-backdrop-filter:blur(18px);
 
-}
+    transition:
 
-.weather-separator {
+        background .18s ease,
 
-    opacity: .35;
+        border-color .18s ease,
 
-    margin: 0 6px;
+        transform .18s ease;
 
 }
 
-@media(max-width:768px){
+.opsar-weather-widget:hover{
 
-    .opsar-header {
+    background:
 
-        height:60px;
+        rgba(
+            255,
+            255,
+            255,
+            .07
+        );
 
-        padding:0 10px;
+    border-color:
 
-    }
-
-    .opsar-title {
-
-        font-size:15px;
-
-    }
-
-    .opsar-weather-widget {
-
-        gap:6px;
-
-        padding:6px 8px;
-
-    }
-
-    .weather-line {
-
-        font-size:11px;
-
-    }
+        rgba(
+            56,
+            189,
+            248,
+            .20
+        );
 
 }
 
-.opsar-direction-arrow {
+.weather-line{
 
-    display:inline-block;
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:14px;
+
+}
+
+.weather-separator{
+
+    opacity:.20;
+
+}
+
+/* ==========================================================
+   Direction du vent
+   ========================================================== */
+
+.opsar-direction-arrow{
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
 
     width:18px;
 
-    text-align:center;
-
-    margin-right:6px;
-
     color:#38bdf8;
+
+}
+
+/* ==========================================================
+   Responsive
+   ========================================================== */
+
+@media(max-width:768px){
+
+    .opsar-header{
+
+        left:12px;
+
+        right:12px;
+
+        height:70px;
+
+        padding:0 14px;
+
+        border-radius:22px;
+
+    }
+
+    .opsar-logo{
+
+        width:42px;
+
+        height:42px;
+
+        border-radius:14px;
+
+    }
+
+    .opsar-title{
+
+        font-size:16px;
+
+    }
+
+    .opsar-subtitle{
+
+        font-size:12px;
+
+    }
+
+    .opsar-weather-widget{
+
+        gap:8px;
+
+        padding:8px 12px;
+
+        border-radius:16px;
+
+    }
+
+    .weather-line{
+
+        font-size:13px;
+
+        gap:6px;
+
+    }
+
+}
+
+@media(max-width:430px){
+
+    .opsar-header{
+
+        left:10px;
+
+        right:10px;
+
+        top:
+
+            calc(
+
+                8px +
+
+                env(safe-area-inset-top)
+
+            );
+
+    }
+
+    .opsar-header-left{
+
+        gap:10px;
+
+    }
+
+    .opsar-weather-widget{
+
+        padding:8px 10px;
+
+    }
+
+    .weather-line{
+
+        font-size:12px;
+
+        gap:5px;
+
+    }
 
 }

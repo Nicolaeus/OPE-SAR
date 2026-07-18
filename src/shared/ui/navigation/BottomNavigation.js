@@ -2,10 +2,9 @@ export default class BottomNavigation {
 
     static create() {
 
-        const nav =
-            document.createElement(
-                'nav'
-            );
+        const nav = document.createElement(
+            'nav'
+        );
 
         nav.className =
             'opsar-bottom-nav';
@@ -13,21 +12,15 @@ export default class BottomNavigation {
         nav.innerHTML = `
 
             <button
-                class="opsar-nav-btn active"
+                class="opsar-nav-btn"
                 data-module="weather">
 
-                <span
-                    class="opsar-nav-icon">
-
+                <span class="opsar-nav-icon">
                     🌦
-
                 </span>
 
-                <span
-                    class="opsar-nav-label">
-
+                <span class="opsar-nav-label">
                     Météo
-
                 </span>
 
             </button>
@@ -36,53 +29,42 @@ export default class BottomNavigation {
                 class="opsar-nav-btn"
                 data-module="tides">
 
-                <span
-                    class="opsar-nav-icon">
-
+                <span class="opsar-nav-icon">
                     🌊
-
                 </span>
 
-                <span
-                    class="opsar-nav-label">
-
+                <span class="opsar-nav-label">
                     Marées
-
                 </span>
 
             </button>
 
-            <button
-                class="
-                    opsar-nav-btn
-                    opsar-nav-btn-sar"
-                data-module="sar">
+            <div class="opsar-sar-wrapper">
 
-                <span
-                    class="opsar-nav-icon">
+                <button
+                    class="opsar-nav-btn opsar-nav-btn-sar"
+                    data-module="sar">
 
-                    🚨
+                    <span class="opsar-nav-icon">
 
-                </span>
+                        🚨
 
-            </button>
+                    </span>
+
+                </button>
+
+            </div>
 
             <button
                 class="opsar-nav-btn"
                 data-module="more">
 
-                <span
-                    class="opsar-nav-icon">
-
+                <span class="opsar-nav-icon">
                     ⋯
-
                 </span>
 
-                <span
-                    class="opsar-nav-label">
-
+                <span class="opsar-nav-label">
                     Plus
-
                 </span>
 
             </button>
@@ -93,27 +75,32 @@ export default class BottomNavigation {
             .querySelectorAll(
                 '.opsar-nav-btn'
             )
-            .forEach(
+            .forEach(button => {
 
-                button => {
+                button.addEventListener(
 
-                    button.addEventListener(
+                    'click',
 
-                        'click',
+                    () => this.activate(button)
 
-                        () => {
+                );
 
-                            this.activate(
-                                button
-                            );
+            });
 
-                        }
+        window.addEventListener(
 
-                    );
+            'navigation:state',
 
-                }
+            event => {
 
-            );
+                this.updateState(
+                    event.detail.module,
+                    event.detail.open
+                );
+
+            }
+
+        );
 
         return nav;
 
@@ -124,22 +111,12 @@ export default class BottomNavigation {
         const module =
             button.dataset.module;
 
-        // =====================================
-        // Bouton Plus
-        // =====================================
-
-        if (
-
-            module === 'more'
-
-        ) {
+        if (module === 'more') {
 
             window.dispatchEvent(
 
                 new CustomEvent(
-
                     'navigation:more'
-
                 )
 
             );
@@ -147,43 +124,6 @@ export default class BottomNavigation {
             return;
 
         }
-
-        // =====================================
-        // Activation visuelle
-        // =====================================
-
-        document
-            .querySelectorAll(
-                '.opsar-nav-btn'
-            )
-            .forEach(
-
-                btn => {
-
-                    if (
-
-                        btn.dataset.module !==
-                        'more'
-
-                    ) {
-
-                        btn.classList.remove(
-                            'active'
-                        );
-
-                    }
-
-                }
-
-            );
-
-        button.classList.add(
-            'active'
-        );
-
-        // =====================================
-        // Notification
-        // =====================================
 
         window.dispatchEvent(
 
@@ -193,16 +133,37 @@ export default class BottomNavigation {
 
                 {
 
-                    detail: {
-
+                    detail:{
                         module
-
                     }
 
                 }
 
             )
 
+        );
+
+    }
+
+    static updateState(module, open) {
+
+        const button =
+
+            document.querySelector(
+
+                `.opsar-nav-btn[data-module="${module}"]`
+
+            );
+
+        if(!button){
+
+            return;
+
+        }
+
+        button.classList.toggle(
+            'active',
+            open
         );
 
     }

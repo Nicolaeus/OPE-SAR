@@ -70,13 +70,7 @@ export default {
 
                 }
 
-                if (
-                    !currentStation
-                ) {
-
-                    return;
-
-                }
+                
 
                 StationCard.create(
                     currentStation

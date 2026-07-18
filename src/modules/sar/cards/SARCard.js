@@ -26,6 +26,9 @@ export default class SARCard extends BaseCardController {
     // ------------------------------------------------------------------
     // Création de la card
     // ------------------------------------------------------------------
+    static _computeTimer = null;
+    static _hiddenForMapPlacement = false;
+
     static create() {
 
         if (this.instance) {
@@ -92,6 +95,7 @@ export default class SARCard extends BaseCardController {
         this._unsubWx = e => {
             if (e.detail?.windSpeed    !== undefined) this._wind.speed     = e.detail.windSpeed;
             if (e.detail?.windDirection !== undefined) this._wind.direction = e.detail.windDirection;
+            this._scheduleCompute();
         };
         window.addEventListener('weather:updated', this._unsubWx);
 
@@ -457,13 +461,20 @@ el.innerHTML = `
 
         // Placer LKP via clic carte
         document.getElementById('sar-map-btn')?.addEventListener('click', () => {
-            SARLayer.startLKPPlacement();
+            const placementStarted =
+                SARLayer.startLKPPlacement();
+
+            if (placementStarted) {
+                this._hideForMapPlacement();
+            }
             document.getElementById('sar-lkp-status').textContent = 'Cliquez sur la carte pour placer le LKP…';
         });
 
         window.addEventListener('sar:lkp:selected', e => {
 
 			this._lkp = e.detail;
+
+            this._restoreAfterMapPlacement();
 
 			this._updateDMSFromLatLng(
 				e.detail.lat,
@@ -476,10 +487,7 @@ el.innerHTML = `
 				true
 			);
 
-			setTimeout(
-				() => this._compute(),
-				100
-			);
+			this._scheduleCompute();
 
 		});
 
@@ -492,6 +500,7 @@ el.innerHTML = `
             document.getElementById('sar-depart-time').value =
                 d.getHours().toString().padStart(2,'0') + ':' +
                 d.getMinutes().toString().padStart(2,'0');
+            this._scheduleCompute();
         });
 
         // NOW
@@ -500,12 +509,26 @@ el.innerHTML = `
             document.getElementById('sar-depart-time').value =
                 now.getHours().toString().padStart(2,'0') + ':' +
                 now.getMinutes().toString().padStart(2,'0');
+            this._scheduleCompute();
         });
 
         // Houle : détecter édition manuelle
         document.getElementById('sar-wave-dir')?.addEventListener('input', () => {
             const label = document.getElementById('sar-swell-label');
             if (label) { label.textContent = '✏ Saisie manuelle'; label.style.color = '#fbbf24'; }
+        });
+
+        [
+            'sar-target-type',
+            'sar-lkp-time',
+            'sar-depart-time',
+            'sar-current-dir',
+            'sar-current-speed',
+            'sar-wave-dir'
+        ].forEach(id => {
+            const input = document.getElementById(id);
+            input?.addEventListener('input', () => this._scheduleCompute());
+            input?.addEventListener('change', () => this._scheduleCompute());
         });
 
         // Bouton CALCULER
@@ -858,6 +881,62 @@ el.innerHTML = `
     // ------------------------------------------------------------------
     // Calcul principal
     // ------------------------------------------------------------------
+    static _hideForMapPlacement() {
+
+        const isMobile =
+            window.matchMedia?.('(max-width: 768px)').matches;
+
+        if (
+            !isMobile ||
+            !this.instance?.element
+        ) {
+            return;
+        }
+
+        this._hiddenForMapPlacement = true;
+        this.instance.element.classList.add('opsar-card-hidden-for-map');
+
+    }
+
+    static _restoreAfterMapPlacement() {
+
+        if (
+            !this._hiddenForMapPlacement ||
+            !this.instance?.element
+        ) {
+            return;
+        }
+
+        this.instance.element.classList.remove('opsar-card-hidden-for-map');
+        this.instance.element.classList.add('opsar-card-return-from-map');
+
+        window.setTimeout(
+            () => this.instance?.element?.classList.remove('opsar-card-return-from-map'),
+            180
+        );
+
+        this._hiddenForMapPlacement = false;
+
+    }
+
+    static _scheduleCompute(delay = 220) {
+
+        if (!this._lkp) {
+            return;
+        }
+
+        window.clearTimeout(
+            this._computeTimer
+        );
+
+        this._computeTimer =
+            window.setTimeout(
+                () => this._compute(),
+                delay
+            );
+
+    }
+
     static _compute() {
 
         if (!this._lkp) {

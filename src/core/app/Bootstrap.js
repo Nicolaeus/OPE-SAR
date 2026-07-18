@@ -2,9 +2,22 @@ import App from './App.js';
 
 import Registry from './Registry.js';
 
+import Database
+    from '../database/Database.js';
+
+import SettingsService
+    from '../services/SettingsService.js';
+
+import CacheManager from '../cache/CacheManager.js';
+
+import SplashScreen from '../../shared/ui/splash/Splash.js';
+
 import AppHeader from '../../shared/ui/header/AppHeader.js';
 
 import BottomNavigation from '../../shared/ui/navigation/BottomNavigation.js';
+import MoreMenu from '../../shared/ui/navigation/MoreMenu.js';
+
+// import WizardLauncher from '../../modules/settings/wizard/WizardLauncher.js';
 
 import MapModule from '../../modules/map/index.js';
 
@@ -24,54 +37,156 @@ export default class Bootstrap {
 
     static async start() {
 
-        console.log('⚓ OPE-SAR V21');
-		
-		const header = AppHeader.create();
+        // =============================================
+        // Splash
+        // =============================================
 
-		document
-			.getElementById('app')
-			.appendChild(header);
-			
-		const bottomNav = BottomNavigation.create();
+        SplashScreen.show();
 
-		document
-			.getElementById('app')
-			.appendChild(
-				bottomNav
-			);
-			
-			
+        console.log(
+            '🚀 Démarrage OPE-SAR'
+        );
 
-        const app = new App();
+        // =============================================
+        // Initialisation du Core
+        // =============================================
 
-        Registry.register('map', MapModule);
-		Registry.register('stations',StationsModule);
-        Registry.register('weather',WeatherModule);
-		Registry.register('tides',TidesModule);
-		Registry.register('sar',SARModule);
-		Registry.register('osc',OSCModule);
-		Registry.register('settings',SettingsModule);
-		
+        await Database.open();
 
-		app.register(MapModule);
-		app.register(StationsModule);
-		app.register(WeatherModule);
-		app.register(TidesModule);
-		app.register(SARModule);
-		app.register(OSCModule);
-		app.register(SettingsModule);
-		
-		await app.start();
+        await SettingsService.initialize();
 
-		window.dispatchEvent(
-			new CustomEvent(
-				'app:ready'
-			)
-		);
+        // await ThemeService.apply();
 
-		console.log(
-			'✅ Application démarrée'
-		);
+        // ThemeService.listen();
+
+        await CacheManager.cleanExpired();
+
+        console.log(
+            '✅ Core initialisé'
+        );
+
+        // =============================================
+        // Interface principale
+        // =============================================
+
+        const appContainer =
+            document.getElementById(
+                'app'
+            );
+
+        appContainer.appendChild(
+            AppHeader.create()
+        );
+
+        appContainer.appendChild(
+            BottomNavigation.create()
+        );
+        
+        appContainer.appendChild(
+    		MoreMenu.create()
+        );
+
+        // =============================================
+        // Application
+        // =============================================
+
+        const app =
+            new App();
+
+        Registry.register(
+            'map',
+            MapModule
+        );
+
+        Registry.register(
+            'stations',
+            StationsModule
+        );
+
+        Registry.register(
+            'weather',
+            WeatherModule
+        );
+
+        Registry.register(
+            'tides',
+            TidesModule
+        );
+
+        Registry.register(
+            'sar',
+            SARModule
+        );
+
+        Registry.register(
+            'osc',
+            OSCModule
+        );
+
+        Registry.register(
+            'settings',
+            SettingsModule
+        );
+
+        app.register(
+            MapModule
+        );
+
+        app.register(
+            StationsModule
+        );
+
+        app.register(
+            WeatherModule
+        );
+
+        app.register(
+            TidesModule
+        );
+
+        app.register(
+            SARModule
+        );
+
+        app.register(
+            OSCModule
+        );
+
+        app.register(
+            SettingsModule
+        );
+
+        await app.start();
+
+        // =============================================
+        // Application prête
+        // =============================================
+
+        window.dispatchEvent(
+
+            new CustomEvent(
+
+                'app:ready'
+
+            )
+
+        );
+
+        // =============================================
+        // Premier lancement
+        // =============================================
+
+       // await WizardLauncher.launch();
+
+        // =============================================
+        // Fin du splash
+        // =============================================
+
+        await SplashScreen.hide();
+
+        console.log(
+            '✅ OPE-SAR prêt'
+        );
 
     }
 

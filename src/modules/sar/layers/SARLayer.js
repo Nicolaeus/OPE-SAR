@@ -39,7 +39,7 @@ export default class SARLayer {
     // ------------------------------------------------------------------
     static startLKPPlacement() {
         const map = this._map();
-        if (!map) return;
+        if (!map) return false;
 
         this.placingLKP = true;
         map.getContainer().style.cursor = 'crosshair';
@@ -52,6 +52,7 @@ export default class SARLayer {
         };
 
         map.on('click', handler);
+        return true;
     }
 
     // ------------------------------------------------------------------
@@ -123,8 +124,9 @@ export default class SARLayer {
             ),
             {
                 permanent: true,
-                direction: 'right',
-                offset: [14, 0],
+                interactive: true,
+                direction: 'top',
+                offset: [26, -18],
                 className: 'opsar-datum-tooltip'
             }
         );
@@ -134,18 +136,47 @@ export default class SARLayer {
 
 			const tooltip = e.tooltip.getElement();
 
+            if (window.L?.DomEvent) {
+                L.DomEvent.disableClickPropagation(tooltip);
+                L.DomEvent.disableScrollPropagation(tooltip);
+            }
+
+            const tip =
+                tooltip.querySelector(".opsar-datum-tip");
+
+            const toggle =
+                tooltip.querySelector(".opsar-tip-toggle");
+
+            if (tip && toggle) {
+                toggle.textContent = tip.classList.contains("collapsed") ? "+" : "-";
+            }
+
 			tooltip
 				.querySelector(".opsar-tip-toggle")
 				?.addEventListener("click", function (ev) {
 
 					ev.stopPropagation();
 
-					const body = tooltip.querySelector(".opsar-tip-body");
+					const body = tooltip.querySelector(".opsar-datum-tip");
 
 					const collapsed = body.classList.toggle("collapsed");
 
 					this.textContent = collapsed ? "+" : "−";
 				});
+
+            tooltip
+                .querySelector("[data-datum-action='pattern']")
+                ?.addEventListener("click", ev => {
+                    ev.stopPropagation();
+                    window.dispatchEvent(new CustomEvent("sar:pattern", { detail: sar }));
+                });
+
+            tooltip
+                .querySelector("[data-datum-action='card']")
+                ?.addEventListener("click", ev => {
+                    ev.stopPropagation();
+                    window.dispatchEvent(new CustomEvent("sar:card:open", { detail: sar }));
+                });
 
 		});
 
@@ -287,6 +318,8 @@ export default class SARLayer {
 
     static _buildDatumTooltip(sar) {
 
+        return this._buildDatumTooltipCard(sar);
+
 		return `
 			<div class="opsar-datum-tip">
 
@@ -326,6 +359,86 @@ export default class SARLayer {
 			</div>
 		`;
 	}
+
+    static _buildDatumTooltipCard(sar) {
+
+        const latitude =
+            this._formatDms(sar.datum.lat, 'lat');
+
+        const longitude =
+            this._formatDms(sar.datum.lng, 'lng');
+
+        const timestamp =
+            sar.timestamp instanceof Date
+                ? sar.timestamp
+                : new Date();
+
+        const utcTime =
+            timestamp.toISOString().slice(11, 16);
+
+        const collapsed =
+            window.matchMedia?.('(max-width: 768px)').matches;
+
+        return `
+            <div class="opsar-datum-tip opsar-datum-tip-card${collapsed ? ' collapsed' : ''}">
+                <div class="opsar-datum-tip-header">
+                    <span class="opsar-datum-tip-title">DATUM estime</span>
+                    <button class="opsar-tip-toggle" type="button" title="Reduire">−</button>
+                </div>
+
+                <div class="opsar-datum-tip-time">${utcTime} UTC</div>
+
+                <div class="opsar-tip-body">
+                    <div class="opsar-datum-tip-coords">
+                        <span>Position</span>
+                        <strong>${latitude}</strong>
+                        <strong>${longitude}</strong>
+                    </div>
+
+                    <div class="opsar-datum-tip-metric">
+                        <span>Derive</span>
+                        <strong>${sar.driftDistance?.toFixed(2)} NM @ ${Math.round(sar.driftDirection)}°</strong>
+                    </div>
+
+                    <div class="opsar-datum-tip-metric">
+                        <span>Incertitude</span>
+                        <strong>±${sar.searchRadius?.toFixed(2)} NM</strong>
+                    </div>
+
+                    <div class="opsar-datum-tip-actions">
+                        <button type="button" data-datum-action="pattern">Pattern</button>
+                        <button type="button" data-datum-action="card">Card</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+    }
+
+    static _formatDms(value, type) {
+
+        const hemisphere =
+            type === 'lat'
+                ? value >= 0 ? 'N' : 'S'
+                : value >= 0 ? 'E' : 'W';
+
+        const absolute =
+            Math.abs(value);
+
+        const degrees =
+            Math.floor(absolute);
+
+        const minutes =
+            (absolute - degrees) * 60;
+
+        const degreeText =
+            type === 'lat'
+                ? String(degrees).padStart(2, '0')
+                : String(degrees).padStart(3, '0');
+
+        return `${degreeText}°${minutes.toFixed(3).padStart(6, '0')}'${hemisphere}`;
+
+    }
 
     // ------------------------------------------------------------------
     // Rendu du pattern de recherche

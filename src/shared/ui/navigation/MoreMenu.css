@@ -1,0 +1,269 @@
+/* ==========================================
+   Overlay
+========================================== */
+
+.opsar-more-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:center;
+
+    background:rgba(0,0,0,.35);
+
+    backdrop-filter:blur(8px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:
+        opacity .25s ease;
+
+    z-index:30000;
+
+}
+
+/* ==========================================
+   Ouverture
+========================================== */
+
+.opsar-more-overlay.open{
+
+    opacity:1;
+
+    pointer-events:auto;
+
+}
+
+/* ==========================================
+   Bottom Sheet
+========================================== */
+
+.opsar-more-sheet{
+
+    width:100%;
+
+    max-width:700px;
+
+    min-height:260px;
+
+    background:
+        rgba(11,20,38,.96);
+
+    backdrop-filter:
+        blur(22px);
+
+    border-radius:
+        28px 28px 0 0;
+
+    border-top:
+        1px solid rgba(96,165,250,.25);
+
+    box-shadow:
+        0 -15px 40px rgba(0,0,0,.45);
+
+    padding:
+        18px
+        20px
+        calc(30px + env(safe-area-inset-bottom));
+
+    transform:
+        translateY(100%);
+
+    transition:
+        transform .28s ease;
+
+}
+
+/* ==========================================
+   Animation
+========================================== */
+
+.opsar-more-overlay.open
+.opsar-more-sheet{
+
+    transform:
+        translateY(0);
+
+}
+
+/* ==========================================
+   Handle
+========================================== */
+
+.opsar-more-handle{
+
+    width:54px;
+
+    height:5px;
+
+    margin:0 auto 20px;
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.25);
+
+}
+
+/* ==========================================
+   Titre
+========================================== */
+
+.opsar-more-title{
+
+    margin:0 0 22px;
+
+    text-align:center;
+
+    color:white;
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+/* ==========================================
+   Grille
+========================================== */
+
+.opsar-more-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:16px;
+
+}
+
+/* ==========================================
+   Cartes
+========================================== */
+
+.opsar-more-item{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    min-height:110px;
+
+    border:none;
+
+    border-radius:18px;
+
+    cursor:pointer;
+
+    color:white;
+
+    background:
+        linear-gradient(
+
+            180deg,
+
+            rgba(255,255,255,.08),
+
+            rgba(255,255,255,.03)
+
+        );
+
+    border:
+        1px solid rgba(96,165,250,.18);
+
+    transition:
+        .20s ease;
+
+}
+
+/* ==========================================
+   Hover
+========================================== */
+
+.opsar-more-item:hover{
+
+    transform:
+        translateY(-3px);
+
+    background:
+        linear-gradient(
+
+            180deg,
+
+            rgba(96,165,250,.18),
+
+            rgba(96,165,250,.08)
+
+        );
+
+    border-color:
+        rgba(96,165,250,.45);
+
+}
+
+/* ==========================================
+   Icône
+========================================== */
+
+.opsar-more-item span{
+
+    font-size:34px;
+
+}
+
+/* ==========================================
+   Texte
+========================================== */
+
+.opsar-more-item small{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#dbeafe;
+
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media(max-width:500px){
+
+    .opsar-more-grid{
+
+        grid-template-columns:
+            repeat(3,1fr);
+
+        gap:12px;
+
+    }
+
+    .opsar-more-item{
+
+        min-height:95px;
+
+    }
+
+    .opsar-more-item span{
+
+        font-size:28px;
+
+    }
+
+}
