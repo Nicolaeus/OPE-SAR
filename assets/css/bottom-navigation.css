@@ -800,3 +800,25 @@
     }
 
 }
+
+/* ==========================================
+   BottomNavigation cachée lorsque le menu est ouvert
+========================================== */
+
+.opsar-bottom-nav{
+
+    transition:
+        transform .25s ease,
+        opacity .25s ease;
+
+}
+
+.opsar-bottom-nav.menu-open{
+
+    transform:translateY(100%);
+
+    opacity:0;
+
+    pointer-events:none;
+
+}
