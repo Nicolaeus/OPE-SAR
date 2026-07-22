@@ -1,7 +1,5 @@
 import Store from '../../../core/store/Store.js';
-
 import mapConfig from '../../../core/config/map.config.js';
-
 import { createBaseLayers } from '../layers/BaseLayers.js';
 
 export default class MapService {
@@ -27,7 +25,27 @@ export default class MapService {
 
         Store.state.map.currentBaseLayer = 'osmMarine';
 
+        // =====================================
+        // Force le recalcul de la carte
+        // =====================================
+
+        setTimeout(
+            () => map.invalidateSize(),
+            300
+        );
+
+        window.addEventListener(
+            'resize',
+            () => map.invalidateSize()
+        );
+
+        window.visualViewport?.addEventListener(
+            'resize',
+            () => map.invalidateSize()
+        );
+
         return map;
+
     }
 
     static getMap() {
