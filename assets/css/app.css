@@ -15,6 +15,7 @@ body,
 
     padding:0;
 
+    outline:4px solid red;
 }
 
 body{
@@ -60,6 +61,12 @@ body{
     border-radius: 8px;
 
     box-shadow: 0 2px 8px rgba(0,0,0,.2);
+
+}
+
+.leaflet-container{
+
+    background:lime !important;
 
 }
 
