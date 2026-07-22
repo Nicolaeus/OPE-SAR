@@ -183,7 +183,30 @@ export default class Bootstrap {
         // =============================================
 
         await SplashScreen.hide();
+        
+        const map = window.OPESAR?.Map?.getMap?.();
+        
+        if (map) {
+        
+            requestAnimationFrame(() => {
+        
+                map.invalidateSize();
+        
+            });
+        
+        }
+        setTimeout(() => {
 
+            const map = window.OPESAR?.Map?.getMap?.();
+        
+            if (map) {
+        
+                map.invalidateSize();
+        
+            }
+        
+        }, 500);
+        
         console.log(
             '✅ OPE-SAR prêt'
         );
