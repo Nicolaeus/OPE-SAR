@@ -372,9 +372,18 @@ body {
 
 }
 
-html,
-body{
+html {
+    background: red !important;
+}
 
-    background:#ff0000 !important;
+body {
+    background: green !important;
+}
 
+#app {
+    background: blue !important;
+}
+
+#map {
+    background: yellow !important;
 }
