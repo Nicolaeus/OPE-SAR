@@ -31,11 +31,9 @@ body{
 
 #app{
 
-    position:relative;
+    position:fixed;
 
-    width:100%;
-
-    height:100dvh;
+    inset:0;
 
     overflow:hidden;
 
