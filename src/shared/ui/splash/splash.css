@@ -161,9 +161,10 @@
 
 }
 
-#opsar-splash{
-background: magenta;
-}
+
 .opsar-loader{
     background: magenta;
+}
+.opsar-loader-bar{
+        background: magenta;
 }
