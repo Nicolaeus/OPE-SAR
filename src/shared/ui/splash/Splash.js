@@ -68,21 +68,6 @@ export default class SplashScreen {
             splash
         );
 
-        console.table({
-
-            innerHeight: window.innerHeight,
-        
-            outerHeight: window.outerHeight,
-        
-            visualViewport: window.visualViewport?.height,
-        
-            splash: splash.getBoundingClientRect().height,
-        
-            body: document.body.getBoundingClientRect().height,
-        
-            html: document.documentElement.getBoundingClientRect().height
-        
-        });
         
         this.#element = splash;
 
