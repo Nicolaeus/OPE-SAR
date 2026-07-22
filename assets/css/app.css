@@ -1,7 +1,4 @@
 html,
-body,
-#app,
-html,
 body {
 
     margin: 0;
@@ -15,7 +12,11 @@ body {
 #app {
 
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
     overflow: hidden;
 
 }
@@ -25,22 +26,6 @@ body {
     position: absolute;
     inset: 0;
 
-}
-
-html {
-    background: red;
-}
-
-body {
-    background: green;
-}
-
-#app {
-    background: blue;
-}
-
-#map {
-    background: yellow;
 }
 
 #map-toolbar {
