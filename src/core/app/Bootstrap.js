@@ -182,6 +182,24 @@ export default class Bootstrap {
         // Fin du splash
         // =============================================
 
+
+        const app = document.getElementById("app");
+        const map = document.getElementById("map");
+        
+        console.table({
+            bodyHeight: document.body.getBoundingClientRect().height,
+            appHeight: app.getBoundingClientRect().height,
+            mapHeight: map.getBoundingClientRect().height,
+        
+            bodyTop: document.body.getBoundingClientRect().top,
+            appTop: app.getBoundingClientRect().top,
+            mapTop: map.getBoundingClientRect().top,
+        
+            bodyBottom: document.body.getBoundingClientRect().bottom,
+            appBottom: app.getBoundingClientRect().bottom,
+            mapBottom: map.getBoundingClientRect().bottom
+        });
+        
         await SplashScreen.hide();
         
         const map = window.OPESAR?.Map?.getMap?.();
