@@ -44,6 +44,12 @@ export default class MapService {
             () => map.invalidateSize()
         );
 
+        window.addEventListener("load, () => {
+                                setTimeout(() => {
+                                    map.invalidateSize(true);
+                                }, 500);
+    });
+        
         return map;
 
     }
