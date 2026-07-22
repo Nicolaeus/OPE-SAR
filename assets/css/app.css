@@ -371,19 +371,3 @@ body {
     }
 
 }
-
-html {
-    background: red !important;
-}
-
-body {
-    background: green !important;
-}
-
-#app {
-    background: blue !important;
-}
-
-#map {
-    background: yellow !important;
-}
