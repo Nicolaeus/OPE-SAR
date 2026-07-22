@@ -181,32 +181,37 @@ export default class Bootstrap {
         // =============================================
         // Fin du splash
         // =============================================
-
-
+        
         const appElement = document.getElementById("app");
         const mapElement = document.getElementById("map");
         
-        console.table({
-
-            bodyHeight: document.body.getBoundingClientRect().height,
+        const debug = document.createElement("pre");
         
-            appHeight: appElement.getBoundingClientRect().height,
+        debug.style.position = "fixed";
+        debug.style.left = "10px";
+        debug.style.top = "10px";
+        debug.style.zIndex = "999999";
+        debug.style.padding = "10px";
+        debug.style.background = "rgba(0,0,0,.85)";
+        debug.style.color = "#00ff00";
+        debug.style.font = "12px monospace";
+        debug.style.whiteSpace = "pre-wrap";
+        debug.style.pointerEvents = "none";
         
-            mapHeight: mapElement.getBoundingClientRect().height,
+        debug.textContent =
+        `bodyHeight : ${document.body.getBoundingClientRect().height}
+        appHeight  : ${appElement.getBoundingClientRect().height}
+        mapHeight  : ${mapElement.getBoundingClientRect().height}
         
-            bodyTop: document.body.getBoundingClientRect().top,
+        bodyBottom : ${document.body.getBoundingClientRect().bottom}
+        appBottom  : ${appElement.getBoundingClientRect().bottom}
+        mapBottom  : ${mapElement.getBoundingClientRect().bottom}
         
-            appTop: appElement.getBoundingClientRect().top,
+        innerHeight : ${window.innerHeight}
+        outerHeight : ${window.outerHeight}
+        `;
         
-            mapTop: mapElement.getBoundingClientRect().top,
-        
-            bodyBottom: document.body.getBoundingClientRect().bottom,
-        
-            appBottom: appElement.getBoundingClientRect().bottom,
-        
-            mapBottom: mapElement.getBoundingClientRect().bottom
-        
-        });
+        document.body.appendChild(debug);
         
         await SplashScreen.hide();
         
