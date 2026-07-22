@@ -19,9 +19,7 @@ body {
 
     background: #0f172a;
 
-    font-family:
-        'Inter',
-        sans-serif;
+    font-family: 'Inter', sans-serif;
 
 }
 
@@ -31,17 +29,14 @@ body {
 
     inset: 0;
 
-    width: 100%;
-
     overflow: hidden;
 
 }
 
 #map {
 
-    position: absolute;
-
-    inset: 0;
+    width: 100%;
+    height: 100%;
 
 }
 
