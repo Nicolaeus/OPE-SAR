@@ -68,21 +68,29 @@ export default class SplashScreen {
             splash
         );
 
-        console.table({
+        const info = document.createElement("div");
 
-            innerHeight: window.innerHeight,
+        info.style.position = "fixed";
+        info.style.left = "10px";
+        info.style.bottom = "10px";
+        info.style.zIndex = "9999999";
+        info.style.background = "rgba(0,0,0,.8)";
+        info.style.color = "white";
+        info.style.padding = "10px";
+        info.style.fontSize = "12px";
+        info.style.fontFamily = "monospace";
         
-            outerHeight: window.outerHeight,
+        info.innerHTML = `
+        innerHeight : ${window.innerHeight}<br>
+        outerHeight : ${window.outerHeight}<br>
+        visualHeight : ${window.visualViewport?.height}<br>
+        offsetTop : ${window.visualViewport?.offsetTop}<br>
+        offsetLeft : ${window.visualViewport?.offsetLeft}<br>
+        safeBottom : ${getComputedStyle(document.documentElement).getPropertyValue('padding-bottom')}
+        `;
         
-            visualViewport: window.visualViewport?.height,
+        document.body.appendChild(info);
         
-            splash: splash.getBoundingClientRect().height,
-        
-            body: document.body.getBoundingClientRect().height,
-        
-            html: document.documentElement.getBoundingClientRect().height
-        
-        });
         this.#element = splash;
 
     }
