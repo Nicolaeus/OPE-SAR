@@ -183,45 +183,54 @@ export default class Bootstrap {
         // =============================================
 
 
-        const app = document.getElementById("app");
-        const map = document.getElementById("map");
+        const appElement = document.getElementById("app");
+        const mapElement = document.getElementById("map");
         
         console.table({
+
             bodyHeight: document.body.getBoundingClientRect().height,
-            appHeight: app.getBoundingClientRect().height,
-            mapHeight: map.getBoundingClientRect().height,
+        
+            appHeight: appElement.getBoundingClientRect().height,
+        
+            mapHeight: mapElement.getBoundingClientRect().height,
         
             bodyTop: document.body.getBoundingClientRect().top,
-            appTop: app.getBoundingClientRect().top,
-            mapTop: map.getBoundingClientRect().top,
+        
+            appTop: appElement.getBoundingClientRect().top,
+        
+            mapTop: mapElement.getBoundingClientRect().top,
         
             bodyBottom: document.body.getBoundingClientRect().bottom,
-            appBottom: app.getBoundingClientRect().bottom,
-            mapBottom: map.getBoundingClientRect().bottom
+        
+            appBottom: appElement.getBoundingClientRect().bottom,
+        
+            mapBottom: mapElement.getBoundingClientRect().bottom
+        
         });
         
         await SplashScreen.hide();
         
-        const map = window.OPESAR?.Map?.getMap?.();
+        const leafletMap = window.OPESAR?.Map?.getMap?.();
         
-        if (map) {
-        
+        if (leafletMap) {
+
             requestAnimationFrame(() => {
         
-                map.invalidateSize();
+                leafletMap.invalidateSize();
         
             });
         
         }
+        
         setTimeout(() => {
 
-            const map = window.OPESAR?.Map?.getMap?.();
+        const leafletMap = window.OPESAR?.Map?.getMap?.();
         
-            if (map) {
+        if (leafletMap) {
         
-                map.invalidateSize();
+            leafletMap.invalidateSize();
         
-            }
+        }
         
         }, 500);
         
