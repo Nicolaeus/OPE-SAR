@@ -381,3 +381,15 @@ body {
 .leaflet-map-pane{
    background: blue !important;
 }
+
+.leaflet-control-container {
+    background: lime !important;
+}
+
+.leaflet-bottom {
+    background: yellow !important;
+}
+
+.leaflet-control-attribution {
+    background: magenta !important;
+}
