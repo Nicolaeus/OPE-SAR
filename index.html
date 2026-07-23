@@ -1,4 +1,44 @@
 <!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+html,
+body{
+    margin:0;
+    padding:0;
+    background:red;
+}
+
+#test{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    background:lime;
+}
+</style>
+</head>
+
+<body>
+
+<div id="test"></div>
+
+<script>
+console.log(
+    window.innerHeight,
+    window.visualViewport?.height,
+    document.documentElement.clientHeight
+);
+</script>
+
+</body>
+</html>
+
+<!--
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 
@@ -86,7 +126,7 @@
     <script type="module" src="./src/bootstrap.js"></script>
 
 </body>
--->
+
 
 
     
@@ -111,3 +151,5 @@
 
 
 </html>
+
+-->
