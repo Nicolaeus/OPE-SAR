@@ -50,9 +50,9 @@
             .08
         );
 
-    backdrop-filter:blur(24px);
+    /*backdrop-filter:blur(24px);
 
-    -webkit-backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);*/
 
     box-shadow:
 
@@ -204,9 +204,9 @@
 
     cursor:pointer;
 
-    backdrop-filter:blur(18px);
+    /*backdrop-filter:blur(18px);
 
-    -webkit-backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);*/
 
     transition:
 
