@@ -5,11 +5,17 @@ import { createBaseLayers } from '../layers/BaseLayers.js';
 export default class MapService {
 
     static createMap() {
-
+        /*test*/
+    const container = document.getElementById("map");
+    console.log(container.getBoundingClientRect());
+        
         const map = L.map('map', {
             zoomControl: true
         });
 
+         /*test*/
+        console.log(map.getContainer().getBoundingClientRect());
+        
         map.setView(
             mapConfig.center,
             mapConfig.zoom
