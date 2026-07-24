@@ -6,8 +6,13 @@ export default class MapService {
 
     static createMap() {
         /*test*/
-    const container = document.getElementById("map");
-    console.log(container.getBoundingClientRect());
+
+        
+const app = document.getElementById("app");
+const map = document.getElementById("map");
+
+console.log("APP :", app.getBoundingClientRect());
+console.log("MAP :", map.getBoundingClientRect());
         
         const map = L.map('map', {
             zoomControl: true
