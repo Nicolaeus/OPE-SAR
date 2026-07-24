@@ -141,8 +141,28 @@ export default {
 			}
 
 		);
-		
 
+		// =========================
+        // Recentrage position
+        // =========================
+		
+		window.addEventListener(
+		    'map:center-vessel',
+		    () => {
+		
+		        MapService.centerOnSelectedVessel();
+		
+		    }
+		);
+		
+		window.addEventListener(
+		    'map:center-station',
+		    () => {
+		
+		        MapService.centerOnSelectedStation();
+		
+		    }
+		);
 
         console.log('✅ Carte initialisée');
 
