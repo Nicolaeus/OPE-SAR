@@ -128,7 +128,9 @@
 
 .opsar-title{
 
-    color:#ffffff;
+    color: #F58220;
+
+    text-shadow:0 0 8px rgba(245,130,32,.25);
 
     font-size:18px;
 
