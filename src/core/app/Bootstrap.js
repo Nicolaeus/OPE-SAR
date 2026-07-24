@@ -12,7 +12,7 @@ import CacheManager from '../cache/CacheManager.js';
 
 import SplashScreen from '../../shared/ui/splash/Splash.js';
 
-import ViewportManager from "../../core/viewport/ViewportManager.js";
+import ViewportManager from "../viewport/ViewportManager.js";
 
 import AppHeader from '../../shared/ui/header/AppHeader.js';
 
