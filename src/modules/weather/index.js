@@ -63,31 +63,44 @@ export default {
 			);
 
         widget.innerHTML = `
-		
-            <div class="weather-line">
-              				${weatherIcon}
-				
-				<span class="weather-separator">|</span>
-                💨 ${Math.round(
-                    weather.windSpeed || 0
-                )} kts
 
-<span class="weather-separator">|</span>
+    <div class="weather-line">
 
-                🌊 ${(
-                    weather.waveHeight || 0
-                ).toFixed(1)} m
+        ${weatherIcon}
 
+        <span class="weather-separator">|</span>
 
-<span class="weather-separator">|</span>
+        🌡️ ${Math.round(
+            weather.airTemperature || 0
+        )}°
 
-                🌡️ ${Math.round(
-                    weather.airTemperature || 0
-                )}°
+        <span class="weather-separator">|</span>
 
-            </div>
+        💨 ${Math.round(
+            weather.windSpeed || 0
+        )} kt
 
-        `;
+        <span class="weather-separator">|</span>
+
+        🌊 ${(
+            weather.waveHeight || 0
+        ).toFixed(1)} m
+
+        <span class="weather-separator">|</span>
+
+        👁 ${WeatherService.getVisibilityText(
+            weather.visibility
+        )}
+
+        <span class="weather-separator">|</span>
+
+        🌡 ${Math.round(
+            weather.pressure || 0
+        )} hPa
+
+    </div>
+
+`;
 
     }
 
