@@ -5,31 +5,10 @@ import { createBaseLayers } from '../layers/BaseLayers.js';
 export default class MapService {
 
     static createMap() {
-        /*test*/
-        const app = document.getElementById("app");
-        const mapElement = document.getElementById("map");
-        
-        console.log("APP :", app.getBoundingClientRect());
-        console.log("MAP :", mapElement.getBoundingClientRect());
-        const s = getComputedStyle(mapElement);
-
-        console.log({
-            position: s.position,
-            display: s.display,
-            top: s.top,
-            bottom: s.bottom,
-            height: s.height,
-            inset: s.inset,
-            margin: s.margin
-        });
-        
-        
+               
         const map = L.map('map', {
-            zoomControl: true
+            zoomControl: True
         });
-
-         /*test*/
-        console.log(map.getContainer().getBoundingClientRect());
         
         map.setView(
             mapConfig.center,
