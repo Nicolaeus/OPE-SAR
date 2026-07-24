@@ -1,5 +1,6 @@
 import MapService from '../../../modules/map/services/MapService.js';
 import RecenterMenu from './RecenterMenu.js';
+import './recenter-menu.css';
 
 export default class MapControls {
     static create(map) {
