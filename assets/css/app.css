@@ -25,21 +25,35 @@ body {
 
 }
 
-#app {
+:root{
 
-    position: fixed;
+    --viewport-width:100vw;
 
-    left: 0;
-    top: 0;
-
-    width: 100%;
-    height: var(--app-height);
+    --viewport-height:100vh;
 
 }
 
-#map {
-    position: absolute;
-    inset: 0;
+#app{
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    width:var(--viewport-width);
+
+    height:var(--viewport-height);
+
+    overflow:hidden;
+
+}
+
+#map{
+
+    position:absolute;
+
+    inset:0;
+
 }
 
 /* ==========================================================
