@@ -11,6 +11,18 @@ export default class MapService {
         
         console.log("APP :", app.getBoundingClientRect());
         console.log("MAP :", mapElement.getBoundingClientRect());
+        const s = getComputedStyle(mapElement);
+
+        console.log({
+            position: s.position,
+            display: s.display,
+            top: s.top,
+            bottom: s.bottom,
+            height: s.height,
+            inset: s.inset,
+            margin: s.margin
+        });
+        
         
         const map = L.map('map', {
             zoomControl: true
