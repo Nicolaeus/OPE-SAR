@@ -38,8 +38,13 @@ import SettingsModule from '../../modules/settings/index.js';
 export default class Bootstrap {
 
     static async start() {
+        
+        // =============================================
+        // Viewport
+        // =============================================
+    
+        await ViewportManager.init();
 
-        ViewportManager.init();
         // =============================================
         // Splash
         // =============================================
