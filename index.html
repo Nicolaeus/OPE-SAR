@@ -51,6 +51,32 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        (function(){
+          const el = document.createElement('div');
+          el.style.cssText = `
+            position:fixed; top:50%; left:0; right:0;
+            transform:translateY(-50%);
+            background:yellow; color:black;
+            font-size:14px; font-family:monospace;
+            z-index:9999999; padding:10px; white-space:pre-wrap;
+          `;
+          function report(){
+            el.textContent =
+              'innerHeight: ' + window.innerHeight + '\n' +
+              'clientHeight (html): ' + document.documentElement.clientHeight + '\n' +
+              'visualViewport.height: ' + (window.visualViewport ? window.visualViewport.height : 'n/a') + '\n' +
+              'body height: ' + document.body.getBoundingClientRect().height + '\n' +
+              'sab (env bottom): ' + getComputedStyle(document.documentElement).getPropertyValue('--sab-test');
+          }
+          document.documentElement.style.setProperty('--sab-test', 'env(safe-area-inset-bottom)');
+          document.body.appendChild(el);
+          report();
+          window.addEventListener('resize', report);
+        })();
+    </script>
+    
     <script type="module" src="./src/bootstrap.js"></script>
 
 </body>
