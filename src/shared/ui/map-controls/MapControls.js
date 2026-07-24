@@ -18,7 +18,7 @@ export default class MapControls {
                 <span class="opsar-map-icon">🎯</span>
             </button>
 
-            <button class="opsar-map-btn opsar-map-btn-standalone" data-action="reset-north" aria-label="Nord">
+            <button class="opsar-map-btn opsar-map-btn-standalone" data-action=""reset-view"" aria-label="Vue par défaut">
                 <span class="opsar-map-icon">🧭</span>
             </button>
         `;
@@ -34,10 +34,10 @@ export default class MapControls {
                 window.dispatchEvent(new CustomEvent('map:recenter'));
             });
 
-        wrapper.querySelector('[data-action="reset-north"]')
+        wrapper.querySelector('[data-action="reset-view"]')
             .addEventListener('click', (e) => {
                 this.pulseNorth(e.currentTarget);
-                window.dispatchEvent(new CustomEvent('map:reset-north'));
+                window.dispatchEvent(new CustomEvent('map:reset-view'));
             });
 
         return wrapper;
