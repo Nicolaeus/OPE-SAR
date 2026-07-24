@@ -20,7 +20,7 @@ export default class AppHeader {
                         alt="OPE-SAR">
 
                     <div class="opsar-title">
-                        <span class="app-title-ope">OPE-</span><span class="app-title-sar">SAR</span>
+                        <span class="app-title-ope">OPE</span><span class="app-title--">-</span><span class="app-title-sar">SAR</span>
                     </div>
 
                 </div>
