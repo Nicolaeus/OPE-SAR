@@ -36,7 +36,7 @@ export default class MapControls {
             });
 
         wrapper.querySelector('[data-action="reset-view"]')
-            .addEventListener('click', (e) => {
+            .addEventListener('click', ()=> {
                MapService.resetView();
             });
 
