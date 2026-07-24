@@ -26,34 +26,21 @@ body {
 }
 
 :root{
-
     --viewport-width:100vw;
-
     --viewport-height:100vh;
-
 }
 
-#app{
-
-    position:fixed;
-
-    left:0;
-    top:0;
-
-    width:var(--viewport-width);
-
-    height:var(--viewport-height);
-
-    overflow:hidden;
-
+#app {
+    position: fixed;
+    inset: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    box-sizing: border-box;
 }
 
 #map{
-
     position:absolute;
-
     inset:0;
-
 }
 
 /* ==========================================================
