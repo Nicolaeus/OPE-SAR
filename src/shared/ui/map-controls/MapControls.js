@@ -1,4 +1,6 @@
 import MapService from '../../../modules/map/services/MapService.js';
+import RecenterMenu from './RecenterMenu.js';
+
 export default class MapControls {
     static create(map) {
         const wrapper = document.createElement('div');
@@ -24,6 +26,10 @@ export default class MapControls {
             </button>
         `;
 
+
+        const recenterMenu = RecenterMenu.create();
+        document.body.appendChild(recenterMenu);
+        
         wrapper.querySelector('[data-action="zoom-in"]')
             .addEventListener('click', () => map.zoomIn());
 
@@ -31,8 +37,15 @@ export default class MapControls {
             .addEventListener('click', () => map.zoomOut());
 
         wrapper.querySelector('[data-action="recenter"]')
-            .addEventListener('click', () => {
-                window.dispatchEvent(new CustomEvent('map:recenter'));
+            .addEventListener('click', (event) => {
+        
+                event.stopPropagation();
+        
+                RecenterMenu.toggle(
+                    recenterMenu,
+                    event.currentTarget
+                );
+        
             });
 
         wrapper.querySelector('[data-action="reset-view"]')
