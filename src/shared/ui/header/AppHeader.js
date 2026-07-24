@@ -42,6 +42,7 @@ export default class AppHeader {
             <span>☀️ 18°</span>
             <span>🌬 8 kts</span>
             <span>🌊 0.6 m</span>
+            <span>🌡 18° </span>
             <span>👁 12 km</span>
 
         </div>
