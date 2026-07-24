@@ -5,14 +5,14 @@
    ========================================================== */
 
 html {
-    height: 100dvh; /* au lieu de 100% */
+    height: 100vh; /* au lieu de 100% */
     /* retire overflow:hidden d'ici */
     margin: 0;
     padding: 0;
 }
 
 body {
-    height: 100dvh; /* au lieu de 100% */
+    height: 100vh; /* au lieu de 100% */
     margin: 0;
     padding: 0;
     width: 100%;
@@ -21,10 +21,6 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-:root{
-    --viewport-width:100vw;
-    --viewport-height:100vh;
-}
 
 #app {
     position: fixed;
