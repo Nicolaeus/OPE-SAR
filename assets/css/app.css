@@ -30,7 +30,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    padding-bottom: env(safe-area-inset-bottom);
+    bottom: env(safe-area-inset-bottom);
     overflow: hidden;
 }
 
