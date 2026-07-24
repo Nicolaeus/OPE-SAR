@@ -1,3 +1,4 @@
+import MapService from '../../../modules/map/services/MapService.js';
 export default class MapControls {
     static create(map) {
         const wrapper = document.createElement('div');
