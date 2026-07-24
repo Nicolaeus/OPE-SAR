@@ -182,6 +182,15 @@ static getWeatherIcon(code) {
 
     }
 
+	if (
+	    code === 45 ||
+	    code === 48
+	) {
+	
+	    return '🌫️';
+	
+	}
+	
     if (
         code >= 51 &&
         code <= 67
@@ -219,4 +228,24 @@ static getWeatherIcon(code) {
 
 }
 
+static getVisibilityText(state) {
+
+    switch (state) {
+
+        case 'day':
+            return '12 km';
+
+        case 'cloudy':
+            return '8 km';
+
+        case 'night':
+            return '5 km';
+
+        default:
+            return '--';
+
+    }
+
+}
+	
 }
