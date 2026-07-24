@@ -128,10 +128,6 @@
 
 .opsar-title{
 
-    color: #F58220;
-
-    text-shadow:0 0 8px rgba(245,130,32,.25);
-
     font-size:18px;
 
     font-weight:700;
@@ -142,6 +138,19 @@
 
 }
 
+.app-title-ope{
+
+    color:#38BDF8;
+
+}
+
+.app-title-sar{
+
+    color:#F58220;
+
+}
+
+
 /* ========================================================== */
 
 .opsar-subtitle{
@@ -150,7 +159,9 @@
 
     min-width:0;
 
-    color:#9fb0c5;
+    color: #F58220;
+
+    text-shadow:0 0 8px rgba(245,130,32,.25);
 
     font-size:13px;
 
