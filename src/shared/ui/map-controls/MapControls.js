@@ -19,7 +19,7 @@ export default class MapControls {
                 <span class="opsar-map-icon">🎯</span>
             </button>
 
-            <button class="opsar-map-btn opsar-map-btn-standalone" data-action=""reset-view"" aria-label="Vue par défaut">
+            <button class="opsar-map-btn opsar-map-btn-standalone" data-action="reset-view" aria-label="Vue par défaut">
                 <span class="opsar-map-icon">🧭</span>
             </button>
         `;
