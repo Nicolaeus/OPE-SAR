@@ -33,9 +33,6 @@ body {
 #app {
     position: fixed;
     inset: 0;
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-    box-sizing: border-box;
 }
 
 #map{
@@ -51,9 +48,8 @@ body {
 
     position: absolute;
 
-    top: 10px;
-
-    left: 10px;
+    top: calc(10px + env(safe-area-inset-top));
+    left: calc(10px + env(safe-area-inset-left));
 
     z-index: 9999;
 
@@ -71,9 +67,8 @@ body {
 
     position: fixed;
 
-    top: 82px;
-
-    right: 16px;
+    top: calc(82px + env(safe-area-inset-top));
+    right: calc(16px + env(safe-area-inset-right));
 
     display: flex;
 
@@ -205,11 +200,10 @@ body {
 
     .opsar-notification-container {
 
-        top: 70px;
+        top: calc(70px + env(safe-area-inset-top));
+        right: calc(10px + env(safe-area-inset-right));
 
-        right: 10px;
-
-        width: calc(100vw - 20px);
+        width: calc(100vw - 20px - env(safe-area-inset-left) - env(safe-area-inset-right));
 
     }
 
