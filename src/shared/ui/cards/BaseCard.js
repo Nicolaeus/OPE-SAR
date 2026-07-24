@@ -47,7 +47,7 @@ export default class BaseCard {
             'absolute';
 
         card.style.top =
-            '100px';
+            '140px';
 
         card.style.right =
             '20px';
