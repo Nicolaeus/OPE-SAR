@@ -1,6 +1,7 @@
 import Store from '../../../core/store/Store.js';
 import mapConfig from '../../../core/config/map.config.js';
 import { createBaseLayers } from '../layers/BaseLayers.js';
+import PositionService from './PositionService.js';
 
 export default class MapService {
 
@@ -82,6 +83,40 @@ export default class MapService {
                 animate: true,
                 duration: 1.2
             }
+        );
+    
+    }
+
+    static async centerOnCurrentPosition() {
+
+        const position =
+            await PositionService.getCurrentPosition();
+    
+        if (!position) {
+            return;
+        }
+    
+        this.flyTo(
+            position.latitude,
+            position.longitude,
+            16
+        );
+    
+    }
+    
+    static centerOnStation(station) {
+    
+        const position =
+            PositionService.getStationPosition(station);
+    
+        if (!position) {
+            return;
+        }
+    
+        this.flyTo(
+            position.latitude,
+            position.longitude,
+            16
         );
     
     }
