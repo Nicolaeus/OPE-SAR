@@ -39,6 +39,7 @@ export default class Bootstrap {
 
     static async start() {
 
+        ViewportManager.init();
         // =============================================
         // Splash
         // =============================================
@@ -53,7 +54,7 @@ export default class Bootstrap {
         // Initialisation du Core
         // =============================================
 
-        await ViewportManager.init();
+
         
         await Database.open();
 
