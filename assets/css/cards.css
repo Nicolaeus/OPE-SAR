@@ -49,8 +49,6 @@
 
     overflow:hidden;
 
-    z-index:10000;
-	
 	max-height: calc(100vh - 140px);
 
 }
