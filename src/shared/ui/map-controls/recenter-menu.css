@@ -1,0 +1,107 @@
+.opsar-recenter-menu {
+
+    position: fixed;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    min-width: 220px;
+
+    padding: 8px;
+
+    border-radius: 18px;
+
+    background: rgba(20, 28, 45, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    box-shadow:
+        0 12px 32px rgba(0,0,0,.35);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateX(-8px);
+
+    transition:
+        opacity .20s ease,
+        transform .20s ease,
+        visibility .20s;
+
+    z-index: 2000;
+
+}
+
+.opsar-recenter-menu.visible {
+
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateX(0);
+
+}
+
+.opsar-recenter-item {
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-size: .95rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background .15s ease,
+        transform .15s ease;
+
+}
+
+.opsar-recenter-item:hover {
+
+    background: rgba(255,255,255,.08);
+
+}
+
+.opsar-recenter-item:active {
+
+    transform: scale(.98);
+
+}
+
+.opsar-recenter-icon {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    font-size: 1.1rem;
+
+    flex-shrink: 0;
+
+}
+
+.opsar-recenter-item span:last-child {
+
+    flex: 1;
+    text-align: left;
+
+}
