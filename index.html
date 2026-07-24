@@ -71,7 +71,7 @@
               'body height: ' + document.body.getBoundingClientRect().height + '\n' +
                 'screen.height: ' + window.screen.height + '\n' +
                 'outerHeight: ' + window.outerHeight + '\n' +
-                'devicePixelRatio: ' + window.devicePixelRatio
+                'devicePixelRatio: ' + window.devicePixelRatio + '\n'+
               'sab (env bottom): ' + getComputedStyle(document.documentElement).getPropertyValue('--sab-test');
           }
           document.documentElement.style.setProperty('--sab-test', 'env(safe-area-inset-bottom)');
