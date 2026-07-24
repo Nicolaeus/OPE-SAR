@@ -17,13 +17,15 @@
 
     right:16px;
 
-    min-height:82px;
+    height:74px;
 
     display:flex;
 
-    align-items:flex-start;
+    align-items:center;
 
-    padding:12px 18px;
+    justify-content:space-between;
+
+    padding:0 18px;
 
     border-radius:26px;
 
@@ -47,6 +49,10 @@
             255,
             .08
         );
+
+    /*backdrop-filter:blur(24px);
+
+    -webkit-backdrop-filter:blur(24px);*/
 
     box-shadow:
 
@@ -94,11 +100,9 @@
 
     display:flex;
 
-    align-items:flex-start;
+    align-items:center;
 
     gap:14px;
-
-    flex:1;
 
 }
 
@@ -121,7 +125,7 @@
 }
 
 /* ==========================================================
-   Groupe titre
+   Titres
    ========================================================== */
 
 .opsar-title-group{
@@ -130,33 +134,9 @@
 
     flex-direction:column;
 
-    flex:1;
-
     min-width:0;
 
 }
-
-/* ==========================================================
-   Ligne haute
-   ========================================================== */
-
-.opsar-header-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:20px;
-
-    width:100%;
-
-}
-
-/* ==========================================================
-   Titres
-   ========================================================== */
 
 .opsar-title{
 
@@ -170,23 +150,17 @@
 
     letter-spacing:.25px;
 
-    white-space:nowrap;
-
 }
 
 .opsar-subtitle{
+
+    margin-top:2px;
 
     color:#9fb0c5;
 
     font-size:13px;
 
     white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-    text-align:right;
 
 }
 
@@ -200,9 +174,29 @@
 
     align-items:center;
 
-    gap:18px;
+    gap:12px;
 
-    margin-top:8px;
+    padding:10px 16px;
+
+    border-radius:18px;
+
+    background:
+
+        rgba(
+            255,
+            255,
+            255,
+            .04
+        );
+
+    border:
+
+        1px solid rgba(
+            255,
+            255,
+            255,
+            .06
+        );
 
     color:#f8fafc;
 
@@ -210,9 +204,15 @@
 
     cursor:pointer;
 
+    /*backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);*/
+
     transition:
 
-        opacity .18s ease,
+        background .18s ease,
+
+        border-color .18s ease,
 
         transform .18s ease;
 
@@ -220,7 +220,23 @@
 
 .opsar-weather-widget:hover{
 
-    opacity:.85;
+    background:
+
+        rgba(
+            255,
+            255,
+            255,
+            .07
+        );
+
+    border-color:
+
+        rgba(
+            56,
+            189,
+            248,
+            .20
+        );
 
 }
 
@@ -230,11 +246,9 @@
 
     align-items:center;
 
-    gap:6px;
+    gap:8px;
 
     font-size:14px;
-
-    white-space:nowrap;
 
 }
 
@@ -263,7 +277,7 @@
 }
 
 /* ==========================================================
-   Responsive tablette
+   Responsive
    ========================================================== */
 
 @media(max-width:768px){
@@ -274,9 +288,9 @@
 
         right:12px;
 
-        min-height:78px;
+        height:70px;
 
-        padding:10px 14px;
+        padding:0 14px;
 
         border-radius:22px;
 
@@ -306,9 +320,11 @@
 
     .opsar-weather-widget{
 
-        gap:12px;
+        gap:8px;
 
-        margin-top:6px;
+        padding:8px 12px;
+
+        border-radius:16px;
 
     }
 
@@ -316,13 +332,11 @@
 
         font-size:13px;
 
+        gap:6px;
+
     }
 
 }
-
-/* ==========================================================
-   Responsive téléphone
-   ========================================================== */
 
 @media(max-width:430px){
 
@@ -335,11 +349,12 @@
         top:
 
             calc(
-                8px +
-                env(safe-area-inset-top)
-            );
 
-        padding:10px 12px;
+                8px +
+
+                env(safe-area-inset-top)
+
+            );
 
     }
 
@@ -349,35 +364,17 @@
 
     }
 
-    .opsar-header-top{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:2px;
-
-    }
-
-    .opsar-subtitle{
-
-        text-align:left;
-
-    }
-
     .opsar-weather-widget{
 
-        gap:10px;
-
-        flex-wrap:wrap;
-
-        margin-top:6px;
+        padding:8px 10px;
 
     }
 
     .weather-line{
 
         font-size:12px;
+
+        gap:5px;
 
     }
 
