@@ -18,7 +18,7 @@ export default class WeatherService {
             ] = await Promise.all([
 
                 fetch(
-                    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,cloud_cover,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,wind_speed_unit=kn&timezone=auto`
+                    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,cloud_cover,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure&wind_speed_unit=kn&timezone=auto`
                 ),
 
                 fetch(
