@@ -10,62 +10,78 @@ export default class AppHeader {
 
         header.innerHTML = `
 
-                <div class="opsar-header-top">
-            
-                    <div class="opsar-header-left">
-            
-                        <img
-                            src="./assets/images/logos/OPESAR_logo_sf.png"
-                            class="opsar-logo"
-                            alt="OPE-SAR">
-            
-                        <div class="opsar-title">
-                            OPE-SAR
-                        </div>
-            
+            <div class="opsar-header-top">
+
+                <div class="opsar-brand">
+
+                    <img
+                        src="./assets/images/logos/OPESAR_logo_sf.png"
+                        class="opsar-logo"
+                        alt="OPE-SAR">
+
+                    <div class="opsar-title">
+                        OPE-SAR
                     </div>
-            
-                    <div
-                        id="currentStation"
-                        class="opsar-subtitle">
-            
-                        📍 Aucune station
-            
-                    </div>
-            
+
                 </div>
-            
+
                 <div
-                    id="weatherWidget"
-                    class="opsar-weather-widget">
-            
-                    <span>☀️18°</span>
-                    <span>🌬8 kt</span>
-                    <span>🌊0.6 m</span>
-                    <span>👁12 km</span>
-                    <span>1018 hPa</span>
-            
+                    id="currentStation"
+                    class="opsar-subtitle">
+
+                    📍 Aucune station
+
                 </div>
-        
+
+            </div>
+
+            <button
+                id="weatherWidget"
+                class="opsar-weather-widget"
+                type="button">
+
+                <span class="weather-item">
+                    ☀️
+                    <span>18°</span>
+                </span>
+
+                <span class="weather-item">
+                    🌬
+                    <span>8 kt</span>
+                </span>
+
+                <span class="weather-item">
+                    🌊
+                    <span>0.6 m</span>
+                </span>
+
+                <span class="weather-item">
+                    👁
+                    <span>12 km</span>
+                </span>
+
+                <span class="weather-item weather-pressure">
+                    1018 hPa
+                </span>
+
+            </button>
+
         `;
 
-        const widget =
-            header.querySelector(
-                '#weatherWidget'
+        header
+            .querySelector("#weatherWidget")
+            .addEventListener(
+                "click",
+                () => {
+
+                    window.dispatchEvent(
+                        new CustomEvent(
+                            "weather:open"
+                        )
+                    );
+
+                }
             );
-
-        widget.addEventListener(
-            'click',
-            () => {
-
-                window.dispatchEvent(
-                    new CustomEvent(
-                        'weather:open'
-                    )
-                );
-
-            }
-        );
 
         return header;
 
