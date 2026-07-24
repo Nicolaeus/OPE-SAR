@@ -50,7 +50,7 @@ export default class BaseCard {
             '140px';
 
         card.style.right =
-            '20px';
+            '50px';
 
         card.innerHTML = `
 
