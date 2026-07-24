@@ -36,20 +36,15 @@ export default class AppHeader {
             </div>
 
             <div
-                id="weatherWidget"
-                class="opsar-weather-widget">
+            id="weatherWidget"
+            class="opsar-weather-widget">
 
-                <div class="weather-line">
-                    🌬 8 kts
-                </div>
+            <span>☀️ 18°</span>
+            <span>🌬 8 kts</span>
+            <span>🌊 0.6 m</span>
+            <span>👁 12 km</span>
 
-                <div class="weather-line">
-                    🌊 0.6 m
-                </div>
-
-                <div class="weather-line">
-                    🌡 18°
-                </div>
+        </div>
 
             </div>
 
