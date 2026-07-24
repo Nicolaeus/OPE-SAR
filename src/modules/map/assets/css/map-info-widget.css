@@ -369,7 +369,7 @@ border-bottom:
 
             calc(
 
-                110px +
+                80px +
 
                 env(safe-area-inset-bottom)
 
