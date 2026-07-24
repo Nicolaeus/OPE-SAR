@@ -484,9 +484,11 @@
         top:
 		    calc(
 		        env(safe-area-inset-top) +
-		        var(--opsar-header-height)
-		    );
+		        var(--opsar-header-height) +
+		        12px
+		    ) !important;
 
+		
         left:12px !important;
 
         right:12px !important;
