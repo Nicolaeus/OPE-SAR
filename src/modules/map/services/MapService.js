@@ -67,4 +67,23 @@ export default class MapService {
 
     }
 
+    static resetView() {
+    
+        const map = this.getMap();
+    
+        if (!map) {
+            return;
+        }
+    
+        map.flyTo(
+            mapConfig.center,
+            mapConfig.zoom,
+            {
+                animate: true,
+                duration: 1.2
+            }
+        );
+    
+    }
+
 }
