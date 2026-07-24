@@ -372,24 +372,3 @@ body {
     }
 
 }
-
-.leaflet-container{
-   height: 100% !important;
-   width: 100% !important;
-   background : red !important;
-}
-.leaflet-map-pane{
-   background: blue !important;
-}
-
-.leaflet-control-container {
-    background: lime !important;
-}
-
-.leaflet-bottom {
-    background: yellow !important;
-}
-
-.leaflet-control-attribution {
-    background: magenta !important;
-}
