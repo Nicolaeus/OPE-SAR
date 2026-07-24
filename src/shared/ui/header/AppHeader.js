@@ -10,8 +10,6 @@ export default class AppHeader {
 
         header.innerHTML = `
 
-            <header class="opsar-header">
-
                 <div class="opsar-header-top">
             
                     <div class="opsar-header-left">
@@ -48,9 +46,7 @@ export default class AppHeader {
                     <span>1018 hPa</span>
             
                 </div>
-            
-            </header>
-
+        
         `;
 
         const widget =
