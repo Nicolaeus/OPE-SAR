@@ -10,44 +10,46 @@ export default class AppHeader {
 
         header.innerHTML = `
 
-            <div class="opsar-header-left">
+            <header class="opsar-header">
 
-                <img
-                    src="./assets/images/logos/OPESAR_logo_sf.png"
-                    class="opsar-logo"
-                    alt="OPE-SAR">
-
-                <div class="opsar-title-group">
-
-                    <div class="opsar-title">
-                        OPE-SAR
+                <div class="opsar-header-top">
+            
+                    <div class="opsar-header-left">
+            
+                        <img
+                            src="./assets/images/logos/OPESAR_logo_sf.png"
+                            class="opsar-logo"
+                            alt="OPE-SAR">
+            
+                        <div class="opsar-title">
+                            OPE-SAR
+                        </div>
+            
                     </div>
-
+            
                     <div
                         id="currentStation"
                         class="opsar-subtitle">
-
-                        Aucune station
-
+            
+                        📍 Aucune station
+            
                     </div>
-
+            
                 </div>
-
-            </div>
-
-            <div
-            id="weatherWidget"
-            class="opsar-weather-widget">
-
-            <span>☀️ 18°</span>
-            <span>🌬 8 kts</span>
-            <span>🌊 0.6 m</span>
-            <span>🌡 18° </span>
-            <span>👁 12 km</span>
-
-        </div>
-
-            </div>
+            
+                <div
+                    id="weatherWidget"
+                    class="opsar-weather-widget">
+            
+                    <span>☀️18°</span>
+                    <span>🌬8 kt</span>
+                    <span>🌊0.6 m</span>
+                    <span>👁12 km</span>
+                    <span>1018 hPa</span>
+            
+                </div>
+            
+            </header>
 
         `;
 
