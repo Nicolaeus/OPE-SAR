@@ -68,12 +68,25 @@ export default class RecenterMenu {
     static open(menu, anchor) {
 
         const rect = anchor.getBoundingClientRect();
-
-        menu.style.left = `${rect.right + 12}px`;
-        menu.style.top = `${rect.top}px`;
-
+    
+        // On affiche d'abord le menu pour connaître sa largeur réelle
         menu.classList.add('visible');
-
+    
+        const width = menu.offsetWidth;
+    
+        // Si le menu ne rentre pas à droite, on l'ouvre à gauche
+        if (rect.right + width + 12 < window.innerWidth) {
+    
+            menu.style.left = `${rect.right + 12}px`;
+    
+        } else {
+    
+            menu.style.left = `${rect.left - width - 12}px`;
+    
+        }
+    
+        menu.style.top = `${rect.top}px`;
+    
     }
 
     static close(menu) {
