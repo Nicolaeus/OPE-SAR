@@ -7,7 +7,7 @@ export default class MapService {
     static createMap() {
                
         const map = L.map('map', {
-            zoomControl: True
+            zoomControl: true
         });
         
         map.setView(
