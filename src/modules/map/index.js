@@ -14,10 +14,18 @@ export default {
 		console.log('🗺 Initialisation widget Map Infos');
         
 		MapService.createMap();
+
+		const map = MapService.getMap();
+
+		const controls = MapControls.create(map);
+		
+		document
+		    .getElementById("app")
+		    .appendChild(controls);
 		
 		MapOverlay.init();
 		MapInfoWidget.init();
-		MapControls.init();
+		
 
         window.OPESAR = window.OPESAR || {};
 
