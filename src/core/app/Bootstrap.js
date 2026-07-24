@@ -12,6 +12,8 @@ import CacheManager from '../cache/CacheManager.js';
 
 import SplashScreen from '../../shared/ui/splash/Splash.js';
 
+import ViewportManager from "./core/viewport/ViewportManager.js";
+
 import AppHeader from '../../shared/ui/header/AppHeader.js';
 
 import BottomNavigation from '../../shared/ui/navigation/BottomNavigation.js';
@@ -51,6 +53,8 @@ export default class Bootstrap {
         // Initialisation du Core
         // =============================================
 
+        await ViewportManager.init();
+        
         await Database.open();
 
         await SettingsService.initialize();
