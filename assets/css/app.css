@@ -4,25 +4,21 @@
    Layout principal
    ========================================================== */
 
-html,
-body {
-
+html {
+    height: 100dvh; /* au lieu de 100% */
+    /* retire overflow:hidden d'ici */
     margin: 0;
     padding: 0;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
 }
 
 body {
-
+    height: 100dvh; /* au lieu de 100% */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow: hidden; /* on garde le verrouillage du scroll ici, sur body uniquement */
     background: #0f172a;
-
     font-family: 'Inter', sans-serif;
-
 }
 
 :root{
