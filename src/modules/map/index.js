@@ -4,6 +4,7 @@ import MapLayersCard from './cards/MapLayersCard.js';
 
 import MapOverlay from '../../shared/ui/panels/MapOverlay.js';
 import MapInfoWidget from './widgets/MapInfoWidget.js';
+import MapControls from '../../shared/ui/map-controls/MapControls.js'; 
 
 export default {
 
@@ -16,6 +17,7 @@ export default {
 		
 		MapOverlay.init();
 		MapInfoWidget.init();
+		MapControls.init();
 
         window.OPESAR = window.OPESAR || {};
 
