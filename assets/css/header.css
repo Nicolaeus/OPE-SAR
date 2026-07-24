@@ -166,15 +166,13 @@
 
 .opsar-weather-widget{
 
-    display:grid;
+    display:flex;
 
-    grid-template-columns:
-        repeat(4, max-content)
-        1fr;
+    justify-content:flex-end;
 
     align-items:center;
 
-    column-gap:18px;
+    gap:18px;
 
     width:100%;
 
@@ -182,25 +180,11 @@
 
     padding:8px 14px;
 
-    border:none;
-
     border-radius:18px;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .04
-        );
+    background:rgba(255,255,255,.04);
 
-    border:
-        1px solid rgba(
-            255,
-            255,
-            255,
-            .08
-        );
+    border:1px solid rgba(255,255,255,.08);
 
     color:#f8fafc;
 
@@ -209,8 +193,7 @@
     transition:
         background .18s ease,
         border-color .18s ease,
-        transform .15s ease,
-        box-shadow .18s ease;
+        transform .15s ease;
 
 }
 
@@ -254,11 +237,7 @@
 
     white-space:nowrap;
 
-}
-
-.weather-pressure{
-
-    justify-self:end;
+    flex-shrink:0;
 
 }
 
