@@ -41,6 +41,26 @@ export default class ViewportManager {
                 `${height}px`
             );
 
+            console.table({
+            
+                screenHeight: screen.height,
+            
+                innerHeight: window.innerHeight,
+            
+                outerHeight: window.outerHeight,
+            
+                visualHeight: window.visualViewport?.height,
+            
+                visualTop: window.visualViewport?.offsetTop,
+            
+                visualBottom:
+                    window.visualViewport
+                        ? window.visualViewport.offsetTop +
+                          window.visualViewport.height
+                        : null
+            
+            });
+
             console.log("📱 Viewport", {
                 width,
                 height,
@@ -82,24 +102,6 @@ export default class ViewportManager {
 
     }
 
-    console.table({
     
-        screenHeight: screen.height,
-    
-        innerHeight: window.innerHeight,
-    
-        outerHeight: window.outerHeight,
-    
-        visualHeight: window.visualViewport?.height,
-    
-        visualTop: window.visualViewport?.offsetTop,
-    
-        visualBottom:
-            window.visualViewport
-                ? window.visualViewport.offsetTop +
-                  window.visualViewport.height
-                : null
-    
-    });
     
 }
