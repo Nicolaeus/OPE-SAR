@@ -38,9 +38,9 @@ export default class PatrolButton {
             () => this.openCard()
         );
 
-        document.body.appendChild(
-            this.element
-        );
+        document.getElementById('app').appendChild(this.element);
+
+        console.log(this.element.parentElement);
 
         this.bindEvents();
 
