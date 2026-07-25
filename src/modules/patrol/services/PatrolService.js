@@ -21,8 +21,7 @@ export default class PatrolService {
 
         if (!this.current) {
 
-            this.current =
-                new PatrolModel();
+            this.current = new PatrolModel();
 
         }
 
@@ -38,147 +37,138 @@ export default class PatrolService {
     }
 
     /**
-     * Une patrouille est-elle en navigation ?
+     * Patrouille en navigation ?
      */
     static isRunning() {
 
         return (
             this.current &&
-            this.current.isRunning()
+            this.current.status === 'UNDERWAY'
         );
 
     }
 
     /**
-     * Démarre une patrouille.
+     * Change l'état de la patrouille.
      *
+     * Etats possibles :
+     *  - UNDERWAY
+     *  - IN_PORT
+     *  - COMPLETED
+     *
+     * @param {String} status
      * @param {Object|null} position
      */
-    static start(position = null) {
+    static setStatus(status, position = null) {
 
         if (!this.current) {
 
-            this.current =
-                new PatrolModel();
+            this.current = new PatrolModel();
 
         }
 
-        this.current.status =
-            'UNDERWAY';
+        const previousStatus =
+            this.current.status;
 
-        this.current.startedAt =
-            new Date();
+        switch (status) {
 
-        this.current.startPosition =
-            position;
+            case 'UNDERWAY':
 
-        if (position) {
+                if (!this.current.startedAt) {
 
-            this.current.addTrackPoint(
-                position
-            );
+                    this.current.startedAt =
+                        new Date();
 
-        }
+                    this.current.startPosition =
+                        position;
 
-        this.current.addEvent({
+                    if (position) {
 
-            type: PatrolEvents.PATROL_STARTED,
+                        this.current.addTrackPoint(
+                            position
+                        );
 
-            position
+                    }
 
-        });
+                    this.current.addEvent({
 
-        this.dispatch();
+                        type: PatrolEvents.PATROL_STARTED,
 
-    }
+                        position
 
-    /**
-     * Arrivée dans un port.
-     *
-     * @param {Object|null} position
-     */
-    static stopInPort(position = null) {
+                    });
 
-        if (!this.current) {
-            return;
-        }
+                }
+                else if (previousStatus === 'IN_PORT') {
 
-        this.current.status =
-            'IN_PORT';
+                    this.current.addEvent({
 
-        this.current.addEvent({
+                        type: PatrolEvents.PATROL_RESUMED,
 
-            type: PatrolEvents.PATROL_PAUSED,
+                        position
 
-            position
+                    });
 
-        });
+                }
 
-        this.dispatch();
+                this.current.status =
+                    'UNDERWAY';
 
-    }
+                break;
 
-    /**
-     * Reprise de la navigation.
-     *
-     * @param {Object|null} position
-     */
-    static resume(position = null) {
+            case 'IN_PORT':
 
-        if (!this.current) {
-            return;
-        }
+                this.current.status =
+                    'IN_PORT';
 
-        this.current.status =
-            'UNDERWAY';
+                this.current.addEvent({
 
-        this.current.addEvent({
+                    type: PatrolEvents.PATROL_PAUSED,
 
-            type: PatrolEvents.PATROL_RESUMED,
+                    position
 
-            position
+                });
 
-        });
+                break;
 
-        this.dispatch();
+            case 'COMPLETED':
 
-    }
+                this.current.status =
+                    'COMPLETED';
 
-    /**
-     * Termine définitivement la patrouille.
-     *
-     * @param {Object|null} position
-     */
-    static finish(position = null) {
+                this.current.endedAt =
+                    new Date();
 
-        if (!this.current) {
-            return;
-        }
+                this.current.endPosition =
+                    position;
 
-        this.current.status =
-            'COMPLETED';
+                if (position) {
 
-        this.current.endedAt =
-            new Date();
+                    this.current.addTrackPoint(
+                        position
+                    );
 
-        this.current.endPosition =
-            position;
+                }
 
-        if (position) {
+                this.current.addEvent({
 
-            this.current.addTrackPoint(
-                position
-            );
+                    type: PatrolEvents.PATROL_COMPLETED,
+
+                    position
+
+                });
+
+                break;
+
+            default:
+
+                console.warn(
+                    `Etat de patrouille inconnu : ${status}`
+                );
+
+                return;
 
         }
-
-        this.current.addEvent({
-
-            type: PatrolEvents.PATROL_COMPLETED,
-
-            position
-
-        });
 
         this.dispatch();
 
@@ -195,16 +185,14 @@ export default class PatrolService {
             return;
         }
 
-        this.current.addEvent(
-            event
-        );
+        this.current.addEvent(event);
 
         this.dispatch();
 
     }
 
     /**
-     * Ajoute un point GPS à la trace.
+     * Ajoute un point GPS.
      *
      * @param {Object} position
      */
@@ -212,9 +200,11 @@ export default class PatrolService {
 
         if (
             !this.current ||
-            !this.current.isRunning()
+            this.current.status !== 'UNDERWAY'
         ) {
+
             return;
+
         }
 
         this.current.addTrackPoint(
@@ -256,7 +246,7 @@ export default class PatrolService {
     }
 
     /**
-     * Réinitialise le service.
+     * Réinitialise la patrouille.
      */
     static reset() {
 
