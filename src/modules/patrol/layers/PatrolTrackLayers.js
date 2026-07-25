@@ -147,3 +147,104 @@ export default class PatrolTrackLayer {
         );
 
     }
+    static clear() {
+
+        if (this.polyline) {
+
+            this.map.removeLayer(
+                this.polyline
+            );
+
+            this.polyline = null;
+
+        }
+
+        if (this.lastMarker) {
+
+            this.map.removeLayer(
+                this.lastMarker
+            );
+
+            this.lastMarker = null;
+
+        }
+
+    }
+
+    static show() {
+
+        this.visible = true;
+
+        this.refresh();
+
+    }
+
+    static hide() {
+
+        this.visible = false;
+
+        this.clear();
+
+    }
+
+    static fitBounds(padding = [40, 40]) {
+
+        if (
+            !this.map ||
+            !this.polyline
+        ) {
+            return;
+        }
+
+        const bounds =
+            this.polyline.getBounds();
+
+        if (
+            !bounds ||
+            !bounds.isValid()
+        ) {
+            return;
+        }
+
+        this.map.fitBounds(
+            bounds,
+            {
+                padding
+            }
+        );
+
+    }
+
+    static setStyle(style = {}) {
+
+        if (!this.polyline) {
+            return;
+        }
+
+        this.polyline.setStyle(
+            style
+        );
+
+    }
+
+    static destroy() {
+
+        window.removeEventListener(
+            'patrol:track',
+            () => this.refresh()
+        );
+
+        window.removeEventListener(
+            'patrol:updated',
+            () => this.refresh()
+        );
+
+        this.clear();
+
+        this.map = null;
+
+        this.visible = true;
+
+    }
+
+}
