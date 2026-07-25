@@ -1,5 +1,5 @@
-import GeolocationCard
-    from './cards/GeolocationCard.js';
+import GeolocationCard from './cards/GeolocationCard.js';
+import GeolocationService from '../../core/services/GeolocationService.js';
 
 export default {
 
@@ -42,7 +42,17 @@ export default {
                         'app'
                     )
                 );
-
+                
+                const current =
+                    GeolocationService.getCurrent();
+                
+                if (current) {
+                
+                    GeolocationCard.update(
+                        current
+                    );
+                
+                }
             }
 
         );
