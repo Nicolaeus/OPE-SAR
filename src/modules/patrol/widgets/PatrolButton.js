@@ -82,7 +82,7 @@ export default class PatrolButton {
             case 'UNDERWAY':
 
                 this.element.innerHTML =
-                    'Patrouille 🟢';
+                    'Patrouille';
 
                 this.element.className =
                     'patrol-button underway';
@@ -92,7 +92,7 @@ export default class PatrolButton {
             case 'IN_PORT':
 
                 this.element.innerHTML =
-                    'Patrouille 🟠';
+                    'Patrouille';
 
                 this.element.className =
                     'patrol-button in-port';
@@ -102,7 +102,7 @@ export default class PatrolButton {
             default:
 
                 this.element.innerHTML =
-                    '🔄 Patrouille';
+                    'Patrouille';
 
                 this.element.className =
                     'patrol-button inactive';
