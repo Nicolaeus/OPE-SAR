@@ -1,10 +1,8 @@
 /**
  * PatrolButton.js
  *
- * Bouton flottant de gestion de la patrouille.
+ * Bouton flottant d'accès à la patrouille.
  */
-
-import PatrolService from '../services/PatrolService.js';
 
 export default class PatrolButton {
 
@@ -19,9 +17,10 @@ export default class PatrolButton {
             return;
         }
 
-        this.element = document.createElement(
-            'button'
-        );
+        this.element =
+            document.createElement(
+                'button'
+            );
 
         this.element.id =
             'patrol-button';
@@ -29,32 +28,53 @@ export default class PatrolButton {
         this.element.className =
             'patrol-button inactive';
 
+        this.element.innerHTML =
+            '🔄 Patrouille';
+
         this.element.addEventListener(
             'click',
-            () => this.onClick()
-        );
-
-        this.element.addEventListener(
-            'dblclick',
-            event => {
-
-                event.preventDefault();
-
-                this.onFinish();
-
-            }
+            () => this.openCard()
         );
 
         document.body.appendChild(
             this.element
         );
 
-        this.refresh();
+        this.bindEvents();
 
     }
 
     /**
-     * Rafraîchit l'affichage.
+     * Ecoute des évènements.
+     */
+    static bindEvents() {
+
+        window.addEventListener(
+            'patrol:updated',
+            () => this.refresh()
+        );
+
+    }
+
+    /**
+     * Ouvre la carte Patrouille.
+     */
+    static openCard() {
+
+        window.dispatchEvent(
+
+            new CustomEvent(
+
+                'patrol:card:open'
+
+            )
+
+        );
+
+    }
+
+    /**
+     * Rafraîchit l'apparence du widget.
      */
     static refresh() {
 
@@ -63,16 +83,16 @@ export default class PatrolButton {
         }
 
         const patrol =
-            PatrolService.getCurrent();
+            window.PatrolService?.getCurrent?.();
 
         if (!patrol) {
-
-            this.element.innerHTML =
-                '🔄 Patrouille';
 
             this.element.className =
                 'patrol-button inactive';
 
+            this.element.innerHTML =
+                '🔄 Patrouille';
+
             return;
 
         }
@@ -80,111 +100,44 @@ export default class PatrolButton {
         switch (patrol.status) {
 
             case 'UNDERWAY':
-
-                this.element.innerHTML =
-                    'Patrouille';
 
                 this.element.className =
                     'patrol-button underway';
 
+                this.element.innerHTML =
+                    '🟢 Patrouille';
+
                 break;
 
             case 'IN_PORT':
-
-                this.element.innerHTML =
-                    'Patrouille';
 
                 this.element.className =
                     'patrol-button in-port';
 
-                break;
-
-            default:
-
                 this.element.innerHTML =
-                    'Patrouille';
-
-                this.element.className =
-                    'patrol-button inactive';
-
-        }
-
-    }
-
-    /**
-     * Gestion du clic.
-     */
-    static onClick() {
-
-        const patrol =
-            PatrolService.getCurrent();
-
-        if (!patrol) {
-
-            PatrolService.init();
-
-            PatrolService.setStatus(
-                'UNDERWAY'
-            );
-
-            return;
-
-        }
-
-        switch (patrol.status) {
-
-            case 'INACTIVE':
-
-                PatrolService.setStatus(
-                    'UNDERWAY'
-                );
-
-                break;
-
-            case 'UNDERWAY':
-
-                PatrolService.setStatus(
-                    'IN_PORT'
-                );
-
-                break;
-
-            case 'IN_PORT':
-
-                PatrolService.setStatus(
-                    'UNDERWAY'
-                );
+                    '🟠 Patrouille';
 
                 break;
 
             case 'COMPLETED':
 
-                PatrolService.reset();
+                this.element.className =
+                    'patrol-button completed';
 
-                PatrolService.setStatus(
-                    'UNDERWAY'
-                );
+                this.element.innerHTML =
+                    '⚫ Patrouille';
 
                 break;
 
+            default:
+
+                this.element.className =
+                    'patrol-button inactive';
+
+                this.element.innerHTML =
+                    '🔄 Patrouille';
+
         }
-
-    }
-
-    /**
-     * Demande de fin de patrouille.
-     */
-    static onFinish() {
-
-        window.dispatchEvent(
-
-            new CustomEvent(
-
-                'patrol:finish'
-
-            )
-
-        );
 
     }
 
