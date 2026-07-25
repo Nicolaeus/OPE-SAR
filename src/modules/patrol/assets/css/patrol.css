@@ -305,8 +305,18 @@
 
 }
 
+.opsar-summary-grid{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:8px 16px;
+    font-size:.92rem;
+}
 
-
+.opsar-form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
 
 @media (max-width:768px){
 
