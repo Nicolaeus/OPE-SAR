@@ -2,32 +2,48 @@ import GeolocationCard from './cards/GeolocationCard.js';
 
 let card = null;
 
-window.addEventListener(
+export default {
 
-    'geolocation:open',
+    async init() {
 
-    () => {
+        console.log(
+            '🛰️ Initialisation module GEOLOCATION'
+        );
 
-        if (card) {
+        window.addEventListener(
 
-            card.bringToFront();
-            return;
+            'navigation:change',
 
-        }
+            event => {
 
-        card = new GeolocationCard();
+                if (
+                    event.detail.module !==
+                    'geolocation'
+                ) {
 
-        card.render(document.body);
+                    return;
 
-        card.element.addEventListener(
+                }
 
-            'card:close',
+                if (
+                    GeolocationCard.isOpen?.()
+                ) {
 
-            () => {
+                    GeolocationCard.close?.();
 
-                card.element.remove();
+                    return;
 
-                card = null;
+                }
+
+                card = new GeolocationCard();
+
+                card.render(
+
+                    document.getElementById(
+                        'app'
+                    )
+
+                );
 
             }
 
@@ -35,4 +51,4 @@ window.addEventListener(
 
     }
 
-);
+};
