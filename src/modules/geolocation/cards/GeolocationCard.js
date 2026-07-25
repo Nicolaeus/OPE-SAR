@@ -1,4 +1,4 @@
-import BaseCard from '../../../core/ui/cards/BaseCard.js';
+import BaseCard from '../../../shared/ui/cards/BaseCard.js';
 
 import GeolocationService
     from '../../../core/services/GeolocationService.js';
