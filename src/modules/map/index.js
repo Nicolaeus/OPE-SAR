@@ -4,7 +4,10 @@ import MapLayersCard from './cards/MapLayersCard.js';
 
 import MapOverlay from '../../shared/ui/panels/MapOverlay.js';
 import MapInfoWidget from './widgets/MapInfoWidget.js';
-import MapControls from '../../shared/ui/map-controls/MapControls.js'; 
+import MapControls from '../../shared/ui/map-controls/MapControls.js';
+
+import PatrolTrackLayer from '../patrol/layers/PatrolTrackLayer.js';
+import PatrolService from '../patrol/services/PatrolService.js';
 
 export default {
 
@@ -16,6 +19,8 @@ export default {
 		MapService.createMap();
 
 		const map = MapService.getMap();
+
+		PatrolTrackLayer.init(map);
 
 		const controls = MapControls.create(map);
 		
@@ -164,6 +169,8 @@ export default {
 		    }
 		);
 
+		PatrolTrackLayer.refresh();
+		
         console.log('✅ Carte initialisée');
 
     }
