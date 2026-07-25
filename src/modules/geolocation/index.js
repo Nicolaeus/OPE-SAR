@@ -1,12 +1,17 @@
-import GeolocationCard
-    from './cards/GeolocationCard.js';
+import GeolocationCard from './cards/GeolocationCard.js';
 
 export default {
 
-    async init() {
+    id: 'geolocation',
+
+    name: 'Géolocalisation',
+
+    icon: '🛰️',
+
+    init() {
 
         console.log(
-            '🛰️ Initialisation module GEOLOCATION'
+            '🛰️ Initialisation module Géolocalisation'
         );
 
         window.addEventListener(
@@ -19,9 +24,7 @@ export default {
                     event.detail.module !==
                     'geolocation'
                 ) {
-
                     return;
-
                 }
 
                 if (
@@ -34,17 +37,14 @@ export default {
 
                 }
 
-                const card =
-                    GeolocationCard.create();
-
-                card.render(
-                    document.getElementById(
-                        'app'
-                    )
-                );
+                GeolocationCard.create();
 
             }
 
+        );
+
+        console.log(
+            '✅ Module Géolocalisation chargé'
         );
 
     }
