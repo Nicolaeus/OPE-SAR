@@ -3,12 +3,128 @@
  * Patrol Module
  * ============================================================ */
 
+/* ============================================================
+ * Widget Patrouille
+ * ============================================================ */
+
+.patrol-button {
+
+    position: fixed;
+
+    top: calc(var(--header-height, 72px) + 8px);
+
+    right: 16px;
+
+    z-index: 850;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    height: 38px;
+    min-width: 140px;
+
+    padding: 0 16px;
+
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.92);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    color: #1f2937;
+
+    font-size: .90rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    user-select: none;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.18);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        background .20s ease;
+
+}
+
+.patrol-button:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(0,0,0,.22);
+
+}
+
+.patrol-button:active {
+
+    transform: scale(.98);
+
+}
+
+/* ---------- Etat ---------- */
+
+.patrol-button.inactive {
+
+    color: #6b7280;
+
+}
+
+.patrol-button.underway {
+
+    color: #15803d;
+
+}
+
+.patrol-button.in-port {
+
+    color: #c2410c;
+
+}
+
+/* ---------- Indicateur ---------- */
+
+.patrol-button::before {
+
+    content: "";
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #9ca3af;
+
+    flex-shrink: 0;
+
+}
+
+.patrol-button.underway::before {
+
+    background: #22c55e;
+
+}
+
+.patrol-button.in-port::before {
+
+    background: #f59e0b;
+
+}
+
+/* ============================================================
+ * Cartes et formulaires
+ * ============================================================ */
+
 .opsar-patrol-actions {
 
     display: flex;
-
     flex-direction: column;
-
     gap: 8px;
 
 }
@@ -22,9 +138,7 @@
 .opsar-patrol-form {
 
     display: flex;
-
     flex-direction: column;
-
     gap: 12px;
 
 }
@@ -32,9 +146,7 @@
 .opsar-patrol-form-group {
 
     display: flex;
-
     flex-direction: column;
-
     gap: 6px;
 
 }
@@ -48,7 +160,6 @@
 .opsar-patrol-input {
 
     width: 100%;
-
     box-sizing: border-box;
 
 }
@@ -56,7 +167,6 @@
 .opsar-patrol-textarea {
 
     width: 100%;
-
     min-height: 120px;
 
     resize: vertical;
@@ -68,9 +178,7 @@
 .opsar-patrol-summary {
 
     display: flex;
-
     flex-direction: column;
-
     gap: 6px;
 
 }
@@ -125,175 +233,8 @@
 
 .opsar-patrol-info {
 
-    font-size: 0.9rem;
+    font-size: .9rem;
 
-    opacity: 0.85;
-
-}
-
-.patrol-button {
-
-    position: fixed;
-
-    top: calc(var(--header-height, 70px) + 12px);
-
-    right: 16px;
-
-    z-index: 950;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 150px;
-    height: 42px;
-
-    padding: 0 16px;
-
-    border: none;
-    border-radius: 999px;
-
-    font-size: 0.9rem;
-    font-weight: 600;
-
-    color: white;
-
-    cursor: pointer;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,.25);
-
-    transition: all .2s ease;
-}
-
-.patrol-button.inactive {
-
-    background: #6b7280;
-
-}
-
-.patrol-button.underway {
-
-    background: #16a34a;
-
-}
-
-.patrol-button.in-port {
-
-    background: #d97706;
-
-}
-
-/* ============================================================
- * OPE-SAR
- * Widget Patrouille
- * ============================================================ */
-
-.patrol-button {
-
-    position: fixed;
-
-    top: 84px;
-
-    right: 16px;
-
-    z-index: 850;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    height: 38px;
-
-    padding: 0 16px;
-
-    border: 1px solid rgba(255,255,255,.35);
-    border-radius: 999px;
-
-    background: rgba(255,255,255,.92);
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    color: #1f2937;
-
-    font-size: .90rem;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,.18);
-
-    transition:
-        transform .15s ease,
-        box-shadow .15s ease,
-        background .20s ease;
-
-}
-
-.patrol-button:hover {
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 6px 16px rgba(0,0,0,.22);
-
-}
-
-.patrol-button:active {
-
-    transform: scale(.98);
-
-}
-
-/* ===========================
- * Etats
- * =========================== */
-
-.patrol-button.inactive {
-
-    color: #6b7280;
-
-}
-
-.patrol-button.underway {
-
-    color: #15803d;
-
-}
-
-.patrol-button.in-port {
-
-    color: #c2410c;
-
-}
-
-/* Petit indicateur coloré */
-
-.patrol-button::before {
-
-    content: "";
-
-    width: 10px;
-    height: 10px;
-
-    border-radius: 50%;
-
-    background: #9ca3af;
-
-    flex-shrink: 0;
-
-}
-
-.patrol-button.underway::before {
-
-    background: #22c55e;
-
-}
-
-.patrol-button.in-port::before {
-
-    background: #f59e0b;
+    opacity: .85;
 
 }
