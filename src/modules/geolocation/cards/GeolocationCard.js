@@ -1,8 +1,7 @@
 import BaseCard from '../../../shared/ui/cards/BaseCard.js';
 import CardSection from '../../../shared/ui/cards/CardSection.js';
 
-import GeolocationService
-    from '../../../core/services/GeolocationService.js';
+import GeolocationService from '../../../core/services/GeolocationService.js';
 
 export default class GeolocationCard {
 
@@ -29,10 +28,6 @@ export default class GeolocationCard {
             icon: '🛰️'
 
         });
-
-        // ==========================================
-        // Position
-        // ==========================================
 
         const section =
             new CardSection(
@@ -103,10 +98,6 @@ export default class GeolocationCard {
         this.instance =
             card;
 
-        // ==========================================
-        // Fermeture
-        // ==========================================
-
         card.element.addEventListener(
 
             'card:close',
@@ -119,28 +110,13 @@ export default class GeolocationCard {
 
         );
 
-        // ==========================================
-        // Mise à jour
-        // ==========================================
-
-        const current =
-            GeolocationService.getCurrent();
-
-        if (current) {
-
-            this.update(
-                current
-            );
-
-        }
-
         window.addEventListener(
 
             'geolocation:updated',
 
             event => {
 
-                this.update(
+                GeolocationCard.update(
                     event.detail
                 );
 
@@ -154,9 +130,13 @@ export default class GeolocationCard {
 
             () => {
 
+                if (!this.instance) {
+                    return;
+                }
+
                 const status =
-                    document.getElementById(
-                        'geo-status'
+                    this.instance.element.querySelector(
+                        '#geo-status'
                     );
 
                 if (status) {
@@ -174,76 +154,85 @@ export default class GeolocationCard {
 
     }
 
-    // ==========================================
-    // Mise à jour des données
-    // ==========================================
-
     static update(position) {
 
-        if (!position) {
+        if (
+            !position ||
+            !this.instance
+        ) {
 
             return;
 
         }
 
-        document.getElementById(
-            'geo-latitude'
-        ).textContent =
+        const root =
+            this.instance.element;
+
+        const latitude =
+            root.querySelector(
+                '#geo-latitude'
+            );
+
+        if (!latitude) {
+
+            // La carte n'a pas encore été ajoutée au DOM
+
+            return;
+
+        }
+
+        latitude.textContent =
             position.latitude?.toFixed(6) ?? '--';
 
-        document.getElementById(
-            'geo-longitude'
+        root.querySelector(
+            '#geo-longitude'
         ).textContent =
             position.longitude?.toFixed(6) ?? '--';
 
-        document.getElementById(
-            'geo-altitude'
+        root.querySelector(
+            '#geo-altitude'
         ).textContent =
             position.altitude != null
                 ? `${position.altitude.toFixed(1)} m`
                 : '--';
 
-        document.getElementById(
-            'geo-accuracy'
+        root.querySelector(
+            '#geo-accuracy'
         ).textContent =
             position.accuracy != null
                 ? `± ${position.accuracy.toFixed(1)} m`
                 : '--';
 
-        document.getElementById(
-            'geo-heading'
+        root.querySelector(
+            '#geo-heading'
         ).textContent =
             position.heading != null
                 ? `${Math.round(position.heading)}°`
                 : '--';
 
-        document.getElementById(
-            'geo-speed'
+        root.querySelector(
+            '#geo-speed'
         ).textContent =
             position.speed != null
                 ? `${position.speed.toFixed(1)} m/s`
                 : '--';
 
-        document.getElementById(
-            'geo-provider'
+        root.querySelector(
+            '#geo-provider'
         ).textContent =
             position.provider ?? '--';
 
-        document.getElementById(
-            'geo-source'
+        root.querySelector(
+            '#geo-source'
         ).textContent =
             position.source ?? '--';
 
-        document.getElementById(
-            'geo-status'
+        root.querySelector(
+            '#geo-status'
         ).textContent =
             position.status ?? '--';
 
     }
-
-    // ==========================================
-    // Gestion ouverture / fermeture
-    // ==========================================
 
     static close() {
 
