@@ -12,7 +12,7 @@
     position: fixed;
 
     top: calc(
-        118px +
+        130px +
         env(safe-area-inset-top)
     );
 
