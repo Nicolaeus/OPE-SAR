@@ -12,38 +12,48 @@ export default class PatrolCard extends BaseCardController {
 
         const card =
             new BaseCard({
+
                 id: 'patrol-card',
+
                 title: 'PATROUILLE',
+
                 icon: '🔄',
+
                 color: 'blue'
+
             });
 
         card.add(
-            this.buildStatusSection().element
+            this.buildCommandSection().element
         );
 
         card.add(
-            this.buildNavigationSection().element
-        );
-
-        card.add(
-            this.buildStatisticsSection().element
+            this.buildSituationSection().element
         );
 
         card.add(
             this.buildActionsSection().element
         );
 
+        card.add(
+            this.buildClosingSection().element
+        );
+
         card.render(
-            document.getElementById('app')
+            document.getElementById(
+                'app'
+            )
         );
 
         this.instance =
             card;
 
         card.element.addEventListener(
+
             'card:close',
+
             () => PatrolCard.close()
+
         );
 
         this.bindEvents();
@@ -54,86 +64,121 @@ export default class PatrolCard extends BaseCardController {
 
     }
 
-    static buildStatusSection() {
+    static buildCommandSection() {
 
         const section =
             new CardSection(
-                'Patrouille'
+                'Commandes'
+            );
+
+        const container =
+            document.createElement(
+                'div'
+            );
+
+        container.innerHTML = `
+
+            <button
+                id="patrol-main-action"
+                class="opsar-btn opsar-btn-primary"
+                style="width:100%;">
+
+                ▶ Débuter la patrouille
+
+            </button>
+
+        `;
+
+        section.add(
+            container
+        );
+
+        return section;
+
+    }
+
+    static buildSituationSection() {
+
+        const section =
+            new CardSection(
+                'Situation'
             );
 
         const content =
-            document.createElement('div');
+            document.createElement(
+                'div'
+            );
 
         content.innerHTML = `
 
             <div class="opsar-row">
+
                 <span class="opsar-label">
+
                     Etat
+
                 </span>
 
                 <span
                     id="patrol-status"
                     class="opsar-value">
+
                     —
+
                 </span>
+
             </div>
 
             <div class="opsar-row">
+
                 <span class="opsar-label">
+
                     Départ
+
                 </span>
 
                 <span
                     id="patrol-start"
                     class="opsar-value">
+
                     —
+
                 </span>
+
             </div>
 
             <div class="opsar-row">
+
                 <span class="opsar-label">
+
                     Durée
+
                 </span>
 
                 <span
                     id="patrol-duration"
                     class="opsar-value">
+
                     —
+
                 </span>
+
             </div>
-
-        `;
-
-        section.add(
-            content
-        );
-
-        return section;
-
-    }
-
-    static buildNavigationSection() {
-
-        const section =
-            new CardSection(
-                'Navigation'
-            );
-
-        const content =
-            document.createElement('div');
-
-        content.innerHTML = `
 
             <div class="opsar-row">
 
                 <span class="opsar-label">
+
                     Position
+
                 </span>
 
                 <span
                     id="patrol-position"
                     class="opsar-value">
+
                     —
+
                 </span>
 
             </div>
@@ -141,13 +186,17 @@ export default class PatrolCard extends BaseCardController {
             <div class="opsar-row">
 
                 <span class="opsar-label">
+
                     Vitesse
+
                 </span>
 
                 <span
                     id="patrol-speed"
                     class="opsar-value">
+
                     —
+
                 </span>
 
             </div>
@@ -155,49 +204,35 @@ export default class PatrolCard extends BaseCardController {
             <div class="opsar-row">
 
                 <span class="opsar-label">
+
                     Cap
+
                 </span>
 
                 <span
                     id="patrol-heading"
                     class="opsar-value">
+
                     —
+
                 </span>
 
             </div>
 
-        `;
-
-        section.add(
-            content
-        );
-
-        return section;
-
-    }
-
-    static buildStatisticsSection() {
-
-        const section =
-            new CardSection(
-                'Statistiques'
-            );
-
-        const content =
-            document.createElement('div');
-
-        content.innerHTML = `
-
             <div class="opsar-row">
 
                 <span class="opsar-label">
+
                     Trace GPS
+
                 </span>
 
                 <span
                     id="patrol-track-count"
                     class="opsar-value">
+
                     0 point
+
                 </span>
 
             </div>
@@ -205,13 +240,17 @@ export default class PatrolCard extends BaseCardController {
             <div class="opsar-row">
 
                 <span class="opsar-label">
+
                     Evènements
+
                 </span>
 
                 <span
                     id="patrol-events-count"
                     class="opsar-value">
+
                     0
+
                 </span>
 
             </div>
@@ -230,11 +269,13 @@ export default class PatrolCard extends BaseCardController {
 
         const section =
             new CardSection(
-                'Actions'
+                'Outils'
             );
 
         const container =
-            document.createElement('div');
+            document.createElement(
+                'div'
+            );
 
         container.innerHTML = `
 
@@ -270,9 +311,33 @@ export default class PatrolCard extends BaseCardController {
 
             </button>
 
+        `;
+
+        section.add(
+            container
+        );
+
+        return section;
+
+    }
+    static buildClosingSection() {
+
+        const section =
+            new CardSection(
+                'Fin de mission'
+            );
+
+        const container =
+            document.createElement(
+                'div'
+            );
+
+        container.innerHTML = `
+
             <button
                 id="patrol-finish"
-                class="opsar-btn opsar-btn-danger">
+                class="opsar-btn opsar-btn-danger"
+                style="width:100%;">
 
                 ■ Fin de patrouille
 
@@ -287,6 +352,7 @@ export default class PatrolCard extends BaseCardController {
         return section;
 
     }
+
     static bindEvents() {
 
         window.addEventListener(
@@ -295,7 +361,18 @@ export default class PatrolCard extends BaseCardController {
         );
 
         document
-            .getElementById('patrol-crew')
+            .getElementById(
+                'patrol-main-action'
+            )
+            ?.addEventListener(
+                'click',
+                () => this.executeMainAction()
+            );
+
+        document
+            .getElementById(
+                'patrol-crew'
+            )
             ?.addEventListener(
                 'click',
                 () =>
@@ -307,7 +384,9 @@ export default class PatrolCard extends BaseCardController {
             );
 
         document
-            .getElementById('patrol-comms')
+            .getElementById(
+                'patrol-comms'
+            )
             ?.addEventListener(
                 'click',
                 () =>
@@ -319,7 +398,9 @@ export default class PatrolCard extends BaseCardController {
             );
 
         document
-            .getElementById('patrol-journal')
+            .getElementById(
+                'patrol-journal'
+            )
             ?.addEventListener(
                 'click',
                 () =>
@@ -331,7 +412,9 @@ export default class PatrolCard extends BaseCardController {
             );
 
         document
-            .getElementById('patrol-summary')
+            .getElementById(
+                'patrol-summary'
+            )
             ?.addEventListener(
                 'click',
                 () =>
@@ -343,16 +426,75 @@ export default class PatrolCard extends BaseCardController {
             );
 
         document
-            .getElementById('patrol-finish')
+            .getElementById(
+                'patrol-finish'
+            )
             ?.addEventListener(
                 'click',
                 () =>
                     window.dispatchEvent(
                         new CustomEvent(
-                            'patrol:closing'
+                            'patrol:finish'
                         )
                     )
             );
+
+    }
+
+    static executeMainAction() {
+
+        const patrol =
+            PatrolService.getCurrent();
+
+        if (!patrol) {
+
+            PatrolService.init();
+
+            PatrolService.setStatus(
+                'UNDERWAY'
+            );
+
+            return;
+
+        }
+
+        switch (patrol.status) {
+
+            case 'INACTIVE':
+
+                PatrolService.setStatus(
+                    'UNDERWAY'
+                );
+
+                break;
+
+            case 'UNDERWAY':
+
+                PatrolService.setStatus(
+                    'IN_PORT'
+                );
+
+                break;
+
+            case 'IN_PORT':
+
+                PatrolService.setStatus(
+                    'UNDERWAY'
+                );
+
+                break;
+
+            case 'COMPLETED':
+
+                PatrolService.reset();
+
+                PatrolService.setStatus(
+                    'UNDERWAY'
+                );
+
+                break;
+
+        }
 
     }
 
@@ -361,11 +503,50 @@ export default class PatrolCard extends BaseCardController {
         const patrol =
             PatrolService.getCurrent();
 
+        this.updateMainActionButton(
+            patrol
+        );
+
         if (!patrol) {
 
             this.updateValue(
                 'patrol-status',
                 'Aucune'
+            );
+
+            this.updateValue(
+                'patrol-start',
+                '—'
+            );
+
+            this.updateValue(
+                'patrol-duration',
+                '—'
+            );
+
+            this.updateValue(
+                'patrol-position',
+                '—'
+            );
+
+            this.updateValue(
+                'patrol-speed',
+                '—'
+            );
+
+            this.updateValue(
+                'patrol-heading',
+                '—'
+            );
+
+            this.updateValue(
+                'patrol-track-count',
+                '0 point'
+            );
+
+            this.updateValue(
+                'patrol-events-count',
+                '0'
             );
 
             return;
@@ -430,6 +611,75 @@ export default class PatrolCard extends BaseCardController {
 
     }
 
+    static updateMainActionButton(
+        patrol
+    ) {
+
+        const button =
+            document.getElementById(
+                'patrol-main-action'
+            );
+
+        if (!button) {
+            return;
+        }
+
+        if (!patrol) {
+
+            button.innerHTML =
+                '▶ Débuter la patrouille';
+
+            button.className =
+                'opsar-btn opsar-btn-success';
+
+            return;
+
+        }
+
+        switch (patrol.status) {
+
+            case 'UNDERWAY':
+
+                button.innerHTML =
+                    '⏸ Escale';
+
+                button.className =
+                    'opsar-btn opsar-btn-warning';
+
+                break;
+
+            case 'IN_PORT':
+
+                button.innerHTML =
+                    '▶ Reprendre la navigation';
+
+                button.className =
+                    'opsar-btn opsar-btn-primary';
+
+                break;
+
+            case 'COMPLETED':
+
+                button.innerHTML =
+                    '▶ Nouvelle patrouille';
+
+                button.className =
+                    'opsar-btn opsar-btn-success';
+
+                break;
+
+            default:
+
+                button.innerHTML =
+                    '▶ Débuter la patrouille';
+
+                button.className =
+                    'opsar-btn opsar-btn-success';
+
+        }
+
+    }
+
     static formatStatus(status) {
 
         switch (status) {
@@ -444,7 +694,7 @@ export default class PatrolCard extends BaseCardController {
                 return '⚫ Terminée';
 
             default:
-                return '⚪ Inconnu';
+                return '⚪ Aucune';
 
         }
 
@@ -472,10 +722,7 @@ export default class PatrolCard extends BaseCardController {
                 minutes / 60
             );
 
-        const mins =
-            minutes % 60;
-
-        return `${hours} h ${mins} min`;
+        return `${hours} h ${minutes % 60} min`;
 
     }
 
@@ -496,7 +743,10 @@ export default class PatrolCard extends BaseCardController {
 
     static formatHeading(heading) {
 
-        if (heading === undefined || heading === null) {
+        if (
+            heading === undefined ||
+            heading === null
+        ) {
             return '—';
         }
 
@@ -507,7 +757,9 @@ export default class PatrolCard extends BaseCardController {
     static updateValue(id, value) {
 
         const element =
-            document.getElementById(id);
+            document.getElementById(
+                id
+            );
 
         if (!element) {
             return;
