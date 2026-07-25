@@ -11,11 +11,14 @@
 
     position: fixed;
 
-    top: calc(var(--header-height, 85px) + 8px);
+    top: calc(
+        118px +
+        env(safe-area-inset-top)
+    );
 
     right: 16px;
 
-    z-index: 850;
+    z-index: 19000;
 
     display: flex;
     align-items: center;
@@ -236,5 +239,39 @@
     font-size: .9rem;
 
     opacity: .85;
+
+}
+
+@media (max-width:768px){
+
+    .patrol-button{
+
+        top: calc(
+            108px +
+            env(safe-area-inset-top)
+        );
+
+        right:12px;
+
+    }
+
+}
+
+@media (max-width:430px){
+
+    .patrol-button{
+
+        top: calc(
+            104px +
+            env(safe-area-inset-top)
+        );
+
+        right:10px;
+
+        min-width:130px;
+
+        font-size:.85rem;
+
+    }
 
 }
