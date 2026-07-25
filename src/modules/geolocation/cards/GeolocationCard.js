@@ -1,13 +1,24 @@
 import BaseCard from '../../../shared/ui/cards/BaseCard.js';
+import CardSection from '../../../shared/ui/cards/CardSection.js';
 
 import GeolocationService
     from '../../../core/services/GeolocationService.js';
 
-export default class GeolocationCard extends BaseCard {
+export default class GeolocationCard {
 
-    constructor() {
+    static instance = null;
 
-        super({
+    static create() {
+
+        if (this.instance) {
+
+            this.instance.element.remove();
+
+            this.instance = null;
+
+        }
+
+        const card = new BaseCard({
 
             id: 'geolocation-card',
 
@@ -19,15 +30,16 @@ export default class GeolocationCard extends BaseCard {
 
         });
 
-        this.build();
+        // ==========================================
+        // Position
+        // ==========================================
 
-        this.registerEvents();
+        const section =
+            new CardSection(
+                'Position'
+            );
 
-    }
-
-    build() {
-
-        this.getBody().innerHTML = `
+        section.element.innerHTML += `
 
             <table class="opsar-table">
 
@@ -84,18 +96,43 @@ export default class GeolocationCard extends BaseCard {
 
         `;
 
+        card.add(
+            section.element
+        );
+
+        this.instance =
+            card;
+
+        // ==========================================
+        // Fermeture
+        // ==========================================
+
+        card.element.addEventListener(
+
+            'card:close',
+
+            () => {
+
+                GeolocationCard.close();
+
+            }
+
+        );
+
+        // ==========================================
+        // Mise à jour
+        // ==========================================
+
         const current =
             GeolocationService.getCurrent();
 
         if (current) {
 
-            this.update(current);
+            this.update(
+                current
+            );
 
         }
-
-    }
-
-    registerEvents() {
 
         window.addEventListener(
 
@@ -117,20 +154,36 @@ export default class GeolocationCard extends BaseCard {
 
             () => {
 
-                document.getElementById(
-                    'geo-status'
-                ).textContent = 'Erreur';
+                const status =
+                    document.getElementById(
+                        'geo-status'
+                    );
+
+                if (status) {
+
+                    status.textContent =
+                        'Erreur';
+
+                }
 
             }
 
         );
 
+        return card;
+
     }
 
-    update(position) {
+    // ==========================================
+    // Mise à jour des données
+    // ==========================================
+
+    static update(position) {
 
         if (!position) {
+
             return;
+
         }
 
         document.getElementById(
@@ -146,28 +199,28 @@ export default class GeolocationCard extends BaseCard {
         document.getElementById(
             'geo-altitude'
         ).textContent =
-            position.altitude !== null
+            position.altitude != null
                 ? `${position.altitude.toFixed(1)} m`
                 : '--';
 
         document.getElementById(
             'geo-accuracy'
         ).textContent =
-            position.accuracy !== null
+            position.accuracy != null
                 ? `± ${position.accuracy.toFixed(1)} m`
                 : '--';
 
         document.getElementById(
             'geo-heading'
         ).textContent =
-            position.heading !== null
+            position.heading != null
                 ? `${Math.round(position.heading)}°`
                 : '--';
 
         document.getElementById(
             'geo-speed'
         ).textContent =
-            position.speed !== null
+            position.speed != null
                 ? `${position.speed.toFixed(1)} m/s`
                 : '--';
 
@@ -185,6 +238,30 @@ export default class GeolocationCard extends BaseCard {
             'geo-status'
         ).textContent =
             position.status ?? '--';
+
+    }
+
+    // ==========================================
+    // Gestion ouverture / fermeture
+    // ==========================================
+
+    static close() {
+
+        if (!this.instance) {
+
+            return;
+
+        }
+
+        this.instance.element.remove();
+
+        this.instance = null;
+
+    }
+
+    static isOpen() {
+
+        return this.instance !== null;
 
     }
 
