@@ -5,8 +5,8 @@ import Registry from './Registry.js';
 import Database
     from '../database/Database.js';
 
-import SettingsService
-    from '../services/SettingsService.js';
+import SettingsService from '../services/SettingsService.js';
+import GeolocationService from '../services/GeolocationService.js';
 
 import CacheManager from '../cache/CacheManager.js';
 
@@ -35,6 +35,8 @@ import OSCModule from '../../modules/osc/index.js';
 
 import SettingsModule from '../../modules/settings/index.js';
 
+import GeolocationModule from '../../modules/geolocation/index.js';
+
 export default class Bootstrap {
 
     static async start() {
@@ -58,8 +60,6 @@ export default class Bootstrap {
         // =============================================
         // Initialisation du Core
         // =============================================
-
-
         
         await Database.open();
 
@@ -70,6 +70,8 @@ export default class Bootstrap {
         // ThemeService.listen();
 
         await CacheManager.cleanExpired();
+
+        await GeolocationService.start();
 
         console.log(
             '✅ Core initialisé'
@@ -134,6 +136,11 @@ export default class Bootstrap {
         );
 
         Registry.register(
+            'geolocation',
+            GeolocationModule
+        );
+
+        Registry.register(
             'settings',
             SettingsModule
         );
@@ -164,6 +171,10 @@ export default class Bootstrap {
 
         app.register(
             SettingsModule
+        );
+
+        app.register(
+            GeolocationModule
         );
 
         await app.start();
