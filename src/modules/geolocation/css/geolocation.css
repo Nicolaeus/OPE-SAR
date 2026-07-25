@@ -1,0 +1,59 @@
+.geo-section{
+
+    margin-bottom:18px;
+
+}
+
+.geo-section:last-child{
+
+    margin-bottom:0;
+
+}
+
+.geo-section-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-bottom:10px;
+
+    font-size:.92rem;
+
+    font-weight:600;
+
+    color:var(--opsar-primary);
+
+}
+
+.geo-grid{
+
+    display:grid;
+
+    grid-template-columns:120px 1fr;
+
+    gap:8px 12px;
+
+}
+
+.geo-label{
+
+    color:#64748B;
+
+    font-size:.84rem;
+
+}
+
+.geo-value{
+
+    font-weight:600;
+
+    color:#0F172A;
+
+    text-align:right;
+
+    font-variant-numeric:tabular-nums;
+
+}
