@@ -1,0 +1,132 @@
+/* ============================================================
+ * OPE-SAR
+ * Patrol Module
+ * ============================================================ */
+
+.opsar-patrol-actions {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+.opsar-patrol-actions .opsar-btn {
+
+    width: 100%;
+
+}
+
+.opsar-patrol-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+.opsar-patrol-form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+}
+
+.opsar-patrol-form-group label {
+
+    font-weight: 600;
+
+}
+
+.opsar-patrol-input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+}
+
+.opsar-patrol-textarea {
+
+    width: 100%;
+
+    min-height: 120px;
+
+    resize: vertical;
+
+    box-sizing: border-box;
+
+}
+
+.opsar-patrol-summary {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+}
+
+.opsar-patrol-warning {
+
+    color: var(--warning-color);
+
+    font-weight: 600;
+
+}
+
+.opsar-patrol-success {
+
+    color: var(--success-color);
+
+    font-weight: 600;
+
+}
+
+.opsar-patrol-danger {
+
+    color: var(--danger-color);
+
+    font-weight: 600;
+
+}
+
+.opsar-patrol-status {
+
+    font-weight: bold;
+
+}
+
+.opsar-patrol-status-running {
+
+    color: #16a34a;
+
+}
+
+.opsar-patrol-status-port {
+
+    color: #d97706;
+
+}
+
+.opsar-patrol-status-ended {
+
+    color: #6b7280;
+
+}
+
+.opsar-patrol-info {
+
+    font-size: 0.9rem;
+
+    opacity: 0.85;
+
+}
