@@ -5,13 +5,17 @@
  */
 
 import PatrolModel from '../models/PatrolModel.js';
+import PatrolEvents from '../constants/PatrolEvents.js';
 
 export default class PatrolService {
 
+    /**
+     * Patrouille courante.
+     */
     static current = null;
 
     /**
-     * Initialisation du service.
+     * Initialise le service.
      */
     static init() {
 
@@ -34,7 +38,7 @@ export default class PatrolService {
     }
 
     /**
-     * Une patrouille est-elle active ?
+     * Une patrouille est-elle en navigation ?
      */
     static isRunning() {
 
@@ -46,7 +50,7 @@ export default class PatrolService {
     }
 
     /**
-     * Départ en patrouille.
+     * Démarre une patrouille.
      *
      * @param {Object|null} position
      */
@@ -78,7 +82,7 @@ export default class PatrolService {
 
         this.current.addEvent({
 
-            type: 'PATROL_STARTED',
+            type: PatrolEvents.PATROL_STARTED,
 
             position
 
@@ -89,7 +93,9 @@ export default class PatrolService {
     }
 
     /**
-     * Escale.
+     * Arrivée dans un port.
+     *
+     * @param {Object|null} position
      */
     static stopInPort(position = null) {
 
@@ -102,7 +108,7 @@ export default class PatrolService {
 
         this.current.addEvent({
 
-            type: 'PORT_STOP',
+            type: PatrolEvents.PATROL_PAUSED,
 
             position
 
@@ -113,7 +119,9 @@ export default class PatrolService {
     }
 
     /**
-     * Reprise après escale.
+     * Reprise de la navigation.
+     *
+     * @param {Object|null} position
      */
     static resume(position = null) {
 
@@ -126,7 +134,7 @@ export default class PatrolService {
 
         this.current.addEvent({
 
-            type: 'PATROL_RESUMED',
+            type: PatrolEvents.PATROL_RESUMED,
 
             position
 
@@ -137,7 +145,9 @@ export default class PatrolService {
     }
 
     /**
-     * Fin définitive.
+     * Termine définitivement la patrouille.
+     *
+     * @param {Object|null} position
      */
     static finish(position = null) {
 
@@ -164,7 +174,7 @@ export default class PatrolService {
 
         this.current.addEvent({
 
-            type: 'PATROL_COMPLETED',
+            type: PatrolEvents.PATROL_COMPLETED,
 
             position
 
@@ -194,7 +204,7 @@ export default class PatrolService {
     }
 
     /**
-     * Ajoute un point GPS.
+     * Ajoute un point GPS à la trace.
      *
      * @param {Object} position
      */
@@ -204,14 +214,28 @@ export default class PatrolService {
             !this.current ||
             !this.current.isRunning()
         ) {
-
             return;
-
         }
 
         this.current.addTrackPoint(
             position
         );
+
+        this.current.addEvent({
+
+            type: PatrolEvents.POSITION,
+
+            latitude: position.latitude,
+
+            longitude: position.longitude,
+
+            speed: position.speed,
+
+            heading: position.heading,
+
+            accuracy: position.accuracy
+
+        });
 
         window.dispatchEvent(
 
