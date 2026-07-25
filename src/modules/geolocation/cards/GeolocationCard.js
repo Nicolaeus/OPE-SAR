@@ -15,7 +15,7 @@ export default class GeolocationCard extends BaseCard {
 
             color: 'blue',
 
-            icon: '📍'
+            icon: '🛰️'
 
         });
 
