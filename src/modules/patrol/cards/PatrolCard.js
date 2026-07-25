@@ -287,3 +287,235 @@ export default class PatrolCard extends BaseCardController {
         return section;
 
     }
+    static bindEvents() {
+
+        window.addEventListener(
+            'patrol:updated',
+            () => this.refresh()
+        );
+
+        document
+            .getElementById('patrol-crew')
+            ?.addEventListener(
+                'click',
+                () =>
+                    window.dispatchEvent(
+                        new CustomEvent(
+                            'patrol:crew'
+                        )
+                    )
+            );
+
+        document
+            .getElementById('patrol-comms')
+            ?.addEventListener(
+                'click',
+                () =>
+                    window.dispatchEvent(
+                        new CustomEvent(
+                            'patrol:communications'
+                        )
+                    )
+            );
+
+        document
+            .getElementById('patrol-journal')
+            ?.addEventListener(
+                'click',
+                () =>
+                    window.dispatchEvent(
+                        new CustomEvent(
+                            'patrol:journal'
+                        )
+                    )
+            );
+
+        document
+            .getElementById('patrol-summary')
+            ?.addEventListener(
+                'click',
+                () =>
+                    window.dispatchEvent(
+                        new CustomEvent(
+                            'patrol:summary'
+                        )
+                    )
+            );
+
+        document
+            .getElementById('patrol-finish')
+            ?.addEventListener(
+                'click',
+                () =>
+                    window.dispatchEvent(
+                        new CustomEvent(
+                            'patrol:closing'
+                        )
+                    )
+            );
+
+    }
+
+    static refresh() {
+
+        const patrol =
+            PatrolService.getCurrent();
+
+        if (!patrol) {
+
+            this.updateValue(
+                'patrol-status',
+                'Aucune'
+            );
+
+            return;
+
+        }
+
+        this.updateValue(
+            'patrol-status',
+            this.formatStatus(
+                patrol.status
+            )
+        );
+
+        this.updateValue(
+            'patrol-start',
+            patrol.startedAt
+                ? new Date(
+                    patrol.startedAt
+                ).toLocaleString(
+                    'fr-FR'
+                )
+                : '—'
+        );
+
+        this.updateValue(
+            'patrol-duration',
+            this.formatDuration(
+                patrol.startedAt
+            )
+        );
+
+        this.updateValue(
+            'patrol-position',
+            this.formatPosition(
+                patrol
+            )
+        );
+
+        this.updateValue(
+            'patrol-speed',
+            patrol.speed !== undefined
+                ? `${patrol.speed.toFixed(1)} nd`
+                : '—'
+        );
+
+        this.updateValue(
+            'patrol-heading',
+            this.formatHeading(
+                patrol.heading
+            )
+        );
+
+        this.updateValue(
+            'patrol-track-count',
+            `${patrol.track?.length ?? 0} point(s)`
+        );
+
+        this.updateValue(
+            'patrol-events-count',
+            patrol.events?.length ?? 0
+        );
+
+    }
+
+    static formatStatus(status) {
+
+        switch (status) {
+
+            case 'UNDERWAY':
+                return '🟢 En navigation';
+
+            case 'IN_PORT':
+                return '🟠 Escale';
+
+            case 'COMPLETED':
+                return '⚫ Terminée';
+
+            default:
+                return '⚪ Inconnu';
+
+        }
+
+    }
+
+    static formatDuration(startedAt) {
+
+        if (!startedAt) {
+            return '—';
+        }
+
+        const elapsed =
+            Date.now() -
+            new Date(
+                startedAt
+            ).getTime();
+
+        const minutes =
+            Math.floor(
+                elapsed / 60000
+            );
+
+        const hours =
+            Math.floor(
+                minutes / 60
+            );
+
+        const mins =
+            minutes % 60;
+
+        return `${hours} h ${mins} min`;
+
+    }
+
+    static formatPosition(patrol) {
+
+        const position =
+            patrol.currentPosition ??
+            patrol.position ??
+            patrol.lastPosition;
+
+        if (!position) {
+            return '—';
+        }
+
+        return `${position.lat.toFixed(5)}, ${position.lng.toFixed(5)}`;
+
+    }
+
+    static formatHeading(heading) {
+
+        if (heading === undefined || heading === null) {
+            return '—';
+        }
+
+        return `${Math.round(heading)}°`;
+
+    }
+
+    static updateValue(id, value) {
+
+        const element =
+            document.getElementById(id);
+
+        if (!element) {
+            return;
+        }
+
+        element.textContent =
+            value;
+
+    }
+
+}
