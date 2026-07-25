@@ -1,6 +1,5 @@
-import GeolocationCard from './cards/GeolocationCard.js';
-
-let card = null;
+import GeolocationCard
+    from './cards/GeolocationCard.js';
 
 export default {
 
@@ -26,23 +25,22 @@ export default {
                 }
 
                 if (
-                    GeolocationCard.isOpen?.()
+                    GeolocationCard.isOpen()
                 ) {
 
-                    GeolocationCard.close?.();
+                    GeolocationCard.close();
 
                     return;
 
                 }
 
-                card = new GeolocationCard();
+                const card =
+                    GeolocationCard.create();
 
                 card.render(
-
                     document.getElementById(
                         'app'
                     )
-
                 );
 
             }
