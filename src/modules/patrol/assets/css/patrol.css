@@ -247,7 +247,7 @@
     .patrol-button{
 
         top: calc(
-            108px +
+            140px +
             env(safe-area-inset-top)
         );
 
@@ -262,7 +262,7 @@
     .patrol-button{
 
         top: calc(
-            104px +
+            130px +
             env(safe-area-inset-top)
         );
 
