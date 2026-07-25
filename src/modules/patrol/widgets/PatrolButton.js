@@ -4,6 +4,8 @@
  * Bouton flottant d'accès à la patrouille.
  */
 
+import PatrolService from '../services/PatrolService.js';
+
 export default class PatrolButton {
 
     static element = null;
@@ -81,9 +83,9 @@ export default class PatrolButton {
         if (!this.element) {
             return;
         }
-
+  
         const patrol =
-            window.PatrolService?.getCurrent?.();
+            PatrolService.getCurrent();
 
         if (!patrol) {
 
