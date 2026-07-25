@@ -10,19 +10,27 @@ export default class PatrolTrackLayer {
 
     static visible = true;
 
+    static onTrack =
+        () => PatrolTrackLayer.refresh();
+
+    static onUpdated =
+        () => PatrolTrackLayer.refresh();
+
     static init(map) {
+
+        this.destroy();
 
         this.map =
             map;
 
         window.addEventListener(
             'patrol:track',
-            () => this.refresh()
+            this.onTrack
         );
-
+        
         window.addEventListener(
             'patrol:updated',
-            () => this.refresh()
+            this.onUpdated
         );
 
         this.refresh();
@@ -231,12 +239,12 @@ export default class PatrolTrackLayer {
 
         window.removeEventListener(
             'patrol:track',
-            () => this.refresh()
+            this.onTrack
         );
-
+        
         window.removeEventListener(
             'patrol:updated',
-            () => this.refresh()
+            this.onUpdated
         );
 
         this.clear();
