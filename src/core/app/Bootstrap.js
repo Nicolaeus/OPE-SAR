@@ -37,6 +37,8 @@ import SettingsModule from '../../modules/settings/index.js';
 
 import GeolocationModule from '../../modules/geolocation/index.js';
 
+import PatrolModule from '../../modules/patrol/index.js';
+
 export default class Bootstrap {
 
     static async start() {
@@ -141,6 +143,11 @@ export default class Bootstrap {
         );
 
         Registry.register(
+            'patrol',
+            PatrolModule
+        );
+
+        Registry.register(
             'settings',
             SettingsModule
         );
@@ -175,6 +182,10 @@ export default class Bootstrap {
 
         app.register(
             GeolocationModule
+        );
+
+        app.register(
+            PatrolModule
         );
 
         await app.start();
