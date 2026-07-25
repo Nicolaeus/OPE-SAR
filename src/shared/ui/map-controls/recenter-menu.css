@@ -1,0 +1,110 @@
+.opsar-recenter-menu {
+
+    position: fixed;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    min-width: 170px;
+
+    padding: 6px;
+
+    border-radius: 16px;
+
+    background: rgba(15, 23, 42, .72);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,.22);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateX(-8px);
+
+    transition:
+        opacity .20s ease,
+        transform .20s ease,
+        visibility .20s;
+
+    z-index: 2000;
+
+}
+
+.opsar-recenter-menu.visible {
+
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateX(0);
+
+}
+
+.opsar-recenter-item {
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+
+    min-height: 36px;
+
+    padding: 8px 10px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-size: .82rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background .15s ease,
+        transform .15s ease;
+
+}
+
+.opsar-recenter-item:hover {
+
+    background: rgba(255,255,255,.06);
+
+}
+
+.opsar-recenter-item:active {
+
+    transform: scale(.98);
+
+}
+
+.opsar-recenter-icon {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 22px;
+    height: 22px;
+
+    font-size: .95rem;
+
+    flex-shrink: 0;
+
+}
+
+.opsar-recenter-item span:last-child {
+
+    flex: 1;
+    text-align: left;
+
+}

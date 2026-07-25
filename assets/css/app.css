@@ -1,35 +1,47 @@
+/*app.css*/
+
+/* ==========================================================
+   Layout principal
+   ========================================================== */
+
 html {
-    width: 100%;
-    height: 100%;
+    height: 100vh; /* au lieu de 100% */
+    /* retire overflow:hidden d'ici */
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    width: 100%;
-    height: 100%;
+    height: 100vh; /* au lieu de 100% */
     margin: 0;
-    overflow: hidden;
+    padding: 0;
+    width: 100%;
+    overflow: hidden; /* on garde le verrouillage du scroll ici, sur body uniquement */
     background: #0f172a;
     font-family: 'Inter', sans-serif;
 }
+
 
 #app {
     position: fixed;
     inset: 0;
 }
 
-#map {
-    position: absolute;
-    inset: 0;
+#map{
+    position:absolute;
+    inset:0;
 }
 
+/* ==========================================================
+   Toolbar (Debug)
+   ========================================================== */
 
 #map-toolbar {
 
     position: absolute;
 
-    top: 10px;
-
-    left: 10px;
+    top: calc(10px + env(safe-area-inset-top));
+    left: calc(10px + env(safe-area-inset-left));
 
     z-index: 9999;
 
@@ -47,9 +59,8 @@ body {
 
     position: fixed;
 
-    top: 82px;
-
-    right: 16px;
+    top: calc(82px + env(safe-area-inset-top));
+    right: calc(16px + env(safe-area-inset-right));
 
     display: flex;
 
@@ -85,7 +96,7 @@ body {
 
     box-shadow: 0 16px 36px rgba(0, 0, 0, .35);
 
-    backdrop-filter: blur(12px);
+  /*backdrop-filter: blur(12px);*/
 
     pointer-events: auto;
 
@@ -181,11 +192,10 @@ body {
 
     .opsar-notification-container {
 
-        top: 70px;
+        top: calc(70px + env(safe-area-inset-top));
+        right: calc(10px + env(safe-area-inset-right));
 
-        right: 10px;
-
-        width: calc(100vw - 20px);
+        width: calc(100vw - 20px - env(safe-area-inset-left) - env(safe-area-inset-right));
 
     }
 
@@ -230,7 +240,7 @@ body {
             rgba(8, 13, 26, .97)
         );
 
-    backdrop-filter: blur(10px);
+    /*backdrop-filter: blur(10px);*/
 
 }
 
@@ -351,3 +361,57 @@ body {
 
 }
 
+
+.opsar-zoom-control{
+
+    display:flex;
+    flex-direction:column;
+
+    width:58px;
+    height:120px;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(30,40,60,.58),
+            rgba(14,20,34,.72)
+        );
+
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,.20),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+}
+
+.opsar-zoom-btn{
+
+    flex:1;
+
+    border:none;
+
+    background:transparent;
+
+    color:white;
+
+    font-size:26px;
+
+    cursor:pointer;
+
+    transition:.18s;
+
+}
+
+.opsar-zoom-btn:hover{
+
+    background:rgba(255,255,255,.08);
+
+}

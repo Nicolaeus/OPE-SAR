@@ -1,3 +1,10 @@
+
+:root{
+
+    --opsar-header-height:120px;
+
+}
+
 .opsar-card {
 
     position:absolute;
@@ -17,8 +24,8 @@
             rgba(11,18,32,.96)
         );
 
-    backdrop-filter:
-        blur(14px);
+    /*backdrop-filter:
+        blur(14px);*/
 
     border:
         1px solid rgba(
@@ -42,9 +49,7 @@
 
     overflow:hidden;
 
-    z-index:1000;
-	
-	max-height: calc(100vh - 140px);
+	max-height: calc(100vh - 130px);
 
 }
 
@@ -475,11 +480,13 @@
         position:fixed !important;
 
         top:
-            calc(
-                env(safe-area-inset-top) +
-                98px
-            ) !important;
+		    calc(
+		        env(safe-area-inset-top) +
+		        var(--opsar-header-height) +
+		        12px
+		    ) !important;
 
+		
         left:12px !important;
 
         right:12px !important;
@@ -667,7 +674,7 @@
 
     .opsar-card {
 
-        top: calc(56px + env(safe-area-inset-top, 0px) + 6px) !important;
+        top: calc(env(safe-area-inset-top) + 118px) !important;
 
         left: max(6px, env(safe-area-inset-left, 0px)) !important;
 

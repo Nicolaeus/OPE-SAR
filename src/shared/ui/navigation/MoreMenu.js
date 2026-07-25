@@ -42,6 +42,12 @@ export default class MoreMenu {
                     </button>
 
                     <button class="opsar-more-item"
+                        data-module="geolocation">
+                        <span>🛰️</span>
+                        <small>Géolocalisation</small>
+                    </button>
+
+                    <button class="opsar-more-item"
                         data-module="settings">
                         <span>⚙️</span>
                         <small>Paramètres</small>

@@ -1,0 +1,277 @@
+/* ============================================================
+ * OPE-SAR
+ * Patrol Module
+ * ============================================================ */
+
+/* ============================================================
+ * Widget Patrouille
+ * ============================================================ */
+
+.patrol-button {
+
+    position: fixed;
+
+    top: calc(
+        140px +
+        env(safe-area-inset-top)
+    );
+
+    right: 16px;
+
+    z-index: 19000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    height: 38px;
+    min-width: 140px;
+
+    padding: 0 16px;
+
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.92);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    color: #1f2937;
+
+    font-size: .90rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    user-select: none;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.18);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        background .20s ease;
+
+}
+
+.patrol-button:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(0,0,0,.22);
+
+}
+
+.patrol-button:active {
+
+    transform: scale(.98);
+
+}
+
+/* ---------- Etat ---------- */
+
+.patrol-button.inactive {
+
+    color: #6b7280;
+
+}
+
+.patrol-button.underway {
+
+    color: #15803d;
+
+}
+
+.patrol-button.in-port {
+
+    color: #c2410c;
+
+}
+
+/* ---------- Indicateur ---------- */
+
+.patrol-button::before {
+
+    content: "";
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #9ca3af;
+
+    flex-shrink: 0;
+
+}
+
+.patrol-button.underway::before {
+
+    background: #22c55e;
+
+}
+
+.patrol-button.in-port::before {
+
+    background: #f59e0b;
+
+}
+
+/* ============================================================
+ * Cartes et formulaires
+ * ============================================================ */
+
+.opsar-patrol-actions {
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+}
+
+.opsar-patrol-actions .opsar-btn {
+
+    width: 100%;
+
+}
+
+.opsar-patrol-form {
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+}
+
+.opsar-patrol-form-group {
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+}
+
+.opsar-patrol-form-group label {
+
+    font-weight: 600;
+
+}
+
+.opsar-patrol-input {
+
+    width: 100%;
+    box-sizing: border-box;
+
+}
+
+.opsar-patrol-textarea {
+
+    width: 100%;
+    min-height: 120px;
+
+    resize: vertical;
+
+    box-sizing: border-box;
+
+}
+
+.opsar-patrol-summary {
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+}
+
+.opsar-patrol-warning {
+
+    color: var(--warning-color);
+
+    font-weight: 600;
+
+}
+
+.opsar-patrol-success {
+
+    color: var(--success-color);
+
+    font-weight: 600;
+
+}
+
+.opsar-patrol-danger {
+
+    color: var(--danger-color);
+
+    font-weight: 600;
+
+}
+
+.opsar-patrol-status {
+
+    font-weight: bold;
+
+}
+
+.opsar-patrol-status-running {
+
+    color: #16a34a;
+
+}
+
+.opsar-patrol-status-port {
+
+    color: #d97706;
+
+}
+
+.opsar-patrol-status-ended {
+
+    color: #6b7280;
+
+}
+
+.opsar-patrol-info {
+
+    font-size: .9rem;
+
+    opacity: .85;
+
+}
+
+@media (max-width:768px){
+
+    .patrol-button{
+
+        top: calc(
+            140px +
+            env(safe-area-inset-top)
+        );
+
+        right:12px;
+
+    }
+
+}
+
+@media (max-width:430px){
+
+    .patrol-button{
+
+        top: calc(
+            130px +
+            env(safe-area-inset-top)
+        );
+
+        right:10px;
+
+        min-width:130px;
+
+        font-size:.85rem;
+
+    }
+
+}

@@ -5,12 +5,14 @@ import Registry from './Registry.js';
 import Database
     from '../database/Database.js';
 
-import SettingsService
-    from '../services/SettingsService.js';
+import SettingsService from '../services/SettingsService.js';
+import GeolocationService from '../services/GeolocationService.js';
 
 import CacheManager from '../cache/CacheManager.js';
 
 import SplashScreen from '../../shared/ui/splash/Splash.js';
+
+import ViewportManager from "../viewport/ViewportManager.js";
 
 import AppHeader from '../../shared/ui/header/AppHeader.js';
 
@@ -33,9 +35,19 @@ import OSCModule from '../../modules/osc/index.js';
 
 import SettingsModule from '../../modules/settings/index.js';
 
+import GeolocationModule from '../../modules/geolocation/index.js';
+
+import PatrolModule from '../../modules/patrol/index.js';
+
 export default class Bootstrap {
 
     static async start() {
+        
+        // =============================================
+        // Viewport
+        // =============================================
+    
+        await ViewportManager.init();
 
         // =============================================
         // Splash
@@ -50,7 +62,7 @@ export default class Bootstrap {
         // =============================================
         // Initialisation du Core
         // =============================================
-
+        
         await Database.open();
 
         await SettingsService.initialize();
@@ -60,6 +72,8 @@ export default class Bootstrap {
         // ThemeService.listen();
 
         await CacheManager.cleanExpired();
+
+        await GeolocationService.start();
 
         console.log(
             '✅ Core initialisé'
@@ -124,6 +138,16 @@ export default class Bootstrap {
         );
 
         Registry.register(
+            'geolocation',
+            GeolocationModule
+        );
+
+        Registry.register(
+            'patrol',
+            PatrolModule
+        );
+
+        Registry.register(
             'settings',
             SettingsModule
         );
@@ -156,6 +180,14 @@ export default class Bootstrap {
             SettingsModule
         );
 
+        app.register(
+            GeolocationModule
+        );
+
+        app.register(
+            PatrolModule
+        );
+
         await app.start();
 
         // =============================================
@@ -181,9 +213,34 @@ export default class Bootstrap {
         // =============================================
         // Fin du splash
         // =============================================
-
+        
+        
         await SplashScreen.hide();
+        
+        const leafletMap = window.OPESAR?.Map?.getMap?.();
+        
+        if (leafletMap) {
 
+            requestAnimationFrame(() => {
+        
+                leafletMap.invalidateSize();
+        
+            });
+        
+        }
+        
+        setTimeout(() => {
+
+        const leafletMap = window.OPESAR?.Map?.getMap?.();
+        
+        if (leafletMap) {
+        
+            leafletMap.invalidateSize();
+        
+        }
+        
+        }, 500);
+        
         console.log(
             '✅ OPE-SAR prêt'
         );

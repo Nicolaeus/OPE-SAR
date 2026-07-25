@@ -4,6 +4,10 @@ import MapLayersCard from './cards/MapLayersCard.js';
 
 import MapOverlay from '../../shared/ui/panels/MapOverlay.js';
 import MapInfoWidget from './widgets/MapInfoWidget.js';
+import MapControls from '../../shared/ui/map-controls/MapControls.js';
+
+import PatrolTrackLayer from '../patrol/layers/PatrolTrackLayer.js';
+import PatrolService from '../patrol/services/PatrolService.js';
 
 export default {
 
@@ -13,9 +17,20 @@ export default {
 		console.log('🗺 Initialisation widget Map Infos');
         
 		MapService.createMap();
+
+		const map = MapService.getMap();
+
+		PatrolTrackLayer.init(map);
+
+		const controls = MapControls.create(map);
+		
+		document
+		    .getElementById("app")
+		    .appendChild(controls);
 		
 		MapOverlay.init();
 		MapInfoWidget.init();
+		
 
         window.OPESAR = window.OPESAR || {};
 
@@ -131,9 +146,31 @@ export default {
 			}
 
 		);
+
+		// =========================
+        // Recentrage position
+        // =========================
 		
+		window.addEventListener(
+		    'map:center-vessel',
+		    () => {
+		
+		        MapService.centerOnSelectedVessel();
+		
+		    }
+		);
+		
+		window.addEventListener(
+		    'map:center-station',
+		    () => {
+		
+		        MapService.centerOnSelectedStation();
+		
+		    }
+		);
 
-
+		PatrolTrackLayer.refresh();
+		
         console.log('✅ Carte initialisée');
 
     }

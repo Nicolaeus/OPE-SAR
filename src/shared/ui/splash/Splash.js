@@ -67,7 +67,6 @@ export default class SplashScreen {
         document.body.appendChild(
             splash
         );
-
         
         this.#element = splash;
 

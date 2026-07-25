@@ -1,17 +1,16 @@
 import Store from '../../../core/store/Store.js';
-
 import mapConfig from '../../../core/config/map.config.js';
-
 import { createBaseLayers } from '../layers/BaseLayers.js';
+import PositionService from './PositionService.js';
 
 export default class MapService {
 
     static createMap() {
-
+               
         const map = L.map('map', {
-            zoomControl: true
+            zoomControl: false
         });
-
+        
         map.setView(
             mapConfig.center,
             mapConfig.zoom
@@ -27,13 +26,99 @@ export default class MapService {
 
         Store.state.map.currentBaseLayer = 'osmMarine';
 
+        // =====================================
+        // Force le recalcul de la carte
+        // =====================================
+
+        setTimeout(
+            () => map.invalidateSize(),
+            300
+        );
+
+        window.addEventListener(
+            'resize',
+            () => map.invalidateSize()
+        );
+
+        window.visualViewport?.addEventListener(
+            'resize',
+            () => map.invalidateSize()
+        );
+
+        window.addEventListener(
+            "load",
+            () => {
+        
+                setTimeout(() => {
+        
+                    map.invalidateSize(true);
+        
+                }, 500);
+        
+            }
+        );
+        
         return map;
+
     }
 
     static getMap() {
 
         return Store.state.map.instance;
 
+    }
+
+    static resetView() {
+    
+        const map = this.getMap();
+    
+        if (!map) {
+            return;
+        }
+    
+        map.flyTo(
+            mapConfig.center,
+            mapConfig.zoom,
+            {
+                animate: true,
+                duration: 1.2
+            }
+        );
+    
+    }
+
+    static async centerOnCurrentPosition() {
+
+        const position =
+            await PositionService.getCurrentPosition();
+    
+        if (!position) {
+            return;
+        }
+    
+        this.flyTo(
+            position.latitude,
+            position.longitude,
+            16
+        );
+    
+    }
+    
+    static centerOnStation(station) {
+    
+        const position =
+            PositionService.getStationPosition(station);
+    
+        if (!position) {
+            return;
+        }
+    
+        this.flyTo(
+            position.latitude,
+            position.longitude,
+            16
+        );
+    
     }
 
 }

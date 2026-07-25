@@ -1,0 +1,109 @@
+.geo-section{
+
+    margin-bottom:18px;
+
+}
+
+.geo-section:last-child{
+
+    margin-bottom:0;
+
+}
+
+.geo-section-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-bottom:10px;
+
+    font-size:.92rem;
+
+    font-weight:600;
+
+    color:var(--opsar-primary);
+
+}
+
+.geo-grid{
+
+    display:grid;
+
+    grid-template-columns:120px 1fr;
+
+    gap:8px 12px;
+
+}
+
+.geo-label{
+
+    color:#64748B;
+
+    font-size:.84rem;
+
+}
+
+.geo-value{
+
+    font-weight:600;
+
+    color:#0F172A;
+
+    text-align:right;
+
+    font-variant-numeric:tabular-nums;
+
+}
+
+.geo-status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:4px 10px;
+
+    border-radius:999px;
+
+    font-size:.78rem;
+
+    font-weight:600;
+
+}
+
+.geo-status-searching{
+
+    background:#FEF3C7;
+    color:#92400E;
+
+}
+
+.geo-status-fixed{
+
+    background:#DCFCE7;
+    color:#166534;
+
+}
+
+.geo-status-lost{
+
+    background:#FEE2E2;
+    color:#991B1B;
+
+}
+
+.geo-coordinate{
+
+    font-family:
+        Consolas,
+        Monaco,
+        monospace;
+
+    letter-spacing:.4px;
+
+}
