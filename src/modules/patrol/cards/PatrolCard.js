@@ -278,7 +278,7 @@ export default class PatrolCard extends BaseCardController {
             );
 
         container.innerHTML = `
-
+         <div class="opsar-patrol-tools">
             <button
                 id="patrol-crew"
                 class="opsar-btn opsar-btn-secondary">
@@ -310,6 +310,7 @@ export default class PatrolCard extends BaseCardController {
                 📄 Résumé
 
             </button>
+          </div>
 
         `;
 
