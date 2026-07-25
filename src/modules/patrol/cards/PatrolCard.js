@@ -3,6 +3,8 @@ import BaseCardController from '../../../shared/ui/cards/BaseCardController.js';
 import CardSection from '../../../shared/ui/cards/CardSection.js';
 
 import PatrolService from '../services/PatrolService.js';
+import PatrolClosingCard from './PatrolClosingCard.js';
+
 
 export default class PatrolCard extends BaseCardController {
 
@@ -336,8 +338,8 @@ export default class PatrolCard extends BaseCardController {
         container.innerHTML = `
 
             <button
-                id="patrol-finish"
-                class="opsar-btn opsar-btn-danger"
+                id="patrol-end"
+                class="opsar-btn opsar-btn-warning"
                 style="width:100%;">
 
                 ■ Fin de patrouille
@@ -427,18 +429,13 @@ export default class PatrolCard extends BaseCardController {
             );
 
         document
-            .getElementById(
-                'patrol-finish'
-            )
-            ?.addEventListener(
-                'click',
-                () =>
-                    window.dispatchEvent(
-                        new CustomEvent(
-                            'patrol:finish'
-                        )
-                    )
-            );
+    .getElementById(
+        'patrol-end'
+    )
+    ?.addEventListener(
+        'click',
+        () => PatrolClosingCard.create()
+    );
 
     }
 
