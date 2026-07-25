@@ -182,3 +182,118 @@
     background: #d97706;
 
 }
+
+/* ============================================================
+ * OPE-SAR
+ * Widget Patrouille
+ * ============================================================ */
+
+.patrol-button {
+
+    position: fixed;
+
+    top: 84px;
+
+    right: 16px;
+
+    z-index: 850;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    height: 38px;
+
+    padding: 0 16px;
+
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.92);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    color: #1f2937;
+
+    font-size: .90rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.18);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        background .20s ease;
+
+}
+
+.patrol-button:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(0,0,0,.22);
+
+}
+
+.patrol-button:active {
+
+    transform: scale(.98);
+
+}
+
+/* ===========================
+ * Etats
+ * =========================== */
+
+.patrol-button.inactive {
+
+    color: #6b7280;
+
+}
+
+.patrol-button.underway {
+
+    color: #15803d;
+
+}
+
+.patrol-button.in-port {
+
+    color: #c2410c;
+
+}
+
+/* Petit indicateur coloré */
+
+.patrol-button::before {
+
+    content: "";
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #9ca3af;
+
+    flex-shrink: 0;
+
+}
+
+.patrol-button.underway::before {
+
+    background: #22c55e;
+
+}
+
+.patrol-button.in-port::before {
+
+    background: #f59e0b;
+
+}
