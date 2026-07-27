@@ -279,5 +279,69 @@ export default class PatrolService {
         );
 
     }
+    
+/**
+ * Met à jour un membre obligatoire.
+ */
+static updateCrewMember(index, data)
+{
+    if (!this.current)
+    {
+        return;
+    }
 
+    Object.assign(
+        this.current.crew[index],
+        data
+    );
+
+    this.dispatch();
+}
+
+    /**
+ * Ajoute un membre.
+ */
+static addCrewMember(member)
+{
+    if (!this.current)
+    {
+        return;
+    }
+
+    this.current.crew.push({
+
+        id: crypto.randomUUID(),
+
+        mandatory: false,
+
+        ...member
+
+    });
+
+    this.dispatch();
+}
+    /**
+ * Supprime un membre.
+ */
+static removeCrewMember(id)
+{
+    if (!this.current)
+    {
+        return;
+    }
+
+    this.current.crew =
+        this.current.crew.filter(
+
+            member =>
+
+                member.mandatory ||
+                member.id !== id
+
+        );
+
+    this.dispatch();
+}
+
+    
 }
