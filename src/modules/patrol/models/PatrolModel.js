@@ -47,7 +47,33 @@ export default class PatrolModel {
         /**
          * Equipage
          */
-        this.crew = [];
+        this.crew = [
+        
+            {
+                id: crypto.randomUUID(),
+                role: "captain",
+                mandatory: true,
+                lastname: "",
+                firstname: ""
+            },
+        
+            {
+                id: crypto.randomUUID(),
+                role: "deck",
+                mandatory: true,
+                lastname: "",
+                firstname: ""
+            },
+        
+            {
+                id: crypto.randomUUID(),
+                role: "deck",
+                mandatory: true,
+                lastname: "",
+                firstname: ""
+            }
+        
+        ];
 
         /**
          * Date de création
