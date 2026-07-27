@@ -78,85 +78,92 @@ export default class PatrolCrewCard
     }
 
     /**
-     * --------------------------------------------------------
-     * Composition minimale
-     * --------------------------------------------------------
-     */
-    static renderMinimalCrew()
-    {
-        return `
+ * --------------------------------------------------------
+ * Composition minimale
+ * --------------------------------------------------------
+ */
+static renderMinimalCrew()
+{
+    const crew =
+        PatrolService.getCurrent().crew;
 
-            <div class="opsar-section-title">
+    return `
 
-                Composition minimale
+        <div class="opsar-section-title">
 
-            </div>
+            Composition minimale
 
-            ${this.renderMinimalMember(
-                'Patron',
-                'captain'
-            )}
+        </div>
 
-            ${this.renderMinimalMember(
-                'Équipier n°1',
-                'deck1'
-            )}
+        ${this.renderMinimalMember(
+            'Patron',
+            0,
+            crew[0]
+        )}
 
-            ${this.renderMinimalMember(
-                'Équipier n°2',
-                'deck2'
-            )}
+        ${this.renderMinimalMember(
+            'Équipier n°1',
+            1,
+            crew[1]
+        )}
 
-        `;
-    }
+        ${this.renderMinimalMember(
+            'Équipier n°2',
+            2,
+            crew[2]
+        )}
 
+    `;
+}
     /**
-     * --------------------------------------------------------
-     * Ligne membre minimal
-     * --------------------------------------------------------
-     */
-    static renderMinimalMember(label, id)
-    {
-        return `
+ * --------------------------------------------------------
+ * Ligne membre minimal
+ * --------------------------------------------------------
+ */
+static renderMinimalMember(label, index, member)
+{
+    return `
 
-            <div class="opsar-member-block">
+        <div class="opsar-member-block">
 
-                <div class="opsar-member-label">
+            <div class="opsar-member-label">
 
-                    ${label}
+                ${label}
+
+            </div>
+
+            <div class="opsar-form-row">
+
+                <div class="opsar-form-group">
+
+                    <label>Nom</label>
+
+                    <input
+                        id="crew-${index}-lastname"
+                        class="opsar-input"
+                        type="text"
+                        value="${member.lastname}">
 
                 </div>
 
-                <div class="opsar-form-row">
+                <div class="opsar-form-group">
 
-                    <div class="opsar-form-group">
+                    <label>Prénom</label>
 
-                        <label>Nom</label>
-
-                        <input
-                            id="${id}-lastname"
-                            class="opsar-input"
-                            type="text">
-
-                    </div>
-
-                    <div class="opsar-form-group">
-
-                        <label>Prénom</label>
-
-                        <input
-                            id="${id}-firstname"
-                            class="opsar-input"
-                            type="text">
-
-                    </div>
+                    <input
+                        id="crew-${index}-firstname"
+                        class="opsar-input"
+                        type="text"
+                        value="${member.firstname}">
 
                 </div>
 
             </div>
 
-        `;
-    }
+        </div>
+
+    `;
+}
 
     /**
      * --------------------------------------------------------
