@@ -32,7 +32,7 @@ export default class PatrolCrewCard
             existing.remove();
         }
 
-        const patrol = PatrolService.getCurrentPatrol();
+        const patrol = PatrolService.getCurrent();
 
         const card = new BaseCard({
 
