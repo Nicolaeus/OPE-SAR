@@ -116,7 +116,8 @@ export default {
                     return;
         
                 }
-        
+
+                console.log("OUVERTURE CREW");
                 PatrolCrewCard.create();
         
             }
