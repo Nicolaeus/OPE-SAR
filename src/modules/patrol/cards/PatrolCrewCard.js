@@ -515,7 +515,7 @@ export default class PatrolCrewCard extends BaseCardController {
             return;
         }
 
-        this.instance.close();
+        this.close();
 
         this.create();
 
