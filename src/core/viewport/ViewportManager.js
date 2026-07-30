@@ -61,7 +61,7 @@ export default class ViewportManager {
             
             });
 
-            console.log("📱 Viewport", {
+            /*console.log("📱 Viewport", {
                 width,
                 height,
                 innerWidth: window.innerWidth,
@@ -74,7 +74,7 @@ export default class ViewportManager {
                         offsetLeft: viewport.offsetLeft
                     }
                     : null
-            });
+            }); */
 
         };
 
