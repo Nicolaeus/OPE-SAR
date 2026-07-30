@@ -16,6 +16,7 @@ import PatrolService from './services/PatrolService.js';
 import PatrolCrewCard from './cards/PatrolCrewCard.js';
 import PatrolSummaryCard from './cards/PatrolSummaryCard.js';
 import PatrolClosingCard from './cards/PatrolClosingCard.js';
+import PatrolCommunicationsCard from './cards/PatrolCommunicationsCard.js';
 
 export default {
 
