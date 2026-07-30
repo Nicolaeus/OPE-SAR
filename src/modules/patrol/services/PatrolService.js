@@ -343,5 +343,88 @@ static removeCrewMember(id)
     this.dispatch();
 }
 
+/**
+ * Ajoute une communication.
+ *
+ * @param {Object} communication
+ */
+static addCommunication(communication)
+{
+    if (!this.current)
+    {
+        return;
+    }
+
+    this.current.communications.push({
+
+        id: crypto.randomUUID(),
+
+        timestamp:
+            communication.timestamp ??
+            new Date().toISOString(),
+
+        ...communication
+
+    });
+
+    this.dispatch();
+}
+
+/**
+ * Retourne les communications.
+ *
+ * @returns {Array}
+ */
+static getCommunications()
+{
+    if (!this.current)
+    {
+        return [];
+    }
+
+    return this.current.communications;
+}
+
+/**
+ * Ajoute une entrée au journal.
+ *
+ * @param {Object} entry
+ */
+static addJournalEntry(entry)
+{
+    if (!this.current)
+    {
+        return;
+    }
+
+    this.current.journal.push({
+
+        id: crypto.randomUUID(),
+
+        timestamp:
+            entry.timestamp ??
+            new Date().toISOString(),
+
+        ...entry
+
+    });
+
+    this.dispatch();
+}
+
+/**
+ * Retourne le journal.
+ *
+ * @returns {Array}
+ */
+static getJournal()
+{
+    if (!this.current)
+    {
+        return [];
+    }
+
+    return this.current.journal;
+}
     
 }
