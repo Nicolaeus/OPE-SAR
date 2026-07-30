@@ -129,20 +129,27 @@ export default {
         // -------------------------------------------------------------
         
         window.addEventListener(
-        
-            'patrol:communications',
-        
-            () => {
-        
-                console.log(
-                    '📞 Communications Patrol (à implémenter)'
-                );
-        
-                // PatrolCommunicationsCard.create();
-        
+
+        'patrol:communications',
+    
+        () => {
+    
+            if (
+                PatrolCommunicationsCard.isOpen()
+            ) {
+    
+                PatrolCommunicationsCard.instance
+                    ?.bringToFront?.();
+    
+                return;
+    
             }
-        
-        );
+    
+            PatrolCommunicationsCard.create();
+    
+        }
+    
+    );
         
         // -------------------------------------------------------------
         // Journal
