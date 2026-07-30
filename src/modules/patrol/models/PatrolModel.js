@@ -76,6 +76,11 @@ export default class PatrolModel {
         ];
 
         /**
+         * Communications.
+         */
+        this.communications = [];
+        
+        /**
          * Date de création
          */
         this.createdAt = new Date();
@@ -119,6 +124,18 @@ export default class PatrolModel {
          */
         this.events = [];
 
+        /**
+         * Journal opérationnel.
+         *
+         * Regroupe chronologiquement :
+         * - communications
+         * - positions importantes
+         * - observations
+         * - SAR
+         * - changements d'état
+         */
+        this.journal = [];
+        
         /**
          * Heures moteur.
          */
