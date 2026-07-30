@@ -41,7 +41,7 @@ export default class ViewportManager {
                 `${height}px`
             );
 
-            console.table({
+            /*console.table({
             
                 screenHeight: screen.height,
             
@@ -59,7 +59,7 @@ export default class ViewportManager {
                           window.visualViewport.height
                         : null
             
-            });
+            });*/
 
             /*console.log("📱 Viewport", {
                 width,
