@@ -13,6 +13,10 @@ import PatrolCard    from './cards/PatrolCard.js';
 import PatrolButton  from './widgets/PatrolButton.js';
 import PatrolService from './services/PatrolService.js';
 
+import PatrolCrewCard from './cards/PatrolCrewCard.js';
+import PatrolSummaryCard from './cards/PatrolSummaryCard.js';
+import PatrolClosingCard from './cards/PatrolClosingCard.js';
+
 export default {
 
     id: 'patrol',
@@ -88,6 +92,131 @@ export default {
 
             }
 
+        );
+
+        /* ===========================================================
+         * Equipage
+         * =========================================================== */
+        
+        window.addEventListener(
+        
+            'patrol:crew',
+        
+            () => {
+        
+                if (
+        
+                    PatrolCrewCard.isOpen()
+        
+                ) {
+        
+                    PatrolCrewCard.instance
+                        ?.bringToFront?.();
+        
+                    return;
+        
+                }
+        
+                PatrolCrewCard.create();
+        
+            }
+        
+        );
+
+        // -------------------------------------------------------------
+        // Communications
+        // -------------------------------------------------------------
+        
+        window.addEventListener(
+        
+            'patrol:communications',
+        
+            () => {
+        
+                console.log(
+                    '📞 Communications Patrol (à implémenter)'
+                );
+        
+                // PatrolCommunicationsCard.create();
+        
+            }
+        
+        );
+        
+        // -------------------------------------------------------------
+        // Journal
+        // -------------------------------------------------------------
+        
+        window.addEventListener(
+        
+            'patrol:journal',
+        
+            () => {
+        
+                console.log(
+                    '📜 Journal Patrol (à implémenter)'
+                );
+        
+                // PatrolJournalCard.create();
+        
+            }
+        
+        );
+        
+        /* ===========================================================
+         * Résumé
+         * =========================================================== */
+        
+        window.addEventListener(
+        
+            'patrol:summary',
+        
+            () => {
+        
+                if (
+        
+                    PatrolSummaryCard.isOpen()
+        
+                ) {
+        
+                    PatrolSummaryCard.instance
+                        ?.bringToFront?.();
+        
+                    return;
+        
+                }
+        
+                PatrolSummaryCard.create();
+        
+            }
+        
+        );
+
+        // -------------------------------------------------------------
+        // Clôture
+        // -------------------------------------------------------------
+        
+        window.addEventListener(
+        
+            'patrol:closing',
+        
+            () => {
+        
+                if (
+                    PatrolClosingCard.isOpen()
+                ) {
+        
+                    PatrolClosingCard.instance
+                        ?.bringToFront?.();
+        
+                    return;
+        
+                }
+        
+                PatrolClosingCard.create();
+        
+            }
+        
         );
 
         console.log(
