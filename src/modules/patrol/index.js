@@ -17,6 +17,7 @@ import PatrolCrewCard from './cards/PatrolCrewCard.js';
 import PatrolSummaryCard from './cards/PatrolSummaryCard.js';
 import PatrolClosingCard from './cards/PatrolClosingCard.js';
 import PatrolCommunicationsCard from './cards/PatrolCommunicationsCard.js';
+import PatrolJournalCard from './cards/PatrolJournalCard.js';
 
 export default {
 
@@ -157,20 +158,27 @@ export default {
         // -------------------------------------------------------------
         
         window.addEventListener(
-        
-            'patrol:journal',
-        
-            () => {
-        
-                console.log(
-                    '📜 Journal Patrol (à implémenter)'
-                );
-        
-                // PatrolJournalCard.create();
-        
+
+        'patrol:journal',
+    
+        () => {
+    
+            if (
+                PatrolJournalCard.isOpen()
+            ) {
+    
+                PatrolJournalCard.instance
+                    ?.bringToFront?.();
+    
+                return;
+    
             }
-        
-        );
+    
+            PatrolJournalCard.create();
+    
+        }
+    
+    );
         
         /* ===========================================================
          * Résumé
