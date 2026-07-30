@@ -7,186 +7,336 @@
  * ============================================================
  */
 
-import BaseCard from '../../../core/ui/BaseCard.js';
-import BaseCardController from '../../../core/ui/BaseCardController.js';
-import CardSection from '../../../core/ui/CardSection.js';
+import BaseCard from '../../../shared/ui/cards/BaseCard.js';
+import BaseCardController from '../../../shared/ui/cards/BaseCardController.js';
+import CardSection from '../../../shared/ui/cards/CardSection.js';
 
 import PatrolService from '../services/PatrolService.js';
-import CREW_ROLES from '../data/CrewRoles.js';
+import { CREW_ROLES } from '../data/CrewRoles.js';
 
-export default class PatrolCrewCard
-{
-    static CARD_ID = 'patrol-crew-card';
+export default class PatrolCrewCard extends BaseCardController {
 
-    /**
-     * --------------------------------------------------------
+    /* ======================================================
      * Ouverture
-     * --------------------------------------------------------
-     */
-    static create()
-    {
-        const existing = document.getElementById(this.CARD_ID);
+     * ====================================================== */
 
-        if (existing)
-        {
-            existing.remove();
-        }
+    static create() {
 
-        const patrol = PatrolService.getCurrent();
+        this.close();
 
-        const card = new BaseCard({
+        const card =
+            new BaseCard({
 
-            id: this.CARD_ID,
+                id: 'patrol-crew-card',
 
-            title: '👥 Équipage',
+                title: 'ÉQUIPAGE',
 
-            icon: '👥',
+                icon: '👥',
 
-            width: 760,
+                color: 'blue'
 
-            closable: true
+            });
 
-        });
+        card.add(
+            this.buildMandatoryCrewSection().element
+        );
 
-        card.setContent(this.render(patrol));
+        card.add(
+            this.buildAdditionalCrewSection().element
+        );
 
-        document.body.appendChild(card.element);
+        card.add(
+            this.buildAddMemberSection().element
+        );
 
-        this.bindEvents(card.element);
+        card.render(
+            document.getElementById('app')
+        );
+
+        this.instance =
+            card;
+
+        card.element.addEventListener(
+
+            'card:close',
+
+            () => PatrolCrewCard.close()
+
+        );
+
+        this.bindEvents();
+
+        this.refresh();
+
+        return card;
+
     }
 
-    /**
-     * --------------------------------------------------------
-     * Rendu principal
-     * --------------------------------------------------------
-     */
-    static render(patrol)
-    {
-        return `
+    /* ======================================================
+     * Composition minimale
+     * ====================================================== */
 
-            ${this.renderMinimalCrew()}
+    static buildMandatoryCrewSection() {
 
-            ${CardSection.separator()}
+        const section =
+            new CardSection(
+                'Composition minimale'
+            );
 
-            ${this.renderAddMember()}
+        const patrol =
+            PatrolService.getCurrent();
 
-            ${CardSection.separator()}
+        const crew =
+            patrol?.crew ?? [];
 
-            ${this.renderCrewList(patrol)}
+        const container =
+            document.createElement(
+                'div'
+            );
+
+        container.innerHTML = `
+
+            ${this.buildMandatoryMember(
+                crew[0],
+                0,
+                'Patron'
+            )}
+
+            ${this.buildMandatoryMember(
+                crew[1],
+                1,
+                'Équipier n°1'
+            )}
+
+            ${this.buildMandatoryMember(
+                crew[2],
+                2,
+                'Équipier n°2'
+            )}
 
         `;
+
+        section.add(
+            container
+        );
+
+        return section;
+
     }
 
-    /**
- * --------------------------------------------------------
- * Composition minimale
- * --------------------------------------------------------
- */
-static renderMinimalCrew()
-{
-    const crew =
-        PatrolService.getCurrent().crew;
+    /* ======================================================
+     * Membre obligatoire
+     * ====================================================== */
 
-    return `
+    static buildMandatoryMember(
+        member,
+        index,
+        title
+    ) {
 
-        <div class="opsar-section-title">
+        member ??= {
 
-            Composition minimale
+            lastname: '',
 
-        </div>
+            firstname: ''
 
-        ${this.renderMinimalMember(
-            'Patron',
-            0,
-            crew[0]
-        )}
+        };
 
-        ${this.renderMinimalMember(
-            'Équipier n°1',
-            1,
-            crew[1]
-        )}
-
-        ${this.renderMinimalMember(
-            'Équipier n°2',
-            2,
-            crew[2]
-        )}
-
-    `;
-}
-    /**
- * --------------------------------------------------------
- * Ligne membre minimal
- * --------------------------------------------------------
- */
-static renderMinimalMember(label, index, member)
-{
-    return `
-
-        <div class="opsar-member-block">
-
-            <div class="opsar-member-label">
-
-                ${label}
-
-            </div>
-
-            <div class="opsar-form-row">
-
-                <div class="opsar-form-group">
-
-                    <label>Nom</label>
-
-                    <input
-                        id="crew-${index}-lastname"
-                        class="opsar-input"
-                        type="text"
-                        value="${member.lastname}">
-
-                </div>
-
-                <div class="opsar-form-group">
-
-                    <label>Prénom</label>
-
-                    <input
-                        id="crew-${index}-firstname"
-                        class="opsar-input"
-                        type="text"
-                        value="${member.firstname}">
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
-}
-
-    /**
-     * --------------------------------------------------------
-     * Ajout d'un membre
-     * --------------------------------------------------------
-     */
-    static renderAddMember()
-    {
         return `
 
-            <div class="opsar-section-title">
+            <div class="opsar-member-block">
 
-                Ajouter un membre
+                <h4>
+
+                    ${title}
+
+                </h4>
+
+                <div class="opsar-form-row">
+
+                    <div class="opsar-form-group">
+
+                        <label>
+
+                            Nom
+
+                        </label>
+
+                        <input
+
+                            id="crew-${index}-lastname"
+
+                            class="opsar-input"
+
+                            type="text"
+
+                            value="${member.lastname ?? ''}"
+
+                        >
+
+                    </div>
+
+                    <div class="opsar-form-group">
+
+                        <label>
+
+                            Prénom
+
+                        </label>
+
+                        <input
+
+                            id="crew-${index}-firstname"
+
+                            class="opsar-input"
+
+                            type="text"
+
+                            value="${member.firstname ?? ''}"
+
+                        >
+
+                    </div>
+
+                </div>
 
             </div>
+
+        `;
+
+    }
+        /* ======================================================
+     * Equipage complémentaire
+     * ====================================================== */
+
+    static buildAdditionalCrewSection() {
+
+        const section =
+            new CardSection(
+                'Équipage complémentaire'
+            );
+
+        const patrol =
+            PatrolService.getCurrent();
+
+        const crew =
+            (patrol?.crew ?? [])
+                .filter(member => !member.mandatory);
+
+        const container =
+            document.createElement(
+                'div'
+            );
+
+        if (crew.length === 0) {
+
+            container.innerHTML = `
+
+                <div class="opsar-info">
+
+                    Aucun membre supplémentaire.
+
+                </div>
+
+            `;
+
+        }
+        else {
+
+            container.innerHTML =
+                crew
+                    .map(member =>
+                        this.buildCrewRow(member)
+                    )
+                    .join('');
+
+        }
+
+        section.add(
+            container
+        );
+
+        return section;
+
+    }
+
+    /* ======================================================
+     * Ligne équipage
+     * ====================================================== */
+
+    static buildCrewRow(member) {
+
+        const role =
+            CREW_ROLES.find(
+                r => r.id === member.role
+            );
+
+        return `
+
+            <div
+                class="opsar-crew-row"
+                data-id="${member.id}">
+
+                <div class="opsar-crew-role">
+
+                    ${role?.label ?? member.role}
+
+                </div>
+
+                <div class="opsar-crew-name">
+
+                    ${member.lastname.toUpperCase()}
+                    ${member.firstname}
+
+                </div>
+
+                <button
+
+                    class="opsar-btn opsar-btn-danger crew-delete"
+
+                    data-id="${member.id}">
+
+                    🗑
+
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+    /* ======================================================
+     * Ajout d'un membre
+     * ====================================================== */
+
+    static buildAddMemberSection() {
+
+        const section =
+            new CardSection(
+                'Ajouter un membre'
+            );
+
+        const container =
+            document.createElement(
+                'div'
+            );
+
+        container.innerHTML = `
 
             <div class="opsar-form-group">
 
-                <label>Fonction</label>
+                <label>
+
+                    Fonction
+
+                </label>
 
                 <select
+
                     id="crew-role"
-                    class="opsar-select">
+
+                    class="opsar-input">
 
                     ${this.renderRoleOptions()}
 
@@ -198,249 +348,255 @@ static renderMinimalMember(label, index, member)
 
                 <div class="opsar-form-group">
 
-                    <label>Nom</label>
+                    <label>
+
+                        Nom
+
+                    </label>
 
                     <input
+
                         id="crew-lastname"
+
                         class="opsar-input"
+
                         type="text">
 
                 </div>
 
                 <div class="opsar-form-group">
 
-                    <label>Prénom</label>
+                    <label>
+
+                        Prénom
+
+                    </label>
 
                     <input
+
                         id="crew-firstname"
+
                         class="opsar-input"
+
                         type="text">
 
                 </div>
 
             </div>
 
-            <div class="opsar-button-row">
+            <button
 
-                <button
-                    id="crew-add"
-                    class="opsar-button-primary">
+                id="crew-add"
 
-                    ➕ Ajouter
+                class="opsar-btn opsar-btn-primary"
 
-                </button>
+                style="width:100%;">
 
-            </div>
+                ➕ Ajouter le membre
+
+            </button>
 
         `;
+
+        section.add(
+            container
+        );
+
+        return section;
+
     }
 
-    /**
-     * --------------------------------------------------------
-     * Liste des fonctions
-     * --------------------------------------------------------
-     */
-    static renderRoleOptions()
-    {
+    /* ======================================================
+     * Fonctions disponibles
+     * ====================================================== */
+
+    static renderRoleOptions() {
+
         return CREW_ROLES
+
+            .filter(role => !role.mandatory)
+
             .map(role => `
+
                 <option value="${role.id}">
+
                     ${role.label}
+
                 </option>
+
             `)
+
             .join('');
+
     }
-      /**
-     * --------------------------------------------------------
-     * Equipage actuel
-     * --------------------------------------------------------
-     */
-    static renderCrewList(patrol)
-    {
-        const crew = patrol?.crew ?? [];
-
-        return `
-
-            <div class="opsar-section-title">
-
-                Équipage actuel
-
-            </div>
-
-            <div
-                id="crew-list"
-                class="opsar-crew-list">
-
-                ${
-                    crew.length === 0
-                        ? `
-                            <div class="opsar-empty">
-
-                                Aucun membre supplémentaire.
-
-                            </div>
-                        `
-                        : crew.map(member => this.renderCrewMember(member)).join('')
-                }
-
-            </div>
-
-        `;
-    }
-
-    /**
-     * --------------------------------------------------------
-     * Ligne membre
-     * --------------------------------------------------------
-     */
-    static renderCrewMember(member)
-    {
-        const role = CREW_ROLES.find(r => r.id === member.role);
-
-        return `
-
-            <div class="opsar-crew-row">
-
-                <div class="opsar-crew-role">
-
-                    ${role?.label ?? member.role}
-
-                </div>
-
-                <div class="opsar-crew-name">
-
-                    ${member.firstname} ${member.lastname.toUpperCase()}
-
-                </div>
-
-                <button
-                    class="opsar-icon-button crew-delete"
-                    data-id="${member.id}">
-
-                    🗑️
-
-                </button>
-
-            </div>
-
-        `;
-    }
-
-    /**
-     * --------------------------------------------------------
+        /* ======================================================
      * Evènements
-     * --------------------------------------------------------
-     */
-    static bindEvents(card)
-    {
-        card
-            .querySelector('#crew-add')
-            .addEventListener(
+     * ====================================================== */
+
+    static bindEvents() {
+
+        window.addEventListener(
+            'patrol:updated',
+            () => this.refresh()
+        );
+
+        /* ----------------------------------------------
+         * Equipage obligatoire
+         * ---------------------------------------------- */
+
+        for (let i = 0; i < 3; i++) {
+
+            document
+                .getElementById(
+                    `crew-${i}-lastname`
+                )
+                ?.addEventListener(
+                    'change',
+                    () => this.saveMandatoryCrew(i)
+                );
+
+            document
+                .getElementById(
+                    `crew-${i}-firstname`
+                )
+                ?.addEventListener(
+                    'change',
+                    () => this.saveMandatoryCrew(i)
+                );
+
+        }
+
+        /* ----------------------------------------------
+         * Ajout
+         * ---------------------------------------------- */
+
+        document
+            .getElementById(
+                'crew-add'
+            )
+            ?.addEventListener(
                 'click',
                 () => this.addCrewMember()
             );
 
-        card
-            .querySelectorAll('.crew-delete')
-            .forEach(button =>
-            {
+        /* ----------------------------------------------
+         * Suppression
+         * ---------------------------------------------- */
+
+        document
+            .querySelectorAll(
+                '.crew-delete'
+            )
+            .forEach(button => {
+
                 button.addEventListener(
+
                     'click',
+
                     event =>
-                    {
-                        this.deleteCrewMember(
+
+                        this.removeCrewMember(
                             event.currentTarget.dataset.id
-                        );
-                    }
+                        )
+
                 );
+
             });
 
-        [
-            'captain',
-            'deck1',
-            'deck2'
-        ].forEach(prefix =>
-        {
-            card
-                .querySelector(`#${prefix}-lastname`)
-                .addEventListener(
-                    'change',
-                    () => this.saveMinimalCrew()
-                );
-
-            card
-                .querySelector(`#${prefix}-firstname`)
-                .addEventListener(
-                    'change',
-                    () => this.saveMinimalCrew()
-                );
-        });
     }
 
-    /**
-     * --------------------------------------------------------
-     * Sauvegarde équipage minimal
-     * --------------------------------------------------------
-     */
-    static saveMinimalCrew()
-    {
-        PatrolService.updateMinimalCrew({
+    /* ======================================================
+     * Rafraîchissement
+     * ====================================================== */
 
-            captain:
+    static refresh() {
+
+        if (!this.instance) {
+            return;
+        }
+
+        this.instance.close();
+
+        this.create();
+
+    }
+
+    /* ======================================================
+     * Sauvegarde équipage obligatoire
+     * ====================================================== */
+
+    static saveMandatoryCrew(index) {
+
+        PatrolService.updateCrewMember(
+
+            index,
+
             {
+
                 lastname:
-                    document.getElementById('captain-lastname').value,
+
+                    document
+                        .getElementById(
+                            `crew-${index}-lastname`
+                        )
+                        .value
+                        .trim(),
 
                 firstname:
-                    document.getElementById('captain-firstname').value
-            },
 
-            deck1:
-            {
-                lastname:
-                    document.getElementById('deck1-lastname').value,
+                    document
+                        .getElementById(
+                            `crew-${index}-firstname`
+                        )
+                        .value
+                        .trim()
 
-                firstname:
-                    document.getElementById('deck1-firstname').value
-            },
-
-            deck2:
-            {
-                lastname:
-                    document.getElementById('deck2-lastname').value,
-
-                firstname:
-                    document.getElementById('deck2-firstname').value
             }
 
-        });
+        );
+
     }
-      /**
-     * --------------------------------------------------------
+
+    /* ======================================================
      * Ajout d'un membre
-     * --------------------------------------------------------
-     */
-    static addCrewMember()
-    {
-        const role =
-            document.getElementById('crew-role').value;
+     * ====================================================== */
+
+    static addCrewMember() {
 
         const lastname =
-            document.getElementById('crew-lastname').value.trim();
+            document
+                .getElementById(
+                    'crew-lastname'
+                )
+                .value
+                .trim();
 
         const firstname =
-            document.getElementById('crew-firstname').value.trim();
+            document
+                .getElementById(
+                    'crew-firstname'
+                )
+                .value
+                .trim();
 
-        if (!lastname || !firstname)
-        {
+        if (
+            lastname === '' ||
+            firstname === ''
+        ) {
+
             return;
+
         }
 
         PatrolService.addCrewMember({
 
-            id: crypto.randomUUID(),
+            role:
 
-            role,
+                document
+                    .getElementById(
+                        'crew-role'
+                    )
+                    .value,
 
             lastname,
 
@@ -448,41 +604,26 @@ static renderMinimalMember(label, index, member)
 
         });
 
-        document.getElementById('crew-lastname').value = '';
-        document.getElementById('crew-firstname').value = '';
+        document.getElementById(
+            'crew-lastname'
+        ).value = '';
 
-        this.refresh();
+        document.getElementById(
+            'crew-firstname'
+        ).value = '';
+
     }
 
-    /**
-     * --------------------------------------------------------
+    /* ======================================================
      * Suppression
-     * --------------------------------------------------------
-     */
-    static deleteCrewMember(id)
-    {
-        PatrolService.removeCrewMember(id);
+     * ====================================================== */
 
-        this.refresh();
-    }
+    static removeCrewMember(id) {
 
-    /**
-     * --------------------------------------------------------
-     * Rafraîchissement
-     * --------------------------------------------------------
-     */
-    static refresh()
-    {
-        const card = document.getElementById(this.CARD_ID);
+        PatrolService.removeCrewMember(
+            id
+        );
 
-        if (!card)
-        {
-            return;
-        }
-
-        card.remove();
-
-        this.create();
     }
 
 }
