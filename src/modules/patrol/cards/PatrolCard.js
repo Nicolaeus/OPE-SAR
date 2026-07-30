@@ -378,14 +378,17 @@ export default class PatrolCard extends BaseCardController {
             )
             ?.addEventListener(
                 'click',
-                () =>
-
+                () => {
+        
                     console.log("CLICK EQUIPAGE");
+        
                     window.dispatchEvent(
                         new CustomEvent(
                             'patrol:crew'
                         )
-                    )
+                    );
+        
+                }
             );
 
         document
