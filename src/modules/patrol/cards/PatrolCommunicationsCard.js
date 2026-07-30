@@ -1,0 +1,3 @@
+/*
+**PatrolCommunicationsCard.js
+*/
