@@ -176,7 +176,9 @@ export default class PatrolModel {
         
             createdAt: new Date(),
         
-            savedAt: null
+            savedAt: null,
+
+            lastOpenedAt:null
         
         };
 
