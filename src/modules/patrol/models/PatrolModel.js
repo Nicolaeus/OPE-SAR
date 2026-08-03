@@ -138,12 +138,20 @@ export default class PatrolModel {
         /**
          * Journal opérationnel.
          *
-         * Regroupe chronologiquement :
+         * Timeline officielle de la patrouille.
+         *
+         * Ce journal regroupe chronologiquement
+         * toutes les actions importantes :
+         *
+         * - départ
+         * - escales
          * - communications
-         * - positions importantes
          * - observations
-         * - SAR
+         * - missions SAR
          * - changements d'état
+         *
+         * Il constitue la base des exports
+         * (PDF, JSON, etc.).
          */
         this.journal = [];
         
