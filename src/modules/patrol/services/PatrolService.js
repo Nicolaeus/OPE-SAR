@@ -112,13 +112,23 @@ export default class PatrolService {
             if (active) {
 
                 console.log(
-
                     '📂 Patrouille restaurée.'
-
                 );
-
-                this.current = active;
-
+            
+                const patrol =
+                    new PatrolModel();
+            
+                Object.assign(
+            
+                    patrol,
+            
+                    active
+            
+                );
+            
+                this.current =
+                    patrol;
+            
             }
 
             else {
