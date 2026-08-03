@@ -75,6 +75,12 @@ export default class PatrolModel {
         
         ];
 
+
+        /**
+         * Missions réalisées pendant la patrouille.
+         */
+        this.missions = [];
+        
         /**
          * Communications.
          */
