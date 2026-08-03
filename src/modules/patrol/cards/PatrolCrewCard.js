@@ -2,32 +2,65 @@
  * ============================================================
  * OPE-SAR
  * PatrolCrewCard
- * ------------------------------------------------------------
+ * ============================================================
+ *
  * Gestion de l'équipage de la patrouille.
+ *
+ * Cette version V2 ne recrée jamais la carte pendant
+ * les rafraîchissements.
+ *
+ * Le DOM est construit une seule fois.
+ *
+ * refresh() ne fait que mettre à jour les données.
+ *
  * ============================================================
  */
 
-import BaseCard from '../../../shared/ui/cards/BaseCard.js';
-import BaseCardController from '../../../shared/ui/cards/BaseCardController.js';
-import CardSection from '../../../shared/ui/cards/CardSection.js';
+import BaseCard
+from '../../../shared/ui/cards/BaseCard.js';
 
-import PatrolService from '../services/PatrolService.js';
-import { CREW_ROLES } from '../data/CrewRoles.js';
+import BaseCardController
+from '../../../shared/ui/cards/BaseCardController.js';
 
-export default class PatrolCrewCard extends BaseCardController {
+import CardSection
+from '../../../shared/ui/cards/CardSection.js';
 
-    /* ======================================================
-     * Ouverture
-     * ====================================================== */
+import PatrolService
+from '../services/PatrolService.js';
+
+import { CREW_ROLES }
+from '../data/CrewRoles.js';
+
+export default class PatrolCrewCard
+extends BaseCardController {
+
+    static CARD_ID =
+        'patrol-crew-card';
+
+    static initialized =
+        false;
+
+    /**
+     * =====================================================
+     * Création
+     * =====================================================
+     */
 
     static create() {
 
-        this.close();
+        if (this.instance) {
+
+            this.instance
+                .bringToFront?.();
+
+            return this.instance;
+
+        }
 
         const card =
             new BaseCard({
 
-                id: 'patrol-crew-card',
+                id: this.CARD_ID,
 
                 title: 'ÉQUIPAGE',
 
@@ -38,19 +71,32 @@ export default class PatrolCrewCard extends BaseCardController {
             });
 
         card.add(
-            this.buildMandatoryCrewSection().element
+
+            this.buildMandatorySection()
+                .element
+
         );
 
         card.add(
-            this.buildAdditionalCrewSection().element
+
+            this.buildAdditionalSection()
+                .element
+
         );
 
         card.add(
-            this.buildAddMemberSection().element
+
+            this.buildAddSection()
+                .element
+
         );
 
         card.render(
-            document.getElementById('app')
+
+            document.getElementById(
+                'app'
+            )
+
         );
 
         this.instance =
@@ -60,7 +106,7 @@ export default class PatrolCrewCard extends BaseCardController {
 
             'card:close',
 
-            () => PatrolCrewCard.close()
+            () => this.close()
 
         );
 
@@ -72,49 +118,26 @@ export default class PatrolCrewCard extends BaseCardController {
 
     }
 
-    /* ======================================================
+    /**
+     * =====================================================
      * Composition minimale
-     * ====================================================== */
+     * =====================================================
+     */
 
-    static buildMandatoryCrewSection() {
+    static buildMandatorySection() {
 
         const section =
             new CardSection(
                 'Composition minimale'
             );
 
-        const patrol =
-            PatrolService.getCurrent();
-
-        const crew =
-            patrol?.crew ?? [];
-
         const container =
             document.createElement(
                 'div'
             );
 
-        container.innerHTML = `
-
-            ${this.buildMandatoryMember(
-                crew[0],
-                0,
-                'Patron'
-            )}
-
-            ${this.buildMandatoryMember(
-                crew[1],
-                1,
-                'Équipier n°1'
-            )}
-
-            ${this.buildMandatoryMember(
-                crew[2],
-                2,
-                'Équipier n°2'
-            )}
-
-        `;
+        container.id =
+            'crew-mandatory-container';
 
         section.add(
             container
@@ -124,133 +147,26 @@ export default class PatrolCrewCard extends BaseCardController {
 
     }
 
-    /* ======================================================
-     * Membre obligatoire
-     * ====================================================== */
-
-    static buildMandatoryMember(
-        member,
-        index,
-        title
-    ) {
-
-        member ??= {
-
-            lastname: '',
-
-            firstname: ''
-
-        };
-
-        return `
-
-            <div class="opsar-member-block">
-
-                <h4>
-
-                    ${title}
-
-                </h4>
-
-                <div class="opsar-form-row">
-
-                    <div class="opsar-form-group">
-
-                        <label>
-
-                            Nom
-
-                        </label>
-
-                        <input
-
-                            id="crew-${index}-lastname"
-
-                            class="opsar-input"
-
-                            type="text"
-
-                            value="${member.lastname ?? ''}"
-
-                        >
-
-                    </div>
-
-                    <div class="opsar-form-group">
-
-                        <label>
-
-                            Prénom
-
-                        </label>
-
-                        <input
-
-                            id="crew-${index}-firstname"
-
-                            class="opsar-input"
-
-                            type="text"
-
-                            value="${member.firstname ?? ''}"
-
-                        >
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-        /* ======================================================
+    /**
+     * =====================================================
      * Equipage complémentaire
-     * ====================================================== */
+     * =====================================================
+     */
 
-    static buildAdditionalCrewSection() {
+    static buildAdditionalSection() {
 
         const section =
             new CardSection(
-                'Équipage complémentaire'
+                'Equipage complémentaire'
             );
-
-        const patrol =
-            PatrolService.getCurrent();
-
-        const crew =
-            (patrol?.crew ?? [])
-                .filter(member => !member.mandatory);
 
         const container =
             document.createElement(
                 'div'
             );
 
-        if (crew.length === 0) {
-
-            container.innerHTML = `
-
-                <div class="opsar-info">
-
-                    Aucun membre supplémentaire.
-
-                </div>
-
-            `;
-
-        }
-        else {
-
-            container.innerHTML =
-                crew
-                    .map(member =>
-                        this.buildCrewRow(member)
-                    )
-                    .join('');
-
-        }
+        container.id =
+            'crew-list';
 
         section.add(
             container
@@ -260,57 +176,13 @@ export default class PatrolCrewCard extends BaseCardController {
 
     }
 
-    /* ======================================================
-     * Ligne équipage
-     * ====================================================== */
-
-    static buildCrewRow(member) {
-
-        const role =
-            CREW_ROLES.find(
-                r => r.id === member.role
-            );
-
-        return `
-
-            <div
-                class="opsar-crew-row"
-                data-id="${member.id}">
-
-                <div class="opsar-crew-role">
-
-                    ${role?.label ?? member.role}
-
-                </div>
-
-                <div class="opsar-crew-name">
-
-                    ${member.lastname.toUpperCase()}
-                    ${member.firstname}
-
-                </div>
-
-                <button
-
-                    class="opsar-btn opsar-btn-danger crew-delete"
-
-                    data-id="${member.id}">
-
-                    🗑
-
-                </button>
-
-            </div>
-
-        `;
-
-    }
-
-    /* ======================================================
+    /**
+     * =====================================================
      * Ajout d'un membre
-     * ====================================================== */
+     * =====================================================
+     */
 
-    static buildAddMemberSection() {
+    static buildAddSection() {
 
         const section =
             new CardSection(
@@ -324,79 +196,72 @@ export default class PatrolCrewCard extends BaseCardController {
 
         container.innerHTML = `
 
-            <div class="opsar-form-group">
+<div class="opsar-form-group">
 
-                <label>
+<label>
 
-                    Fonction
+Fonction
 
-                </label>
+</label>
 
-                <select
+<select
+    id="crew-role"
+    class="opsar-input">
 
-                    id="crew-role"
+${this.renderRoleOptions()}
 
-                    class="opsar-input">
+</select>
 
-                    ${this.renderRoleOptions()}
+</div>
 
-                </select>
+<div class="opsar-form-row">
 
-            </div>
+<div class="opsar-form-group">
 
-            <div class="opsar-form-row">
+<label>
 
-                <div class="opsar-form-group">
+Nom
 
-                    <label>
+</label>
 
-                        Nom
+<input
+    id="crew-lastname"
+    class="opsar-input"
+    type="text">
 
-                    </label>
+</div>
 
-                    <input
+<div class="opsar-form-group">
 
-                        id="crew-lastname"
+<label>
 
-                        class="opsar-input"
+Prénom
 
-                        type="text">
+</label>
 
-                </div>
+<input
+    id="crew-firstname"
+    class="opsar-input"
+    type="text">
 
-                <div class="opsar-form-group">
+</div>
 
-                    <label>
+</div>
 
-                        Prénom
+<button
 
-                    </label>
+    id="crew-add"
 
-                    <input
+    class="opsar-btn
+           opsar-btn-primary"
 
-                        id="crew-firstname"
+    style="width:100%;">
 
-                        class="opsar-input"
+➕ Ajouter
 
-                        type="text">
+</button>
 
-                </div>
-
-            </div>
-
-            <button
-
-                id="crew-add"
-
-                class="opsar-btn opsar-btn-primary"
-
-                style="width:100%;">
-
-                ➕ Ajouter le membre
-
-            </button>
-
-        `;
+`;
 
         section.add(
             container
@@ -406,150 +271,113 @@ export default class PatrolCrewCard extends BaseCardController {
 
     }
 
-    /* ======================================================
+    /**
+     * =====================================================
      * Fonctions disponibles
-     * ====================================================== */
+     * =====================================================
+     */
 
     static renderRoleOptions() {
 
         return CREW_ROLES
 
-            .filter(role => !role.mandatory)
+            .filter(
 
-            .map(role => `
+                role =>
 
-                <option value="${role.id}">
+                    role.id !==
+                    'captain'
 
-                    ${role.label}
+            )
 
-                </option>
+            .map(
 
-            `)
+                role => `
+
+<option value="${role.id}">
+
+${role.label}
+
+</option>
+
+`
+
+            )
 
             .join('');
 
     }
-        /* ======================================================
+
+    /**
+     * =====================================================
      * Evènements
-     * ====================================================== */
+     * =====================================================
+     */
 
     static bindEvents() {
 
-        window.addEventListener(
-            'patrol:updated',
-            () => this.refresh()
+        if (
+            this.initialized
+        ) {
+
+            return;
+
+        }
+
+        this.initialized = true;
+
+        document.addEventListener(
+
+            'click',
+
+            event => {
+
+                if (
+                    event.target.id ===
+                    'crew-add'
+                ) {
+
+                    this.addCrewMember();
+
+                    return;
+
+                }
+
+                if (
+
+                    event.target.dataset.removeCrew
+
+                ) {
+
+                    PatrolService.removeCrewMember(
+
+                        event.target.dataset.removeCrew
+
+                    );
+
+                    this.refreshAdditionalCrew();
+
+                }
+
+            }
+
         );
 
-        /* ----------------------------------------------
-         * Equipage obligatoire
-         * ---------------------------------------------- */
+        document.addEventListener(
 
-        for (let i = 0; i < 3; i++) {
+            'change',
 
-            document
-                .getElementById(
-                    `crew-${i}-lastname`
-                )
-                ?.addEventListener(
-                    'change',
-                    () => this.saveMandatoryCrew(i)
-                );
+            event => {
 
-            document
-                .getElementById(
-                    `crew-${i}-firstname`
-                )
-                ?.addEventListener(
-                    'change',
-                    () => this.saveMandatoryCrew(i)
-                );
+                if (
 
-        }
+                    event.target.dataset.mandatory
 
-        /* ----------------------------------------------
-         * Ajout
-         * ---------------------------------------------- */
+                ) {
 
-        document
-            .getElementById(
-                'crew-add'
-            )
-            ?.addEventListener(
-                'click',
-                () => this.addCrewMember()
-            );
+                    this.saveMandatoryCrew();
 
-        /* ----------------------------------------------
-         * Suppression
-         * ---------------------------------------------- */
-
-        document
-            .querySelectorAll(
-                '.crew-delete'
-            )
-            .forEach(button => {
-
-                button.addEventListener(
-
-                    'click',
-
-                    event =>
-
-                        this.removeCrewMember(
-                            event.currentTarget.dataset.id
-                        )
-
-                );
-
-            });
-
-    }
-
-    /* ======================================================
-     * Rafraîchissement
-     * ====================================================== */
-
-    static refresh() {
-
-        if (!this.instance) {
-            return;
-        }
-
-        this.close();
-
-        this.create();
-
-    }
-
-    /* ======================================================
-     * Sauvegarde équipage obligatoire
-     * ====================================================== */
-
-    static saveMandatoryCrew(index) {
-
-        PatrolService.updateCrewMember(
-
-            index,
-
-            {
-
-                lastname:
-
-                    document
-                        .getElementById(
-                            `crew-${index}-lastname`
-                        )
-                        .value
-                        .trim(),
-
-                firstname:
-
-                    document
-                        .getElementById(
-                            `crew-${index}-firstname`
-                        )
-                        .value
-                        .trim()
+                }
 
             }
 
@@ -557,31 +385,359 @@ export default class PatrolCrewCard extends BaseCardController {
 
     }
 
-    /* ======================================================
+    /**
+     * =====================================================
+     * Rafraîchissement global
+     * =====================================================
+     */
+
+    static refresh() {
+
+        this.refreshMandatoryCrew();
+
+        this.refreshAdditionalCrew();
+
+    }
+
+    /**
+     * =====================================================
+     * Composition minimale
+     * =====================================================
+     */
+
+    static refreshMandatoryCrew() {
+
+        const patrol =
+            PatrolService.getCurrent();
+
+        const container =
+            document.getElementById(
+                'crew-mandatory-container'
+            );
+
+        if (
+            !container ||
+            !patrol
+        ) {
+
+            return;
+
+        }
+
+        container.innerHTML =
+            patrol.crew
+
+                .filter(
+
+                    member =>
+
+                        member.mandatory
+
+                )
+
+                .map(
+
+                    (
+
+                        member,
+                        index
+
+                    ) =>
+
+                        this.renderMandatoryMember(
+
+                            member,
+                            index
+
+                        )
+
+                )
+
+                .join('');
+
+    }
+
+    /**
+     * =====================================================
+     * Equipage complémentaire
+     * =====================================================
+     */
+
+    static refreshAdditionalCrew() {
+
+        const patrol =
+            PatrolService.getCurrent();
+
+        const container =
+            document.getElementById(
+                'crew-list'
+            );
+
+        if (
+
+            !container ||
+            !patrol
+
+        ) {
+
+            return;
+
+        }
+
+        container.innerHTML =
+
+            patrol.crew
+
+                .filter(
+
+                    member =>
+
+                        !member.mandatory
+
+                )
+
+                .map(
+
+                    member =>
+
+                        this.renderCrewMember(
+
+                            member
+
+                        )
+
+                )
+
+                .join('');
+
+    }
+
+    /**
+     * =====================================================
+     * Rendu membre obligatoire
+     * =====================================================
+     */
+
+    static renderMandatoryMember(
+
+        member,
+
+        index
+
+    ) {
+
+        const label =
+
+            CREW_ROLES.find(
+
+                role =>
+
+                    role.id ===
+                    member.role
+
+            )?.label ??
+
+            member.role;
+
+        return `
+
+<div class="opsar-form-row">
+
+<div class="opsar-form-group">
+
+<label>
+
+${label}
+
+</label>
+
+<input
+
+type="text"
+
+class="opsar-input"
+
+placeholder="Nom"
+
+value="${member.lastname}"
+
+data-mandatory="${index}"
+
+data-field="lastname">
+
+</div>
+
+<div class="opsar-form-group">
+
+<label>
+
+Prénom
+
+</label>
+
+<input
+
+type="text"
+
+class="opsar-input"
+
+placeholder="Prénom"
+
+value="${member.firstname}"
+
+data-mandatory="${index}"
+
+data-field="firstname">
+
+</div>
+
+</div>
+
+`;
+
+    }
+
+    /**
+     * =====================================================
+     * Rendu membre complémentaire
+     * =====================================================
+     */
+
+    static renderCrewMember(member) {
+
+        const label =
+
+            CREW_ROLES.find(
+
+                role =>
+
+                    role.id === member.role
+
+            )?.label ??
+
+            member.role;
+
+        return `
+
+<div class="opsar-card"
+     style="margin-bottom:10px;">
+
+<div class="opsar-row">
+
+<strong>
+
+${label}
+
+</strong>
+
+<button
+
+class="opsar-btn
+       opsar-btn-danger"
+
+data-remove-crew="${member.id}">
+
+✕
+</button>
+
+</div>
+
+<div class="opsar-row">
+
+<span>
+
+${member.lastname}
+
+${member.firstname}
+
+</span>
+
+</div>
+
+</div>
+
+`;
+
+    }
+
+    /**
+     * =====================================================
+     * Sauvegarde équipage minimal
+     * =====================================================
+     */
+
+    static saveMandatoryCrew() {
+
+        document
+
+            .querySelectorAll(
+
+                '[data-mandatory]'
+
+            )
+
+            .forEach(
+
+                input => {
+
+                    const index =
+                        Number(
+
+                            input.dataset.mandatory
+
+                        );
+
+                    const field =
+                        input.dataset.field;
+
+                    PatrolService
+                        .updateCrewMember(
+
+                            index,
+
+                            {
+
+                                [field]:
+                                    input.value.trim()
+
+                            }
+
+                        );
+
+                }
+
+            );
+
+    }
+
+    /**
+     * =====================================================
      * Ajout d'un membre
-     * ====================================================== */
+     * =====================================================
+     */
 
     static addCrewMember() {
 
+        const role =
+            document.getElementById(
+                'crew-role'
+            ).value;
+
         const lastname =
-            document
-                .getElementById(
-                    'crew-lastname'
-                )
-                .value
-                .trim();
+            document.getElementById(
+                'crew-lastname'
+            ).value.trim();
 
         const firstname =
-            document
-                .getElementById(
-                    'crew-firstname'
-                )
-                .value
-                .trim();
+            document.getElementById(
+                'crew-firstname'
+            ).value.trim();
 
         if (
-            lastname === '' ||
-            firstname === ''
+
+            !lastname &&
+            !firstname
+
         ) {
 
             return;
@@ -590,13 +746,7 @@ export default class PatrolCrewCard extends BaseCardController {
 
         PatrolService.addCrewMember({
 
-            role:
-
-                document
-                    .getElementById(
-                        'crew-role'
-                    )
-                    .value,
+            role,
 
             lastname,
 
@@ -612,17 +762,27 @@ export default class PatrolCrewCard extends BaseCardController {
             'crew-firstname'
         ).value = '';
 
+        document.getElementById(
+            'crew-role'
+        ).selectedIndex = 0;
+
+        this.refreshAdditionalCrew();
+
     }
 
-    /* ======================================================
-     * Suppression
-     * ====================================================== */
+    /**
+     * =====================================================
+     * Fermeture
+     * =====================================================
+     */
 
-    static removeCrewMember(id) {
+    static close() {
 
-        PatrolService.removeCrewMember(
-            id
-        );
+        super.close();
+
+        this.instance = null;
+
+        this.initialized = false;
 
     }
 
