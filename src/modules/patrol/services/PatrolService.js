@@ -1,11 +1,24 @@
 /**
  * PatrolService.js
  *
- * Service de gestion de la patrouille courante.
+ * Service métier de gestion de la patrouille.
+ *
+ * Responsabilités :
+ *
+ *  - gestion de la patrouille courante
+ *  - persistance automatique
+ *  - diffusion des évènements UI
+ *  - point d'entrée unique des cartes Patrol
  */
 
 import PatrolModel from '../models/PatrolModel.js';
 import PatrolEvents from '../constants/PatrolEvents.js';
+
+import StorageService
+    from '../../../core/services/StorageService.js';
+
+import Collections
+    from '../../../core/database/Collections.js';
 
 export default class PatrolService {
 
@@ -15,20 +28,21 @@ export default class PatrolService {
     static current = null;
 
     /**
-     * Initialise le service.
+     * Initialisation.
+     *
+     * Recharge automatiquement
+     * la dernière patrouille active.
      */
-    static init() {
+    static async init() {
 
-        if (!this.current) {
-
-            this.current = new PatrolModel();
-
-        }
+        await this.load();
 
     }
 
     /**
      * Retourne la patrouille courante.
+     *
+     * @returns {PatrolModel}
      */
     static getCurrent() {
 
@@ -37,136 +51,91 @@ export default class PatrolService {
     }
 
     /**
-     * Patrouille en navigation ?
+     * Patrouille active ?
+     *
+     * @returns {Boolean}
      */
     static isRunning() {
 
         return (
+
             this.current &&
-            this.current.status === 'UNDERWAY'
+
+            this.current.status ===
+                'UNDERWAY'
+
         );
 
     }
 
     /**
-     * Change l'état de la patrouille.
-     *
-     * Etats possibles :
-     *  - UNDERWAY
-     *  - IN_PORT
-     *  - COMPLETED
-     *
-     * @param {String} status
-     * @param {Object|null} position
+     * Recharge la dernière
+     * patrouille active.
      */
-    static setStatus(status, position = null) {
+    static async load() {
 
-        if (!this.current) {
+        try {
 
-            this.current = new PatrolModel();
+            const patrols =
 
-        }
+                await StorageService.getAll(
 
-        const previousStatus =
-            this.current.status;
+                    Collections.PATROLS
 
-        switch (status) {
-
-            case 'UNDERWAY':
-
-                if (!this.current.startedAt) {
-
-                    this.current.startedAt =
-                        new Date();
-
-                    this.current.startPosition =
-                        position;
-
-                    if (position) {
-
-                        this.current.addTrackPoint(
-                            position
-                        );
-
-                    }
-
-                    this.current.addEvent({
-
-                        type: PatrolEvents.PATROL_STARTED,
-
-                        position
-
-                    });
-
-                }
-                else if (previousStatus === 'IN_PORT') {
-
-                    this.current.addEvent({
-
-                        type: PatrolEvents.PATROL_RESUMED,
-
-                        position
-
-                    });
-
-                }
-
-                this.current.status =
-                    'UNDERWAY';
-
-                break;
-
-            case 'IN_PORT':
-
-                this.current.status =
-                    'IN_PORT';
-
-                this.current.addEvent({
-
-                    type: PatrolEvents.PATROL_PAUSED,
-
-                    position
-
-                });
-
-                break;
-
-            case 'COMPLETED':
-
-                this.current.status =
-                    'COMPLETED';
-
-                this.current.endedAt =
-                    new Date();
-
-                this.current.endPosition =
-                    position;
-
-                if (position) {
-
-                    this.current.addTrackPoint(
-                        position
-                    );
-
-                }
-
-                this.current.addEvent({
-
-                    type: PatrolEvents.PATROL_COMPLETED,
-
-                    position
-
-                });
-
-                break;
-
-            default:
-
-                console.warn(
-                    `Etat de patrouille inconnu : ${status}`
                 );
 
-                return;
+            const active =
+
+                patrols.find(
+
+                    patrol =>
+
+                        patrol?.persistence?.status ===
+                        'ACTIVE'
+
+                );
+
+            if (active) {
+
+                console.log(
+
+                    '📂 Patrouille restaurée.'
+
+                );
+
+                this.current = active;
+
+            }
+
+            else {
+
+                console.log(
+
+                    '🆕 Nouvelle patrouille.'
+
+                );
+
+                this.current =
+                    new PatrolModel();
+
+                await this.save();
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+
+                'Impossible de charger la patrouille.',
+
+                error
+
+            );
+
+            this.current =
+                new PatrolModel();
 
         }
 
@@ -175,256 +144,68 @@ export default class PatrolService {
     }
 
     /**
-     * Ajoute un événement métier.
-     *
-     * @param {Object} event
+     * Sauvegarde la patrouille.
      */
-    static addEvent(event) {
+    static async save() {
 
         if (!this.current) {
+
             return;
+
         }
 
-        this.current.addEvent(event);
+        this.current.persistence.savedAt =
+            new Date();
+
+        await StorageService.save(
+
+            Collections.PATROLS,
+
+            this.current
+
+        );
+
+    }
+
+    /**
+     * Commit.
+     *
+     * Sauvegarde +
+     * rafraîchissement UI.
+     */
+    static async commit() {
+
+        await this.save();
 
         this.dispatch();
 
     }
 
     /**
-     * Ajoute un point GPS.
-     *
-     * @param {Object} position
+     * Efface la patrouille
+     * locale.
      */
-    static addTrackPoint(position) {
+    static async clear() {
 
-        if (
-            !this.current ||
-            this.current.status !== 'UNDERWAY'
-        ) {
+        if (!this.current) {
 
             return;
 
         }
 
-        this.current.addTrackPoint(
-            position
-        );
+        await StorageService.delete(
 
-        this.current.addEvent({
+            Collections.PATROLS,
 
-            type: PatrolEvents.POSITION,
-
-            latitude: position.latitude,
-
-            longitude: position.longitude,
-
-            speed: position.speed,
-
-            heading: position.heading,
-
-            accuracy: position.accuracy
-
-        });
-
-        window.dispatchEvent(
-
-            new CustomEvent(
-
-                'patrol:track',
-
-                {
-
-                    detail: position
-
-                }
-
-            )
+            this.current.id
 
         );
-
-    }
-
-    /**
-     * Réinitialise la patrouille.
-     */
-    static reset() {
 
         this.current =
             new PatrolModel();
 
+        await this.save();
+
         this.dispatch();
 
     }
-
-    /**
-     * Diffuse l'état courant.
-     */
-    static dispatch() {
-
-        window.dispatchEvent(
-
-            new CustomEvent(
-
-                'patrol:updated',
-
-                {
-
-                    detail: this.current
-
-                }
-
-            )
-
-        );
-
-    }
-    
-/**
- * Met à jour un membre obligatoire.
- */
-static updateCrewMember(index, data)
-{
-    if (!this.current)
-    {
-        return;
-    }
-
-    Object.assign(
-        this.current.crew[index],
-        data
-    );
-
-    this.dispatch();
-}
-
-    /**
- * Ajoute un membre.
- */
-static addCrewMember(member)
-{
-    if (!this.current)
-    {
-        return;
-    }
-
-    this.current.crew.push({
-
-        id: crypto.randomUUID(),
-
-        mandatory: false,
-
-        ...member
-
-    });
-
-    this.dispatch();
-}
-    /**
- * Supprime un membre.
- */
-static removeCrewMember(id)
-{
-    if (!this.current)
-    {
-        return;
-    }
-
-    this.current.crew =
-        this.current.crew.filter(
-
-            member =>
-
-                member.mandatory ||
-                member.id !== id
-
-        );
-
-    this.dispatch();
-}
-
-/**
- * Ajoute une communication.
- *
- * @param {Object} communication
- */
-static addCommunication(communication)
-{
-    if (!this.current)
-    {
-        return;
-    }
-
-    this.current.communications.push({
-
-        id: crypto.randomUUID(),
-
-        timestamp:
-            communication.timestamp ??
-            new Date().toISOString(),
-
-        ...communication
-
-    });
-
-    this.dispatch();
-}
-
-/**
- * Retourne les communications.
- *
- * @returns {Array}
- */
-static getCommunications()
-{
-    if (!this.current)
-    {
-        return [];
-    }
-
-    return this.current.communications;
-}
-
-/**
- * Ajoute une entrée au journal.
- *
- * @param {Object} entry
- */
-static addJournalEntry(entry)
-{
-    if (!this.current)
-    {
-        return;
-    }
-
-    this.current.journal.push({
-
-        id: crypto.randomUUID(),
-
-        timestamp:
-            entry.timestamp ??
-            new Date().toISOString(),
-
-        ...entry
-
-    });
-
-    this.dispatch();
-}
-
-/**
- * Retourne le journal.
- *
- * @returns {Array}
- */
-static getJournal()
-{
-    if (!this.current)
-    {
-        return [];
-    }
-
-    return this.current.journal;
-}
-    
-}
