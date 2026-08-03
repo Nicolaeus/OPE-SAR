@@ -165,6 +165,21 @@ export default class PatrolModel {
          */
         this.notes = '';
 
+        /**
+         * Persistance.
+         */
+        this.persistence = {
+        
+            version: 1,
+        
+            status: 'ACTIVE',
+        
+            createdAt: new Date(),
+        
+            savedAt: null
+        
+        };
+
     }
 
     /**
