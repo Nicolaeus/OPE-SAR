@@ -846,6 +846,71 @@ export default class PatrolService {
 
     /**
      * =====================================================
+     * Clôture métier
+     * =====================================================
+     *
+     * Complète la patrouille puis
+     * déclenche la clôture officielle.
+     */
+    static async complete(data, position = null) {
+    
+        if (!this.current) {
+    
+            return;
+    
+        }
+    
+        // Heures moteur
+    
+        if (data.engine) {
+    
+            this.current.engine = {
+    
+                ...this.current.engine,
+    
+                ...data.engine
+    
+            };
+    
+        }
+    
+        // Carburant
+    
+        if (data.fuel) {
+    
+            this.current.fuel = {
+    
+                ...this.current.fuel,
+    
+                ...data.fuel
+    
+            };
+    
+        }
+    
+        // Notes
+    
+        if (data.notes !== undefined) {
+    
+            this.current.notes = data.notes;
+    
+        }
+    
+        // Fin de patrouille
+    
+        await this.setStatus(
+    
+            'COMPLETED',
+    
+            position
+    
+        );
+    
+    }
+
+    
+    /**
+     * =====================================================
      * Clôture
      * =====================================================
      *
