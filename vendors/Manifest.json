@@ -1,0 +1,32 @@
+{
+    "name": "OPE-SAR Vendor Registry",
+
+    "version": 1,
+
+    "updatedAt": "2026-08-03T18:00:00Z",
+
+    "libraries": [
+
+        {
+
+            "id": "pdf-lib",
+
+            "version": "1.17.1",
+
+            "license": "MIT",
+
+            "homepage": "https://pdf-lib.js.org/",
+
+            "repository": "https://github.com/Hopding/pdf-lib",
+
+            "entry": "vendors/pdf-lib/pdf-lib.min.js",
+
+            "integrity": "",
+
+            "enabled": true
+
+        }
+
+    ]
+
+}
