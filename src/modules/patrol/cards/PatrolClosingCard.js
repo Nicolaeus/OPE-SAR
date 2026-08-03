@@ -431,6 +431,54 @@ export default class PatrolClosingCard extends BaseCardController {
 
     }
 
+
+    /* ======================================================
+     * Actions
+     * ====================================================== */
+    
+    static buildActionsSection() {
+    
+        const section =
+            new CardSection(
+                'Validation'
+            );
+    
+        const container =
+            document.createElement(
+                'div'
+            );
+    
+        container.className =
+            'opsar-form-actions';
+    
+        container.innerHTML = `
+    
+            <button
+                id="patrol-closing-cancel"
+                class="opsar-button secondary">
+    
+                Annuler
+    
+            </button>
+    
+            <button
+                id="patrol-closing-validate"
+                class="opsar-button primary">
+    
+                Clôturer la patrouille
+    
+            </button>
+    
+        `;
+    
+        section.add(
+            container
+        );
+    
+        return section;
+    
+    }
+    
     /* ======================================================
      * Evènements
      * ====================================================== */
@@ -461,7 +509,7 @@ export default class PatrolClosingCard extends BaseCardController {
      * Validation
      * ====================================================== */
 
-    static validate() {
+    static async validate() {
 
         const engineStart = parseFloat(
 
@@ -593,7 +641,7 @@ export default class PatrolClosingCard extends BaseCardController {
         // Clôture
         // ================================================
 
-        PatrolService.complete({
+        await PatrolService.complete({
 
             engine: {
 
