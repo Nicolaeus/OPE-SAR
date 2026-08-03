@@ -789,7 +789,7 @@ export default class PatrolService {
 
                 journal: 0,
 
-                events: 0,
+                systemEvents: 0,
 
                 track: 0
 
@@ -811,8 +811,8 @@ export default class PatrolService {
             journal:
                 this.current.journal.length,
 
-            events:
-                this.current.events.length,
+            systemEvents:
+                this.current.systemEvents.length,
 
             track:
                 this.current.track.length
