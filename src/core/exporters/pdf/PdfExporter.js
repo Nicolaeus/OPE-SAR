@@ -38,12 +38,6 @@ import PdfHeader
 import PdfSummary
     from './PdfSummary.js';
 
-import PdfWeather
-    from './PdfWeather.js';
-
-import PdfTide
-    from './PdfTide.js';
-
 import PdfEngineHours
     from './PdfEngineHours.js';
 
@@ -138,10 +132,6 @@ export default class PdfExporter
         PdfQRCode.draw(context);
 
         PdfSummary.draw(context);
-
-        PdfWeather.draw(context);
-
-        PdfTide.draw(context);
 
         PdfEngineHours.draw(context);
 

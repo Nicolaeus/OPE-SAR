@@ -59,7 +59,8 @@ export default class JsonExporter
 
     }
 
-}/**
+}
+/*
  * ==========================================================
  * OPE-SAR Core
  * ----------------------------------------------------------
@@ -72,56 +73,3 @@ export default class JsonExporter
  * ==========================================================
  */
 
-export default class JsonExporter {
-
-    /**
-     * Exporte un rapport au format JSON.
-     *
-     * @param {Object} report
-     * @param {String} filename
-     *
-     * @returns {File}
-     */
-    static async export(
-
-        report,
-
-        filename = 'Export'
-
-    ) {
-
-        const json =
-
-            JSON.stringify(
-
-                report,
-
-                null,
-
-                4
-
-            );
-
-        return new File(
-
-            [
-
-                json
-
-            ],
-
-            `${filename}.json`,
-
-            {
-
-                type:
-
-                    'application/json'
-
-            }
-
-        );
-
-    }
-
-}

@@ -184,6 +184,8 @@ export default class PatrolModel {
          */
         this.notes = '';
 
+        this.noIncident = false;
+
         /**
          * Persistance.
          */
@@ -206,6 +208,93 @@ export default class PatrolModel {
     /**
      * Durée de la patrouille (ms).
      */
+    static fromData(data = {}) {
+
+        const patrol =
+            new PatrolModel();
+
+        const defaults = {
+
+            crew:
+                patrol.crew,
+
+            engine:
+                patrol.engine,
+
+            fuel:
+                patrol.fuel,
+
+            persistence:
+                patrol.persistence
+
+        };
+
+        Object.assign(
+
+            patrol,
+
+            data
+
+        );
+
+        patrol.crew =
+            Array.isArray(data.crew)
+                ? data.crew
+                : defaults.crew;
+
+        patrol.missions =
+            Array.isArray(data.missions)
+                ? data.missions
+                : [];
+
+        patrol.communications =
+            Array.isArray(data.communications)
+                ? data.communications
+                : [];
+
+        patrol.track =
+            Array.isArray(data.track)
+                ? data.track
+                : [];
+
+        patrol.systemEvents =
+            Array.isArray(data.systemEvents)
+                ? data.systemEvents
+                : [];
+
+        patrol.journal =
+            Array.isArray(data.journal)
+                ? data.journal
+                : [];
+
+        patrol.engine = {
+
+            ...defaults.engine,
+
+            ...(data.engine ?? {})
+
+        };
+
+        patrol.fuel = {
+
+            ...defaults.fuel,
+
+            ...(data.fuel ?? {})
+
+        };
+
+        patrol.persistence = {
+
+            ...defaults.persistence,
+
+            ...(data.persistence ?? {})
+
+        };
+
+        return patrol;
+
+    }
+
     get duration() {
 
         if (!this.startedAt) {

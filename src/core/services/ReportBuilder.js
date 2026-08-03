@@ -176,6 +176,10 @@ export default class ReportBuilder {
 
                 patrol.notes,
 
+            noIncident:
+
+                patrol.noIncident ?? false,
+
             fuel:
 
                 structuredClone(

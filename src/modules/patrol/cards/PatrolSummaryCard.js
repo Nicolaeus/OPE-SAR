@@ -291,22 +291,24 @@ export default class PatrolSummaryCard extends BaseCardController {
 
         this.update(
             'summary-events',
-            patrol.events?.length ?? 0
+            patrol.systemEvents?.length ?? 0
         );
 
         this.update(
             'summary-fuel',
-            patrol.fuel ?? '—'
+            patrol.fuel?.consumed != null
+                ? `${patrol.fuel.consumed} L`
+                : '—'
         );
 
         if (
-            patrol.engineStart != null &&
-            patrol.engineEnd != null
+            patrol.engine?.startHours != null &&
+            patrol.engine?.endHours != null
         ) {
 
             this.update(
                 'summary-engine',
-                `${(patrol.engineEnd - patrol.engineStart).toFixed(1)} h`
+                `${(patrol.engine.endHours - patrol.engine.startHours).toFixed(1)} h`
             );
 
         } else {

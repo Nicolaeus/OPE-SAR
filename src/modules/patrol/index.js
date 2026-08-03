@@ -18,6 +18,7 @@ import PatrolSummaryCard from './cards/PatrolSummaryCard.js';
 import PatrolClosingCard from './cards/PatrolClosingCard.js';
 import PatrolCommunicationsCard from './cards/PatrolCommunicationsCard.js';
 import PatrolJournalCard from './cards/PatrolJournalCard.js';
+import ExportCard from './cards/ExportCard.js';
 
 export default {
 
@@ -37,7 +38,17 @@ export default {
         // Initialisation du service
         // -------------------------------------------------------------
 
-        PatrolService.init();
+        await PatrolService.init();
+
+        window.addEventListener(
+
+            'geolocation:updated',
+
+            event => PatrolService.addTrackPoint(
+                event.detail
+            )
+
+        );
 
         // -------------------------------------------------------------
         // Création du bouton flottant
@@ -91,6 +102,27 @@ export default {
                     PatrolCard.refresh();
 
                 }
+
+            }
+
+        );
+
+        window.addEventListener(
+
+            'patrol:completed',
+
+            () => {
+
+                if (ExportCard.isOpen()) {
+
+                    ExportCard.instance
+                        ?.bringToFront?.();
+
+                    return;
+
+                }
+
+                ExportCard.create();
 
             }
 

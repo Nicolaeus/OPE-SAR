@@ -115,19 +115,10 @@ export default class PatrolService {
                     '📂 Patrouille restaurée.'
                 );
             
-                const patrol =
-                    new PatrolModel();
-            
-                Object.assign(
-            
-                    patrol,
-            
-                    active
-            
-                );
-            
                 this.current =
-                    patrol;
+                    PatrolModel.fromData(
+                        active
+                    );
             
             }
 
@@ -904,6 +895,13 @@ export default class PatrolService {
     
             this.current.notes = data.notes;
     
+        }
+
+        if (data.noIncident !== undefined) {
+
+            this.current.noIncident =
+                data.noIncident;
+
         }
     
         // Fin de patrouille

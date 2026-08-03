@@ -4,6 +4,7 @@ import CardSection from '../../../shared/ui/cards/CardSection.js';
 
 import PatrolService from '../services/PatrolService.js';
 import PatrolClosingCard from './PatrolClosingCard.js';
+import GeolocationService from '../../../core/services/GeolocationService.js';
 
 
 export default class PatrolCard extends BaseCardController {
@@ -444,17 +445,21 @@ export default class PatrolCard extends BaseCardController {
 
     }
 
-    static executeMainAction() {
+    static async executeMainAction() {
 
         const patrol =
             PatrolService.getCurrent();
 
+        const position =
+            GeolocationService.getCurrent();
+
         if (!patrol) {
 
-            PatrolService.init();
+            await PatrolService.init();
 
-            PatrolService.setStatus(
-                'UNDERWAY'
+            await PatrolService.setStatus(
+                'UNDERWAY',
+                position
             );
 
             return;
@@ -465,34 +470,38 @@ export default class PatrolCard extends BaseCardController {
 
             case 'INACTIVE':
 
-                PatrolService.setStatus(
-                    'UNDERWAY'
+                await PatrolService.setStatus(
+                    'UNDERWAY',
+                    position
                 );
 
                 break;
 
             case 'UNDERWAY':
 
-                PatrolService.setStatus(
-                    'IN_PORT'
+                await PatrolService.setStatus(
+                    'IN_PORT',
+                    position
                 );
 
                 break;
 
             case 'IN_PORT':
 
-                PatrolService.setStatus(
-                    'UNDERWAY'
+                await PatrolService.setStatus(
+                    'UNDERWAY',
+                    position
                 );
 
                 break;
 
             case 'COMPLETED':
 
-                PatrolService.reset();
+                await PatrolService.reset();
 
-                PatrolService.setStatus(
-                    'UNDERWAY'
+                await PatrolService.setStatus(
+                    'UNDERWAY',
+                    position
                 );
 
                 break;
@@ -609,7 +618,7 @@ export default class PatrolCard extends BaseCardController {
 
         this.updateValue(
             'patrol-events-count',
-            patrol.events?.length ?? 0
+            patrol.systemEvents?.length ?? 0
         );
 
     }
@@ -732,15 +741,14 @@ export default class PatrolCard extends BaseCardController {
     static formatPosition(patrol) {
 
         const position =
-            patrol.currentPosition ??
-            patrol.position ??
-            patrol.lastPosition;
+            patrol.track?.[patrol.track.length - 1] ??
+            patrol.startPosition;
 
         if (!position) {
             return '—';
         }
 
-        return `${position.lat.toFixed(5)}, ${position.lng.toFixed(5)}`;
+        return `${position.latitude.toFixed(5)}, ${position.longitude.toFixed(5)}`;
 
     }
 

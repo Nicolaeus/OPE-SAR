@@ -3,6 +3,7 @@ import BaseCardController from '../../../shared/ui/cards/BaseCardController.js';
 import CardSection from '../../../shared/ui/cards/CardSection.js';
 
 import PatrolService from '../services/PatrolService.js';
+import GeolocationService from '../../../core/services/GeolocationService.js';
 
 export default class PatrolClosingCard extends BaseCardController {
 
@@ -455,7 +456,7 @@ export default class PatrolClosingCard extends BaseCardController {
     
             <button
                 id="patrol-closing-cancel"
-                class="opsar-button secondary">
+                class="opsar-btn opsar-btn-secondary">
     
                 Annuler
     
@@ -463,7 +464,7 @@ export default class PatrolClosingCard extends BaseCardController {
     
             <button
                 id="patrol-closing-validate"
-                class="opsar-button primary">
+                class="opsar-btn opsar-btn-primary">
     
                 Clôturer la patrouille
     
@@ -691,7 +692,7 @@ export default class PatrolClosingCard extends BaseCardController {
 
             noIncident
 
-        });
+        }, GeolocationService.getCurrent());
 
         PatrolClosingCard.close();
 

@@ -73,12 +73,12 @@ export default class PatrolTrackLayer {
             track
                 .filter(point =>
                     point &&
-                    point.lat !== undefined &&
-                    point.lng !== undefined
+                    point.latitude !== undefined &&
+                    point.longitude !== undefined
                 )
                 .map(point => [
-                    point.lat,
-                    point.lng
+                    point.latitude,
+                    point.longitude
                 ]);
 
         if (latlngs.length === 0) {
