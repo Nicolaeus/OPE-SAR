@@ -12,10 +12,15 @@ export default class PatrolClosingCard extends BaseCardController {
 
         const card =
             new BaseCard({
+
                 id: 'patrol-closing-card',
+
                 title: 'FIN DE PATROUILLE',
+
                 icon: '■',
+
                 color: 'orange'
+
             });
 
         card.add(
@@ -43,14 +48,21 @@ export default class PatrolClosingCard extends BaseCardController {
         );
 
         card.render(
-            document.getElementById('app')
+
+            document.getElementById(
+                'app'
+            )
+
         );
 
         this.instance = card;
 
         card.element.addEventListener(
+
             'card:close',
+
             () => PatrolClosingCard.close()
+
         );
 
         this.bindEvents();
@@ -71,10 +83,18 @@ export default class PatrolClosingCard extends BaseCardController {
             );
 
         const patrol =
-            PatrolService.getCurrentPatrol?.() ?? {};
+            PatrolService.getCurrent();
+
+        if (!patrol) {
+
+            return section;
+
+        }
 
         const content =
-            document.createElement('div');
+            document.createElement(
+                'div'
+            );
 
         content.className =
             'opsar-summary-grid';
@@ -82,25 +102,84 @@ export default class PatrolClosingCard extends BaseCardController {
         content.innerHTML = `
 
             <div><strong>Départ</strong></div>
-            <div>${patrol.startTime ?? '-'}</div>
+
+            <div>
+
+                ${patrol.startedAt
+
+                    ? new Date(
+
+                        patrol.startedAt
+
+                    ).toLocaleString(
+
+                        'fr-FR'
+
+                    )
+
+                    : '-'}
+
+            </div>
 
             <div><strong>Retour</strong></div>
-            <div>${new Date().toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit'
-            })}</div>
+
+            <div>
+
+                ${new Date().toLocaleTimeString(
+
+                    [],
+
+                    {
+
+                        hour: '2-digit',
+
+                        minute: '2-digit'
+
+                    }
+
+                )}
+
+            </div>
 
             <div><strong>Durée</strong></div>
-            <div>${patrol.duration ?? '-'}</div>
+
+            <div>
+
+                ${this.formatDuration(
+
+                    patrol.duration
+
+                )}
+
+            </div>
 
             <div><strong>Distance</strong></div>
-            <div>${patrol.distance ?? '-'}</div>
+
+            <div>
+
+                ${this.formatDistance(
+
+                    patrol.track
+
+                )}
+
+            </div>
 
             <div><strong>Trace GPS</strong></div>
-            <div>${patrol.trackPoints ?? '-'}</div>
+
+            <div>
+
+                ${patrol.track.length} point(s)
+
+            </div>
 
             <div><strong>Évènements</strong></div>
-            <div>${patrol.events ?? 0}</div>
+
+            <div>
+
+                ${patrol.systemEvents.length}
+
+            </div>
 
         `;
 
@@ -124,7 +203,9 @@ export default class PatrolClosingCard extends BaseCardController {
             );
 
         const content =
-            document.createElement('div');
+            document.createElement(
+                'div'
+            );
 
         content.innerHTML = `
 
@@ -137,9 +218,9 @@ export default class PatrolClosingCard extends BaseCardController {
 
             <p>
 
-                Les informations ci-dessous
-                seront intégrées au rapport
-                de mission.
+                Les informations saisies
+                ci-dessous seront enregistrées
+                dans le rapport final.
 
             </p>
 
@@ -164,8 +245,13 @@ export default class PatrolClosingCard extends BaseCardController {
                 'Moteurs'
             );
 
+        const patrol =
+            PatrolService.getCurrent();
+
         const content =
-            document.createElement('div');
+            document.createElement(
+                'div'
+            );
 
         content.innerHTML = `
 
@@ -175,7 +261,7 @@ export default class PatrolClosingCard extends BaseCardController {
 
                     <label>
 
-                        Départ
+                        Heure moteur départ
 
                     </label>
 
@@ -184,7 +270,8 @@ export default class PatrolClosingCard extends BaseCardController {
                         class="opsar-input"
                         type="number"
                         min="0"
-                        step="0.1">
+                        step="0.1"
+                        value="${patrol?.engine?.startHours ?? ''}">
 
                 </div>
 
@@ -192,7 +279,7 @@ export default class PatrolClosingCard extends BaseCardController {
 
                     <label>
 
-                        Arrivée
+                        Heure moteur arrivée
 
                     </label>
 
@@ -201,7 +288,8 @@ export default class PatrolClosingCard extends BaseCardController {
                         class="opsar-input"
                         type="number"
                         min="0"
-                        step="0.1">
+                        step="0.1"
+                        value="${patrol?.engine?.endHours ?? ''}">
 
                 </div>
 
@@ -228,25 +316,53 @@ export default class PatrolClosingCard extends BaseCardController {
                 'Carburant'
             );
 
+        const patrol =
+            PatrolService.getCurrent();
+
         const content =
-            document.createElement('div');
+            document.createElement(
+                'div'
+            );
 
         content.innerHTML = `
 
-            <div class="opsar-form-group">
+            <div class="opsar-form-row">
 
-                <label>
+                <div class="opsar-form-group">
 
-                    Consommation (L)
+                    <label>
 
-                </label>
+                        Départ (L)
 
-                <input
-                    id="patrol-fuel"
-                    class="opsar-input"
-                    type="number"
-                    min="0"
-                    step="0.1">
+                    </label>
+
+                    <input
+                        id="patrol-fuel-departure"
+                        class="opsar-input"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        value="${patrol?.fuel?.departure ?? ''}">
+
+                </div>
+
+                <div class="opsar-form-group">
+
+                    <label>
+
+                        Arrivée (L)
+
+                    </label>
+
+                    <input
+                        id="patrol-fuel-arrival"
+                        class="opsar-input"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        value="${patrol?.fuel?.arrival ?? ''}">
+
+                </div>
 
             </div>
 
@@ -282,11 +398,16 @@ export default class PatrolClosingCard extends BaseCardController {
 
         const section =
             new CardSection(
-                'Observations (optionnel)'
+                'Observations'
             );
 
+        const patrol =
+            PatrolService.getCurrent();
+
         const textarea =
-            document.createElement('textarea');
+            document.createElement(
+                'textarea'
+            );
 
         textarea.id =
             'patrol-observations';
@@ -299,6 +420,9 @@ export default class PatrolClosingCard extends BaseCardController {
         textarea.placeholder =
             'Observations de fin de patrouille...';
 
+        textarea.value =
+            patrol?.notes ?? '';
+
         section.add(
             textarea
         );
@@ -308,58 +432,6 @@ export default class PatrolClosingCard extends BaseCardController {
     }
 
     /* ======================================================
-     * Validation
-     * ====================================================== */
-
-    static buildActionsSection() {
-
-        const section =
-            new CardSection(
-                'Validation'
-            );
-
-        const container =
-            document.createElement('div');
-
-        container.innerHTML = `
-
-            <div class="opsar-form-row">
-
-                <button
-                    id="patrol-closing-cancel"
-                    class="opsar-btn opsar-btn-secondary">
-
-                    Annuler
-
-                </button>
-
-                <button
-                    id="patrol-closing-validate"
-                    class="opsar-btn opsar-btn-warning">
-
-                    ■ Clôturer
-
-                </button>
-
-            </div>
-
-            <p class="opsar-patrol-info">
-
-                Cette action clôt définitivement
-                la patrouille en cours.
-
-            </p>
-
-        `;
-
-        section.add(
-            container
-        );
-
-        return section;
-
-    }
-        /* ======================================================
      * Evènements
      * ====================================================== */
 
@@ -391,72 +463,183 @@ export default class PatrolClosingCard extends BaseCardController {
 
     static validate() {
 
-        const engineStart =
-            parseFloat(
-                document.getElementById(
-                    'patrol-engine-start'
-                ).value
-            );
+        const engineStart = parseFloat(
 
-        const engineEnd =
-            parseFloat(
-                document.getElementById(
-                    'patrol-engine-end'
-                ).value
-            );
-
-        const fuel =
-            parseFloat(
-                document.getElementById(
-                    'patrol-fuel'
-                ).value
-            );
-
-        const observations =
             document.getElementById(
+
+                'patrol-engine-start'
+
+            ).value
+
+        );
+
+        const engineEnd = parseFloat(
+
+            document.getElementById(
+
+                'patrol-engine-end'
+
+            ).value
+
+        );
+
+        const fuelDeparture = parseFloat(
+
+            document.getElementById(
+
+                'patrol-fuel-departure'
+
+            ).value
+
+        );
+
+        const fuelArrival = parseFloat(
+
+            document.getElementById(
+
+                'patrol-fuel-arrival'
+
+            ).value
+
+        );
+
+        const notes =
+
+            document.getElementById(
+
                 'patrol-observations'
+
             )
+
             .value
+
             .trim();
 
         const noIncident =
+
             document.getElementById(
+
                 'patrol-no-incident'
-            )
-            .checked;
+
+            ).checked;
+
+        // ================================================
+        // Vérifications
+        // ================================================
 
         if (
+
             !Number.isNaN(engineStart) &&
+
             !Number.isNaN(engineEnd) &&
+
             engineEnd < engineStart
+
         ) {
 
             alert(
-                "L'heure moteur d'arrivée doit être supérieure ou égale à celle du départ."
+
+                "Les heures moteur sont incohérentes."
+
             );
 
             return;
 
         }
 
+        if (
+
+            !Number.isNaN(fuelDeparture) &&
+
+            !Number.isNaN(fuelArrival) &&
+
+            fuelArrival > fuelDeparture
+
+        ) {
+
+            alert(
+
+                "Le carburant d'arrivée est supérieur au carburant de départ."
+
+            );
+
+            return;
+
+        }
+
+        // ================================================
+        // Calculs
+        // ================================================
+
+        const fuelConsumed =
+
+            (
+
+                !Number.isNaN(fuelDeparture) &&
+
+                !Number.isNaN(fuelArrival)
+
+            )
+
+                ?
+
+                fuelDeparture - fuelArrival
+
+                :
+
+                null;
+
+        // ================================================
+        // Clôture
+        // ================================================
+
         PatrolService.complete({
 
-            engineStart:
-                Number.isNaN(engineStart)
-                    ? null
-                    : engineStart,
+            engine: {
 
-            engineEnd:
-                Number.isNaN(engineEnd)
-                    ? null
-                    : engineEnd,
+                startHours:
 
-            fuel:
-                Number.isNaN(fuel)
-                    ? null
-                    : fuel,
+                    Number.isNaN(engineStart)
 
-            observations,
+                        ? null
+
+                        : engineStart,
+
+                endHours:
+
+                    Number.isNaN(engineEnd)
+
+                        ? null
+
+                        : engineEnd
+
+            },
+
+            fuel: {
+
+                departure:
+
+                    Number.isNaN(fuelDeparture)
+
+                        ? null
+
+                        : fuelDeparture,
+
+                arrival:
+
+                    Number.isNaN(fuelArrival)
+
+                        ? null
+
+                        : fuelArrival,
+
+                consumed:
+
+                    fuelConsumed
+
+            },
+
+            notes,
 
             noIncident
 
@@ -471,34 +654,78 @@ export default class PatrolClosingCard extends BaseCardController {
                 'patrol:completed',
 
                 {
-                    detail: {
 
-                        engineStart:
-                            Number.isNaN(engineStart)
-                                ? null
-                                : engineStart,
-
-                        engineEnd:
-                            Number.isNaN(engineEnd)
-                                ? null
-                                : engineEnd,
-
-                        fuel:
-                            Number.isNaN(fuel)
-                                ? null
-                                : fuel,
-
-                        observations,
-
-                        noIncident
-
-                    }
+                    detail: PatrolService.getCurrent()
 
                 }
 
             )
 
         );
+
+    }
+
+    /* ======================================================
+     * Helpers
+     * ====================================================== */
+
+    /**
+     * Formate une durée.
+     *
+     * @param {Number} duration
+     *
+     * @returns {String}
+     */
+    static formatDuration(duration) {
+
+        if (!duration) {
+
+            return '-';
+
+        }
+
+        const hours =
+            Math.floor(
+                duration / 3600000
+            );
+
+        const minutes =
+            Math.floor(
+                (duration % 3600000) / 60000
+            );
+
+        return `${hours} h ${minutes} min`;
+
+    }
+
+    /**
+     * Formate la distance.
+     *
+     * Pour l'instant on affiche le nombre
+     * de points GPS.
+     *
+     * Le calcul réel sera réalisé
+     * par ReportBuilder.
+     *
+     * @param {Array} track
+     *
+     * @returns {String}
+     */
+    static formatDistance(track = []) {
+
+        if (
+
+            !track ||
+
+            track.length === 0
+
+        ) {
+
+            return '-';
+
+        }
+
+        return `${track.length} point(s) GPS`;
 
     }
 
