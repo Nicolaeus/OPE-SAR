@@ -89,7 +89,7 @@ export default class PatrolClosingCard extends BaseCardController {
 
             return section;
 
-        }
+        };
 
         const content =
             document.createElement(
