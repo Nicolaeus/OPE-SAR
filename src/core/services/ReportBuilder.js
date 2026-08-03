@@ -227,7 +227,7 @@ export default class ReportBuilder {
             patrol.track.length,
 
         systemEvents:
-            patrol.systemEvents.length,
+            patrol.systemEvents?.length ?? 0,
 
         duration:
             patrol.duration,
@@ -255,8 +255,10 @@ export default class ReportBuilder {
             patrol.track[0] ?? null,
         
         trackEnd:
-        
-            patrol.track.at(-1) ?? null,
+
+            patrol.track.length
+                ? patrol.track[patrol.track.length - 1]
+                : null,
 
         crewMandatory:
       
