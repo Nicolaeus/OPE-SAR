@@ -4,141 +4,40 @@
  * ----------------------------------------------------------
  * ExportService.js
  *
- * Service générique d'export.
+ * Service générique de gestion des exports.
  *
- * Ce service est indépendant des modules.
+ * Il ne génère aucun format.
  *
- * Il permet :
+ * Son rôle est uniquement :
  *
- *  - export JSON
- *  - téléchargement
- *  - partage natif
+ *  - sauvegarder un fichier
+ *  - sauvegarder plusieurs fichiers
+ *  - partager des fichiers
+ *  - générer un nom de fichier
  *
- * Les exports PDF et GPX seront ajoutés
- * dans une prochaine version.
+ * Les différents formats sont implémentés
+ * dans les Exporters.
  * ==========================================================
  */
 
 export default class ExportService {
 
     // =====================================================
-    // JSON
+    // Sauvegarde
     // =====================================================
 
     /**
-     * Exporte un objet JSON.
+     * Sauvegarde un fichier.
      *
-     * @param {Object} object
-     * @param {String} filename
-     *
-     * @returns {File}
+     * @param {File|Blob} file
      */
-    static async exportJSON(
-
-        object,
-
-        filename = 'export'
-
-    ) {
-
-        const json =
-
-            JSON.stringify(
-
-                object,
-
-                null,
-
-                2
-
-            );
-
-        return new File(
-
-            [
-
-                json
-
-            ],
-
-            `${filename}.json`,
-
-            {
-
-                type:
-
-                    'application/json'
-
-            }
-
-        );
-
-    }
-
-    // =====================================================
-    // Blob
-    // =====================================================
-
-    /**
-     * Crée un Blob.
-     *
-     * @param {*} content
-     * @param {String} type
-     *
-     * @returns {Blob}
-     */
-    static createBlob(
-
-        content,
-
-        type
-
-    ) {
-
-        return new Blob(
-
-            [
-
-                content
-
-            ],
-
-            {
-
-                type
-
-            }
-
-        );
-
-    }
-
-    // =====================================================
-    // Téléchargement
-    // =====================================================
-
-    /**
-     * Télécharge un Blob.
-     *
-     * @param {Blob|File} file
-     */
-    static download(file) {
+    static save(file) {
 
         const url =
-
-            URL.createObjectURL(
-
-                file
-
-            );
+            URL.createObjectURL(file);
 
         const link =
-
-            document.createElement(
-
-                'a'
-
-            );
+            document.createElement('a');
 
         link.href =
             url;
@@ -146,31 +45,43 @@ export default class ExportService {
         link.download =
             file.name;
 
-        document.body.appendChild(
-
-            link
-
-        );
+        document.body.appendChild(link);
 
         link.click();
 
         link.remove();
 
-        URL.revokeObjectURL(
+        URL.revokeObjectURL(url);
 
-            url
+    }
+
+    // =====================================================
+    // Sauvegarde multiple
+    // =====================================================
+
+    /**
+     * Sauvegarde plusieurs fichiers.
+     *
+     * @param {File[]} files
+     */
+    static saveMany(files = []) {
+
+        files.forEach(
+
+            file =>
+
+                this.save(file)
 
         );
 
     }
 
     // =====================================================
-    // Partage
+    // Partage natif
     // =====================================================
 
     /**
-     * Vérifie si le navigateur
-     * supporte le partage natif.
+     * Vérifie si le partage est disponible.
      *
      * @returns {Boolean}
      */
@@ -180,8 +91,7 @@ export default class ExportService {
 
             typeof navigator !== 'undefined' &&
 
-            typeof navigator.share ===
-                'function'
+            typeof navigator.share === 'function'
 
         );
 
@@ -193,6 +103,8 @@ export default class ExportService {
      * @param {File[]} files
      * @param {String} title
      * @param {String} text
+     *
+     * @returns {Boolean}
      */
     static async share(
 
@@ -204,16 +116,10 @@ export default class ExportService {
 
     ) {
 
-        if (
-
-            !this.canShare()
-
-        ) {
+        if (!this.canShare()) {
 
             console.warn(
-
-                'Partage natif indisponible.'
-
+                'Partage indisponible.'
             );
 
             return false;
@@ -253,32 +159,7 @@ export default class ExportService {
     }
 
     // =====================================================
-    // Téléchargement multiple
-    // =====================================================
-
-    /**
-     * Télécharge plusieurs fichiers.
-     *
-     * @param {File[]} files
-     */
-    static downloadMany(files = []) {
-
-        files.forEach(
-
-            file =>
-
-                this.download(
-
-                    file
-
-                )
-
-        );
-
-    }
-
-    // =====================================================
-    // Utilitaires
+    // Nom de fichier
     // =====================================================
 
     /**
@@ -286,7 +167,7 @@ export default class ExportService {
      *
      * Exemple :
      *
-     * Patrol_2026-08-03_14-32-18
+     * Patrol_2026-08-03_18-42-17
      *
      * @param {String} prefix
      *
@@ -306,27 +187,18 @@ export default class ExportService {
             now.toISOString()
 
                 .replace(
-
                     'T',
-
                     '_'
-
                 )
 
                 .replaceAll(
-
                     ':',
-
                     '-'
-
                 )
 
                 .substring(
-
                     0,
-
                     19
-
                 );
 
         return `${prefix}_${date}`;
