@@ -119,10 +119,15 @@ export default class PatrolModel {
          */
         this.track = [];
 
-        /**
-         * Journal chronologique.
-         */
-        this.events = [];
+        /**************************************************************
+         * Evènements système.
+         *
+         * Utilisés par le moteur Patrol.
+         *
+         * Ils ne sont pas destinés à être affichés directement
+         * dans l'interface utilisateur.
+         *************************************************************/
+        this.systemEvents = [];
 
         /**
          * Journal opérationnel.
@@ -235,7 +240,7 @@ export default class PatrolModel {
      */
     addEvent(event) {
 
-        this.events.push({
+        this.systemEvents.push({
 
             id: crypto.randomUUID(),
 
