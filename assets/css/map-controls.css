@@ -159,7 +159,7 @@
     height: 28px;
     object-fit: contain;
     pointer-events: none;
-    filter: brightness(1.3) saturate(1.35) drop-shadow(0 0 2px rgba(255,190,55,.7));
+    filter: brightness(1.16) saturate(1.22);
 }
 
 .opsar-measure-readout[hidden] { display: none; }
@@ -210,7 +210,9 @@
 .opsar-measure-status, .opsar-measure-hint { display: block; margin-top: 5px; color: rgba(226,232,240,.72); font-size: 11px; line-height: 1.4; }
 .opsar-measure-header > button { border: 0; color: #fff; background: transparent; font-size: 24px; cursor: pointer; }
 .opsar-measure-total { margin: 12px 0 4px; color: #f4b942; font-size: 27px; font-weight: 700; }
-.opsar-measure-segments { margin: 10px 0; padding: 0; list-style: none; }
+.opsar-measure-points, .opsar-measure-segments { margin: 10px 0; padding: 0; list-style: none; }
+.opsar-measure-points li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; font-size: 12px; }
+.opsar-measure-points button { padding: 5px 8px; color: #fff; background: rgba(168,58,58,.72); border: 1px solid rgba(255,255,255,.18); border-radius: 7px; cursor: pointer; }
 .opsar-measure-segments li { padding: 7px 0; border-top: 1px solid rgba(255,255,255,.1); font-size: 12px; }
 .opsar-measure-panel footer { justify-content: flex-end; margin-top: 10px; }
 .opsar-measure-panel footer button { padding: 7px 10px; color: #fff; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); border-radius: 8px; cursor: pointer; }

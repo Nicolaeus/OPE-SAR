@@ -3,6 +3,7 @@ export default class DistanceMeasure {
         this.map = map;
         this.button = button;
         this.points = [];
+        this.markers = [];
         this.active = false;
         this.layer = L.layerGroup().addTo(map);
         this.panel = this.createPanel();
@@ -23,6 +24,10 @@ export default class DistanceMeasure {
             if (action === 'finish') this.setActive(false);
             if (action === 'clear') this.clear();
             if (action === 'close') this.closePanel();
+            if (action === 'delete-waypoint') {
+                const index = Number(event.target.closest('[data-waypoint-index]')?.dataset.waypointIndex);
+                this.removeWaypoint(index);
+            }
         });
     }
 
@@ -38,6 +43,7 @@ export default class DistanceMeasure {
             </header>
             <div class="opsar-measure-total">0 m</div>
             <div class="opsar-measure-hint">Activez l’outil, puis cliquez sur la carte pour ajouter des waypoints.</div>
+            <ol class="opsar-measure-points"></ol>
             <ol class="opsar-measure-segments"></ol>
             <footer>
                 <button type="button" data-measure-action="clear">Effacer</button>
@@ -69,46 +75,65 @@ export default class DistanceMeasure {
         const point = L.latLng(latlng.lat, latlng.lng);
         this.points.push(point);
         const marker = L.marker(point, {
-            icon: L.divIcon({
-                className: 'opsar-measure-marker',
-                html: `<span>${this.points.length}</span>`,
-                iconSize: [28, 28],
-                iconAnchor: [14, 14]
-            }),
+            icon: this.createWaypointIcon(this.points.length),
             interactive: true,
             bubblingMouseEvents: false,
             keyboard: false
         });
         marker.addTo(this.layer);
-        this.enableWaypointEditing(marker, this.points.length - 1);
+        this.markers.push(marker);
+        this.enableWaypointEditing(marker);
+        marker.on('contextmenu', event => {
+            L.DomEvent.preventDefault(event.originalEvent);
+            this.removeWaypoint(this.markers.indexOf(marker));
+        });
+        this.renderWaypoints();
         this.renderLine();
         this.renderSegments();
     }
 
-    enableWaypointEditing(marker, index) {
+    createWaypointIcon(number) {
+        return L.divIcon({
+            className: 'opsar-measure-marker',
+            html: `<span>${number}</span>`,
+            iconSize: [28, 28],
+            iconAnchor: [14, 14]
+        });
+    }
+
+    enableWaypointEditing(marker) {
         const element = marker.getElement();
         if (!element) return;
+        if (marker._measurePointerElement && marker._measurePointerHandler) {
+            marker._measurePointerElement.removeEventListener('pointerdown', marker._measurePointerHandler);
+        }
         element.title = 'Déplacer le waypoint';
         element.style.cursor = 'grab';
-        element.addEventListener('pointerdown', event => {
+        marker._measurePointerElement = element;
+        marker._measurePointerHandler = event => {
             if (event.button !== undefined && event.button !== 0) return;
             event.preventDefault();
             event.stopPropagation();
+            const index = this.markers.indexOf(marker);
+            if (index < 0) return;
             if (event.pointerType === 'touch') {
-                const timer = setTimeout(() => this.beginWaypointDrag(marker, index, event.pointerId), 450);
+                const timer = setTimeout(() => this.beginWaypointDrag(marker, event.pointerId), 450);
                 this.dragState = { marker, index, pointerId: event.pointerId, timer, started: false, startX: event.clientX, startY: event.clientY };
                 window.addEventListener('pointermove', this.pendingTouchMoveHandler);
                 window.addEventListener('pointerup', this.dragEndHandler);
                 window.addEventListener('pointercancel', this.dragEndHandler);
                 return;
             }
-            this.beginWaypointDrag(marker, index, event.pointerId);
-        });
+            this.beginWaypointDrag(marker, event.pointerId);
+        };
+        element.addEventListener('pointerdown', marker._measurePointerHandler);
     }
 
-    beginWaypointDrag(marker, index, pointerId) {
+    beginWaypointDrag(marker, pointerId) {
         const prior = this.dragState;
         if (prior?.timer) clearTimeout(prior.timer);
+        const index = this.markers.indexOf(marker);
+        if (index < 0) return;
         this.dragState = { marker, index, pointerId, started: true, mapWasDragging: this.map.dragging.enabled() };
         marker.getElement()?.classList.add('is-dragging');
         this.map.dragging.disable();
@@ -186,6 +211,29 @@ export default class DistanceMeasure {
         this.updateHint();
     }
 
+    renderWaypoints() {
+        const list = this.panel.querySelector('.opsar-measure-points');
+        list.innerHTML = this.points.map((_, index) => `
+            <li>
+                <span>Waypoint ${index + 1}</span>
+                <button type="button" data-measure-action="delete-waypoint" data-waypoint-index="${index}" aria-label="Supprimer le waypoint ${index + 1}">Supprimer</button>
+            </li>`).join('');
+        this.markers.forEach((marker, index) => {
+            marker.setIcon(this.createWaypointIcon(index + 1));
+            this.enableWaypointEditing(marker);
+        });
+    }
+
+    removeWaypoint(index) {
+        if (!Number.isInteger(index) || index < 0 || index >= this.points.length) return;
+        const [marker] = this.markers.splice(index, 1);
+        this.points.splice(index, 1);
+        this.layer.removeLayer(marker);
+        this.renderWaypoints();
+        this.renderLine();
+        this.renderSegments();
+    }
+
     getTotal() {
         return this.points.slice(1).reduce((total, point, index) => total + this.points[index].distanceTo(point), 0);
     }
@@ -228,6 +276,8 @@ export default class DistanceMeasure {
         this.preview = null;
         this.panel.querySelector('.opsar-measure-segments').innerHTML = '';
         this.panel.querySelector('.opsar-measure-total').textContent = '0 m';
+        this.markers = [];
+        this.renderWaypoints();
         this.updateButtonReadout();
         this.updateHint();
     }
