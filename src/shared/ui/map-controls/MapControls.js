@@ -24,6 +24,7 @@ export default class MapControls {
 
             <button class="opsar-map-btn opsar-map-btn-standalone opsar-measure-btn" data-action="measure" aria-label="Mesurer une distance" aria-pressed="false" title="Mesurer une distance">
                 <img class="opsar-measure-icon" src="./assets/images/compass/compass-64.png" alt="">
+                <span class="opsar-measure-readout" aria-hidden="true" hidden></span>
             </button>
 
             <button class="opsar-map-btn opsar-map-btn-standalone" data-action="reset-view" aria-label="Vue par défaut">

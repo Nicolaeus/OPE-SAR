@@ -100,6 +100,7 @@ export default class DistanceMeasure {
             this.preview = null;
         }
         this.panel.querySelector('.opsar-measure-total').textContent = this.formatDistance(this.getTotal());
+        this.updateButtonReadout();
         this.updateHint();
     }
 
@@ -122,6 +123,25 @@ export default class DistanceMeasure {
         return `${nauticalMiles.toFixed(2)} NM (${kilometers.toFixed(2)} km)`;
     }
 
+    updateButtonReadout() {
+        const icon = this.button.querySelector('.opsar-measure-icon');
+        const readout = this.button.querySelector('.opsar-measure-readout');
+        const hasRoute = this.points.length > 1;
+        this.button.classList.toggle('has-route', hasRoute);
+        icon.hidden = hasRoute;
+        readout.hidden = !hasRoute;
+        if (hasRoute) {
+            const nauticalMiles = this.getTotal() / 1852;
+            readout.textContent = `${nauticalMiles.toFixed(2)} NM`;
+            const accessibleLabel = `Mesure de ${this.formatDistance(this.getTotal())}`;
+            this.button.setAttribute('aria-label', accessibleLabel);
+            this.button.title = accessibleLabel;
+        } else {
+            this.button.setAttribute('aria-label', 'Mesurer une distance');
+            this.button.title = 'Mesurer une distance';
+        }
+    }
+
     updateHint() {
         const hint = this.panel.querySelector('.opsar-measure-hint');
         if (this.points.length === 0) hint.textContent = this.active ? 'Cliquez sur la carte pour placer le waypoint 1.' : 'Activez l’outil, puis cliquez sur la carte pour ajouter des waypoints.';
@@ -135,6 +155,7 @@ export default class DistanceMeasure {
         this.preview = null;
         this.panel.querySelector('.opsar-measure-segments').innerHTML = '';
         this.panel.querySelector('.opsar-measure-total').textContent = '0 m';
+        this.updateButtonReadout();
         this.updateHint();
     }
 
