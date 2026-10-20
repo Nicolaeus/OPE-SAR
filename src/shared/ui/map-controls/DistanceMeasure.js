@@ -22,6 +22,7 @@ export default class DistanceMeasure {
         this.panel.addEventListener('click', event => {
             const action = event.target.closest('[data-measure-action]')?.dataset.measureAction;
             if (action === 'finish') this.setActive(false);
+            if (action === 'toggle') this.setActive(!this.active);
             if (action === 'clear') this.clear();
             if (action === 'close') this.closePanel();
             if (action === 'delete-waypoint') {
@@ -38,16 +39,22 @@ export default class DistanceMeasure {
         panel.setAttribute('aria-label', 'Mesure de distance');
         panel.innerHTML = `
             <header class="opsar-measure-header">
-                <div><strong>Mesure de distance</strong><span class="opsar-measure-status"></span></div>
-                <button type="button" data-measure-action="close" aria-label="Fermer">×</button>
+                <div class="opsar-measure-title">
+                    <img src="./assets/images/compass/compass-48.png" alt="">
+                    <div><strong>Mesure de distance</strong><span class="opsar-measure-status"></span></div>
+                </div>
+                <button class="opsar-measure-close" type="button" data-measure-action="close" aria-label="Fermer">×</button>
             </header>
-            <div class="opsar-measure-total">0 m</div>
+            <div class="opsar-measure-summary">
+                <span>Distance totale</span>
+                <strong class="opsar-measure-total">0.00 NM <small>(0.00 km)</small></strong>
+            </div>
             <div class="opsar-measure-hint">Activez l’outil, puis cliquez sur la carte pour ajouter des waypoints.</div>
+            <div class="opsar-measure-list-heading"><span>Waypoints</span><span class="opsar-measure-count">0</span></div>
             <ol class="opsar-measure-points"></ol>
-            <ol class="opsar-measure-segments"></ol>
             <footer>
-                <button type="button" data-measure-action="clear">Effacer</button>
-                <button type="button" data-measure-action="finish">Terminer</button>
+                <button class="opsar-measure-clear" type="button" data-measure-action="clear">Effacer</button>
+                <button class="opsar-measure-continue" type="button" data-measure-action="toggle">Démarrer</button>
             </footer>`;
         return panel;
     }
@@ -62,11 +69,16 @@ export default class DistanceMeasure {
         this.button.setAttribute('aria-pressed', String(active));
         this.map.getContainer().classList.toggle('opsar-measure-cursor', active);
         this.panel.classList.add('is-visible');
-        this.panel.querySelector('.opsar-measure-status').textContent = active ? 'Cliquez sur la carte pour ajouter un point' : 'Mesure en pause';
+        this.panel.querySelector('.opsar-measure-status').textContent = active ? 'Route en cours' : (this.points.length ? 'Mesure en pause' : 'Prête à mesurer');
+        const continueButton = this.panel.querySelector('.opsar-measure-continue');
+        continueButton.textContent = active ? 'Terminer' : (this.points.length ? 'Continuer la route' : 'Démarrer');
+        continueButton.classList.toggle('is-finish', active);
+        this.panel.classList.toggle('is-measuring', active);
         this.updateHint();
         if (!active && this.preview) {
             this.layer.removeLayer(this.preview);
             this.preview = null;
+            this.panel.querySelector('.opsar-measure-total').innerHTML = this.formatDistanceMarkup(this.getTotal());
         }
     }
 
@@ -183,7 +195,7 @@ export default class DistanceMeasure {
         }
         this.preview.setLatLngs([this.points[this.points.length - 1], latlng]);
         const current = this.getTotal() + this.points[this.points.length - 1].distanceTo(latlng);
-        this.panel.querySelector('.opsar-measure-total').textContent = this.formatDistance(current) + ' (aperçu)';
+        this.panel.querySelector('.opsar-measure-total').innerHTML = `${this.formatDistanceMarkup(current)} <em class="opsar-measure-preview-label">Aperçu</em>`;
     }
 
     renderLine() {
@@ -197,26 +209,27 @@ export default class DistanceMeasure {
             this.layer.removeLayer(this.preview);
             this.preview = null;
         }
-        this.panel.querySelector('.opsar-measure-total').textContent = this.formatDistance(this.getTotal());
+        this.panel.querySelector('.opsar-measure-total').innerHTML = this.formatDistanceMarkup(this.getTotal());
         this.updateButtonReadout();
         this.updateHint();
     }
 
     renderSegments() {
-        const list = this.panel.querySelector('.opsar-measure-segments');
-        list.innerHTML = this.points.slice(1).map((point, index) => {
-            const distance = this.points[index].distanceTo(point);
-            return `<li><span>Waypoint ${index + 1} → ${index + 2}</span><strong>${this.formatDistance(distance)}</strong></li>`;
-        }).join('');
+        this.renderWaypoints();
         this.updateHint();
     }
 
     renderWaypoints() {
         const list = this.panel.querySelector('.opsar-measure-points');
+        this.panel.querySelector('.opsar-measure-count').textContent = this.points.length;
         list.innerHTML = this.points.map((_, index) => `
             <li>
-                <span>Waypoint ${index + 1}</span>
-                <button type="button" data-measure-action="delete-waypoint" data-waypoint-index="${index}" aria-label="Supprimer le waypoint ${index + 1}">Supprimer</button>
+                <span class="opsar-measure-point-number">${String(index + 1).padStart(2, '0')}</span>
+                <span class="opsar-measure-point-info">
+                    <strong>Waypoint ${index + 1}</strong>
+                    <small>${index === 0 ? 'Départ' : this.formatDistance(this.points[index - 1].distanceTo(this.points[index]))}</small>
+                </span>
+                <button type="button" data-measure-action="delete-waypoint" data-waypoint-index="${index}" aria-label="Supprimer le waypoint ${index + 1}" title="Supprimer le waypoint ${index + 1}">×</button>
             </li>`).join('');
         this.markers.forEach((marker, index) => {
             marker.setIcon(this.createWaypointIcon(index + 1));
@@ -244,6 +257,12 @@ export default class DistanceMeasure {
         return `${nauticalMiles.toFixed(2)} NM (${kilometers.toFixed(2)} km)`;
     }
 
+    formatDistanceMarkup(meters) {
+        const nauticalMiles = (meters / 1852).toFixed(2);
+        const kilometers = (meters / 1000).toFixed(2);
+        return `${nauticalMiles} NM <small>(${kilometers} km)</small>`;
+    }
+
     updateButtonReadout() {
         const icon = this.button.querySelector('.opsar-measure-icon');
         const readout = this.button.querySelector('.opsar-measure-readout');
@@ -265,20 +284,21 @@ export default class DistanceMeasure {
 
     updateHint() {
         const hint = this.panel.querySelector('.opsar-measure-hint');
-        if (this.points.length === 0) hint.textContent = this.active ? 'Cliquez sur la carte pour placer le waypoint 1.' : 'Activez l’outil, puis cliquez sur la carte pour ajouter des waypoints.';
-        else if (this.active) hint.textContent = `Waypoint ${this.points.length} placé · cliquez pour ajouter le suivant. Glissez un point pour le déplacer (maintien sur mobile).`;
-        else hint.textContent = `${this.points.length} waypoint${this.points.length > 1 ? 's' : ''} placé${this.points.length > 1 ? 's' : ''} · glissez un point pour le déplacer (maintien sur mobile).`;
+        if (this.points.length === 0) hint.textContent = this.active ? 'Cliquez sur la carte pour placer le premier waypoint.' : 'Démarrez une mesure, puis cliquez sur la carte pour poser le premier waypoint.';
+        else if (this.active) hint.textContent = `Cliquez sur la carte pour prolonger la route après le waypoint ${this.points.length}. Glissez un point pour le déplacer.`;
+        else hint.textContent = `${this.points.length} waypoint${this.points.length > 1 ? 's' : ''} · choisissez « Continuer la route » pour reprendre, puis cliquez sur la carte. Sur mobile, maintenez un point pour le déplacer.`;
     }
 
     clear() {
         this.points = [];
         this.layer.clearLayers();
         this.preview = null;
-        this.panel.querySelector('.opsar-measure-segments').innerHTML = '';
-        this.panel.querySelector('.opsar-measure-total').textContent = '0 m';
+        this.panel.querySelector('.opsar-measure-total').innerHTML = this.formatDistanceMarkup(0);
         this.markers = [];
         this.renderWaypoints();
         this.updateButtonReadout();
+        this.panel.querySelector('.opsar-measure-status').textContent = this.active ? 'Route en cours' : 'Prête à mesurer';
+        this.panel.querySelector('.opsar-measure-continue').textContent = this.active ? 'Terminer' : 'Démarrer';
         this.updateHint();
     }
 
