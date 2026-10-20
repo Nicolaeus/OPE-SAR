@@ -150,6 +150,57 @@
 
 }
 
+.opsar-measure-btn.is-active {
+    background: linear-gradient(180deg, rgba(244,185,66,.95), rgba(190,117,20,.95));
+}
+
+.opsar-measure-icon {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.opsar-measure-cursor,
+.opsar-measure-cursor .leaflet-grab,
+.opsar-measure-cursor .leaflet-interactive {
+    cursor: url('../images/compass/compass-cursor.png') 23 57, crosshair !important;
+}
+
+.opsar-measure-panel {
+    position: fixed;
+    right: 76px;
+    bottom: calc(28px + var(--dock-height, 60px) + 18px + env(safe-area-inset-bottom));
+    z-index: 12001;
+    display: none;
+    width: min(310px, calc(100vw - 100px));
+    max-height: min(55vh, 420px);
+    overflow: auto;
+    padding: 14px;
+    color: #f8fafc;
+    background: linear-gradient(180deg, rgba(30,40,60,.96), rgba(14,20,34,.97));
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.3);
+    box-sizing: border-box;
+}
+
+.opsar-measure-panel.is-visible { display: block; }
+.opsar-measure-header, .opsar-measure-header > div, .opsar-measure-panel footer,
+.opsar-measure-segments li { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.opsar-measure-header strong { display: block; font-size: 14px; }
+.opsar-measure-status, .opsar-measure-hint { display: block; margin-top: 5px; color: rgba(226,232,240,.72); font-size: 11px; line-height: 1.4; }
+.opsar-measure-header > button { border: 0; color: #fff; background: transparent; font-size: 24px; cursor: pointer; }
+.opsar-measure-total { margin: 12px 0 4px; color: #f4b942; font-size: 27px; font-weight: 700; }
+.opsar-measure-segments { margin: 10px 0; padding: 0; list-style: none; }
+.opsar-measure-segments li { padding: 7px 0; border-top: 1px solid rgba(255,255,255,.1); font-size: 12px; }
+.opsar-measure-panel footer { justify-content: flex-end; margin-top: 10px; }
+.opsar-measure-panel footer button { padding: 7px 10px; color: #fff; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); border-radius: 8px; cursor: pointer; }
+.opsar-measure-panel footer button[data-measure-action="finish"] { color: #172033; background: #f4b942; border-color: #f4b942; }
+
+.opsar-measure-marker { background: transparent; border: 0; }
+.opsar-measure-marker span { display: flex; width: 26px; height: 26px; align-items: center; justify-content: center; color: #142033; background: #f4b942; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,.4); font-size: 12px; font-weight: 700; }
+
 /* ==========================================================
    Pulse au reset Nord
    ========================================================== */

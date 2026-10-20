@@ -1,5 +1,6 @@
 import MapService from '../../../modules/map/services/MapService.js';
 import RecenterMenu from './RecenterMenu.js';
+import DistanceMeasure from './DistanceMeasure.js';
 
 export default class MapControls {
     static create(map) {
@@ -19,6 +20,10 @@ export default class MapControls {
 
             <button class="opsar-map-btn opsar-map-btn-standalone" data-action="recenter" aria-label="Recentrer">
                 <span class="opsar-map-icon">🎯</span>
+            </button>
+
+            <button class="opsar-map-btn opsar-map-btn-standalone opsar-measure-btn" data-action="measure" aria-label="Mesurer une distance" aria-pressed="false" title="Mesurer une distance">
+                <img class="opsar-measure-icon" src="./assets/images/compass/compass-64.png" alt="">
             </button>
 
             <button class="opsar-map-btn opsar-map-btn-standalone" data-action="reset-view" aria-label="Vue par défaut">
@@ -52,6 +57,9 @@ export default class MapControls {
             .addEventListener('click', ()=> {
                MapService.resetView();
             });
+
+        const measure = new DistanceMeasure(map, wrapper.querySelector('[data-action="measure"]'));
+        measure.init();
 
         return wrapper;
     }
