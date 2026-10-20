@@ -1,3 +1,5 @@
+import BaseCard from '../cards/BaseCard.js';
+
 export default class DistanceMeasure {
     constructor(map, button) {
         this.map = map;
@@ -13,6 +15,8 @@ export default class DistanceMeasure {
 
     init() {
         document.getElementById('app').appendChild(this.panel);
+        this.bringPanelToFront();
+        this.makePanelDraggable();
         this.button.addEventListener('click', () => this.toggle());
         this.map.on('click', event => this.addPoint(event.latlng));
         this.map.on('mousemove', event => this.updatePreview(event.latlng));
@@ -30,6 +34,49 @@ export default class DistanceMeasure {
                 this.removeWaypoint(index);
             }
         });
+    }
+
+    makePanelDraggable() {
+        const header = this.panel.querySelector('.opsar-measure-header');
+        let drag = null;
+        header.addEventListener('pointerdown', event => {
+            if (event.button !== 0 || event.target.closest('button')) return;
+            const bounds = this.panel.getBoundingClientRect();
+            drag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, left: bounds.left, top: bounds.top };
+            this.panel.style.left = `${bounds.left}px`;
+            this.panel.style.top = `${bounds.top}px`;
+            this.panel.style.right = 'auto';
+            this.panel.style.bottom = 'auto';
+            this.bringPanelToFront();
+            header.classList.add('is-dragging');
+            header.setPointerCapture(event.pointerId);
+            event.preventDefault();
+        });
+        header.addEventListener('pointermove', event => {
+            if (!drag || event.pointerId !== drag.pointerId) return;
+            const maxLeft = Math.max(8, window.innerWidth - this.panel.offsetWidth - 8);
+            const maxTop = Math.max(8, window.innerHeight - this.panel.offsetHeight - 8);
+            const left = Math.min(maxLeft, Math.max(8, drag.left + event.clientX - drag.x));
+            const top = Math.min(maxTop, Math.max(8, drag.top + event.clientY - drag.y));
+            this.panel.style.left = `${left}px`;
+            this.panel.style.top = `${top}px`;
+        });
+        const stopDragging = event => {
+            if (!drag || event.pointerId !== drag.pointerId) return;
+            drag = null;
+            header.classList.remove('is-dragging');
+            if (header.hasPointerCapture(event.pointerId)) header.releasePointerCapture(event.pointerId);
+        };
+        header.addEventListener('pointerup', stopDragging);
+        header.addEventListener('pointercancel', stopDragging);
+        this.panel.addEventListener('pointerdown', () => {
+            this.bringPanelToFront();
+        }, { passive: true });
+    }
+
+    bringPanelToFront() {
+        BaseCard.zIndex += 1;
+        this.panel.style.zIndex = String(BaseCard.zIndex);
     }
 
     createPanel() {

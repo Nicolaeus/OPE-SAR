@@ -206,6 +206,8 @@
 
 .opsar-measure-panel.is-visible { display: block; }
 .opsar-measure-header, .opsar-measure-panel footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.opsar-measure-header { cursor: grab; touch-action: none; user-select: none; }
+.opsar-measure-header.is-dragging { cursor: grabbing; }
 .opsar-measure-title { display: flex; align-items: center; gap: 10px; }
 .opsar-measure-title img { width: 25px; height: 25px; object-fit: contain; }
 .opsar-measure-title strong { display: block; font-size: 14px; letter-spacing: .01em; }
