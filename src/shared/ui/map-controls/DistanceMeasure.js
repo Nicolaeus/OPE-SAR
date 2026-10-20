@@ -117,8 +117,9 @@ export default class DistanceMeasure {
     }
 
     formatDistance(meters) {
-        if (meters < 1000) return `${Math.round(meters)} m`;
-        return `${(meters / 1000).toFixed(2)} km`;
+        const nauticalMiles = meters / 1852;
+        const kilometers = meters / 1000;
+        return `${nauticalMiles.toFixed(2)} NM (${kilometers.toFixed(2)} km)`;
     }
 
     updateHint() {
