@@ -7,6 +7,7 @@ export default class DistanceMeasure {
         this.layer = L.layerGroup().addTo(map);
         this.panel = this.createPanel();
         this.preview = null;
+        this.dragState = null;
     }
 
     init() {
@@ -14,6 +15,9 @@ export default class DistanceMeasure {
         this.button.addEventListener('click', () => this.toggle());
         this.map.on('click', event => this.addPoint(event.latlng));
         this.map.on('mousemove', event => this.updatePreview(event.latlng));
+        this.dragMoveHandler = event => this.moveWaypoint(event);
+        this.dragEndHandler = event => this.endWaypointDrag(event);
+        this.pendingTouchMoveHandler = event => this.moveWaypoint(event);
         this.panel.addEventListener('click', event => {
             const action = event.target.closest('[data-measure-action]')?.dataset.measureAction;
             if (action === 'finish') this.setActive(false);
@@ -71,11 +75,80 @@ export default class DistanceMeasure {
                 iconSize: [28, 28],
                 iconAnchor: [14, 14]
             }),
-            interactive: false
+            interactive: true,
+            bubblingMouseEvents: false,
+            keyboard: false
         });
         marker.addTo(this.layer);
+        this.enableWaypointEditing(marker, this.points.length - 1);
         this.renderLine();
         this.renderSegments();
+    }
+
+    enableWaypointEditing(marker, index) {
+        const element = marker.getElement();
+        if (!element) return;
+        element.title = 'Déplacer le waypoint';
+        element.style.cursor = 'grab';
+        element.addEventListener('pointerdown', event => {
+            if (event.button !== undefined && event.button !== 0) return;
+            event.preventDefault();
+            event.stopPropagation();
+            if (event.pointerType === 'touch') {
+                const timer = setTimeout(() => this.beginWaypointDrag(marker, index, event.pointerId), 450);
+                this.dragState = { marker, index, pointerId: event.pointerId, timer, started: false, startX: event.clientX, startY: event.clientY };
+                window.addEventListener('pointermove', this.pendingTouchMoveHandler);
+                window.addEventListener('pointerup', this.dragEndHandler);
+                window.addEventListener('pointercancel', this.dragEndHandler);
+                return;
+            }
+            this.beginWaypointDrag(marker, index, event.pointerId);
+        });
+    }
+
+    beginWaypointDrag(marker, index, pointerId) {
+        const prior = this.dragState;
+        if (prior?.timer) clearTimeout(prior.timer);
+        this.dragState = { marker, index, pointerId, started: true, mapWasDragging: this.map.dragging.enabled() };
+        marker.getElement()?.classList.add('is-dragging');
+        this.map.dragging.disable();
+        window.removeEventListener('pointermove', this.pendingTouchMoveHandler);
+        window.addEventListener('pointermove', this.dragMoveHandler);
+        window.addEventListener('pointerup', this.dragEndHandler);
+        window.addEventListener('pointercancel', this.dragEndHandler);
+    }
+
+    moveWaypoint(event) {
+        const drag = this.dragState;
+        if (!drag || (event.pointerId !== undefined && event.pointerId !== drag.pointerId)) return;
+        if (!drag.started) {
+            const dx = event.clientX - drag.startX;
+            const dy = event.clientY - drag.startY;
+            if (Math.hypot(dx, dy) > 12) clearTimeout(drag.timer);
+            return;
+        }
+        const rect = this.map.getContainer().getBoundingClientRect();
+        const point = this.map.containerPointToLatLng(L.point(event.clientX - rect.left, event.clientY - rect.top));
+        this.points[drag.index] = point;
+        drag.marker.setLatLng(point);
+        this.renderLine();
+        this.renderSegments();
+        event.preventDefault();
+    }
+
+    endWaypointDrag(event) {
+        const drag = this.dragState;
+        if (!drag || (event.pointerId !== undefined && event.pointerId !== drag.pointerId)) return;
+        if (drag.timer) clearTimeout(drag.timer);
+        if (drag.started) {
+            drag.marker.getElement()?.classList.remove('is-dragging');
+            if (drag.mapWasDragging) this.map.dragging.enable();
+        }
+        this.dragState = null;
+        window.removeEventListener('pointermove', this.dragMoveHandler);
+        window.removeEventListener('pointermove', this.pendingTouchMoveHandler);
+        window.removeEventListener('pointerup', this.dragEndHandler);
+        window.removeEventListener('pointercancel', this.dragEndHandler);
     }
 
     updatePreview(latlng) {
@@ -145,8 +218,8 @@ export default class DistanceMeasure {
     updateHint() {
         const hint = this.panel.querySelector('.opsar-measure-hint');
         if (this.points.length === 0) hint.textContent = this.active ? 'Cliquez sur la carte pour placer le waypoint 1.' : 'Activez l’outil, puis cliquez sur la carte pour ajouter des waypoints.';
-        else if (this.active) hint.textContent = `Waypoint ${this.points.length} placé · cliquez pour ajouter le suivant.`;
-        else hint.textContent = `${this.points.length} waypoint${this.points.length > 1 ? 's' : ''} placé${this.points.length > 1 ? 's' : ''}.`;
+        else if (this.active) hint.textContent = `Waypoint ${this.points.length} placé · cliquez pour ajouter le suivant. Glissez un point pour le déplacer (maintien sur mobile).`;
+        else hint.textContent = `${this.points.length} waypoint${this.points.length > 1 ? 's' : ''} placé${this.points.length > 1 ? 's' : ''} · glissez un point pour le déplacer (maintien sur mobile).`;
     }
 
     clear() {
