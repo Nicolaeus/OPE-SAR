@@ -43,7 +43,7 @@ body {
     top: calc(10px + env(safe-area-inset-top));
     left: calc(10px + env(safe-area-inset-left));
 
-    z-index: 9999;
+    z-index: 2000;
 
     background: white;
 

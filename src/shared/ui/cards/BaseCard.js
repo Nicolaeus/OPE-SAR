@@ -1,7 +1,13 @@
 export default class BaseCard {
 
-    static zIndex =
-        15000;
+    // Keep every card above the app header and options, but below the footer.
+    static zIndex = 3000;
+    static maxZIndex = 3999;
+
+    static nextZIndex() {
+        BaseCard.zIndex = Math.min(BaseCard.zIndex + 1, BaseCard.maxZIndex);
+        return BaseCard.zIndex;
+    }
 
     constructor(config = {}) {
 
@@ -290,10 +296,8 @@ export default class BaseCard {
             return;
         }
 
-        BaseCard.zIndex += 1;
-
         card.style.zIndex =
-            BaseCard.zIndex;
+            BaseCard.nextZIndex();
 
     }
 

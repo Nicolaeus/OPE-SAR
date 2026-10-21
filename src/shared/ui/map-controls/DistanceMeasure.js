@@ -20,6 +20,11 @@ export default class DistanceMeasure {
         this.button.addEventListener('click', () => this.toggle());
         this.map.on('click', event => this.addPoint(event.latlng));
         this.map.on('mousemove', event => this.updatePreview(event.latlng));
+        this.panel.querySelector('.opsar-card-close').addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            this.closePanel();
+        });
         this.dragMoveHandler = event => this.moveWaypoint(event);
         this.dragEndHandler = event => this.endWaypointDrag(event);
         this.pendingTouchMoveHandler = event => this.moveWaypoint(event);
@@ -77,8 +82,7 @@ export default class DistanceMeasure {
     }
 
     bringPanelToFront() {
-        BaseCard.zIndex += 1;
-        this.panel.style.zIndex = String(BaseCard.zIndex);
+        this.panel.style.zIndex = String(BaseCard.nextZIndex());
     }
 
     togglePanelCollapse(forceExpanded = null) {
