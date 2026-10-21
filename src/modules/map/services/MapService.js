@@ -2,6 +2,9 @@ import Store from '../../../core/store/Store.js';
 import mapConfig from '../../../core/config/map.config.js';
 import { createBaseLayers } from '../layers/BaseLayers.js';
 import PositionService from './PositionService.js';
+import StationService from '../../stations/services/StationService.js';
+import StationReferenceService from '../../stations/services/StationReferenceService.js';
+import NotificationService from '../../../core/services/NotificationService.js';
 
 export default class MapService {
 
@@ -93,14 +96,44 @@ export default class MapService {
             await PositionService.getCurrentPosition();
     
         if (!position) {
+            NotificationService.warning(
+                'Position navire indisponible. Vérifiez l’autorisation de localisation et le GPS de l’appareil.'
+            );
             return;
         }
-    
-        this.flyTo(
-            position.latitude,
-            position.longitude,
-            16
+
+        const map = this.getMap();
+        if (!map) return;
+
+        map.flyTo(
+            [position.latitude, position.longitude],
+            16,
+            { animate: true, duration: 1.2 }
         );
+
+    }
+
+    static centerOnSelectedVessel() {
+
+        return this.centerOnCurrentPosition();
+
+    }
+
+    static centerOnSelectedStation() {
+
+        const stationId = StationReferenceService.get();
+        const station = stationId
+            ? StationService.getById(stationId)
+            : null;
+
+        if (!station) {
+            NotificationService.warning(
+                'Aucune station de référence n’est définie.'
+            );
+            return;
+        }
+
+        this.centerOnStation(station);
     
     }
     
@@ -113,10 +146,13 @@ export default class MapService {
             return;
         }
     
-        this.flyTo(
-            position.latitude,
-            position.longitude,
-            16
+        const map = this.getMap();
+        if (!map) return;
+
+        map.flyTo(
+            [position.latitude, position.longitude],
+            16,
+            { animate: true, duration: 1.2 }
         );
     
     }

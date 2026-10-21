@@ -60,12 +60,14 @@ export default class PositionService {
             return null;
         }
 
-        return {
+        const latitude = Number(station.lat ?? station.latitude);
+        const longitude = Number(station.lng ?? station.longitude);
 
-            latitude: station.latitude,
-            longitude: station.longitude
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+            return null;
+        }
 
-        };
+        return { latitude, longitude };
 
     }
 
