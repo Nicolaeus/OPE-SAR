@@ -1,4 +1,5 @@
 import OSCCard from './cards/OSCCard.js';
+import OSCService from './services/OSCService.js';
 
 export default {
 
@@ -11,11 +12,17 @@ export default {
     icon:
         '🎯',
 
-    init() {
+    async init() {
 
         console.log(
             '🎯 Initialisation module OSC'
         );
+
+        try {
+            await OSCService.initialize();
+        } catch (error) {
+            console.error('Impossible de restaurer la mission OSC.', error);
+        }
 
         window.addEventListener(
             'navigation:change',

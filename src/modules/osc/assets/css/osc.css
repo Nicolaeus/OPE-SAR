@@ -32,6 +32,101 @@
 
 }
 
+.osc-asset-row > summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    color: #e2e8f0;
+}
+
+.osc-asset-fields,
+.osc-record-row {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(15, 23, 42, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.osc-field {
+    display: grid;
+    gap: 5px;
+    margin: 9px 0;
+    color: #cbd5e1;
+    font-size: 0.84rem;
+}
+
+.osc-field .opsar-input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    color: #f8fafc;
+}
+
+.osc-coordinate-grid,
+.osc-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.osc-tools-grid {
+    margin: 8px 0 12px;
+}
+
+.osc-tools-grid .opsar-btn {
+    min-height: 42px;
+    white-space: normal;
+}
+
+.osc-muted {
+    margin: 6px 0;
+    color: #94a3b8;
+    font-size: 0.78rem;
+    line-height: 1.4;
+}
+
+.osc-record-list {
+    display: grid;
+    gap: 7px;
+    margin-top: 10px;
+    max-height: 42vh;
+    overflow-y: auto;
+}
+
+.osc-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.osc-checkbox input {
+    width: 18px;
+    height: 18px;
+}
+
+.osc-asset-row .opsar-btn-danger,
+.osc-record-row .opsar-btn-danger {
+    border-color: rgba(248, 113, 113, 0.45);
+    background: rgba(127, 29, 29, 0.55);
+}
+
+.osc-alert-warning {
+    border-color: rgba(251, 191, 36, 0.45);
+}
+
+.osc-alert-urgent {
+    border-color: rgba(248, 113, 113, 0.75);
+    background: rgba(127, 29, 29, 0.48);
+}
+
+.osc-alert-info {
+    border-color: rgba(56, 189, 248, 0.4);
+}
+
 .osc-asset-row b {
 
     color: #f8fafc;
@@ -92,6 +187,15 @@
 
         max-width: none !important;
 
+    }
+
+    .osc-coordinate-grid,
+    .osc-tools-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .osc-record-list {
+        max-height: 35vh;
     }
 
 }

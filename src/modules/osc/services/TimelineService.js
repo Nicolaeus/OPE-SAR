@@ -32,6 +32,8 @@ export default class TimelineService {
 
         );
 
+        OSCService.persist();
+
     }
 
     static getEvents() {
@@ -57,6 +59,7 @@ export default class TimelineService {
         }
 
         mission.timeline = [];
+        OSCService.persist();
 
     }
 

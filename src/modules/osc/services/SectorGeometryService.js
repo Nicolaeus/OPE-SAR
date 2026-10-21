@@ -6,10 +6,8 @@ export default class SectorGeometryService {
         sectorCount
     ) {
 
-        if (
-            !center ||
-            sectorCount < 1
-        ) {
+        if (!center || !Number.isFinite(Number(center.lat)) || !Number.isFinite(Number(center.lng)) ||
+            !Number.isFinite(Number(radiusNm)) || radiusNm <= 0 || !Number.isInteger(sectorCount) || sectorCount < 1) {
             return [];
         }
 
@@ -33,17 +31,8 @@ export default class SectorGeometryService {
         const latStep =
             sideNm / rows / 60;
 
-        const lngStep =
-            sideNm /
-            cols /
-            (
-                60 *
-                Math.cos(
-                    center.lat *
-                    Math.PI /
-                    180
-                )
-            );
+        const longitudeScale = Math.max(0.01, Math.abs(Math.cos(Number(center.lat) * Math.PI / 180)));
+        const lngStep = sideNm / cols / (60 * longitudeScale);
 
         let index = 0;
 

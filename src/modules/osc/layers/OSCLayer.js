@@ -1,3 +1,11 @@
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[char]));
+const sectorStatusLabels = {
+    pending: 'À commencer', assigned: 'Affecté', searching: 'En cours',
+    completed: 'Terminé', suspended: 'Suspendu'
+};
+
 export default class OSCLayer {
 
     static group =
@@ -62,16 +70,16 @@ export default class OSCLayer {
                     .bindPopup(`
 
                         <b>
-                            ${asset.name}
+                            ${escapeHtml(asset.name)}
                         </b>
 
                         <br>
 
-                        ${asset.type}
+                        ${escapeHtml(asset.type)}
 
                         <br>
 
-                        ${asset.status}
+                        ${escapeHtml(asset.status)}
 
                     `);
 
@@ -86,10 +94,13 @@ export default class OSCLayer {
             }
         );
 
+        if (mission.sectors?.length) this.renderSectors(mission.sectors, mission.assets);
+
     }
 	
 	static renderSectors(
-    sectors
+    sectors,
+    assets = []
 ) {
 
     const map =
@@ -128,7 +139,7 @@ export default class OSCLayer {
                     {
 
                         color:
-                            '#38bdf8',
+                            sector.status === 'completed' ? '#22c55e' : sector.status === 'suspended' ? '#ef4444' : '#38bdf8',
 
                         weight:
                             2,
@@ -142,7 +153,7 @@ export default class OSCLayer {
 
             polygon.bindTooltip(
 
-                `Secteur ${sector.name}`,
+                `Secteur ${escapeHtml(sector.name)}<br>${escapeHtml(assets.find(asset => asset.id === sector.assetId)?.name ?? 'Non affecté')}<br>${escapeHtml(sectorStatusLabels[sector.status] ?? sector.status ?? 'À commencer')}`,
 
                 {
 

@@ -50,6 +50,34 @@ export default class OSCAsset {
             data.notes ??
             '';
 
+        this.capabilities =
+            data.capabilities ??
+            '';
+
+        this.enduranceHours =
+            data.enduranceHours ??
+            null;
+
+        this.arrivedOnSceneAt =
+            data.arrivedOnSceneAt ??
+            null;
+
+        this.departedSceneAt =
+            data.departedSceneAt ??
+            null;
+
+        this.releasedAt =
+            data.releasedAt ??
+            null;
+
+        this.lastPositionAt =
+            data.lastPositionAt ??
+            null;
+
+        this.positionSource =
+            data.positionSource ??
+            '';
+
         this.createdAt =
             new Date();
 
