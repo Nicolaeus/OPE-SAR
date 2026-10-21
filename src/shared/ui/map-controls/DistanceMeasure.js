@@ -20,11 +20,10 @@ export default class DistanceMeasure {
         this.button.addEventListener('click', () => this.toggle());
         this.map.on('click', event => this.addPoint(event.latlng));
         this.map.on('mousemove', event => this.updatePreview(event.latlng));
-        this.panel.querySelector('.opsar-card-close').addEventListener('click', event => {
-            event.preventDefault();
-            event.stopPropagation();
-            this.closePanel();
+        this.panel.querySelector('.opsar-card-close').addEventListener('click', () => {
+            this.panel.dispatchEvent(new CustomEvent('card:close', { bubbles: true }));
         });
+        this.panel.addEventListener('card:close', () => this.closePanel());
         this.dragMoveHandler = event => this.moveWaypoint(event);
         this.dragEndHandler = event => this.endWaypointDrag(event);
         this.pendingTouchMoveHandler = event => this.moveWaypoint(event);
@@ -33,7 +32,6 @@ export default class DistanceMeasure {
             if (action === 'finish') this.setActive(false);
             if (action === 'toggle') this.setActive(!this.active);
             if (action === 'clear') this.clear();
-            if (action === 'close') this.closePanel();
             if (action === 'collapse') this.togglePanelCollapse();
             if (action === 'delete-waypoint') {
                 const index = Number(event.target.closest('[data-waypoint-index]')?.dataset.waypointIndex);

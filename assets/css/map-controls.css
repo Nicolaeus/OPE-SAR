@@ -208,7 +208,6 @@
 .opsar-measure-heading-text strong { display: block; font-size: 14px; letter-spacing: .01em; }
 .opsar-measure-status { display: block; color: rgba(203,213,225,.68); font-size: 11px; font-weight: 400; }
 .opsar-measure-panel .opsar-card-actions button { font-size: 16px; }
-.opsar-measure-panel .opsar-card-close { position: relative; z-index: 1; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .opsar-measure-panel .opsar-card-actions button:hover { background: rgba(244,185,66,.19); }
 .opsar-measure-panel .opsar-card-close:hover { color: white; background: rgba(248,113,113,.2); }
 .opsar-measure-body { min-height: 0; max-height: min(56vh, 420px); overflow-y: auto; padding: 14px; }
@@ -238,7 +237,6 @@
 @media (max-width: 768px) {
     .opsar-measure-panel.opsar-card { top: calc(env(safe-area-inset-top) + var(--opsar-header-height, 120px) + 12px) !important; }
     .opsar-measure-panel .opsar-measure-header { min-height: 46px; flex-basis: 46px; }
-    .opsar-measure-panel .opsar-card-close { width: 42px; height: 42px; }
     .opsar-measure-body { flex: 1; max-height: none; padding: 12px; }
 }
 
