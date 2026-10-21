@@ -187,8 +187,9 @@
 
 .opsar-measure-panel {
     position: fixed;
-    right: 76px;
-    bottom: calc(28px + var(--dock-height, 60px) + 18px + env(safe-area-inset-bottom));
+    top: 140px;
+    right: 20px;
+    bottom: auto;
     z-index: 3001;
     display: none;
     width: min(340px, calc(100vw - 16px));
