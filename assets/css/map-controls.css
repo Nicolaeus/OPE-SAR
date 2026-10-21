@@ -226,6 +226,7 @@
 .opsar-measure-point-info { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 2px; }
 .opsar-measure-point-info strong { font-size: 12px; font-weight: 600; }
 .opsar-measure-point-info small { overflow: hidden; color: rgba(203,213,225,.6); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.opsar-measure-point-info .opsar-measure-bearing { color: #ffd16b; }
 .opsar-measure-points button { display: grid; width: 28px; height: 28px; place-items: center; padding: 0; color: rgba(203,213,225,.55); background: transparent; border: 1px solid transparent; border-radius: 8px; font-size: 19px; cursor: pointer; }
 .opsar-measure-points button:hover { color: #ffaaa3; background: rgba(248,113,113,.1); border-color: rgba(248,113,113,.13); }
 .opsar-measure-panel footer { margin-top: 14px; }

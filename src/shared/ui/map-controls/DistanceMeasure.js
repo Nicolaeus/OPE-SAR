@@ -297,12 +297,13 @@ export default class DistanceMeasure {
     renderWaypoints() {
         const list = this.panel.querySelector('.opsar-measure-points');
         this.panel.querySelector('.opsar-measure-count').textContent = this.points.length;
-        list.innerHTML = this.points.map((_, index) => `
+        list.innerHTML = this.points.map((point, index) => `
             <li>
                 <span class="opsar-measure-point-number">${String(index + 1).padStart(2, '0')}</span>
                 <span class="opsar-measure-point-info">
                     <strong>Waypoint ${index + 1}</strong>
                     <small>${index === 0 ? 'Départ' : this.formatDistance(this.points[index - 1].distanceTo(this.points[index]))}</small>
+                    ${index < this.points.length - 1 ? `<small class="opsar-measure-bearing">Cap à suivre (vrai) vers WP ${index + 2} : ${this.formatBearing(point, this.points[index + 1])}</small>` : ''}
                 </span>
                 <button type="button" data-measure-action="delete-waypoint" data-waypoint-index="${index}" aria-label="Supprimer le waypoint ${index + 1}" title="Supprimer le waypoint ${index + 1}">×</button>
             </li>`).join('');
@@ -310,6 +311,21 @@ export default class DistanceMeasure {
             marker.setIcon(this.createWaypointIcon(index + 1));
             this.enableWaypointEditing(marker);
         });
+    }
+
+    formatBearing(from, to) {
+        const toRadians = degrees => degrees * Math.PI / 180;
+        const toDegrees = radians => radians * 180 / Math.PI;
+        const latitude1 = toRadians(from.lat);
+        const latitude2 = toRadians(to.lat);
+        const longitudeDelta = toRadians(to.lng - from.lng);
+        const y = Math.sin(longitudeDelta) * Math.cos(latitude2);
+        const x = Math.cos(latitude1) * Math.sin(latitude2)
+            - Math.sin(latitude1) * Math.cos(latitude2) * Math.cos(longitudeDelta);
+        const bearing = (toDegrees(Math.atan2(y, x)) + 360) % 360;
+        const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSO', 'SO', 'OSO', 'O', 'ONO', 'NO', 'NNO'];
+        const cardinal = directions[Math.round(bearing / 22.5) % directions.length];
+        return `${String(Math.round(bearing)).padStart(3, '0')}° ${cardinal}`;
     }
 
     removeWaypoint(index) {

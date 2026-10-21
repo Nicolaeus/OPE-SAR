@@ -25,12 +25,17 @@ export default class AppHeader {
 
                 </div>
 
-                <div
-                    id="currentStation"
-                    class="opsar-subtitle">
-
-                    📍 Aucune station
-
+                <div class="opsar-station-picker">
+                    <button
+                        id="currentStation"
+                        class="opsar-subtitle opsar-station-selector"
+                        type="button"
+                        aria-haspopup="listbox"
+                        aria-expanded="false">
+                        <span class="opsar-station-name">📍 Aucune station</span>
+                        <span class="opsar-station-chevron" aria-hidden="true">▾</span>
+                    </button>
+                    <div id="stationSelector" class="opsar-station-menu" role="listbox" aria-label="Stations proches" hidden></div>
                 </div>
 
             </div>

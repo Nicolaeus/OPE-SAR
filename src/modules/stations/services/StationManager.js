@@ -16,6 +16,8 @@ export default class StationManager {
         map
     );
 
+    this.initHeaderStationSelector(map);
+
     window.addEventListener(
 
         'app:ready',
@@ -33,6 +35,77 @@ export default class StationManager {
     );
 
 }
+
+    static initHeaderStationSelector(map) {
+        const selector = document.getElementById('currentStation');
+        const menu = document.getElementById('stationSelector');
+        if (!selector || !menu) return;
+
+        const closeMenu = () => {
+            menu.hidden = true;
+            selector.setAttribute('aria-expanded', 'false');
+        };
+
+        const renderNearbyStations = () => {
+            const center = map.getCenter();
+            const nearby = this.stations
+                .map(station => ({
+                    station,
+                    distance: center.distanceTo([station.lat, station.lng])
+                }))
+                .sort((a, b) => a.distance - b.distance)
+                .slice(0, 8);
+
+            menu.replaceChildren();
+            const heading = document.createElement('div');
+            heading.className = 'opsar-station-menu-heading';
+            heading.textContent = 'Stations proches de la zone affichée';
+            menu.appendChild(heading);
+
+            nearby.forEach(({ station, distance }) => {
+                const option = document.createElement('button');
+                option.type = 'button';
+                option.className = 'opsar-station-option';
+                option.setAttribute('role', 'option');
+
+                const details = document.createElement('span');
+                details.className = 'opsar-station-option-details';
+                const name = document.createElement('strong');
+                name.textContent = station.name;
+                const location = document.createElement('small');
+                location.textContent = [station.city, station.department].filter(Boolean).join(' · ') || 'Station SNSM';
+                details.append(name, location);
+
+                const distanceLabel = document.createElement('small');
+                distanceLabel.className = 'opsar-station-distance';
+                distanceLabel.textContent = `${(distance / 1852).toFixed(1)} NM`;
+                option.append(details, distanceLabel);
+                option.addEventListener('click', () => {
+                    closeMenu();
+                    this.select(station, map, { centerMap: false, openCard: false });
+                });
+                menu.appendChild(option);
+            });
+        };
+
+        selector.addEventListener('click', event => {
+            event.stopPropagation();
+            if (!menu.hidden) {
+                closeMenu();
+                return;
+            }
+            renderNearbyStations();
+            menu.hidden = false;
+            selector.setAttribute('aria-expanded', 'true');
+        });
+
+        document.addEventListener('click', event => {
+            if (!menu.contains(event.target) && !selector.contains(event.target)) closeMenu();
+        });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') closeMenu();
+        });
+    }
 
     static createMarkers(map) {
 
@@ -258,15 +331,17 @@ export default class StationManager {
 
     }
 
-    static select(station, map) {
+    static select(station, map, { centerMap = true, openCard = true } = {}) {
 
-    map.setView(
-        [
-            station.lat,
-            station.lng
-        ],
-        11
-    );
+    if (centerMap) {
+        map.setView(
+            [
+                station.lat,
+                station.lng
+            ],
+            11
+        );
+    }
 
     const label =
         document.getElementById(
@@ -274,9 +349,9 @@ export default class StationManager {
         );
 
     if (label) {
-
-        label.textContent =
-            station.name;
+        const name = label.querySelector('.opsar-station-name');
+        if (name) name.textContent = `📍 ${station.name}`;
+        else label.textContent = station.name;
 
     }
 
@@ -291,16 +366,18 @@ export default class StationManager {
         )
     );
 	
-	window.dispatchEvent(
-		new CustomEvent(
-			'station:open',
-			{
-				detail:{
-					station
+	if (openCard) {
+		window.dispatchEvent(
+			new CustomEvent(
+				'station:open',
+				{
+					detail:{
+						station
+					}
 				}
-			}
-		)
-	);
+			)
+		);
+	}
 	
 
     console.log(
