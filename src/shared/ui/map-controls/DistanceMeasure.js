@@ -14,8 +14,6 @@ export default class DistanceMeasure {
     }
 
     init() {
-        document.getElementById('app').appendChild(this.panel);
-        this.bringPanelToFront();
         this.makePanelDraggable();
         this.button.addEventListener('click', () => this.toggle());
         this.map.on('click', event => this.addPoint(event.latlng));
@@ -130,6 +128,10 @@ export default class DistanceMeasure {
     }
 
     toggle() {
+        if (!this.panel.isConnected) {
+            document.getElementById('app').appendChild(this.panel);
+            this.bringPanelToFront();
+        }
         this.setActive(!this.active);
     }
 
@@ -378,5 +380,6 @@ export default class DistanceMeasure {
     closePanel() {
         this.setActive(false);
         this.panel.classList.remove('is-visible');
+        this.panel.remove();
     }
 }
