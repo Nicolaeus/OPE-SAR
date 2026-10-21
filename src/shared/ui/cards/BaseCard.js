@@ -111,6 +111,9 @@ export default class BaseCard {
                 this.toggle();
             }
         );
+        collapseBtn.setAttribute('type', 'button');
+        collapseBtn.setAttribute('aria-label', 'Réduire la fenêtre');
+        collapseBtn.setAttribute('aria-expanded', 'true');
 
         const closeBtn =
             card.querySelector(
@@ -249,10 +252,25 @@ export default class BaseCard {
         this.collapsed =
             !this.collapsed;
 
+        this.element.classList.toggle(
+            'opsar-card-collapsed',
+            this.collapsed
+        );
+
         body.style.display =
             this.collapsed
                 ? 'none'
                 : 'block';
+
+        const collapseButton =
+            this.element.querySelector('.opsar-card-collapse');
+
+        collapseButton.textContent = this.collapsed ? '+' : '−';
+        collapseButton.setAttribute('aria-expanded', String(!this.collapsed));
+        collapseButton.setAttribute(
+            'aria-label',
+            this.collapsed ? 'Agrandir la fenêtre' : 'Réduire la fenêtre'
+        );
 
     }
 

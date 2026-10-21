@@ -29,6 +29,7 @@ export default class DistanceMeasure {
             if (action === 'toggle') this.setActive(!this.active);
             if (action === 'clear') this.clear();
             if (action === 'close') this.closePanel();
+            if (action === 'collapse') this.togglePanelCollapse();
             if (action === 'delete-waypoint') {
                 const index = Number(event.target.closest('[data-waypoint-index]')?.dataset.waypointIndex);
                 this.removeWaypoint(index);
@@ -43,10 +44,11 @@ export default class DistanceMeasure {
             if (event.button !== 0 || event.target.closest('button')) return;
             const bounds = this.panel.getBoundingClientRect();
             drag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, left: bounds.left, top: bounds.top };
-            this.panel.style.left = `${bounds.left}px`;
-            this.panel.style.top = `${bounds.top}px`;
-            this.panel.style.right = 'auto';
-            this.panel.style.bottom = 'auto';
+            this.panel.style.setProperty('position', 'fixed', 'important');
+            this.panel.style.setProperty('left', `${bounds.left}px`, 'important');
+            this.panel.style.setProperty('top', `${bounds.top}px`, 'important');
+            this.panel.style.setProperty('right', 'auto', 'important');
+            this.panel.style.setProperty('bottom', 'auto', 'important');
             this.bringPanelToFront();
             header.classList.add('is-dragging');
             header.setPointerCapture(event.pointerId);
@@ -58,8 +60,8 @@ export default class DistanceMeasure {
             const maxTop = Math.max(8, window.innerHeight - this.panel.offsetHeight - 8);
             const left = Math.min(maxLeft, Math.max(8, drag.left + event.clientX - drag.x));
             const top = Math.min(maxTop, Math.max(8, drag.top + event.clientY - drag.y));
-            this.panel.style.left = `${left}px`;
-            this.panel.style.top = `${top}px`;
+            this.panel.style.setProperty('left', `${left}px`, 'important');
+            this.panel.style.setProperty('top', `${top}px`, 'important');
         });
         const stopDragging = event => {
             if (!drag || event.pointerId !== drag.pointerId) return;
@@ -79,30 +81,49 @@ export default class DistanceMeasure {
         this.panel.style.zIndex = String(BaseCard.zIndex);
     }
 
+    togglePanelCollapse(forceExpanded = null) {
+        const collapsed = forceExpanded === null
+            ? !this.panel.classList.contains('opsar-card-collapsed')
+            : !forceExpanded;
+        const body = this.panel.querySelector('.opsar-measure-body');
+        const button = this.panel.querySelector('.opsar-card-collapse');
+        this.panel.classList.toggle('opsar-card-collapsed', collapsed);
+        body.style.display = collapsed ? 'none' : 'block';
+        button.textContent = collapsed ? '+' : '−';
+        button.setAttribute('aria-expanded', String(!collapsed));
+        button.setAttribute('aria-label', collapsed ? 'Agrandir la fenêtre' : 'Réduire la fenêtre');
+        this.bringPanelToFront();
+    }
+
     createPanel() {
         const panel = document.createElement('section');
-        panel.className = 'opsar-measure-panel';
+        panel.className = 'opsar-card opsar-card-yellow opsar-measure-panel';
         panel.setAttribute('role', 'dialog');
         panel.setAttribute('aria-label', 'Mesure de distance');
         panel.innerHTML = `
-            <header class="opsar-measure-header">
-                <div class="opsar-measure-title">
-                    <img src="./assets/images/compass/compass-48.png" alt="">
-                    <div><strong>Mesure de distance</strong><span class="opsar-measure-status"></span></div>
+            <header class="opsar-card-header opsar-measure-header">
+                <div class="opsar-card-title opsar-measure-title">
+                    <span class="opsar-card-icon"><img src="./assets/images/compass/compass-48.png" alt=""></span>
+                    <span class="opsar-measure-heading-text"><strong>Mesure de distance</strong><small class="opsar-measure-status"></small></span>
                 </div>
-                <button class="opsar-measure-close" type="button" data-measure-action="close" aria-label="Fermer">×</button>
+                <div class="opsar-card-actions">
+                    <button class="opsar-card-collapse" type="button" data-measure-action="collapse" aria-label="Réduire la fenêtre" aria-expanded="true">−</button>
+                    <button class="opsar-card-close" type="button" data-measure-action="close" aria-label="Fermer">×</button>
+                </div>
             </header>
-            <div class="opsar-measure-summary">
+            <div class="opsar-card-body opsar-measure-body">
+              <div class="opsar-measure-summary">
                 <span>Distance totale</span>
                 <strong class="opsar-measure-total">0.00 NM <small>(0.00 km)</small></strong>
-            </div>
-            <div class="opsar-measure-hint">Activez l’outil, puis cliquez sur la carte pour ajouter des waypoints.</div>
-            <div class="opsar-measure-list-heading"><span>Waypoints</span><span class="opsar-measure-count">0</span></div>
-            <ol class="opsar-measure-points"></ol>
-            <footer>
+              </div>
+              <div class="opsar-measure-hint">Activez l’outil, puis cliquez sur la carte pour ajouter des waypoints.</div>
+              <div class="opsar-measure-list-heading"><span>Waypoints</span><span class="opsar-measure-count">0</span></div>
+              <ol class="opsar-measure-points"></ol>
+              <footer>
                 <button class="opsar-measure-clear" type="button" data-measure-action="clear">Effacer</button>
                 <button class="opsar-measure-continue" type="button" data-measure-action="toggle">Démarrer</button>
-            </footer>`;
+              </footer>
+            </div>`;
         return panel;
     }
 
@@ -112,6 +133,9 @@ export default class DistanceMeasure {
 
     setActive(active) {
         this.active = active;
+        if (active && this.panel.classList.contains('opsar-card-collapsed')) {
+            this.togglePanelCollapse(true);
+        }
         this.button.classList.toggle('is-active', active);
         this.button.setAttribute('aria-pressed', String(active));
         this.map.getContainer().classList.toggle('opsar-measure-cursor', active);
