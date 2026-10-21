@@ -6,6 +6,7 @@ import appConfig from '../../../core/config/app.config.js';
 import NotificationService from '../../../core/services/NotificationService.js';
 import StationReferenceService from '../../stations/services/StationReferenceService.js';
 import StationService from '../../stations/services/StationService.js';
+import PermissionsPanel from '../services/PermissionsPanel.js';
 
 export default class SettingsCard extends BaseCardController {
 
@@ -31,6 +32,10 @@ export default class SettingsCard extends BaseCardController {
 
         card.add(
             this.buildLocalSection().element
+        );
+
+        card.add(
+            this.buildPermissionsSection().element
         );
 
         card.add(
@@ -192,7 +197,17 @@ export default class SettingsCard extends BaseCardController {
 
     }
 
+    static buildPermissionsSection() {
+        const section = new CardSection('Autorisations et accès');
+        section.add(PermissionsPanel.createSettingsSection());
+        return section;
+    }
+
     static bindEvents() {
+
+        PermissionsPanel.bindSettings(
+            document.querySelector('#settings-card .opsar-permissions-settings')
+        );
 
         document
             .getElementById('settings-clear-station')

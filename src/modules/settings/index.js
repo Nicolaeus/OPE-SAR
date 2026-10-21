@@ -1,4 +1,5 @@
 import SettingsCard from './cards/SettingsCard.js';
+import PermissionsPanel from './services/PermissionsPanel.js';
 
 export default {
 
@@ -43,6 +44,10 @@ export default {
         console.log(
             '✅ Module Config chargé'
         );
+
+        window.addEventListener('app:loaded', () => {
+            PermissionsPanel.afterAppLoaded();
+        }, { once: true });
 
     }
 

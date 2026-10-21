@@ -6,7 +6,6 @@ import Database
     from '../database/Database.js';
 
 import SettingsService from '../services/SettingsService.js';
-import GeolocationService from '../services/GeolocationService.js';
 
 import CacheManager from '../cache/CacheManager.js';
 
@@ -72,8 +71,6 @@ export default class Bootstrap {
         // ThemeService.listen();
 
         await CacheManager.cleanExpired();
-
-        await GeolocationService.start();
 
         console.log(
             '✅ Core initialisé'
@@ -216,6 +213,10 @@ export default class Bootstrap {
         
         
         await SplashScreen.hide();
+
+        window.dispatchEvent(
+            new CustomEvent('app:loaded')
+        );
         
         const leafletMap = window.OPESAR?.Map?.getMap?.();
         
